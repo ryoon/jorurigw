@@ -36,7 +36,7 @@ class Gwsub::Script::Tool
           end
         end
 
-        if model_n.save(false)
+        if model_n.save(:validate=>false)
           ln_t += 1
         else
           ln_f += 1
@@ -83,7 +83,7 @@ class Gwsub::Script::Tool
             eval "model_n.#{fields[y]} = x[idx]"
           end
         end
-        if model_n.save(false)
+        if model_n.save(:validate=>false)
           ln_t += 1
         else
           ln_f += 1
@@ -131,7 +131,7 @@ class Gwsub::Script::Tool
             eval "model_n.#{fields[y]} = x[idx]"
           end
         end
-        if model_n.save(false)
+        if model_n.save(:validate=>false)
           ln_t += 1
         else
           ln_f += 1

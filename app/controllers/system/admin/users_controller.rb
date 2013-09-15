@@ -340,12 +340,19 @@ class System::Admin::UsersController < Gw::Controller::Admin::Base
           
           user.in_group_id        = c_group.id
           
+					#そのユーザの現在の所属と違う部署に変更となった時
+					user.user_groups.each do |ug|
+						ug.update_attribute(:group_id, c_group.id) if ug.group_id != c_group.id
+					end
+					
           if user.id
             @errors << "user-u : #{u.code} - #{u.name}" && next unless user.save
           else
             @errors << "user-n : #{u.code} - #{u.name}" && next unless user.save
           end
-
+					#save時にuser_groupsに更新がある場合があるので、読み直し
+					user = System::User.find(:first, :conditions => cond)
+					
           user_groups = user.user_groups # コールバックでsystem_users_groupsのデータは作成済み
           if user_groups.present?
             user_group = user_groups[0]
@@ -353,9 +360,9 @@ class System::Admin::UsersController < Gw::Controller::Admin::Base
               user_group.job_order = u.job_order
               user_group.start_at  = u.start_at
               user_group.end_at    = u.end_at
-              user_group.save(:validate => false)
-            end
-          end
+							user_group.save(:validate => false)
+           end
+					end
         end ##/users
       end ##/sections
     end ##/departments

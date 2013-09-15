@@ -9,13 +9,10 @@ class System::Admin::ApiController < ApplicationController
   end
 
   def checker_login
-    case request.request_method
-    when :post
+    if request.post?
       state,text = api_checker_login_post(params[:account], params[:password])
-      respond_to do |format|
-        format.xml { render :text=>text ,:layout=>false ,:state=>state }
-      end
-    when :get
+      render :text => text
+    elsif request.get?
       api_checker_login_get(params[:account], params[:token])
       redirect_to '/'
     end
@@ -36,8 +33,17 @@ protected
   def api_checker
     dump ['api_checker',Time.now.strftime('%Y-%m-%d %H:%M:%S'),request.parameters]
 
-    unless logged_in?
-
+    if logged_in?
+      user = current_user
+      # ログイン済のときは、同一アカウントからのリクエストであるかをチェック
+      unless params[:account].to_s == user.code.to_s
+        unless new_login(params[:account], params[:password])
+          xml = Gw::Tool::Reminder.checker_api_error
+          return 201,xml
+        end
+      end
+    else
+      # 新規ログインでは、アカウント・パスワードをチェック
       unless new_login(params[:account], params[:password])
         xml = Gw::Tool::Reminder.checker_api_error
         return 201,xml
@@ -58,9 +64,10 @@ protected
     return 201,"NG" unless user
 
     token = Digest::SHA1.hexdigest("#{account}#{password}#{Time.now.to_f.to_s}")
+    enc_password = Base64.encode64(Util::Crypt.encrypt(password))
 
-    user.air_token = token
-    user.save(false)
+    user.air_token = "#{token} #{enc_password}"
+    user.save(:validate=>false)
     dump ['api_checker_login_post',Time.now.strftime('%Y-%m-%d %H:%M:%S'),request.parameters,token]
     return 200,"OK #{token}"
   end
@@ -71,12 +78,14 @@ protected
     cond = Condition.new
     cond.and :code, account
     cond.and :air_token, 'IS NOT', nil
-    cond.and :air_token, "#{token}"
+    cond.and :air_token, 'LIKE', "#{token}%"
     user = System::User.find(:first, :conditions => cond.where)
+    token, enc_password = user.air_token.split(/ /)
+    usr_pass = Util::Crypt.decrypt(Base64.decode64(enc_password))
 
-    if user && new_login(account, user.password)
+    if user && new_login(account, usr_pass)
       user.air_token = nil
-      user.save(false)
+      user.save(:validate=>false)
     end
     dump ['api_checker_login_get',Time.now.strftime('%Y-%m-%d %H:%M:%S'),request.parameters]
   end
@@ -95,8 +104,9 @@ protected
 
     now   = Time.now
     token = Digest::MD5.hexdigest(now.to_f.to_s)
+    enc_password = Base64.encode64(Util::Crypt.encrypt(password))
 
-    user.air_login_id = "#{token}"
+    user.air_login_id = "#{token} #{enc_password}"
     user.save(:validate => false)
     dump ['air_sso_login_token',Time.now.strftime('%Y-%m-%d %H:%M:%S'),request.parameters]
     render :text => "OK #{token}"
@@ -106,16 +116,19 @@ protected
     cond = Condition.new do |c|
       c.and :code, account
       c.and :air_login_id, 'IS NOT', nil
-      c.and :air_login_id, 'LIKE', "#{token}"
+      c.and :air_login_id, 'LIKE', "#{token} %"
     end
-    user = System::User.find(:first, :conditions => cond.where)
-    return render(:text => "ログインに失敗しました。") unless user
+    @user = System::User.find(:first, :conditions => cond.where)
+    return render(:text => "ログインに失敗しました。") unless @user
 
-    if user
-      user.air_login_id = nil
-      user.save(:validate => false)
+    @token, enc_password = @user.air_login_id.split(/ /)
+    if @user
+      @user.air_login_id = nil
+      @user.save(:validate => false)
     end
-    set_current_user(user)
+    @user.password = Util::Crypt.decrypt(Base64.decode64(enc_password))
+    @user.encrypted_password = Util::Crypt.encrypt @user.password
+    set_current_user(@user)
 
     dump ['air_sso_login_token',Time.now.strftime('%Y-%m-%d %H:%M:%S'),request.parameters]
     admin_uri = "/"

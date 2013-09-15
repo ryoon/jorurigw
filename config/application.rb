@@ -10,10 +10,6 @@ if defined?(Bundler)
 end
 
 module JoruriGw
-  def self.version
-    "2.0.2"
-  end
-
   class Application < Rails::Application
     require "#{Rails.root}/lib/joruri"
     

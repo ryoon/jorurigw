@@ -155,7 +155,7 @@ class Gw::Tool::PrefExective
     member = Gw::PrefAssemblyMember.find_by_id(id)
     unless member.blank?
       member.state = state
-      if member.save(false)
+      if member.save(:validate=>false)
         result = "true"
       end
     end
@@ -177,7 +177,7 @@ class Gw::Tool::PrefExective
     member = Gw::PrefExecutive.find_by_id(id)
     unless member.blank?
       member.state = state
-      if member.save(false)
+      if member.save(:validate=>false)
         result = "true"
       end
     end

@@ -1,6 +1,6 @@
 # -*- encoding: utf-8 -*-
 class Gw
-  
+
   def self.nz(value, valueifnull='')
     value.blank? ? valueifnull : value
   end
@@ -20,7 +20,7 @@ class Gw
   def self.required(str='※')
     %Q( <span class="required">#{str}</span>).html_safe
   end
-  
+
   def self.user_groups_error
     %Q(<span style="color: red;">** 所属未登録 **</span>).html_safe
   end
@@ -322,7 +322,7 @@ class Gw
   def self.hanzen(s)
     s.nil? ? '' : s.tr("A-Z0-9","Ａ-Ｚ０-９")
   end
-  
+
   def self.half_width_characters?(string)
     # 半角英数字、および半角アンダーバーのチェック
     if string =~  /^[0-9A-Za-z\_]+$/
@@ -331,7 +331,7 @@ class Gw
       false
     end
   end
-  
+
   def self.get_uniq_data(a = [])
     # 重複したデータを配列として返す
     return a.uniq.select{|i| a.index(i) != a.rindex(i)}
@@ -560,7 +560,6 @@ class Gw
 
   def self.date_array(d1,d2)
     ret = []
-    raise RangeError, 'date_array: 範囲が広すぎます。' if d2 - d1 > 365 * 86400
     for d in datetime_to_date(d1)..datetime_to_date(d2)
       ret.push d
     end

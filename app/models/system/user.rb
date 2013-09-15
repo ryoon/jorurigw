@@ -16,14 +16,14 @@ class System::User < ActiveRecord::Base
     :source => :group, :order => 'system_users_groups.job_order, system_groups.sort_no'
   has_many :user_group_histories, :foreign_key => :user_id,
     :class_name => 'System::UsersGroupHistory'
-  
+
   has_many :logins, :foreign_key => :user_id, :class_name => 'System::LoginLog',
     :order => 'id desc', :dependent => :delete_all
-  
-  accepts_nested_attributes_for :user_groups, :allow_destroy => true, 
+
+  accepts_nested_attributes_for :user_groups, :allow_destroy => true,
     :reject_if => proc{|attrs| attrs['group_id'].blank?}
-  
-  attr_accessor :in_password, :in_group_id
+
+  attr_accessor :in_password, :in_group_id, :encrypted_password
 
   validates_presence_of     :code, :name, :state, :ldap
   validates_uniqueness_of   :code
@@ -47,7 +47,7 @@ class System::User < ActiveRecord::Base
   def name_and_code
     name + '(' + code + ')'
   end
-  
+
   def mobile_pass_check
     valid = true
     if self.mobile_password.size < 4
@@ -277,6 +277,21 @@ class System::User < ActiveRecord::Base
     connect.execute(truncate_query)
   end
 
+
+  #ユーザID（user code)で有効な文字か？
+  def self.valid_user_code_characters?(string)
+    return self.half_width_characters?(string)
+  end
+
+  def self.half_width_characters?(string)
+    # 半角英数字、および半角アンダーバーのチェック
+    if string =~  /^[0-9A-Za-z\_]+$/
+      return true
+    else
+      false
+    end
+  end
+
   def save_with_rels(options)
     # only user create
     # create users_groups / users_group_histsorires after user create
@@ -284,6 +299,13 @@ class System::User < ActiveRecord::Base
     ret = []
     ret[0]  = true
     ret[1]  = ""
+
+    if System::User.valid_user_code_characters?(self.code) == false
+      ret[1]="ユーザーIDは半角英数字、および半角アンダーバーのみのデータとしてください。"
+      ret[0]=false
+      return ret
+    end
+
 
     # validate of params
     valid = true
@@ -338,7 +360,7 @@ class System::User < ActiveRecord::Base
           ugh.job_order = params[:ug]['job_order'].to_i
           ugh.start_at  = st_at
           ugh.end_at    = ed_at
-          #ugh.save(false)
+          #ugh.save(:validate=>false)
           if ugh.save
           else
             ret[1] = '登録ユーザーのグループ割当に失敗しました。'
@@ -369,10 +391,10 @@ protected
   def password_required?
     password.blank? || !in_password.blank?
   end
-  
+
   def save_users_group
     return if in_group_id.blank?
-    
+
     if ug = user_groups.find{|item| item.job_order == 0}
       if in_group_id != ug.group_id
         ug.group_id = in_group_id
@@ -383,7 +405,7 @@ protected
     else
       System::UsersGroup.create(
         :user_id   => id,
-        :group_id  => in_group_id, 
+        :group_id  => in_group_id,
         :start_at  => Core.now,
         :job_order => 0
       )

@@ -180,8 +180,10 @@ class Gw::Admin::SchedulesController < Gw::Controller::Admin::Base
     end
     @calendar_first_day = @calendar_first_day - 7 if @month_first_day < @calendar_first_day
 
-    @calendar_end_day = @calendar_first_day + (6 + 7 * 3)
-    @calendar_end_day = @calendar_end_day + 7 if @calendar_end_day < @month_end_day
+		@calendar_end_day = @calendar_first_day + 7 * 4 - 1
+		while @calendar_end_day < @month_end_day
+			@calendar_end_day += 7
+		end
   end
 
   def _schedule_day_data

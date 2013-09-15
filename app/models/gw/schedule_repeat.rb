@@ -110,7 +110,7 @@ class Gw::ScheduleRepeat < Gw::Database
     when "1"
 
       st_at, ed_at = par_item_base[:st_at], par_item_base[:ed_at]
-      
+
       unless Gw.validates_datetime(st_at)
         item.errors.add :st_at, "の「#{st_at}」#{validates_date_error_message}"
       end
@@ -126,6 +126,7 @@ class Gw::ScheduleRepeat < Gw::Database
         else
           item.errors.add :ed_at, 'は、開始日時より後の日時を入力してください。' if d_st_at >= d_ed_at
         end
+        item.errors.add :st_at, 'と終了時刻は一年以内でなければいけません' if  (d_ed_at.to_time - d_st_at.to_time) > 86400 * 365
 
         # 競合チェック
         if mode == :create
@@ -146,7 +147,7 @@ class Gw::ScheduleRepeat < Gw::Database
           if other_items.length > 0
             other_item_save_flg = false
           end
-          
+
           unless other_item_save_flg
             competition_prop_other_ids << o_props_id
           end
@@ -196,8 +197,7 @@ class Gw::ScheduleRepeat < Gw::Database
       end
 
       if item.errors.count == err_num_st
-
-        item.errors.add :repeat_st_time_at, 'と終了時刻は一年以内でなければいけません。' if (d_ed_date - d_st_date) > 86400 * 365
+        item.errors.add :repeat_st_time_at, 'と終了時刻は一年以内でなければいけません。' if (d_ed_date.to_time - d_st_date.to_time) > 86400 * 365
 
         if par_item_repeat[:class_id].blank?
           item.errors.add :repeat_class_id, 'を入力してください。'

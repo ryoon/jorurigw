@@ -260,7 +260,7 @@ class System::Admin::CustomGroupsController < Gw::Controller::Admin::Base
         customGroup_sort_no = customGroup_sort_no + 10
       elsif !customGroup.blank? && system_group.state == 'disabled'
         customGroup.state = 'disabled'
-        customGroup.save(false)
+        customGroup.save(:validate=>false)
       end
     end
 
@@ -270,7 +270,7 @@ class System::Admin::CustomGroupsController < Gw::Controller::Admin::Base
       systemGroup = System::Group.find(:first, :conditions => "state='enabled' and name = '#{custom_group.name}'", :order => "sort_no")
       if systemGroup.blank?
         custom_group.state = 'disabled'
-        custom_group.save(false)
+        custom_group.save(:validate=>false)
       end
     end
     flash_notice 'カスタムグループの同期', true
@@ -301,7 +301,7 @@ class System::Admin::CustomGroupsController < Gw::Controller::Admin::Base
       sort_no = 5
       users.each do |user|
         user.sort_no = sort_no
-        user.save(false)
+        user.save(:validate=>false)
         sort_no += 5
       end
     end

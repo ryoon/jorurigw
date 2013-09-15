@@ -150,14 +150,19 @@ EOL
   end
 
   def redirect_page_mail(host, field_account, field_pass)
+		uri_base = host
+		_url = uri_base.split(':')
+		host = _url[0]
+		port = _url[1].nil? ? '80' : _url[1]
+		
     pass = Site.user.password
     para = CGI.escape(pass)
     require 'net/http'
     Net::HTTP.version_1_2
-    http     = Net::HTTP.new(host, 80)
+    http     = Net::HTTP.new(host, port)
     res      = http.post("/_admin/air_sso", "account=#{Site.user.code}&password=#{para}")
     token    = (res.body.to_s =~ /^OK/i) ? res.body.to_s.gsub(/^OK /i, '') : nil
-    next_uri = "http://#{host}/_admin/air_sso?account=#{Site.user.code}&token=#{token}"
+    next_uri = "http://#{uri_base}/_admin/air_sso?account=#{Site.user.code}&token=#{token}"
 
     redirect_page = <<-EOL
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
