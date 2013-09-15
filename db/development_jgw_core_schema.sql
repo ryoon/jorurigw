@@ -1491,7 +1491,6 @@ SET character_set_client = @saved_cs_client;
 /*!50001 SET character_set_results     = utf8 */;
 /*!50001 SET collation_connection      = utf8_general_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`webdb`@`localhost` SQL SECURITY DEFINER */
 /*!50001 VIEW `system_authorizations` AS (select `users`.`id` AS `user_id`,`users`.`code` AS `user_code`,`users`.`name` AS `user_name`,`users`.`name_en` AS `user_name_en`,`users`.`password` AS `user_password`,`users`.`email` AS `user_email`,`users`.`remember_token` AS `remember_token`,`users`.`remember_token_expires_at` AS `remember_token_expires_at`,`groups`.`id` AS `group_id`,`groups`.`code` AS `group_code`,`groups`.`name` AS `group_name`,`groups`.`name_en` AS `group_name_en`,`groups`.`email` AS `group_email` from ((`system_users` `users` join `system_users_groups` `sug` on((`sug`.`user_id` = `users`.`id`))) join `system_groups` `groups` on((`groups`.`id` = `sug`.`group_id`))) where (`users`.`ldap` = 0)) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;

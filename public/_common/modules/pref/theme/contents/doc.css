@@ -1,0 +1,283 @@
+@charset "UTF-8";
+
+/* =========================================================
+   PrefDoc
+========================================================= */
+
+
+
+/*--------------------header---------------------------*/
+
+
+#nocssread{
+display:none;
+margin-right:-9999px;
+}
+
+
+/*------layout-----*/
+/*
+#main{
+margin-top:30px;
+}
+
+#wrapper{
+margin-right:-180px;
+}
+
+#container{
+max-width:1200px;
+min-width:1000px;
+margin-left:auto;
+margin-right:auto;
+}
+
+#content{
+float:right;
+margin-left:-180px;
+margin-right:-180px;
+width:100%;
+}
+
+#contentContainer{
+margin-left:180px;
+width:100%;
+}
+
+#menu{
+float:left;
+width:170px;
+}
+*/
+/* Search Documents
+--------------------------------------------------------- */
+
+/* search form
+----------------------------------------------- */
+.contentPrefDocs .search {
+  margin: 10px 0px;
+  padding: 10px 10px;
+  background-color: #eee;
+  border: 1px solid #ddd;
+}
+.contentPrefDocs .search td {
+  padding: 0px 15px 0px 5px;
+}
+.contentPrefDocs .search td input {
+  width: 140px;
+}
+.contentPrefDocs .search td.submitters input {
+  width: 80px;
+  font-size: 80%;
+}
+
+/* search count
+------------------------------------- */
+.contentPrefDocs div.hit {
+  marign: 10px 0px;
+}
+.contentPrefDocs div.hit .count {
+  margin: 0px 5px;
+  color: #f00;
+  font-weight: bold;
+}
+
+/* Recent Documents
+--------------------------------------------------------- */
+
+.contentPrefDocs .feed {
+  text-align: right;
+}
+.contentPrefDocs ul {
+  margin-bottom: 10px;
+  padding-left: 25px;
+  list-style-type: square;
+}
+.contentPrefDocs li {
+  line-height: 1.4;
+}
+
+/* Show Document
+--------------------------------------------------------- */
+
+/* header
+------------------------------------- */
+.contentPrefDoc .header {
+  color: #666;
+  text-align: right;
+}
+.contentPrefDoc h2 {
+  display: inline;
+  margin-right: 0.3em;
+  font-size: 100%;
+  font-weight: lighter;
+}
+.contentPrefDoc .section {
+}
+.contentPrefDoc .publishedAt {
+}
+
+/* body
+------------------------------------- */
+.contentPrefDoc .body {
+  margin-top: 10px;
+}
+
+/* attachments
+------------------------------------- */
+.contentPrefDoc .attachments {
+  margin: 20px 0px 0px 0px;
+}
+.contentPrefDoc .attachments h3 {
+  padding: 3px 5px;
+  background-color: #ddd;
+}
+.contentPrefDoc .attachments .fileGroup {
+  margin: 10px 10px;
+}
+.contentPrefDoc .attachments .files {
+  margin: 10px 10px;
+}
+.contentPrefDoc .attachments dt {
+  clear: both;
+  padding: 0px 10px;
+  border: 1px solid #eee;
+  background-color: #ddd;
+  line-height: 2.0;
+}
+.contentPrefDoc .attachments dd {
+  display: inline;
+}
+
+/* maps
+------------------------------------- */
+.contentPrefDoc .maps {
+  margin: 20px 0px 0px 0px;
+}
+.contentPrefDoc .maps h3 {
+  padding: 3px 5px;
+  background-color: #ddd;
+}
+.contentPrefDoc .maps .map {
+  margin: 10px;
+}
+
+/* rels
+------------------------------------- */
+.contentPrefDoc .rels {
+  margin: 20px 0px 0px 0px;
+}
+.contentPrefDoc .rels h3 {
+  padding: 3px 5px;
+  background-color: #ddd;
+}
+.contentPrefDoc .rels ul {
+  margin: 10px;
+}
+
+/* tags
+------------------------------------- */
+.contentPrefDoc .tags {
+  margin: 20px 0px 0px 0px;
+}
+.contentPrefDoc .tags h3 {
+  padding: 3px 5px;
+  background-color: #ddd;
+}
+.contentPrefDoc .tags div {
+  margin: 10px;
+}
+
+/* inquiry
+------------------------------------- */
+.contentPrefDoc .inquiry {
+  margin: 20px 0px 0px 0px;
+  padding: 10px;
+  border: 2px solid #ddb;
+  background-color: #ffd;
+}
+.contentPrefDoc .inquiry h3 {
+  margin-bottom: 0.5em;
+  color: #f00;
+}
+
+/* back
+------------------------------------- */
+.contentPrefDoc .back {
+  width: 100px;
+  margin: 20px auto 0px auto;
+  text-align: center;
+}
+.contentPrefDoc .back a {
+  display: block;
+  width: 100%;
+
+  line-height: 2.0;
+}
+
+/* Search Documents
+--------------------------------------------------------- */
+
+/* form
+--------------------------- */
+.prefModule .docSearch form.search {
+  margin: 10px 0px;
+  padding: 10px 10px;
+  border: 1px solid #ddd;
+  background-color: #eee;
+}
+.prefModule .docSearch form.search table {
+}
+.prefModule .docSearch form.search th {
+  padding: 0px 5px 0px 0px;
+}
+.prefModule .docSearch form.search td {
+  padding: 0px 15px 0px 0px;
+}
+.prefModule .docSearch form.search td input {
+  width: 150px;
+}
+.prefModule .docSearch form.search td.submitters input {
+  width: 80px;
+  font-size: 80%;
+}
+
+/* list
+--------------------------- */
+.prefModule .docSearch div.hitCount {
+  marign: 10px 0px;
+}
+.prefModule .docSearch div.hitCount .count {
+  margin: 0px 5px;
+  color: #f00;
+  font-weight: bold;
+}
+.prefModule .docSearch table.list {
+  margin: 10px 0px;
+}
+.prefModule .docSearch table.list td.category a,
+.prefModule .docSearch table.list td.classification a {
+  color: #555;
+  border-bottom: 1px dashed #555;
+  text-decoration: none;
+}
+.prefModule .docSearch table.list td.category a:hover,
+.prefModule .docSearch table.list td.classification a:hover {
+  border-color: #000;
+  color: #000;
+}
+
+
+ .contentPrefDoc h2 {
+  width: 100%;
+  display: block;
+  font-size: 150%;
+  font-family: verdana;
+  font-weight: bold;
+  text-align: center;
+  color: #000000;
+}
+
+.contentPrefDoc .publishedAt {
+  color: #000000;
+  }

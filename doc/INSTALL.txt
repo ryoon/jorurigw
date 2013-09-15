@@ -1,4 +1,4 @@
-## JoruriGw v1.0.0 インストールマニュアル                   2011.05.23
+## JoruriGw v1.0.1 インストールマニュアル                   2011.05.24
 
 **********************************************************************
  1 想定環境
@@ -8,13 +8,17 @@
 OS         : CentOS 5.4
 Webサーバ  : Apache 2.2
 DBシステム : MySQL 5
-Ruby       : 1.8.7
+Ruby       : ruby-enterprise-1.8.7
 Rails      : 2.3.4
 キャッシュ : memcached 1.4.5
 
 [設定]
 IPアドレス : 192.168.0.2
 ドメイン   : 192.168.0.2
+
+※DECOアイコンについて
+  メニュー内、「DECO Drive」アイコンについては、別プロジェクトの為、
+  リンクのみとなっております。
 
 **********************************************************************
  2 CentOS のインストール
@@ -73,7 +77,7 @@ iptablesを停止し、自動起動を無効にします。
 必要なパッケージをダウンロードします。
 
   # cd /usr/local/src/
-  # wget http://joruri.org/download/jorurigw-1.0.0.tar.gz
+  # wget http://joruri.org/download/jorurigw/jorurigw-1.0.1.tar.gz
   # wget http://image_magick.veidrodis.com/image_magick/ImageMagick-6.4.7-8.tar.gz
   # wget http://rubyforge.org/frs/download.php/71096/ruby-enterprise-1.8.7-2010.02.tar.gz
   # wget http://downloads.sourceforge.net/ruby-ldap/ruby-ldap-0.9.7.tar.gz
@@ -86,7 +90,7 @@ Joruriユーザを作成します。
 JoruriGwソースコードを設置します。
 
   # mkdir /var/share
-  # tar xvzf jorurigw-1.0.0.tar.gz -C /var/share
+  # tar xvzf jorurigw-1.0.1.tar.gz -C /var/share
   # chown -R joruri:joruri /var/share/jorurigw
 
 **********************************************************************
@@ -289,11 +293,17 @@ Joruriユーザに変更します。
 DB接続情報
 
   $ vi config/database.yml
-  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-  username: joruri
-  password: pass
-  host    : 192.168.0.2
-  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+LDAP接続情報
+
+  $ vi config/ldap.yml
+
+  ※LDAPに関する設定は、ダウンロードページより補足資料をご参照下さい。
+    http://joruri.org/download/  【LDAP関連補足資料】LDAP_LDIF.zip
+
+SMTP接続情報
+
+  $ vi config/environments/development.rb
 
 ======================================================================
  8.2 データベースの作成
@@ -332,7 +342,7 @@ libeventをインストールします。
   # yum install libevent libevent-devel
 
   ( 画面の内容を確認して yを入力してください。 )
-  
+ 
 memcachedをインストールします。
 
   # cd /usr/local/src/
@@ -344,13 +354,13 @@ memcachedをインストールします。
   
 自動起動に設定します。
 
-	# cp /usr/local/src/memcached-1.4.5/scripts/memcached.sysv /etc/rc.d/init.d/memcached
-	# vi /etc/rc.d/init.d/memcached
+  # cp /usr/local/src/memcached-1.4.5/scripts/memcached.sysv /etc/rc.d/init.d/memcached
+  # vi /etc/rc.d/init.d/memcached
   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
   #16行目に下記を追加
   PATH=$PATH:/usr/local/bin ; export PATH
   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-	# mkdir /var/run/memcached
+  # mkdir /var/run/memcached
   # /sbin/chkconfig --add memcached
   # chkconfig --level 35 memcached on
 
@@ -381,4 +391,70 @@ Apache を再起動します。
 
 
 **********************************************************************
+ 9 定期実行設定
+**********************************************************************
+
+削除期間が過ぎた情報を削除します。
+以下の例は毎日3時～4時にかけて削除しています。
+
+削除期間が過ぎたスケジュールを削除します。
+
+  # su - joruri
+  $ crontab -e
+  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+  00 3 * * * /usr/local/bin/ruby /var/share/jorurigw/script/runner \
+    -e development 'Gw::Script::Schedule.delete'
+  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+完了済みで削除期間が過ぎたTODOを削除します。
+
+  $ crontab -e
+  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+  10 3 * * * /usr/local/bin/ruby /var/share/jorurigw/script/runner \
+    -e development 'Gw::Script::Todo.delete'
+  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+既読で削除期間が過ぎた連絡メモを削除します。
+
+  $ crontab -e
+  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+  20 3 * * */usr/local/bin/ruby /var/share/jorurigw/script/runner \
+    -e development 'Gw::Script::Memo.delete'
+  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+期限切れで削除期間が過ぎた掲示板を削除します。
+
+  $ crontab -e
+  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+  30 3 * * */usr/local/bin/ruby /var/share/jorurigw/script/runner \
+    -e development 'Gwbbs::Script::Task.delete'
+  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+期限切れで削除期間が過ぎた回覧板を削除します。
+
+  $ crontab -e
+  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+  40 3 * * * /usr/local/bin/ruby /var/share/jorurigw/script/runner \
+    -e development 'Gwcircular::Script::Task.delete' 
+  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+期限切れで削除期間が過ぎた照会回答を削除します。
+
+  $ crontab -e
+  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+  40 3 * * * /usr/local/bin/ruby /var/share/jorurigw/script/runner \
+    -e development 'Gwmonitor::Script::Task.delete' 
+  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+
+幹部・部課長の在席表示を全てoffにします。
+
+  $ crontab -e
+  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+  0 0 * * */usr/local/bin/ruby /var/share/jorurigw/script/runner \
+    -e development 'Gw::Script::PrefExective.state_all_off' 
+  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+**********************************************************************
+
 

@@ -172,7 +172,7 @@ class Gwcircular::Doc < Gw::Database
   def get_group_user_items(gid)
     item = System::User.new
     item.and "sql", "system_users.state = 'enabled'"
-    item.and "sql", "system_users.ldap = 1" unless is_vender_user
+#    item.and "sql", "system_users.ldap = 1" unless is_vender_user
     item.and "sql", "system_users_groups.group_id = #{gid}"
     return item.find(:all,:select=>'system_users.id, system_users.code, system_users.name',:joins=>['inner join system_users_groups on system_users.id = system_users_groups.user_id'],:order=>'system_users.code')
   end
@@ -187,7 +187,7 @@ class Gwcircular::Doc < Gw::Database
   def get_user_items(uid)
     item = System::User.new
     item.and "sql", "system_users.state = 'enabled'"
-    item.and "sql", "system_users.ldap = 1" unless is_vender_user
+#    item.and "sql", "system_users.ldap = 1" unless is_vender_user
     item.and "sql", "system_users_groups.user_id = #{uid}"
     return item.find(:all,:select=>'system_users.id, system_users.code, system_users.name',:joins=>['inner join system_users_groups on system_users.id = system_users_groups.user_id'],:order=>'system_users.code')
   end

@@ -57,9 +57,9 @@ module Gw::Controller::Mobile
       else
         converted_link = label
       end
-    elsif uri =~ /http:\/\/10.1.38.100\//
+    elsif uri =~ /http:\/\/localhost\//
 
-      uri = uri.sub(/http:\/\/10.1.38.100\//,"/")
+      uri = uri.sub(/http:\/\/localhost\//,"/")
       uri = uri.sub(/limit=100|limit=30|limit=20|limit=40|limit=50/,"limit=10")
       result = self.link_check(uri)
       if result == true

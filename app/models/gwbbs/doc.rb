@@ -412,7 +412,7 @@ class Gwbbs::Doc < Gwboard::CommonDb
 
   def get_domain
     rails_env = ENV['RAILS_ENV']
-    ret = '10.1.38.100'
+    ret = 'localhost'
     begin
       site = YAML.load_file('config/site.yml')
       ret = site[rails_env]['domain']

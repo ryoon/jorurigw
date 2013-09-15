@@ -109,8 +109,14 @@ class Doclibrary::Public::CabinetsController < ApplicationController
     @item.upload_document_file_size_currently = 0
 
     @item.upload_system = 3
-    @item.save
-    redirect_to "/doclibrary/group_folders/sync_groups?title_id=#{@item.id}&mode=public&make=new"
+    if @item.save
+      redirect_to "/doclibrary/group_folders/sync_groups?title_id=#{@item.id}&mode=public&make=new"
+    else
+      respond_to do |format|
+        format.html { render :action => "new" }
+        format.xml  { render :xml => @item.errors, :status => :unprocessable_entity }
+      end
+    end
   end
 
   def update

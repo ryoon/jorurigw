@@ -49,7 +49,7 @@
       @item = System::User.find(:all, :conditions=>cond, :order=>'code',
         :joins=>'left join system_users_groups on system_users.id = system_users_groups.user_id').collect{|x| [1, x.id, Gw.trim(x.display_name)]}
     when /^memo_group_(\d+)$/
-      f_ldap = '1'
+#      f_ldap = '1'
       f_ldap = '' if Site.user.code.length <= 3
       cond = "state='enabled' and system_users_groups.group_id = #{$1}" if f_ldap.blank?
       cond = "state='enabled' and system_users_groups.group_id = #{$1} and ldap = 1" unless f_ldap.blank?
@@ -73,7 +73,7 @@
         @item.push [1, x.user.id, Gw.trim( x.user.display_name )] if !x.user.blank? && x.user.code != '000001_0' && x.user.state == 'enabled'
        }
     when /^child_group_(\d+)$/
-      cond = "state='enabled' and ldap = 1 and system_users_groups.group_id = #{$1}"
+      cond = "state='enabled' and system_users_groups.group_id = #{$1}"
       @item = System::User.find(:all, :conditions=>cond, :order=>'code',
         :joins=>'left join system_users_groups on system_users.id = system_users_groups.user_id').collect{|x| [1, x.id, Gw.trim(x.display_name)]}
     else

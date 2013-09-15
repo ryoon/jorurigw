@@ -102,13 +102,13 @@ class Questionnaire::Base < Gw::Database
     end
     return ret
   end
-  #site.ymlからドメイン名を取得し、一覧に表示しない時の回答用URLを表示する
+
   def no_include_index_answer_url
     ret = ''
     return ret if self.include_index
 
     rails_env = ENV['RAILS_ENV']
-    ret = '10.1.38.100'
+    ret = 'localhost'
     begin
       site = YAML.load_file('config/site.yml')
       ret = site[rails_env]['domain']
@@ -118,7 +118,6 @@ class Questionnaire::Base < Gw::Database
     return ret
   end
 
-  #site.ymlからドメイン名を取得し、一覧に表示しない時の回答用URLを表示する
   def no_include_result_url
     ret = ''
     return ret if self.include_index

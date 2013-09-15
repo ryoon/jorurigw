@@ -551,7 +551,6 @@ class Gwmonitor::Control < Gw::Database
     subject += "（テストモード）" unless _mail[:email].blank?
     message = "#{Site.user_group.name} #{Site.user.name}さんより\n" + "「#{self.title}」\n" + "についての回答依頼が届きました。\n\n" + "次のリンクから内容を確認し，回答してください。\n\n"
     message_under = "\n回答までの手順\n\n１ 所属内で回答する担当者を決定\n２ 担当者は,上記リンクから記事の内容を確認し,「受け取る」をクリック\n３ 回答期限までに担当者は,回答欄を編集し,「回答する」又は「該当なし」をクリック\n\n以上で完了です。"
-    message_under = "#{message_under}\n\n詳しくはこちらをご覧ください（JoruriグループウェアFAQ:回答依頼メールを受け取ったら）\nhttp://10.1.38.100/gwfaq/docs/144/?title_id=2000&pp=166&state=CATEGORY&limit=100"
 
     item = Gwmonitor::Doc.new
     item.and :title_id,  self.id

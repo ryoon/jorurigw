@@ -196,10 +196,10 @@ class Gw::Script::PrefTool
         new_user_group_rel = System::UsersGroup.find(:first, :conditions=>["user_id = ? AND end_at IS NULL AND job_order = 0",new_user_data.id])
         new_user_group = System::Group.find_by_id(new_user_group_rel.group_id)
         unless new_user_group.blank?
-          new_user.parent_gid       = temp.parent_gid
-          new_user.parent_g_code    = temp.parent_g_code
-          new_user.parent_g_name    = temp.parent_g_name
-          new_user.parent_g_order   = temp.parent_g_order
+          new_user.parent_gid       = !temp.blank? ? temp.parent_gid : new_user_group.parent.id
+          new_user.parent_g_code    = !temp.blank? ? temp.parent_g_code : new_user_group.parent.code
+          new_user.parent_g_name    = !temp.blank? ? temp.parent_g_name : new_user_group.name
+          new_user.parent_g_order   = !temp.blank? ? temp.parent_g_order : new_user_group.sort_no
           new_user.gid              = new_user_group.id
           new_user.g_code           = new_user_group.code
           new_user.g_name           = new_user_group.name
