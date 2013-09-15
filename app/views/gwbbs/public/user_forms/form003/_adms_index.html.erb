@@ -1,0 +1,16 @@
+<table class="index">
+<tr>
+<th style="width: 60px; text-align: center;">状態</th>
+<th style="width: 80px; text-align: left;">日付</th>
+<th style="width: 240px;text-align: center;">作成課</th>
+<th style="width: 120px; text-align: left;">逝去日</th>
+</tr>
+<% @items.each do |item| %>
+  <tr>
+    <td><%= link_to item.ststus_name, item.show_path%></td>
+    <td><%=""%></td>
+    <td><%= link_to item.section_name, item.show_path%></td>
+    <td><%= link_to item.inpfld_001, item.show_path%></td>
+  </tr>
+<% end %>
+</table>

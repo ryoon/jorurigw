@@ -1,0 +1,158 @@
+<%
+text_style = 'width:30em;'
+unless params[:item].blank?
+  st_at_str = %Q(#{params[:item]['st_at(1i)']}-#{params[:item]['st_at(2i)']}-#{params[:item]['st_at(3i)']} #{params[:item]['st_at(4i)']}:#{params[:item]['st_at(5i)']})
+  params[:item][:st_at]= st_at_str
+  ed_at_str = %Q(#{params[:item]['ed_at(1i)']}-#{params[:item]['ed_at(2i)']}-#{params[:item]['ed_at(3i)']} #{params[:item]['ed_at(4i)']}:#{params[:item]['ed_at(5i)']})
+  params[:item][:ed_at]= ed_at_str
+end
+@inquire_to_err_flg = false
+if !@item.errors.blank?
+  @inquire_to_err_flg = @item.errors.on("inquire_to")
+end
+
+repeat_class_id = 0
+repeat_allday_radio_id = allday_radio_id = 1
+event_week = event_month = "0"
+event_word = ""
+@inquire_to = ""
+
+form_kind_id = 0
+if !params[:item].blank?
+  repeat_class_id = params[:item][:repeat_class_id].to_i
+  allday_radio_id = params[:item][:allday_radio_id].to_i
+  repeat_allday_radio_id = params[:item][:repeat_allday_radio_id].to_i
+  event_week = params[:item][:event_week]
+  event_month = params[:item][:event_month]
+  event_word = params[:item][:event_word]
+  form_kind_id = params[:item][:form_kind_id].to_i
+  @inquire_to = params[:item][:inquire_to]
+end
+repeat_mode = get_repeat_mode params # 通常：1、繰り返し：2
+creator_uid = Site.user.id
+creator_uname = Site.user.name
+creator_ucode = Site.user.code
+creator_gid = Site.user_group.id
+created_at = 'now()'
+
+d_load_st, d_load_ed = case params[:action]
+when 'edit', 'quote'
+  allday_radio_id = repeat_allday_radio_id = nz(@item.allday, 1).to_i
+  if params[:action] == 'quote'
+    creator_uid = Site.user.id
+    creator_uname = Site.user.name
+    creator_ucode = Site.user.code
+    creator_gid = Site.user_group.id
+    created_at = 'now()'
+    @inquire_to = ""
+  else
+    created_at   = @item.created_at
+    creator_uid  = @item.creator_uid
+    creator_uname = @item.creator_uname
+    creator_ucode = @item.creator_ucode
+    creator_gid  = @item.creator_gid
+    @inquire_to  = @item.inquire_to
+  end
+  if !@item.schedule_props.blank?
+    form_kind_id = 1
+  end
+
+  if repeat_mode == 1
+    [@item.st_at, @item.ed_at]
+  else
+    raise "呼び出しが不正です(repeat_mode=#{repeat_mode})" if @item.repeat.nil?
+    params[:item] ={}
+    repeat_class_id = @item.repeat.class_id
+    @item.repeat.attributes.reject{|k,v| /_at$/ =~ k || 'id' == k}.each{|k,v|
+      params[:item]["repeat_#{k}".to_sym] = v
+    }
+    [Gw.datetime_merge(@item.repeat.st_date_at, @item.repeat.st_time_at),
+      Gw.datetime_merge(@item.repeat.ed_date_at, @item.repeat.ed_time_at)]
+  end
+when 'new'
+  dd = Gw.date8_to_date(params[:s_date], :default=>'')
+
+  now = Time.now
+  hour = now.hour # 時間
+  if now.min > 55 && hour <= 22 # 時間繰り上がり用
+    hour = hour + 1
+  end
+  if now.min > 55
+    min = 0
+  else
+    divmod = now.min.divmod(5)
+    if divmod[1] > 0 # 分（5分刻み用）
+      min = (divmod[0] + 1) * 5
+    else
+      min = now.min
+    end
+  end
+
+  _wrk_st = !dd.blank? ? Gw.date_to_time(dd) : Time.local(now.year, now.month, now.day, hour, min, 0)
+  [_wrk_st, _wrk_st + 60*60]
+when 'create', 'update'
+  creator_uid = params[:item][:creator_uid]
+  creator_uname = params[:item][:creator_uname]
+  creator_ucode = params[:item][:creator_ucode]
+  creator_gid = params[:item][:creator_gid]
+  created_at = params[:item][:created_at]
+  form_kind_id = params[:item][:form_kind_id].to_i
+  allday_radio_id = repeat_allday_radio_id = params[:item][:allday_radio_id].to_i
+  if repeat_mode == 1
+    [Gw.to_time(params[:item][:st_at]), Gw.to_time(params[:item][:ed_at])]
+  else
+    [Gw.datetime_merge(params[:item][:repeat_st_date_at], params[:item][:repeat_st_time_at]),
+      Gw.datetime_merge(params[:item][:repeat_ed_date_at], params[:item][:repeat_ed_time_at])]
+  end
+else
+  raise "呼び出しが不正です(action=#{params[:action]})"
+end
+
+%>
+
+<%=render :partial => '/gw/public/schedules/form_participant_mobile', :locals => {:f => f}%>
+
+開始日時<span class="textRed">※</span><br />
+<%= date_picker_mobile f, 'st_at', :errors=>@item.errors, :mode=>:datetime, :value=>d_load_st, :minute_interval=>'5' %><br /><br />
+終了日時<span class="textRed">※</span><br />
+<%= date_picker_mobile f, 'ed_at', :errors=>@item.errors, :mode=>:datetime, :value=>d_load_ed, :minute_interval=>'5' %><br /><br />
+時間未定：<%= f.check_box("allday", {}, "1", nil) %><br />
+<span class="textRed">「未定」「終日」の選択は「時間未定」がチェックされている場合のみ有効です。</span><br />
+<%= radio(f, 'allday_radio_id', Gw.yaml_to_array_for_select('allday_radio_ids'), :selected=> nz(allday_radio_id, 0).to_i, :force_tag=>1) %><br />
+<br />
+<br />
+件名（用務名等）<span class="textRed">※</span><br />
+<%= f.select(:title_category_id, Gw.yaml_to_array_for_select('gw_schedules_title_categories', :include_blank=>1), :selected=>@item.title_category_id) %><br />
+<%= f.text_area  :title, :cols=>25 ,:rows=>4  %><br />
+場所<br />
+<%= f.text_area  :place, :cols=>25 ,:rows=>4  %><br />
+メモ<br />
+<%= f.text_area  :memo, :cols=>25 ,:rows=>4  %><br />
+<%=render :partial => '/gw/public/schedules/form_public_mobile', :locals => {:f => f}%>
+
+<%#携帯用パラメータ%>
+<%= hidden_field_tag "item[form_kind_id]", "0" %>
+<%= hidden_field_tag "init[repeat_mode]", "1" %>
+<%= hidden_field_tag "init[st_at][mode]", "datetime" %>
+<%= hidden_field_tag "init[ed_at][mode]", "datetime" %>
+
+<%= hidden_field_tag "item[creator_uid]", Site.user.id %>
+<%= hidden_field_tag "item[creator_uname]", Site.user.name %>
+<%= hidden_field_tag "item[creator_ucode]",  Site.user.code %>
+<%= hidden_field_tag "item[creator_gid]", Site.user_group.id %>
+<%= hidden_field_tag "item[created_at]", Time.now %>
+
+<%= hidden_field_tag "item[guide_state]","0" %>
+<%= hidden_field_tag "item[guide_ed_at]","0" %>
+
+<%= hidden_field_tag "init[ucls]", "1" %>
+<%= hidden_field_tag "init[uid]", Site.user.id %>
+<%= hidden_field_tag "init[uname]",  Site.user.display_name %>
+
+<%= hidden_field_tag "item[schedule_users][user_type_id]" ,"_belong" %>
+<%= hidden_field_tag "item[schedule_users][child_gid]" ,"child_group_18" %>
+
+<%= hidden_field_tag "item[owner_uid]" , Site.user.id %>
+<%= hidden_field_tag "item[owner_udisplayname]" ,  Site.user.display_name %>
+<%= hidden_field_tag "item[schedule_props][prop_type_id]", "other:other" %>
+

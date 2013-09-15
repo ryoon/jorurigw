@@ -1,0 +1,30 @@
+<div class="showMenu">
+<%=link_to_edit      @item if @item.editable? %>
+<%=link_to_recognize @item if @item.recognizable?(Site.user) %>
+<%=link_to_publish   @item if @item.publishable? %>
+<%=link_to_close     @item if @item.closable? %>
+<%=link_to_clone     @item if @item.readable? %>
+<%=link_to_destroy   @item if @item.deletable? %>
+</div>
+
+<%= table_to_show @item %>
+
+<%= doc_category_view @item %>
+
+<%= doc_rel_view @item %>
+
+<%#= doc_file_view @item %>
+
+<%= tag_view @item %>
+
+<%= map_view @item %>
+
+<%= inquiry_view @item %>
+
+<%= recognizer_view @item %>
+
+<%= task_view @item %>
+
+<%= creator_view @item %>
+
+<%= commitments_view @item %>

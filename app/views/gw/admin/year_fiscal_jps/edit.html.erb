@@ -1,0 +1,6 @@
+<div class="showMenu">
+<%= link_to '詳細', gw_year_fiscal_jp_path(@item.id) %>
+</div>
+<% form_for :item, :url => {:action => :update}, :html => {:method => :put, :multipart => true} do |f| %>
+<%= render :partial => 'form', :locals => {:f => f} %>
+<% end %>

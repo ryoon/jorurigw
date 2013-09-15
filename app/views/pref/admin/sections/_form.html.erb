@@ -1,0 +1,21 @@
+<table class="show">
+  
+  <tr>
+    <th>状態</th>
+    <td><%=radio f, :state, @item.states, :class => 'state' %></td>
+  </tr><tr>
+    <th>部局</th>
+    <td><%= f.select(:group_id, System::Group.find(:all).collect{|i|
+      i.level_no == 3 ? [i.parent.name + ' - ' + i.name, i.id] : [i.name, i.id]}, :include_blank => true) %></td>
+  </tr><tr>
+    <th>レイアウト</th>
+    <td><%= f.select(:layout_id, Cms::Layout.find(:all).collect{|i| [i.title, i.id]}, :include_blank => true) %></td>
+  </tr><tr>
+    <th>内部名称</th>
+    <td><%= f.text_field :name, :class => 'string name', :style => 'width: 200px;' %></td>
+  </tr><tr>
+    <th>表示名称</th>
+    <td><%= f.text_field :title, :class => 'string title', :style => 'width: 200px;' %></td>
+  </tr>
+
+</table>

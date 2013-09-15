@@ -1,0 +1,102 @@
+<%
+state_list = System::GroupUpdate.state
+group_select = System::GroupHistoryTemporary.select_dd_tree(nil)
+current_date = Date.today
+next_date = current_date >> 1
+start_date = next_date.year.to_s + '-' + next_date.month.to_s + '-1'
+%>
+<%= required_head %>
+<%# 全ステータス共通 -%>
+<table class="show">
+<tr>
+<th>適用開始日<%= required %></th>
+<td><%= f.text_field :start_at ,:value=>start_date %>
+<button type="button" id="start_at_bt" onclick="showCalendar('start_at_bt','<%= "#{f.object_name}_start_at" %>')" class="show_cal_bt"></button>
+</td>
+</tr>
+<tr>
+<th>変更区分<%= required %></th>
+<td><%= radio f ,:state ,state_list , :class=>'state'  ,:onclick => 'sel_class2()' %></td>
+</tr>
+<tr>
+<th>変更区分</th>
+<td>[名称変更：コードを引き継ぐ場合]　[新設：コードも新しくなる場合]　[廃止：なくなる場合]　[変更なし：廃止所属等の移動先用に設定]</td>
+</tr>
+</table>
+<br />
+<%# state='1' 名称変更、state='2' 新設 の場合の所属入力用UI -%>
+<div id="group_update1" style="display:none;">
+<table class="show">
+<tr>
+<th>上位所属コード<%= required %></th>
+<td><%= f.text_field :parent_code %></td>
+<td>[部局の新設・名称変更では 1 ]</td><td>[所属の新設・名称変更では、その所属のある部局コード]</td>
+</tr>
+<tr>
+<th>上位所属名<%= required %></th>
+<td><%= f.text_field :parent_name %></td>
+<td>[部局の新設・名称変更では ジョールリ市 ]</td><td>[所属の新設・名称変更では、その所属のある部局名]</td>
+</tr>
+<tr>
+<th>階層<%= required %></th>
+<td><%= f.text_field :level_no %></td>
+<td>[部局の新設・名称変更では 2 ]</td><td>[所属の新設・名称変更では、3]</td>
+</tr>
+<tr>
+<th>所属コード<%= required %></th>
+<td><%= f.text_field :code  %></td>
+<td>[部局の新設・名称変更では 部局コード]</td><td>[所属の新設・名称変更では、所属コード]</td>
+</tr>
+<tr>
+<th>所属名<%= required %></th>
+<td><%= f.text_field :name %></td>
+<td>[部局の新設・名称変更では 部局の名称 ]</td><td>[所属の新設・名称変更では、所属の名称]</td>
+</tr>
+</table>
+</div>
+<%# state='3' 廃止、state='6' 変更なし、の場合の既存所属選択用UI -%>
+<div id="group_update2" style="display:block;">
+<table class="show">
+<tr>
+<th>所属（廃止または引継先）<%= required %></th>
+<td><%= f.select :group_id ,options_for_select(group_select , @item.group_id) ,:include_blank=>true %></td>
+</tr>
+<% unless @item.id.to_i == 0  %>
+<tr>
+<th>現在の登録情報<br />（上位所属）</th>
+<td><%= @item.parent_code %><%= @item.parent_name %></td>
+</tr>
+<tr>
+<th>現在の登録情報<br />（対象所属）</th>
+<td><%= @item.code %><%= @item.name %></td>
+</tr>
+<% end %>
+</table>
+</div>
+<%= gw_js_include_full %>
+<script language = "JavaScript" type="text/javascript">
+<!--
+  var sel_class2 = function() {
+    idx =  radio_selected('item[state]')
+    switch (idx) {
+    case 0:
+      $('group_update1').setStyle("display : block;");
+      $('group_update2').setStyle("display : none;");
+      break;
+    case 1:
+      $('group_update1').setStyle("display : block;");
+      $('group_update2').setStyle("display : none;");
+      break;
+    case 2:
+      $('group_update1').setStyle("display : none;");
+      $('group_update2').setStyle("display : block;");
+      break;
+    case 3:
+      $('group_update1').setStyle("display : none;");
+      $('group_update2').setStyle("display : block;");
+      break;
+    }
+  };
+  sel_class2();
+-->
+</script>

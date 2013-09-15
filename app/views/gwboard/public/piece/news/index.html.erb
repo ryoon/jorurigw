@@ -1,0 +1,76 @@
+<%unless @title.blank?%>
+<div class="piece gadget bbs">
+<div class="pieceHeader"><h3><%=h @title.title%>新着情報
+ <%if @is_writable%>
+  <span class="btNew"><%=link_to '新規作成', '/gwbbs/docs/new?title_id=1'%></span>
+ <%end%>
+  </h3></div>
+<div class="pieceBody">
+<%
+if @items.length > 0
+  brk_key = nil
+  concat '<table class="index">'
+  idx = 1
+  @items.each do |item|
+    break if idx > @limit_portal.to_i - 1
+    unless brk_key == item.latest_updated_at.strftime('%Y-%m-%d').to_s
+      concat %Q(<tr><th colspan="5"><h4>#{item.latest_updated_at.strftime('%Y-%m-%d').to_s}</h4></th></tr>)
+    end
+    if item.importance.to_i == 1
+      importance_str = ''
+    else
+      importance_str = %Q(<span>#{item.importance}</span>)
+    end
+    if item.attachmentfile.to_i == 0
+      attachmentfile_str = ''
+    else
+      attachmentfile_str = %Q(<span>#{item.attachmentfile}</span>)
+    end
+    if item.one_line_note.to_i == 0
+      comment_str = ''
+    else
+      if item.comment.count.to_i==0
+        comment_str = %Q(<span>　</span>)
+      else
+        comment_str = %Q(<span>#{item.comment.count}</span>)
+      end
+    end
+    # 新着マーク判定
+    # 公開日から４日間
+    if item.editordivision.blank?
+      new_mark_today = Date.today.strftime('%Y-%m-%d')
+      if item.able_date.blank?
+        new_mark_str  = %Q(<span></span>)
+      else
+        new_mark_start = item.able_date.strftime('%Y-%m-%d')
+        new_mark_end   = (Date.new(item.able_date.year,item.able_date.month,item.able_date.day) + 3).strftime('%Y-%m-%d')
+        if new_mark_start <= new_mark_today and new_mark_today <= new_mark_end
+          new_mark_str  = %Q(<span class="new">new</span>)
+        else
+          new_mark_str  = %Q(<span></span>)
+        end
+      end
+    end
+    concat %Q(<tr>)
+    concat %Q(<td class="bbsImportant">#{importance_str}</td>)
+    concat %Q(<td class="title">#{link_to(hbr(item.title), item.portal_show_path + gwbbs_params_set)}#{new_mark_str}</td>)
+    concat %Q(<td class="bbsAttach">#{attachmentfile_str}</td>)
+    concat %Q(<td class="bbsBalloon">#{comment_str}</td>)
+    concat %Q(<td class="group">#{item.section_name}</td>)
+    concat %Q(</tr>)
+    brk_key = item.latest_updated_at.strftime('%Y-%m-%d').to_s
+    idx = idx + 1
+  end
+  concat '</table>'
+else
+  concat '<div class="pieceBody" style="color: #080;">表示する内容はありません。</div>'
+end
+%>
+ <% if @items.length > @limit_portal.to_i - 1 -%>
+  <div class="bbsContinue">
+  <%= link_to '続き・・・',@items[10].portal_index_path + gwbbs_params_set  %>
+  </div>
+  <%end -%>
+</div>
+</div>
+<%end%>

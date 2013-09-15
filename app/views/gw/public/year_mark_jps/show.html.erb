@@ -1,0 +1,25 @@
+<%
+cnt =  Gw::YearMarkJp.count(:all , :order=>"start_at DESC" , :conditions=>"start_at > '#{@item.start_at.strftime("%Y-%m-%d 00:00:00")}'")
+%>
+<div class="piece YearMarkJp">
+<%= render :partial => 'gw/public/year_mark_jps/header' %>
+<div class="pieceBody">
+<% if cnt == 0%>
+<div class="editingBox">
+<%#= link_to '一覧'   ,url_for(gw_year_mark_jps_path)  %>
+<span class="btEdit"><%= link_to_edit     @item.id%></span>
+<span class="btDestroy"><%=  link_to '削除', "#{Site.current_node.public_uri}#{@item.id}", :confirm => '削除をすると元に戻せません。削除しますか', :method => :delete %></span>
+</div>
+<%else%>
+  最新の年号以外は編集・削除を行うことはできません。
+<%end%>
+<%= table_to_show2 @item, { 'table_name' => 'gw_year_mark_jps' } %>
+<br />
+<!--戻るボタン-->
+<div class="btReturn">
+  <%=link_to '年号一覧へ戻る', Gw.chop_with("#{Site.current_node.public_uri}",'/') %>
+</div>
+
+<br />
+</div>
+</div>

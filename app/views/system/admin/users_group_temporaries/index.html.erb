@@ -1,0 +1,26 @@
+<%# app/views/system/admin/users_groups/index.html %>
+<%
+#path_index = "#{Site.request_path}"
+options = {
+  'table_name' => 'system_users_group_temporaries',
+  :action=>'index',
+  'link_to_edit'    => nil,
+  'link_to_destroy' => nil,
+  'link_to_show'    => 0,
+  'field_td_criteria'=>{
+    '_user_mail'     =>Proc.new{|item|  item.user_r.email  },
+    '_rid'=>Proc.new{|item|
+      %Q(<a href="/_admin/system/#{item.group_id}/users_group_temporaries/#{item.rid}">詳細</a>)
+    },
+    '_user_ldap'=>Proc.new{|item| System::UsersGroupTemporary.ldap_show(item.user_r.ldap) },
+    '_user_state'=>Proc.new{|item| System::UsersGroupTemporary.state_show(item.user_r.state) },
+  }
+}
+%>
+<div class="indexTabs">
+<%=link_to 'グループ', system_group_temporaries_path(@parent) %>
+<span>ユーザー</span>
+</div>
+<%= table_to_index2(@items,options) %>
+<br />
+<%= paginate @items %>

@@ -1,0 +1,17 @@
+<% form_tag('', :method => :get, :class => 'search', :name=>'frmSearch') do %>
+<table>
+    <tr>
+        <th>表示する質問数</th>
+        <td><%= select_tag( 'limit' , options_from_collection_for_select([[10,'10行'],[20,'20行'],[30,'30行'],[50,'50行']],:first,:last,params['limit'].to_i), :onChange => 'document.frmSearch.submit()') %></td>
+        <td colspan="2"></td>
+        <th>質問：タイトル・本文</th>
+        <td colspan="8"><%= text_field_tag "s_keyword", params[:s_keyword] %></td>
+        <td style="height: 10px;"></td>
+        <td class="submitters">
+            <%= submit_tag '検索',     :name => :search %>
+            <%= submit_tag 'リセット', :name => :reset  %>
+        </td>
+    </tr>
+</table>
+<!-- end form -->
+<% end %>

@@ -1,0 +1,19 @@
+<br>
+<table class="index">
+  <% @items.each do |item| %>
+    <tr <%= cycle '', 'class="cycle"' %>>
+      <td class="check_box">
+        <% if Gw::RssReader.checked_by_user?(item,@rssids) %>
+          <%= f.check_box item.id , :class => "check_box", :checked => true %></td>
+        <% else %>
+          <%= f.check_box item.id , :class => "check_box" %></td>
+        <% end %>
+      <td class="title"><%= item.title %></td>
+      <td class="fetched_at"><%= Gw.datetime_str(item.fetched_at) %></td>
+    </tr>
+  <% end %>
+</table>
+<br>
+<div class="preserve">
+  <%= f.submit '保存' %>
+</div>

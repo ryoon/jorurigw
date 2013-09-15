@@ -1,0 +1,38 @@
+<div class="piece portalSetting">
+<%= render :partial => 'header' %>
+<div class="pieceBody">
+
+<div class="navi">
+<span style="margin-right:3em;" class="Menu">
+  <%= link_to '個人ポータルに戻る' , "/ind_portal" %>
+</span>
+</div>
+
+<%= div_notice %>
+<div class="mainContents">メインコンテンツ</div>
+<blockquote class="mainContents">
+<% if @setting.max_contents <= @main_items.length %>
+  <div class="notice">コンテンツ数が上限に達しました。不要なコンテンツがあれば削除してください。</div>
+<% else %>
+  <div class="mainContentsAdd"><%= link_to 'メインコンテンツの追加', "#{Site.current_node.public_uri}new?position=main" %></div>
+<% end %>
+<%= render :partial => '/gw/public/ind_portal_pieces/index', :locals=>{:items=>@main_items} %>
+</blockquote>
+
+<div class="leftContents">左コンテンツ</div>
+<blockquote class="leftContents">
+<% if @setting.max_contents <= @left_items.length %>
+  <div class="notice">コンテンツ数が上限に達しました。不要なコンテンツがあれば削除してください。</div>
+<% else %>
+  <div class="leftContentsAdd"><%= link_to '左コンテンツの追加', "#{Site.current_node.public_uri}new?position=left" %></div>
+<% end %>
+<%= render :partial => '/gw/public/ind_portal_pieces/index', :locals=>{:items=>@left_items} %>
+</blockquote>
+
+<div class="bookmark">ブックマーク</div>
+<blockquote class="bookmark">
+<div class="bookmarkAdd"><%= link_to 'ブックマークの追加', "#{Site.current_node.public_uri}bookmark" %></div>
+</blockquote>
+
+</div></div>
+

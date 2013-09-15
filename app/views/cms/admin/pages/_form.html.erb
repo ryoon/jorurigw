@@ -1,0 +1,51 @@
+<script type="text/javascript" src="/_common/js/prototype.js"></script>
+<%= tool_tiny_mce %>
+
+<table class="show">
+  
+  <tr>
+    <th>状態</th>
+    <td><%=radio f, :state, @item.states, :class => 'state' %></td>
+  </tr><tr>
+    <th>レイアウト</th>
+    <td><%= f.select(:layout_id, Cms::Layout.find(:all).collect{|i| [i.title, i.id]}, :include_blank => true) %></td>
+  </tr><tr>
+    <th>内部名称</th>
+    <td><%= f.text_field :name, :class => 'string name', :style => 'width: 200px;' %></td>
+  </tr><tr>
+    <th>表示名称</th>
+    <td><%= f.text_field :title, :class => 'string title' %></td>
+  </tr><tr>
+    <th>ヘッダー</th>
+    <td><%= f.text_area :head, :class => 'string head' %></td>
+  </tr><tr>
+    <th colspan="2">本文</th></tr><tr>
+    <td colspan="2" class="mceEditor"><%= f.text_area :body, :class => 'string body mceEditor', :style => 'width:100%;' %><br />
+      <%= uri_import :item, :body %>
+    </td>
+  </tr>
+
+</table>
+
+<!--
+<script type="text/javascript">
+//<![CDATA[
+  function chageDisp(obj,changeObjId) {
+    var display = document.getElementById(changeObjId).style.display;
+    if (display == '') {
+      obj.innerHTML = '開く▼';
+    } else if (display == 'none') {
+      obj.innerHTML = '閉じる▲';
+    }
+    Element.toggle($(changeObjId));
+  }
+//]]>
+</script>
+<%= doc_file_form f, @item %>
+-->
+
+<%= inquiry_form f, @item %>
+
+<%= recognizer_form f, @item %>
+
+<%= task_form f, @item %>

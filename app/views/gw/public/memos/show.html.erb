@@ -1,0 +1,50 @@
+<%
+#{ link_to_index }
+concat render(:partial => '/gw/public/memos/header')
+header = <<-EOL
+#{render :partial => '/gw/public/memos/piece_header'}
+EOL
+options = { 'field_td_criteria' =>
+    {'ed_at' => Proc.new{|item|
+      ret = Gw.date_common(item.ed_at)
+      item.nil? || item.ed_at.nil? ? ret : (Time.now > item.ed_at && nz(item.is_finished,0) != 1 ? %Q(<font color="red">#{ret}</font>) : ret)
+    }, '_send_cls' => Proc.new{|item|
+      (item.uid == Site.user.id) ? '送信' : '受信'
+    }, '_gid' => Proc.new{|item|
+      (item.blank? || item.uid.blank?) ? '' : System::UsersGroup.get_gname(item.uid)
+    }, 'uid' => Proc.new{|item|
+      (item.blank? || item.uid.blank?) ? '' : System::User.get(item.uid).display_name
+    }, 'fr_group' => Proc.new{|item|
+      (item.blank? || item.fr_group.blank?) ? '' : "#{item.fr_group}の"
+    }, 'fr_user' => Proc.new{|item|
+      (item.blank? || item.fr_user.blank?) ? '' : "#{item.fr_user}様から"
+    }, '_memo_category_id' => Proc.new{|item|
+      cap = Gw.yaml_to_array_for_select('gw_memos_categories').rassoc(item.memo_category_id)
+      cap_s = cap[0] rescue item.memo_category_id.to_s
+      md = cap_s.match /^t:(.+?):(.+)$/
+      if !md.nil?
+        cap_s = "#{md[2]}"
+        cap_s += "(#{item.send(md[1])})" if !item.send(md[1]).nil?
+      end
+  }}, :noh_cols => :body
+}
+send_cls = nz(params[:s_send_cls], 1).to_s
+body = { :header=> <<-EOL,
+  #{memos_tabbox_struct send_cls, @qsa}
+  #{show_notice}
+EOL
+  :body => <<-EOL
+<div class="editingBox">
+#{ %Q(<div class="btEdit">#{link_to_edit(@item.id)}</div>) if @item.is_finished != 1 && @item.uid == Site.user.id }
+<div class="btQuote">#{ link_to '引用作成', "/gw/memos/#{@item.id}/quote" }</div>
+#{@item.memo_users.collect{|x|x.uid}.index(Site.user.id).nil? ? nil :
+  @item.is_finished != 1 ? %Q(<div class="btRead">#{link_to_id :finish, @item.id, '既読にする'}</div>) :
+  %Q(<div class="btUnread">#{link_to_id :finish, @item.id, '未読に戻す'}</div>)}
+<div class="btDestroy">#{ link_to_destroy @item.id }</div>
+</div>
+#{table_to_show2 @item, options}
+#{Gw::MemoMobile.memos_users_view(@item.memo_users, :caption => '送り先')}
+EOL
+}
+concat hhbff_struct(:memo, :show, :header=>header, :body=>body)
+%>

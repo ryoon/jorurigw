@@ -1,0 +1,9 @@
+<%# app/views/system/admin/roles/index.html.erb %>
+<%
+options = {
+  'link_to_edit' => 1,
+  'field_td_criteria' => System::Role.td_criteria
+}
+%>
+<%= table_to_index2 @items, options %>
+<%= paginate @items %>

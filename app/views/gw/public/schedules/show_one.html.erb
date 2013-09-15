@@ -1,0 +1,18 @@
+<div class="piece schedulePiece showOne">
+  <div class="pieceHeader">
+<%= render :partial => 'piece_header' %>
+
+  </div>
+  <div class="pieceBody">
+    <div class="pieceBodyHeader">
+<%
+
+@items.each do |item|
+%>
+  <%= render :partial => '/gw/public/schedules/show_one', :locals => {:_item => item} %>
+<%
+end
+%>
+    </div>
+  </div>
+</div>

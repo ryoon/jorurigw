@@ -1,0 +1,25 @@
+<%
+@prop_master = @genre
+
+header_str = render(:partial => '/gw/public/schedules/schedule_bt_box', :locals=>{:d=>Date.today, :mode=>'month', :genre=>@genre})
+header_str = header_str.gsub(/\r\n|\r|\n/, "")
+
+
+header = <<-EOL
+#{render :partial => '/gw/public/prop_genre_common/piece_header'}
+EOL
+content_for :form do
+  form_for :item, :url => "#{@uri_base}/#{@item.id}?cls=#{@cls}", :html => {:method => :put, :multipart => true, :id => 'itemForm'} do |f|
+    concat <<-EOL
+#{f.error_messages}
+#{render :partial => 'gw/public/prop_genre_common/form_other', :locals => {:f => f} if @genre == "other"}
+#{submit_for_update f, :js_submitter => 'my_submit()' if @genre == "other"}
+EOL
+  end
+end
+
+show_notice.blank? ? body_s = @content_for_form : body_s = show_notice + @content_for_form
+
+body = {:header => header_str, :body => body_s }
+concat hhbff_struct(:prop, :form, :header=>header, :body=>body)
+%>

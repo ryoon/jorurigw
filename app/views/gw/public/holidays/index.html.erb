@@ -1,0 +1,26 @@
+<% # app/views/gw/public/holidays/index.html.erb
+#concat render(:partial => '/gw/public/holidays/header_common_local')
+header = <<-EOL
+#{render :partial => '/gw/public/schedules/piece_header'}
+EOL
+body = {
+  #:header => render(:partial => '/gw/public/schedules/schedule_header', :locals=>{:d=>d, :mode=>'week'}),
+:body => <<-EOL
+<div class="titleLine">
+<span class="title">休日管理</span>
+</div>
+<div class="editingBox">
+<div class="btNewHolyday">
+#{link_to '休日登録',"/gw/holidays/new?categoriy=#{@category_id}"}
+</div>
+</div>
+#{div_notice}
+#{table_to_index2(@items, :link_to_edit=>1, :link_to_destroy=>1)}
+<div class="btReturn">
+#{link_to '管理者設定に戻る' , "/gw/schedules/setting"}
+</div>
+EOL
+}
+
+concat hhbff_struct(:schedulePiece, :setting, :header=>header, :body=>body)
+%>

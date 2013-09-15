@@ -1,0 +1,12 @@
+<div class="menu">
+<p>記事</p>
+<% Cms::Lib::Navi.articles.each do |item| %>
+
+<% begin %>
+<%= link_to h(item.title), eval(item.admin_path_name) %>
+<% rescue %>
+<%= h(item.title) %>
+<% end %>
+
+<% end %>
+</div>

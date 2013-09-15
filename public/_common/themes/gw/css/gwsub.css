@@ -1,0 +1,713 @@
+﻿@charset "UTF-8";
+/* =========================================================
+   _common/themes/gw/css/gwsub.css
+========================================================= */
+
+/*ミニアイコン
+---------------------------------------------------------*/
+.gwsub {
+  background-image: url("/_common/themes/gw/files/title/title_individual.gif");
+}
+.gwsub.sb11 {
+  background-image: url("/_common/themes/gw/files/title/title_tect_new.gif");
+}
+.notification {
+  background-image: url("/_common/themes/gw/files/title/title_kyousai.gif");
+}
+.checkup {
+  background-image: url("/_common/themes/gw/files/title/title_medical.gif");
+  background-repeat: no-repeat;
+  clear: both;
+  height: 1%;
+}
+#contentBody .pieceBanner  {
+  padding-bottom: 20px;
+  padding-top: 10px;
+  padding-left: 10px;
+  border-left: 1px solid #1E3B8C;
+  border-right: 1px solid #1E3B8C;
+}
+
+/* 上部メニュー
+---------------------------------------------------------*/
+.menu {
+  margin: 5px 0 0;
+  border-left: 1px solid #CCC;
+}
+.menu:after {
+  content: ".";
+  display: block;
+  visibility: hidden;
+  height: 0.1px;
+  font-size: 0.1em;
+  line-height: 0;
+  clear: both;
+}
+* html .menu             { zoom: 1; }
+*:first-child+html .menu { zoom: 1; }
+.menu a {
+  float: left;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-right: 1px solid #999;
+}
+span.gwsub_current_menu {
+  display: block;
+  margin-left: -5px;
+  margin-right: -5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  background-color: #FFF29E;
+  color: #000000;
+}
+
+/* 外大枠
+---------------------------------------------------------*/
+#content .pieceBody {
+  padding-bottom: 20px;
+}
+
+/* セレクトボックス周り
+---------------------------------------------------------*/
+#content form.search {
+  width: 96%;
+}
+#content #contentBody .gwsub .search table {
+  margin: 0;
+}
+
+/* 入力ページ
+---------------------------------------------------------*/
+#content form {
+  width: auto;
+  margin: 0 auto 20px;
+}
+
+/* 保存ボタン
+---------------------------------------------------------*/
+#content form .preserve {
+  margin: 0 auto 20px;
+  text-align: center;
+}
+#content form .preserve input {
+  width: 90px;
+}
+
+/* 入力ページ(研修申込)
+---------------------------------------------------------*/
+#contentBody .gwsub form table.bbsImage,
+#contentBody .gwsub form table.bbsFile {
+  width: 800px;
+  margin: 0 auto 10px;
+  border: 2px solid #C5D1E7;
+}
+#contentBody .gwsub form table.bbsImage th,
+#contentBody .gwsub form table.bbsFile th {
+  width: 135px;
+  background-color: #E3EFFF;
+  border: 1px solid #CCCCCC;
+  font-weight: lighter;
+  padding: 6px 7px;
+  text-align: left;
+  vertical-align: top;
+}
+#contentBody .gwsub form table.bbsImage td,
+#contentBody .gwsub form table.bbsFile td {
+  padding: 6px 7px;
+}
+
+/* table index
+---------------------------------------------------------*/
+#content table.index {
+  width: 98%;
+  margin: 0 auto 20px;
+  margin: 0 auto;
+}
+#content .pieceBody .noprint table.index {
+  width: 800px;
+}
+#content .pieceBody .frame table.index {
+  width: 100%;
+  margin: 0;
+}
+#content table.index2 {
+  margin-top: 0;
+}
+#content #contentBody .gwsub table.index table.show {
+  width: 100%;
+  margin: 0;
+}
+#content #contentBody .gwsub table.index td span.settled {
+  color: #2E49B4;
+}
+#content #contentBody .gwsub table.index td span.notSettled {
+  color: #FF0000;
+}
+.start_at, .end_at, .recognize_at {
+  width: auto;
+}
+
+/* table show
+---------------------------------------------------------*/
+#content #contentBody table.show {
+  width: 800px;
+  margin: 0 auto 10px;
+}
+
+/* 編集・削除ボタン
+---------------------------------------------------------*/
+div.showMenu {
+  width: 800px;
+  margin: 0 auto;
+  padding: 10px 0;
+}
+
+/* 詳細ページ
+---------------------------------------------------------*/
+.gwsub .pieceBody .noprint {
+  width: 800px;
+  margin: 0 auto;
+}
+
+/* 注意書き
+---------------------------------------------------------*/
+.gwsub form span.required {
+  display: block;
+  width: 800px;
+  margin: 0 auto;
+}
+.gwsub form table span.required {
+  display: inline;
+}
+.notice {
+  margin-left: 10px;
+}
+
+/* コード管理 選択データ名
+---------------------------------------------------------*/
+.titleLine,
+.scheduleTableTitle {
+  clear: both;
+  position: relative;
+  margin-top: 0;
+  margin-bottom: 15px;
+  padding-top: 10px;
+  padding-bottom: 3px;
+  border-bottom: 1px solid #B1BEE3;
+}
+.titleLine .title,
+.scheduleTableTitle {
+  margin-left: 10px;
+  font-size: 130%;
+  font-weight: bold;
+}
+.titleLine .linkSpace {
+  position: absolute;
+  right: 0;
+  bottom: 2px;
+}
+.titleLine .linkSpace span {
+  border:1px solid #CCCCCC;
+}
+.scheduleTableTitle {
+  margin-left: 0px;
+  padding-left: 10px;
+}
+.titleLine .linkSpace span {
+  display: inline-block;
+  margin-right: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+/* 担当者管理　入力ページ
+---------------------------------------------------------*/
+#content #contentBody form.sb_form {
+  width: 800px;
+}
+#content #contentBody form.sb_form .frame {
+  border: none;
+}
+#content #contentBody form.sb_form .frame table.index {
+  border: 1px solid #CCCCCC;
+}
+#content #contentBody form.sb_form .frame table.index select {
+  margin-bottom: 2px;
+}
+
+/* explanation
+---------------------------------------------------------*/
+span.explanation {
+  display: block;
+  width: 800px;
+  margin: 0 auto;
+}
+
+/* 機能ボタン周り
+---------------------------------------------------------*/
+.editingBox {
+  display: block;
+  width: 800px;
+}
+
+/* カレンダーボタン周り
+---------------------------------------------------------*/
+#content .show_cal_bt {
+  width: 91px;
+  height: 15px;
+  position: relative;
+  top: -2px;
+  margin-left: 3px;
+}
+
+/* sb01 training
+---------------------------------------------------------*/
+.titleLine .date_title{
+  margin-left: 10px;
+  font-size: 100%;
+  font-weight: bold;
+}
+.sb01 .pieceBody form table.bbsText th {
+  width: auto;
+}
+#page-gwsub-sb01-sb01TrainingPlans-new #content .sb01 .pieceBody form span.required,
+#page-gwsub-sb01-sb01TrainingPlans-new #content .sb01 .pieceBody form,
+#page-gwsub-sb01-sb01TrainingPlans-new #content .sb01 .pieceBody form table.show,
+#page-gwsub-sb01-sb01TrainingPlans-new #content .sb01 .pieceBody form table.bbsImage,
+#page-gwsub-sb01-sb01TrainingPlans-new #content .sb01 .pieceBody form table.bbsFile {
+  width: 876px;
+}
+#page-gwsub-sb01-sb01TrainingPlans-new #content .sb01 .pieceBody form table.bbsText {
+  width: 872px;
+}
+
+/* sb04_stafflist
+---------------------------------------------------------*/
+div.sb04_staff_assign_warning {
+  color: #DC143C;
+}
+td.divide_duties textarea#item_divide_duties {
+  width: 95%;
+}
+td.id textarea#item_official_title_id {
+  width: 95%;
+}
+td.remarks input#item_remarks {
+  width: 95%;
+}
+
+/* sb05
+---------------------------------------------------------*/
+.sb05 span.explanation,
+.sb05 .editingBox {
+  width: auto;
+  margin-left: 10px;
+}
+
+/* sb06_assigned_conference
+---------------------------------------------------------*/
+div.sb06_assigned_conference_form101,
+div.sb06_assigned_conference_form103,
+div.sb06_assigned_conference_form104,
+div.sb06_assigned_conference_form201,
+div.sb06_assigned_conference_form202,
+div.sb06_assigned_conference_form301,
+div.sb06_assigned_conference_form302,
+div.sb06_assigned_conference_form303,
+div.sb06_assigned_conference_form401,
+div.sb06_assigned_conference_form501,
+div.sb06_assigned_conference_form601,
+div.sb06_assigned_conference_form602
+{
+  width: 800px;
+  margin-right: auto;
+  margin-left: auto;
+  margin-bottom: 20px;
+  border: none;
+  padding: 5px;
+}
+#content .sb06_assigned_conference_form101 table.index,
+#content .sb06_assigned_conference_form103 table.index,
+#content .sb06_assigned_conference_form104 table.index,
+#content .sb06_assigned_conference_form201 table.index,
+#content .sb06_assigned_conference_form202 table.index,
+#content .sb06_assigned_conference_form301 table.index,
+#content .sb06_assigned_conference_form302 table.index,
+#content .sb06_assigned_conference_form303 table.index,
+#content .sb06_assigned_conference_form401 table.index,
+#content .sb06_assigned_conference_form501 table.index,
+#content .sb06_assigned_conference_form601 table.index,
+#content .sb06_assigned_conference_form602 table.index {
+  width: 100%;
+  margin: 0;
+  border: none;
+}
+
+div.sb06_assigned_conference_formStyleNo {
+  margin-bottom: 10px;
+  margin-right: 10px;
+  margin-top: 10px;
+  text-align: right;
+}
+div.sb06_assigned_conference_markNo {
+  margin-bottom: 10px;
+  margin-right: 10px;
+  margin-top: 10px;
+  text-align: right;
+}
+.sb06_assigned_conference_markNo_input {
+  width: 5em;
+}
+div.sb06_assigned_conference_date {
+  margin-right: 10px;
+  margin-bottom: 10px;
+  margin-top: 10px;
+  text-align: right;
+}
+div.sb06_assigned_conference_group_to {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  margin-left: 10px;
+  font-size: 120%;
+  text-align: left;
+}
+div.sb06_assigned_conference_group_from {
+  margin-top: 10px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  text-align: right;
+}
+div.sb06_assigned_conference_group_from_202 {
+  margin-top: 10px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  text-align: right;
+  text-decoration:  underline;
+}
+div.sb06_assigned_conference_title {
+  text-align: center;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  font-size: 16pt;
+  font-weight: bold;
+}
+.sb06_assigned_conference_at {
+  width: 12em;
+}
+.sb06_assigned_conference_at2 {
+  width: 8em;
+}
+#page-gwsub-sb06-06-sb06AssignedConfKinds table.index .action {
+  width: 45px;
+}
+#page-gwsub-sb06-06-sb06AssignedConfKinds table.index .conf_kind_code {
+  width: 75px;
+}
+#page-gwsub-sb06-06-sb06AssignedConfKinds table.index .conf_max_count {
+  width: 80px;
+}
+#page-gwsub-sb06-06-sb06AssignedConfKinds table.index .select_list {
+  width: 80px;
+}
+
+/* sb09 共通
+---------------------------------------------------------*/
+.sb09_data_warning{
+  color:red;
+}
+
+/* sb09_terminal_conferences 端末追加協議 table
+---------------------------------------------------------*/
+.sb09_terminal_conferences_table{
+  width: 95%;
+}
+.sb09_terminal_conferences_width_l1{
+  width: 12em;
+}
+.sb09_terminal_conferences_width_l2{
+  width: 12em;
+  text-align: center;
+}
+.sb09_terminal_conferences_width_l3{
+  width: 16em;
+}
+.sb09_terminal_conferences_width_l31{
+  width: 8em;
+}
+.sb09_terminal_conferences_width_l4{
+  width: 5em;
+}
+.sb09_terminal_conference_answers_width_l3{
+  width: 7em;
+}
+.sb09_terminal_conference_answers_width_l4{
+  width: 4em;
+}
+
+/* sb09_terminal_location_changes
+---------------------------------------------------------*/
+.sb09_terminal_location_changes_old,
+.sb09_terminal_location_changes table.index th._old_place_main,
+.sb09_terminal_location_changes table.index th._old_place_sub,
+.sb09_terminal_location_changes table.index th._old_user ,
+.sb09_terminal_location_changes table.index th.old_place_main_id,
+.sb09_terminal_location_changes table.index th.old_place_sub_id,
+.sb09_terminal_location_changes table.index th.old_user {
+  background-color: #FFC0CB;
+}
+.sb09_terminal_location_changes_new,
+.sb09_terminal_location_changes table.index th._new_place_main,
+.sb09_terminal_location_changes table.index th._new_place_sub,
+.sb09_terminal_location_changes table.index th._new_user ,
+.sb09_terminal_location_changes table.index th.new_place_main_id,
+.sb09_terminal_location_changes table.index th.new_place_sub_id,
+.sb09_terminal_location_changes table.index th._new_user {
+  background-color: #00FFFF;
+}
+.gwsub_sb09_diff_color{
+  background-color: #FFFF99;
+}
+.sb09 table.show th {
+  width: 145px;
+}
+.sb09 table.index th.title {
+  width: 145px;
+}
+#page-gwsub-sb09-01-terminalBases table.index th,
+#page-gwsub-sb09-01-terminalBases table.index td,
+#page-gwsub-sb09-01-sb09TerminalSearchDuplications table.index th,
+#page-gwsub-sb09-01-sb09TerminalSearchDuplications table.index td,
+#page-gwsub-sb09-01-sb09TerminalSearchDuplications-pcNames table.index th,
+#page-gwsub-sb09-01-sb09TerminalSearchDuplications-pcNames table.index td,
+#page-gwsub-sb09-01-sb09TerminalSearchDuplications-pcNumbers table.index th,
+#page-gwsub-sb09-01-sb09TerminalSearchDuplications-pcNumbers table.index td,
+#page-gwsub-sb09-01-sb09TerminalSearchDuplications-pcModels table.index th,
+#page-gwsub-sb09-01-sb09TerminalSearchDuplications-pcModels table.index td,
+#page-gwsub-sb09-01-sb09TerminalSearchDuplications-pcIpAddrs table.index th,
+#page-gwsub-sb09-01-sb09TerminalSearchDuplications-pcIpAddrs table.index td,
+#page-gwsub-sb09-01-sb09TerminalSearchDuplications-pcMoveAt table.index th,
+#page-gwsub-sb09-01-sb09TerminalSearchDuplications-pcMoveAt table.index td,
+#page-gwsub-sb09-01-sb09TerminalSearchDuplications-pcRentals table.index th,
+#page-gwsub-sb09-01-sb09TerminalSearchDuplications-pcRentals table.index td,
+#page-gwsub-sb09-01-sb09TerminalSearchDuplications-pcRentalsNil table.index th,
+#page-gwsub-sb09-01-sb09TerminalSearchDuplications-pcRentalsNil table.index td,
+#page-gwsub-sb09-01-sb09TerminalSearchDuplications2-pcUsers1 table.index th,
+#page-gwsub-sb09-01-sb09TerminalSearchDuplications2-pcUsers1 table.index td,
+#page-gwsub-sb09-01-sb09TerminalSearchDuplications2-pcUsers2 table.index th,
+#page-gwsub-sb09-01-sb09TerminalSearchDuplications2-pcUsers2 table.index td,
+#page-gwsub-sb09-01-sb09TerminalSearchDuplications2-pcUsers3 table.index th,
+#page-gwsub-sb09-01-sb09TerminalSearchDuplications2-pcUsers3 table.index td,
+#page-gwsub-sb09-01-sb09TerminalSearchDuplications2-pcUsersNil table.index th,
+#page-gwsub-sb09-01-sb09TerminalSearchDuplications2-pcUsersNil table.index td,
+#page-gwsub-sb09-04-sb09TerminalNetworkChanges table.index th,
+#page-gwsub-sb09-04-sb09TerminalNetworkChanges table.index td,
+#page-gwsub-sb09-04-sb09TerminalNetworkChanges-indexNew table.index th,
+#page-gwsub-sb09-04-sb09TerminalNetworkChanges-indexNew table.index td,
+#page-gwsub-sb09-04-sb09TerminalNetworkChanges-indexOld table.index th,
+#page-gwsub-sb09-04-sb09TerminalNetworkChanges-indexOld table.index td,
+#page-gwsub-sb09-03-sb09TerminalReplaceReflections table.index th,
+#page-gwsub-sb09-03-sb09TerminalReplaceReflections table.index td,
+#page-gwsub-sb09-03-sb09TerminalReplaces table.index th,
+#page-gwsub-sb09-03-sb09TerminalReplaces table.index td {
+  white-space: nowrap;
+}
+
+/* sb_form sb10_userids_form
+---------------------------------------------------------*/
+#content #contentBody .sb010 .sb10_userids_form #recognizer_list table.show table,
+#content #contentBody .sb010 .sb10_numberids_form #recognizer_list table.show table,
+#content #contentBody .sb10 .sb10_mailinglists_form #recognizer_list table.show table {
+  width: auto;
+}
+#content #contentBody table.sb10,
+#content #contentBody table.sb10 td,
+#content #contentBody table.sb10 th{
+  border: 0px;
+}
+#content #contentBody table.sb10 td.sb10_right_apply,
+#content #contentBody table.sb10 td.sb10_right_notice,
+#content #contentBody table.sb10 td.sb10_right_apply_mailinglist,
+#content #contentBody table.sb10 td.sb10_right_notice_mailinglist,
+#content #contentBody table.sb10 td.sb10_right_notice_software {
+  width: 7em;
+  vertical-align:top;
+}
+#content #contentBody table.sb10 td.sb10_right_notice_mailinglist_detail{
+  width: 10em;
+  vertical-align:top;
+}
+#content #contentBody table.sb10 td.sb10_right_apply_software,
+#content #contentBody table.sb10 td.sb10_right_apply_software_detail{
+  width: 14em;
+  vertical-align:top;
+}
+#content #contentBody table.sb10 td.detail_left{
+  width: 3em;
+}
+#content #contentBody table.sb10 td.detail_center_software{
+  width: 10em;
+}
+#content #contentBody table.sb10 td.file_name{
+  width: 15em;
+}
+#content #contentBody table.sb10 td.detail_center,
+#content #contentBody table.sb10 td.file_right,
+#content #contentBody table.sb10 td.detail_center_userid{
+  width: 12em;
+}
+#content #contentBody table.sb10 td.detail_center_mailinglist{
+  width: 20em;
+}
+#content #contentBody table.sb10 td.file_left{
+  width: 5em;
+}
+#content #contentBody .sb010 .frame {
+  border: none;
+}
+#content #contentBody .sb010 table,
+#content #contentBody .sb010 .frame #recognizer_list {
+  margin: 0 auto;
+}
+#content #contentBody .sb010 table.show div table {
+  width: auto;
+}
+
+/* sb11
+---------------------------------------------------------*/
+#content #contentBody .gwsub table.experience {
+  width: 800px;
+}
+.sb11 .experience th.date {
+  width: 65px;
+}
+
+/*hss
+------------------------------------------------------*/
+.notification .pieceBody {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+.notification .notificationBaseBenefits div {
+  width: 97%;
+}
+.notification table.index {
+  margin-top: 3px;
+  margin-bottom: 15px;
+}
+#content .notification .pieceBody h4 {
+  padding-left: 0;
+  background: none;
+}
+.notification table .money {
+  text-align: right;
+}
+.notification table th {
+  background-color: #E3EFFF;
+}
+.notification table th, 
+.notification table td {
+  padding: 6px 7px;
+  border: 1px solid #CCC;
+}
+.notification table.noticeTable1 {
+  width: 500px;
+  margin-left: 10px;
+}
+.notification table.noticeTable1 .money {
+  width: 150px;
+}
+.notification table.noticeTable2 {
+  width: 98%;
+  margin-left: 10px;
+}
+.notification table.noticeTable3 {
+  width: 98%;
+  margin-left: 10px;
+}
+.notification table.noticeTable3 caption {
+  text-align: right;
+}
+
+/* print
+---------------------------------------------------------*/
+@media print {
+  .gwsub {
+    background-image: none;
+  }
+  .pieceHeader {
+    display: none;
+  }
+  .pieceBanner {
+    display: none;
+  }
+  #content .pieceBody {
+    padding-bottom: 0;
+    border: none;
+  }
+}
+
+/*
+---------------------------------------------------------*/
+#content #contentBody .gwsub table.batchProcess {
+  width: auto;
+  margin: 0 0 0 10px;
+}
+#content #contentBody .gwsub .leftSide {
+  margin-left: 15px;
+}
+#content .hit {
+  margin-left: 15px;
+  margin-bottom: 20px;
+  margin-top: -10px;
+}
+.explain {
+  width: 800px;
+  margin: 0 auto;
+}
+#content #contentBody .frame {
+  width: auto;
+  margin-right: auto;
+  margin-left: auto;
+  margin-bottom: 10px;
+  border: 2px solid #C5D1E7;
+}
+#content form .output {
+  margin: 0 auto 20px;
+  text-align: center;
+}
+#content form .output input {
+  width: 130px;
+}
+#content form.search table select#grped_id {
+  font-size: 1.2em;
+}
+.left {
+  margin-left: 10px;
+}
+div.show .bottom {
+  margin-bottom: 10px;
+}
+div.act_charge {
+  float: left;
+  margin-bottom: 10px;
+  margin-left: 15px;
+  margin-right: 5px;
+}
+*html div.act_charge {
+  margin-left: 7px;
+}
+.act_charge a {
+  display: inline-block;
+  width: 85px;
+  height: 0;
+  padding-top: 15px;
+  border: none;
+  background-image: url("/_common/themes/gw/files/ic_act_charge.gif");
+  background-repeat: no-repeat;
+  background-color: #FFFFFF;
+  overflow: hidden;
+}
+div.attention {
+  margin-bottom: 10px;
+}
+

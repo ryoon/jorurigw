@@ -1,0 +1,7 @@
+<%# app/views/gw/public/rssreader/new.html.erb %>
+<%= render :partial => 'gw/public/rssreader/header' %>
+<% form_for :item, :url => "/gw/rssreader", :html => {:multipart => true, :id => 'itemForm'} do |f| %>
+<%= Gw.error_div(@item['errors']) %>
+<%= render :partial => 'form', :locals => {:f => f} %>
+<%= submit_for_create f %>
+<% end %>

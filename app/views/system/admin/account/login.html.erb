@@ -1,0 +1,44 @@
+<%# app/views/system/admin/account/login.html.erb %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+<meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+<meta http-equiv="content-style-type" content="text/css" />
+<meta http-equiv="content-script-type" content="text/javascript" />
+<title>JoruriGW ログイン(admin)</title>
+<link rel="shortcut icon" href="/favicon.ico" />
+<%#= stylesheet_link_tag '/_common/themes/admin/style', :media=>'screen' %>
+<%#= stylesheet_link_tag '/_common/themes/admin/login', :media=>'screen' %>
+<%= stylesheet_link_tag '/layout/login/style.css' %>
+<%= javascript_include_tag  "/_common/js/prototype.js"  %>
+<%= javascript_include_tag  "/_common/js/prettyprint.js"  %>
+<%= javascript_include_tag  "/_common/js/gw.js"  %>
+<%= javascript_include_tag  "/_common/js/effects.js"  %>
+<%= javascript_include_tag  "/_common/js/gw_schedules.js"  %>
+<%= javascript_include_tag  "/_common/js/yui/build/yahoo-dom-event/yahoo-dom-event.js"  %>
+<%= javascript_include_tag  "/_common/js/yui/build/yahoo/yahoo-min.js"  %>
+<%= javascript_include_tag  "/_common/js/yui/build/connection/connection-min.js"  %>
+<%= javascript_include_tag  "/_common/js/yui/build/treeview/treeview-min.js"  %>
+<%= javascript_include_tag  "/_common/js/yui/build/datasource/datasource-min.js"  %>
+<%= javascript_include_tag  "/_common/js/yui/build/dom/dom-min.js"  %>
+<%= javascript_include_tag  "/_common/js/yui/build/event/event-min.js"  %>
+<%= javascript_include_tag  "/_common/js/yui/build/container/container-min.js"  %>
+<%= javascript_include_tag  "/_common/js/yui/build/menu/menu-min.js"  %>
+<%= javascript_include_tag  "/javascripts/calendar_date_select/calendar_date_select.js"  %>
+<%= javascript_include_tag  "/javascripts/calendar_date_select/format_db.js"  %>
+<%= javascript_include_tag  "/javascripts/calendar_date_select/locale/ja.js"  %>
+<%= stylesheet_link_tag '/stylesheets/calendar_date_select/default.css' %>
+<%= stylesheet_link_tag '/_common/js/yui/build/fonts/fonts-min.css' %>
+<%= stylesheet_link_tag '/_common/js/popup_calendar/popup_calendar.css' %>
+<%= stylesheet_link_tag '/_common/js/yui/build/calendar/assets/calendar.css' %>
+<%= stylesheet_link_tag '/_common/js/yui/build/menu/assets/menu.css' %>
+<%= stylesheet_link_tag '/_common/js/yui/build/container/assets/skins/sam/container.css' %>
+<%= stylesheet_link_tag '/_common/js/yui/build/calendar/assets/skins/sam/calendar.css' %>
+<%= stylesheet_link_tag '/_common/js/yui/build/button/assets/skins/sam/button.css' %>
+<%= stylesheet_link_tag '/_common/js/yui/build/treeview/assets/skins/sam/treeview.css' %>
+</head>
+<body>
+<% @mode = :admin %>
+<%= render :partial => '/system/login'  %>
+</body>
+</html>

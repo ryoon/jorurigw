@@ -1,0 +1,27 @@
+<%
+params[:st] = '0' if params[:st].blank?
+s_params = "?st=#{params[:st]}"
+%>
+<div class="bbsDocList">
+<div class="pieceHeader">
+<h2>画像アップローダー</h2>
+</div><!--pieceHeader-->
+<!--カラム用タグ-->
+<div class="pieceBanner">
+<h3><%=@sub_title%>新規登録</h3>
+<div class="helpBox">
+<div><%=link_to('ポータルへ戻る &gt;&gt;', '/') %></div>
+</div>
+</div>
+<div class="pieceBody">
+<%=render :partial => 'header' %>
+<% form_for :item, :url => "#{@item.item_home_path}create#{s_params}", :html => {:multipart => true} do |f| %>
+<%= f.error_messages %>
+<%=render :partial => 'form', :locals => {:f => f} %>
+<div class="submitters"><%= submit_tag '登録する' %></div>
+<% end %>
+
+<%= %Q(<div class="notice">#{flash[:notice]}</div>) if flash[:notice] %>
+
+</div>
+</div><!--piece gwbbs-->

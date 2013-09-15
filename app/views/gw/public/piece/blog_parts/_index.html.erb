@@ -1,0 +1,20 @@
+<div class="piece blogParts">
+<div class="pieceBody">
+
+<div class="piece blogPartsSetting">
+  <%= link_to 'ブログパーツの設定', '/gw/blog_parts/edit_props' %>
+</div>
+<center>
+<% if @blog_items.length != 0 %>
+  <% @blog_items.each do |item| %>
+    <% if !item.enabled? %>
+      <div class="notice"><%=h item.title %>は無効になっています。</div>
+    <% else %>
+      <div class="blogParts"><%= item.body %></div><br>
+    <% end %>
+  <% end %>
+<% end %>
+</center>
+
+</div>
+</div>

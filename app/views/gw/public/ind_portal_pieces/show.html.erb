@@ -1,0 +1,26 @@
+<div class="piece AdminSetting">
+<%= render :partial => 'header' %>
+<div class="pieceBody">
+<%= render :partial => 'button_return' %>
+
+<table class="show">
+  <tr>
+    <th class="sortNo">並び順</th>
+    <td class="sortNo"><%=h @item.sort_no %></td>
+  </tr>
+  <tr>
+    <th class="title">コンテンツ</th>
+    <td class="title"><%=h @item.name %></td>
+  </tr>
+  <tr>
+    <th class="body">タイトル</th>
+    <td class="body"><%=h @item.title %></td>
+  </tr>
+  <tr>
+    <th class="preview">表示件数</th>
+    <td class="preview"><%= @item.get_limit_str %></td>
+  </tr>
+</table>
+
+</div>
+</div>

@@ -1,0 +1,22 @@
+<%#*<p>Find me in app/views/gw/public/edit_link_pieces/edit.html.erb</p>%>
+<%
+  @action = "edit"
+  @edit_path = "#{Site.current_node.public_uri}#{@item.id}"
+%>
+
+<div class="piece AdminSetting">
+
+<%= render :partial => 'header_str' %>
+
+<div class="pieceBody">
+  <%= render(:partial => '/gw/public/edit_link_pieces/menu', :locals=>{:d=>@st_date, :mode=>'month'}) %>
+  <div class="btReturn">
+    <%= link_to '詳細に戻る' , "#{Site.current_node.public_uri}#{@item.id}" %>
+  </div>
+  <%= div_notice %>
+  <% form_for :item, :url => @edit_path ,:action=>:update, :html => {:method => :put, :multipart => true} do |f| %>
+    <%= render :partial => 'form', :locals => {:f => f} %>
+  <% end  %>
+</div>
+
+</div>

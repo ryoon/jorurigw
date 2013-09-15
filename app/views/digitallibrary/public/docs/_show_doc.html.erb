@@ -1,0 +1,108 @@
+<div class="inner">
+<%= render(:partial => 'folder_name') unless params[:state] == 'DRAFT' if params[:kwd].blank? %>
+<div class="editingBox">
+<%if @is_editable%>
+<%if @item.category4_id == 1%>
+  <span class="btAppEdit"><%=link_to('承認あり編集', "#{@item.edit_path}&state=#{params[:state]}") %></span>
+<%else%>
+  <span class="btEdit"><%=link_to('編集する', "#{@item.edit_path}&state=#{params[:state]}") %></span>
+<%end%>
+<span class="btDestroy"><%=link_to('削除する', "#{@item.delete_path}&state=#{params[:state]}", :confirm => '削除をすると元に戻せません。削除しますか', :method => :delete) %></span>
+<%end%><!--editable-->
+<%if @is_recognize %>
+ <span class="btRecognize"><%=link_to('承認', "#{@item.recognize_update_path}#{gwbbs_params_set}" )%></span>
+<%end%>
+<%if @is_publish %>
+ <span class="btPublish"><%=link_to('公開', "#{@item.publish_update_path}#{gwbbs_params_set}" )%></span>
+<%end%>
+</div>
+<div class="dlDocform">
+<table class="docformBody">
+  <tr>
+    <th><%=hbr(@item.title)%></th>
+  </tr>
+  <tr>
+    <td><%=@item.body%></td>
+  </tr>
+</table>
+</div>
+<%if @title.categoey_view%>
+ <%if attach_use_old%>
+  <%=render(:partial => '/gwboard/public/docs/upload_index')%>
+ <%else%>
+  <%=render(:partial => '/gwboard/public/docs/library_index_wm')%>
+ <%end%>
+<%else%>
+ <%if attach_use_old%>
+  <%=render(:partial => '/gwboard/public/docs/upload_index')%>
+ <%else%>
+  <%=render(:partial => '/gwboard/public/docs/library_index')%>
+ <%end%>
+<%end%>
+<%if @title.use_recognize%>
+ <%=render(:partial => 'recognize_users') if @item.state == 'draft'%>
+ <%=render(:partial => 'recognize_users') if @item.state == 'recognize'%>
+ <%=render(:partial => 'recognize_users') if @item.state == 'recognized'%>
+<%end%>
+
+<%#ページ移動 ----------------%>
+<%if !@previous.blank? || !@next.blank?%>
+<%#ページ移動データあり ----------------%>
+<div class="docsPageMove">
+<% unless @previous.blank? %>
+ <span class="left"><%=link_to('< 前のページ', "#{@item.show_path(@previous)}")%></span>
+<% else %>
+ <span class="left">先頭ページ</span>
+<% end %>
+
+<span class="center">|</span>
+<% unless @next.blank? %>
+ <span class="right"><%=link_to("次のページ >", "#{@item.show_path(@next)}")%></span>
+<% else %>
+ <span class="right">最終ページ</span>
+<% end %>
+</div>
+<%end%>
+<%#---------------- ページ移動%>
+
+<div class="docInf">
+<table class="docCreator">
+<tr>
+<th style="text-align: left;">記事管理課 : </th>
+<td style="text-align: left;"><%=@item.section_name%></td>
+</tr>
+</table>
+
+<table class="docCreatorInf">
+<tr>
+<th>作成者 : </th>
+<td class="department"><%=@item.createrdivision %></td>
+<td class="space"></td>
+<td class="name"><%=@item.creater %></td>
+<td class="space"></td>
+<td class="time"><%=@item.createdate %></td>
+</tr>
+<tr>
+<th>編集者 : </th>
+<td class="department"><%= @item.editordivision %></td>
+<td class="space"></td>
+<td class="name"><%= @item.editor %></td>
+<td class="space"></td>
+<td class="time"><%= @item.editdate %></td>
+</tr>
+</table>
+
+<% if @is_admin -%>
+<table class="docImportance">
+<tr>
+<th>公開 : </th>
+<td><%=@item.status.name%></td>
+</tr>
+<tr>
+<th>階層 : </th>
+<td><%=@item.seq_name%></td>
+</tr>
+</table>
+<% end -%>
+</div>
+</div>

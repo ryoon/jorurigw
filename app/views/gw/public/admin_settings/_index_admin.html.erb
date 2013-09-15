@@ -1,0 +1,72 @@
+<div class="titleLine">
+ <p class="title">ポータル設定</p>
+</div>
+<ul>
+<li>
+<span class="function"><%= link_to 'メッセージ' , "/gw/admin_messages" %></span>
+<span class="explanation">ポータルに表示するメッセージを設定します。最大２行まで表示できます。</span>
+</li>
+<li>
+<span class="function"><%= link_to '記事更新情報設定' , "/gwbbs/synthesetup" %></span>
+<span class="explanation">記事更新情報の基本設定を行います。</span>
+</li>
+<li>
+<span class="function"><%= link_to 'タブ編集' , "/gw/edit_tabs?pid=0" %></span>
+<span class="explanation">リンク配置の編集やリンク先の登録を行います。</span>
+</li>
+<li>
+<span class="function"><%= link_to 'ポータルリンクピース編集' , "/gw/edit_link_pieces?pid=0" %></span>
+<span class="explanation">ポータル画面のリンクピースの編集を行います。</span>
+</li>
+</ul>
+
+<div class="titleLine">
+ <p class="title">基本設定</p>
+</div>
+<ul>
+<li>
+<span class="function"><%= link_to 'ユーザー管理' , "/system/users" %></span>
+<span class="explanation">ユーザー情報の閲覧、登録及び編集を行います。</span>
+</li>
+<li>
+<span class="function"><%= link_to '権限設定' , "/system/roles" %></span>
+<span class="explanation">各機能の管理者権限設定を行います。</span>
+</li>
+<li>
+<span class="function"><%= link_to '年度設定' , "/gw/year_fiscal_jps" %></span>
+<span class="explanation">年度の設定を行います。</span>
+</li>
+<li>
+<span class="function"><%= link_to '年号設定' , "/gw/year_mark_jps" %></span>
+<span class="explanation">年号の設定を行います。</span>
+</li>
+</ul>
+<div class="titleLine">
+ <p class="title">削除設定</p>
+</div>
+<ul>
+<li>
+<span class="function"><%= link_to 'スケジュール削除設定' , "/gw/schedule_settings/admin_deletes" %></span>
+<span class="explanation">過去スケジュールの自動削除設定を行います。</span>
+</li>
+<li>
+<span class="function"><%= link_to '連絡メモ削除設定' , "/gw/memo_settings/admin_deletes" %></span>
+<span class="explanation">連絡メモの自動削除設定を行います。</span>
+</li>
+<li>
+<span class="function"><%= link_to 'TODO削除設定' , "/gw/todo_settings/admin_deletes" %></span>
+<span class="explanation">TODOの自動削除設定を行います。</span>
+</li>
+<li>
+<span class="function"><%= link_to '掲示板削除設定' , "/gwbbs/itemdeletes" %></span>
+<span class="explanation">掲示板にある期限切れ記事の自動削除設定を行います。掲示板を選択しての削除も可能です。</span>
+</li>
+<li>
+<span class="function"><%= link_to '回覧板削除設定' , "/gwcircular/itemdeletes/0/edit" %></span>
+<span class="explanation">回覧板にある期限切れ記事の自動削除設定を行います。</span>
+</li>
+<li>
+<span class="function"><%= link_to '照会・回答システム削除設定' , "/gwmonitor/itemdeletes/0/edit" %></span>
+<span class="explanation">照会・回答システムにある期限切れ記事の自動削除設定を行います。</span>
+</li>
+</ul>

@@ -1,0 +1,14 @@
+<%= render :partial => 'header' %>
+
+<% for item in @items %>
+<div style="margin: 5px 0px 0px 0px; padding: 5px; border: 1px solid #ccc;">
+  <%= link_to h(item.name), edit_cms_tmp_file_group_path(@tmp, item) %>
+  <%= link_to_destroy item %>
+</div>
+
+<iframe src="<%= cms_tmp_files_path(@tmp, item) %>" frameborder="0"
+ style="width: 95%; height: 150px; margin: 10px 20px;"></iframe>
+
+<% end %>
+
+<%= paginate @items %>

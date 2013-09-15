@@ -1,0 +1,25 @@
+<%#*<p>Find me in app/views/gwsub/public/sb00/sb00_conference_references/menu.html.erb</p>%>
+<%
+t01 = %Q(<span>一覧</span>)
+t02 = %Q(<span>登録</span>)
+t03 = %Q(<span>CSV出力</span>)
+t04 = %Q(<span>CSV登録</span>)
+case @l2_current
+when '01'
+  t01 = %Q(<span class="current_menu">一覧</span>)
+when '02'
+  t02 = %Q(<span class="current_menu">登録</span>)
+when '03'
+  t03 = %Q(<span class="current_menu">CSV出力</span>)
+when '04'
+  t04 = %Q(<span class="current_menu">CSV登録</span>)
+else
+end
+-%>
+
+<div class="menu">
+<%= link_to t02 , url_for("#{Site.current_node.public_uri}new?g_cat=#{@g_cat}") -%>
+<%= link_to t01 , url_for(Gw.chop_with("#{Site.current_node.public_uri}",'/')) %>
+<%= link_to t03 , url_for("#{Site.current_node.public_uri}csvput") %>
+<%= link_to t04 , url_for("#{Site.current_node.public_uri}csvup") %>
+</div>

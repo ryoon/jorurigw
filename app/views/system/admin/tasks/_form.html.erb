@@ -1,0 +1,102 @@
+<%
+
+_input = Proc.new do |name|
+#  _name = f.object_name.to_s + "[_tasks][#{name}]"
+  _name = ""
+  value = item.find_task_by_name(name)
+  value = value ? value.strftime('%Y-%m-%d') : nil
+  value = params[f.object_name] ? params[f.object_name][:_tasks][name.to_s].gsub(/ .*/, '') : value
+
+  text_field_tag _name, value, :style => 'width: 100px', :onChange => "setDatetime('#{name}')", :id => "#{f.object_name.to_s}__tasks_#{name}"
+end
+
+_hidden = Proc.new do |name|
+  _name = f.object_name.to_s + "[_tasks][#{name}]"
+  value = item.find_task_by_name(name)
+  value = value ? value.strftime('%Y-%m-%d %H:%M:%S') : nil
+  value = params[f.object_name] ? params[f.object_name][:_tasks][name.to_s] : value
+  _hidden_field = "<input type='hidden' name='#{_name}' id='_tasks_#{name}' value='#{value}'>"
+end
+
+_select_hour = Proc.new do |name|
+#  _name = f.object_name.to_s + "[_tasks][hour][#{name}]"
+  _name = ""
+  _blank = '<option></option>'
+  value = item.find_task_by_name(name)
+  value = value ? value.strftime('%H').to_i : nil
+  if params[f.object_name]
+    value  = params[f.object_name][:_tasks][name.to_s] != "" ? params[f.object_name][:_tasks][name.to_s].gsub(/\d{4}[-]\d{1,2}[-]\d{1,2} |:.*/, '').to_i : value
+  else
+    value  = value
+  end
+  _value = ''
+  for i in 0 .. 23 
+    _value += options_for_select([[i.to_s, i.to_s]], value.to_s)
+  end
+  select_tag(_name, _blank + _value, :onChange => "setDatetime('#{name}')", :id => "#{f.object_name.to_s}__tasks_hour_#{name}")
+end
+
+
+_select_min = Proc.new do |name|
+#  _name = f.object_name.to_s + "[_tasks][min][#{name}]"
+  _name = ""
+  _blank = '<option></option>'
+  value = item.find_task_by_name(name)
+  value = value ? value.strftime('%M').to_i : nil
+  if params[f.object_name]
+    value  = params[f.object_name][:_tasks][name.to_s] != "" ? params[f.object_name][:_tasks][name.to_s].gsub(/\d{4}[-]\d{1,2}[-]\d{1,2} \d{2}:|:.*/, '').to_i : value
+  else
+    value  = value
+  end
+  _value = ''
+  for i in 0 .. 1
+    _value += options_for_select([[(i * 30).to_s, (i * 30).to_s]], value.to_s)
+  end
+  select_tag(_name, _blank + _value, :onChange => "setDatetime('#{name}')", :id => "#{f.object_name.to_s}__tasks_min_#{name}")
+end
+
+%><script type="text/javascript" src="/_common/js/yui/build/yahoo-dom-event/yahoo-dom-event.js"></script>
+<script type="text/javascript" src="/_common/js/yui/build/element/element-min.js"></script>
+<script type="text/javascript" src="/_common/js/yui/build/button/button-min.js"></script>
+<script type="text/javascript" src="/_common/js/yui/build/container/container-min.js"></script>
+<script type="text/javascript" src="/_common/js/yui/build/calendar/calendar-min.js"></script>
+<script type="text/javascript" src="/_common/js/popup_calendar/popup_calendar.js"></script>
+<script type="text/javascript">
+  function setDatetime(name) {
+    var dateVal = document.getElementById('<%= f.object_name.to_s %>__tasks_' + name).value;
+    var hourVal = document.getElementById('<%= f.object_name.to_s %>__tasks_hour_' + name).value;
+    var minVal = document.getElementById('<%= f.object_name.to_s %>__tasks_min_' + name).value;
+    if (dateVal.length > 0) {
+      hourVal = (hourVal == null) ? 0 : hourVal;
+      hourVal = (hourVal < 10) ? "0" + hourVal : hourVal;
+      minVal  = (minVal == null) ? 0 : minVal;
+      minVal  = (minVal < 10) ? "0" + minVal : minVal;
+      document.getElementById('_tasks_' + name).value = dateVal + " " + hourVal + ":" + minVal + ":00";
+    } else {
+      document.getElementById('_tasks_' + name).value = "";
+    }
+  }
+</script>
+
+<table class="show">
+  
+  <tr>
+    <th>公開開始日時</th>
+    <td>
+      <%= _hidden.call('publish') %>
+      <%= _input.call('publish') %>
+      <button type="button" id="publish_date_bt" onclick="showCalendar('publish_date_bt','<%= "#{f.object_name}__tasks_publish" %>', setDatetime, 'publish')" class="show_cal_bt">
+      </button>&nbsp;
+      <%= _select_hour.call('publish') %> &nbsp;時 &nbsp;<%= _select_min.call('publish') %> &nbsp;分
+    </td>
+  </tr><tr>
+    <th>公開終了日時</th>
+    <td>
+      <%= _hidden.call('close') %>
+      <%= _input.call('close') %>
+      <button type="button" id="close_date_bt" onclick="showCalendar('close_date_bt','<%= "#{f.object_name}__tasks_close" %>', setDatetime, 'close')" class="show_cal_bt"></button>&nbsp;
+      <%= _select_hour.call('close') %> &nbsp;時 &nbsp;<%= _select_min.call('close') %> &nbsp;分
+    </td>
+  </tr>
+  
+</table>

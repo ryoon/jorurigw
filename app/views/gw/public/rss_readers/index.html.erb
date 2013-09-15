@@ -1,0 +1,44 @@
+<div class="piece AdminSetting">
+<%= render :partial => 'header' %>
+<div class="pieceBody">
+<%= render :partial => 'button_new' %>
+
+<%= render :partial => 'search' %>
+<% if @items.length == 0 %>
+  <div class="notice">表示する内容はありません。</div>
+<% else %>
+  <table class="index">
+  <tr>
+    <th class="action"><%# 編集 %></th>
+    <th class="action"><%# 削除 %></th>
+    <th class="state">状態</th>
+    <th class="sort_no" colspan="2" >並び順</th>
+    <th class="title">タイトル</th>
+    <th class="uri">URI</th>
+    <th class="max">取得件数</th>
+    <th class="interval">更新間隔</th>
+    <th class="action"><%# 確認 %></th>
+  </tr>
+  <% @items.each_with_index do |item, idx| %>
+    <% uid = did = 0 %>
+    <% uid = @items[idx-1].id if idx >= 1 %>
+    <% did = @items[idx+1].id if idx <= @items.length-2 %>
+    <tr <%= cycle '', 'class="cycle"' %>>
+      <td class="action"><%= link_to '編集', "#{Site.current_node.public_uri}#{item.id}/edit" %></td>
+      <td class="action"><%= link_to '削除', "#{Site.current_node.public_uri}#{item.id}", :confirm=>"削除してよろしいですか？", :method=>:delete %></td>
+      <td class="state"><%= Gw::RssReader.show_state(item.state) %></td>
+      <td class="upSort"><%= link_to '▲', "#{Site.current_node.public_uri}#{item.id}/swap?sid=#{uid}" if uid != 0 %></td>
+      <td class="dSort"><%= link_to '▼', "#{Site.current_node.public_uri}#{item.id}/swap?sid=#{did}" if did != 0 %>
+      <td class="title"><%=h item.title %></td>
+      <td class="uri"><%= link_to_wec(item.uri, item.uri, :target=>'_blank') %></td>
+      <td class="max"><%=h item.max %></td>
+      <td class="interval"><%=h item.interval %>分</td>
+  		<td class="action"><%= link_to '確認', "#{Site.current_node.public_uri}#{item.id}" %></td>
+    </tr>
+  <% end %>
+  </table>
+  <%= paginate @items %>
+<% end %>
+
+</div>
+</div>

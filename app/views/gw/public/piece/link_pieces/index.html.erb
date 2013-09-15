@@ -1,0 +1,109 @@
+<%# app/views/gw/public/piece/link_pieces/index.html.erb %>
+<%
+
+item = Gw::EditLinkPiece.new
+cond  = "published = 'opened' and state = 'enabled' and id = #{@piece_param.to_i}"
+order = "state DESC,sort_no"
+items = item.find(:all, :order=>order, :conditions=>cond)
+
+cur = nz(@piece_param, "1")
+-%>
+<div class="piece headLine">
+<div class="pieceBody">
+<% items.each_with_index do |item, idx| -%>
+  <% if item.state == "enabled"  && item.published = "opened" -%>
+    <% item.get_child({:published => "opened"}).each_with_index do |level3_item, idx3| -%>
+    <%
+    css_class = ""
+    css_icon = ""
+
+    # CSS
+    if !level3_item.block_css_id.blank?
+      css_class_item = Gw::EditLinkPieceCss.find_by_id(level3_item.block_css_id)
+      if css_class_item.state == "enabled"
+        css_class = css_class_item.css_class
+      end
+    end
+
+    # アイコン
+    if !level3_item.block_icon_id.blank?
+      css_icon_item = Gw::EditLinkPieceCss.find_by_id(level3_item.block_icon_id)
+      if css_icon_item.state == "enabled"
+        css_icon = css_icon_item.css_class
+      end
+    end
+
+    if !level3_item.display_auth.blank? # 権限
+      begin
+        display_auth_l3 = eval(level3_item.display_auth)
+      rescue SyntaxError, ScriptError, StandardError # evalでエラーが発生したとき、falseを返す
+        display_auth_l3 = false
+      end
+    else
+      display_auth_l3 = true
+    end
+
+
+    if level3_item.class_sso == 2
+      url_l3 = "/_admin/gw/link_sso/#{level3_item.id}/redirect_pref_pieces"
+    else
+      url_l3 = level3_item.link_url
+    end
+    %>
+    <% if display_auth_l3 %>
+      <% if idx3 >= 1 -%>
+      <div class="borderbox2">
+      <% end -%>
+        <div class="<%= css_class -%>">
+          <h3 class="<%= css_icon -%>">
+            <div class="repeat">
+              <%
+                if !level3_item.link_url.blank?
+                  a_tag = "<a href=\"#{'#' if level3_item.state == "disabled"}#{url_l3}\">"
+                else
+                  a_tag = "<a>"
+                end
+              %>
+              <%= a_tag -%>
+                <%= level3_item.name -%>
+              <%= "</a>" -%>
+            </div>
+          </h3>
+        </div>
+        <% if idx3 == 0 -%>
+        <div class="borderbox2">
+        <% end -%>
+        <ul id="headline-1">
+        <% level3_item.get_child({:published => "opened"}).each_with_index do |level4_item, idx4| -%>
+          <%
+            if !level4_item.display_auth.blank?
+              begin
+                display_auth_l4 = eval(level4_item.display_auth)
+              rescue SyntaxError, ScriptError, StandardError # evalでエラーが発生したとき、falseを返す
+                display_auth_l4 = false
+              end
+            else
+              display_auth_l4 = true
+            end
+
+            if level4_item.class_sso == 2
+              url_l4 = "/_admin/gw/link_sso/#{level4_item.id}/redirect_pref_pieces"
+            else
+              url_l4 = level4_item.link_url
+            end
+          -%>
+          <% if display_auth_l4 -%>
+            <li<%= " class=\"grayout\"" if level4_item.state == "disabled" || level3_item.state == "disabled" -%>>
+              <a<%= " target=\"_blank\"" if level4_item.class_external == 2 %> href="<%= '#' if level4_item.state == "disabled" || level3_item.state == "disabled"  %><%= url_l4 %>"><%= level4_item.name -%></a>
+            </li>
+          <% end -%>
+        <% end -%>
+        </ul>
+        </div>
+      <% end -%>
+    <% end %>
+  <% end -%>
+
+<% end -%>
+</div>
+</div>

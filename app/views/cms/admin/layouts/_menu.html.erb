@@ -1,0 +1,6 @@
+<div class="menu">
+<p>レイアウト</p>
+<%#= link_to '新規登録', new_cms_layout_path  if Site.user.has_priv?(:create, :item => Cms::Lib::Navi.concept) %>
+<%= link_to '新規登録', new_cms_layout_path %>
+<%= link_to '一覧表示', cms_layouts_path %>
+</div>

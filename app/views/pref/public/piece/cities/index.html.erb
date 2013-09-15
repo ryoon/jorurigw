@@ -1,0 +1,15 @@
+<div<%= Site.current_piece.css_attributes %>>
+<div class="pieceContainer">
+<div class="pieceHeader"><h2><%=h Site.current_piece.title %></h2></div>
+<div class="pieceBody">
+
+<ul>
+  <% for city in @cities
+  %><li><%= link_to h(city.title), "../#{city.name}/" %></li>
+  <% end %>
+</ul>
+
+</div>
+<div class="pieceFooter"></div>
+</div>
+<!-- end .piece --></div>

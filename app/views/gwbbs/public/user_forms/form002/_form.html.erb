@@ -1,0 +1,60 @@
+<%
+  notes01 = []#単位数
+  notes01 = JsonParser.new.parse(@title.notes_field01) unless @title.notes_field01.blank?
+%>
+<table class="show">
+  <tr>
+    <th>研修名</th></tr><tr>
+    <td><%= f.text_field :title, :size=>"80" %></td>
+  </tr>
+</table>
+
+<table class="show">
+  <tr>
+    <th>研修開始日<%= required('') %></th>
+    <td>
+      <%
+        [:inpfld_001].each do |x|
+          concat %Q[#{f.text_field x, :style => 'width:10em;'}]
+          concat %Q[<button type="button" id="#{x}_bt" onclick="showCalendar('#{x}_bt','#{f.object_name}_#{x}')" class="show_cal_bt"></button>]
+        end
+      %>
+    </td>
+  </tr>
+  <tr>
+    <th>単位数</th>
+        <td><%= f.select :inpfld_004, notes01, :include_blank=>'－'%></td>
+  </tr>
+  <tr>
+    <th>申込締切日</th>
+    <td>
+      <%
+        [:inpfld_002].each do |x|
+          concat %Q[#{f.text_field x, :style => 'width:10em;'}]
+          concat %Q[<button type="button" id="#{x}_bt" onclick="showCalendar('#{x}_bt','#{f.object_name}_#{x}')" class="show_cal_bt"></button>]
+        end
+      %>
+    </td>
+  </tr>
+</table>
+
+<table class="show">
+  <tr>
+    <th>本文</th></tr><tr>
+    <td class="mceEditor"><%= f.text_area :body, :class => 'mceEditor', :style => 'width:100%' %></td>
+  </tr>
+</table>
+
+<%if attach_use_old%>
+  <%=gwboard_image_form(f, @item, 'item_body')%>
+  <%=gwboard_attach_form(f, @item)%>
+<%else%>
+  <%=gwboard_attachments_form(f, @item)%>
+<%end%>
+
+<table class="show">
+  <tr>
+    <th>摘要</th></tr><tr>
+    <td ><%= f.text_area :inpfld_003, :cols=>"80", :rows=>"5"%></td>
+  </tr>
+</table>

@@ -1,0 +1,20 @@
+<div class="contentPrefDocs">
+
+<%#= render :partial => 'search' %>
+
+<%if params[:search] %>
+<div class="hit">検索結果<span class="count"><%= "#{@items.total_entries}" %></span>件</div>
+<% end %>
+
+<div class="docs">
+  <ul>
+    <% for doc in @items %>
+    <li><%=link_to h(doc.title), doc.public_uri %>
+      （<%= doc.published_at.strftime('%-m月%-d日') %>・<%= doc.creator.group.name if doc.creator.group %>）</li>
+    <% end %>
+  </ul>
+</div>
+
+<%= paginate @items %>
+
+</div>

@@ -1,0 +1,23 @@
+<%
+
+header = <<-EOL
+#{show_notice}
+#{render :partial => '/gw/public/schedules/piece_header'}
+EOL
+content_for :form do
+  form_for :item, :url => "/gw/schedules/#{@item.id}#{"?sh=sh" if !params[:sh].blank?}", :html => {:method => :put, :multipart => true, :id => 'itemForm'} do |f|
+    concat <<-EOL
+#{f.error_messages}
+#{render(:partial => 'form', :locals => {:f => f})}
+#{submit_for_update(f, :caption => "確定する" ,:js_submitter => 'my_submit()', :class=>:mockblock)}
+EOL
+  end
+end
+body = {
+  :body => <<-EOL
+#{@content_for_form}
+EOL
+}
+concat hhbff_struct(:schedulePiece, :form, :header=>header, :body=>body)
+
+%>

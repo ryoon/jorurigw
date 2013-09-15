@@ -1,0 +1,25 @@
+<table class="index">
+  
+  <tr>
+    <th style="width: 60px; text-align: center;">Open</th>
+    <th style="width: 60px; text-align: center;">Show</th>
+    <th style="width: 60px; text-align: right;">Id</th>
+    <th style="width: ;">Title</th>
+    <th style="width: 60px; text-align: right;">Sort no</th>
+    <th style="width: 60px; text-align: center;">Status</th>
+  </tr>
+  
+  <% for item in @items %>
+  <tr <%= cycle '', 'class="cycle"' %>>
+    <td style="text-align: center;"><%= link_to_list item %></td>
+    <td style="text-align: center;"><%= link_to_show item %></td>
+    <td style="text-align: right;"><%=h item.id %></td>
+    <td><%=h item.display_title %></td>
+    <td style="text-align: right;"><%=h item.sort_no %></td>
+    <td style="text-align: center;"><%=h item.status.name %></td>
+  </tr>
+  <% end %>
+
+</table>
+
+<%= paginate @items %>

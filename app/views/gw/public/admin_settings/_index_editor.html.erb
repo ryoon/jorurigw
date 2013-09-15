@@ -1,0 +1,50 @@
+<%
+
+portal_editor = @role_tabs || @role_rss || @role_blogparts  || @role_ind_portals
+base_editor   = @role_users
+%>
+<% if portal_editor == true -%>
+<div class="titleLine">
+ <p class="title">ポータル設定</p>
+</div>
+<ul>
+  <% if @role_tabs == true -%>
+  <li>
+  <span class="function"><%= link_to 'タブ編集' , "/gw/edit_tabs?pid=0" %></span>
+  <span class="explanation">タブ内のリンク配置編集およびリンク先登録を行います。</span>
+  </li>
+  <% end -%>
+  <% if @role_rss == true -%>
+  <li>
+  <span class="function"><%= link_to 'RSSリーダー設定' , "/gw/rss_readers" %></span>
+  <span class="explanation">RSSリーダーの設定を行います。</span>
+  </li>
+  <% end -%>
+  <% if @role_blogparts == true -%>
+  <li>
+  <span class="function"><%= link_to 'ブログパーツ設定' , "/gw/blog_parts" %></span>
+  <span class="explanation">ブログパーツの設定を行います。</span>
+  </li>
+  <% end -%>
+  <% if @role_ind_portals == true -%>
+  <li>
+  <span class="function"><%= link_to '個人ポータル設定' , "/gw/ind_portal_settings" %></span>
+  <span class="explanation">個人ポータルの設定を行います。</span>
+  </li>
+  <% end -%>
+</ul>
+<% end -%>
+
+<% if base_editor == true -%>
+<div class="titleLine">
+ <p class="title">基本設定</p>
+</div>
+<ul>
+  <% if @role_users == true -%>
+  <li>
+  <span class="function"><%= link_to 'ユーザー管理' , "/system/users" %></span>
+  <span class="explanation">ユーザー情報の閲覧、登録及び編集を行います。</span>
+  </li>
+  <% end -%>
+</ul>
+<% end -%>

@@ -1,0 +1,2 @@
+<% hx = Gw::Model::Rssreader.get_feeds(params['piece_param']) %>
+<%= render :partial => 'gw/public/rssreader/index', :locals => {:hx=>hx} %>

@@ -1,0 +1,49 @@
+
+portal index
+
+<%
+  require 'json_parser'
+  nx = "__nx__"
+  out_html = "<table border='0' width='1000'>#{nx}</table>"
+%>
+
+<!-- draw_client_recursive begins -->
+<%= draw_client_recursive(@items) %>
+<!-- draw_client_recursive ends -->
+
+<%# @items.each do |item|
+  concat '<br/>'
+  a = item.options
+  b = JsonParser.new.parse(a)
+  default_width = 100
+  case item.arrange
+  when 'top'
+    b['height'] = nz(b['height'], default_width)
+    b['width'] = nz(b['width'], '100%')
+    out_html.sub!(/#{nx}/, "<tr><td>#{draw_client(b)}</td></tr><tr><td>#{draw_client(nx)}</td></tr>")
+  when 'bottom'
+    b['height'] = nz(b['height'], default_width)
+    b['width'] = nz(b['width'], '100%')
+    out_html.sub!(/#{nx}/, "<tr><td>#{draw_client(nx)}</td></tr><tr><td>#{draw_client(b)}</td></tr>")
+  when 'right'
+    b['height'] = nz(b['height'], '100%')
+    b['width'] = nz(b['width'], default_width)
+    out_html.sub!(/#{nx}/, "<tr><td>#{nx}</td></tr>") if item.idx == 1
+    out_html.sub!(/#{nx}/, "#{draw_client(nx)}</td><td>#{draw_client(b)}")
+  when 'left'
+    b['height'] = nz(b['height'], '100%')
+    b['width'] = nz(b['width'], default_width)
+    out_html.sub!(/#{nx}/, "<tr><td>#{nx}</td></tr>") if item.idx == 1
+    out_html.sub!(/#{nx}/, "#{draw_client(b)}</td><td>#{draw_client(nx)}")
+  when 'last'
+    b['height'] = nz(b['height'], '100%')
+    b['width'] = nz(b['width'], '100%')
+    out_html.sub!(/#{nx}/, "<tr><td>#{nx}</td></tr>") if item.idx == 1
+    #out_html.sub!(/#{nx}/, "#{draw_client(b)}")
+    #out_html.sub!(/<td>#{nx}<\/td>/, "<td width=\"100%\" height=\"100%\">#{nx}</td>")
+    out_html.sub!(/<td>#{nx}<\/td>/, "<td width=\"100%\" height=\"100%\">#{draw_client(b)}</td>")
+  end
+
+end
+concat out_html
+%>

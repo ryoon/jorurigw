@@ -1,0 +1,11 @@
+<% 
+@items.each_with_index do |item,idx|
+  if @setting.max_contents <= idx
+    concat "<div class='notice'>#{item.title}を表示できませんでした。<br>コンテンツ数が上限に達しました。不要なコンテンツがあれば削除してください。<br></div>"
+  elsif item.piece =~ /gw-blog-parts/
+    concat render :partial => 'gw/public/piece/blog_parts/index'
+  elsif item.piece =~ /gw-ind-link-pieces/
+    concat render :partial => 'gw/public/piece/ind_link_pieces/index'
+  end
+end
+%>

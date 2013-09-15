@@ -1,0 +1,54 @@
+<%# app/views/system/public/roles/show.html.erb %>
+<%
+if @role_id == '0'
+  role_param =""
+else
+  role_param ="?role_id=#{@role_id}"
+end
+t01 = '編集'
+edit_path       = "#{Site.current_node.public_uri}#{@item.id}/edit#{role_param}"
+t02 = '削除'
+delete_path     = "#{Site.current_node.public_uri}#{@item.id}#{role_param}"
+%>
+<div class="piece AdminMessage">
+
+<%= render :partial => 'header' %>
+<div class="pieceBody">
+<div class="editingBox">
+ <span class="btEdit"><%= link_to t01 , url_for(edit_path) if @item.editable? %></span>
+ <span class="btDestroy"><%= link_to t02 , url_for(delete_path),:confirm=>"削除して、よろしいですか？",:method=>:delete if @item.deletable?%></span>
+
+</div>
+
+<table class="show">
+  <tr>
+    <th>機能名</th>
+    <td><%=h ass{@item.role_name.display_name} %></td>
+  </tr>
+  <tr>
+    <th>対象権限</th>
+    <td><%=h ass{@item.priv_user.display_name} %></td>
+  </tr>
+  <tr>
+    <th>優先順位</th>
+    <td><%=h @item.idx %></td>
+  </tr>
+  <tr>
+    <th>種別</th>
+    <td><%=h ass{@item.class_id_label} %></td>
+  </tr>
+  <tr>
+    <th>ユーザ/グループ</th>
+    <td><%=h @item.uid_label %></td>
+  </tr>
+  <tr>
+    <th>許可</th>
+    <td><%=h ass{@item.priv_label}%></td>
+  </tr>
+</table>
+<!--戻るボタン-->
+<div class="btReturn">
+  <%=link_to '戻る', Gw.chop_with("#{Site.current_node.public_uri}",'/') %>
+</div>
+</div>
+</div>

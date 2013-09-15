@@ -1,0 +1,65 @@
+<%= javascript_include_tag "/_common/js/prototype" %>
+
+<script type="text/javascript">
+
+function CmsToolFeed(feed, output) {
+  this.feed   = feed;
+  this.output = output;
+  
+  var _this = this;
+  CmsToolFeed.addEvent(window, 'load', function(){ _this.read() });
+  
+  this.read = function() {
+    if (this.feed.substr(0, 1) != '/') {
+      this.feed = '/_tool/feeds/read?feed=' + feed;
+    }
+    
+    new Ajax.Request(this.feed, {method: 'get', onSuccess: function(request) {
+      var buf = '';
+      var xml = request.responseXML;
+      
+      var title = xml.getElementsByTagName('title')[0].firstChild.nodeValue;
+      var link  = xml.getElementsByTagName('link')[0].firstChild.nodeValue;
+      //var desc  = xml.getElementsByTagName('description')[0].firstChild.nodeValue;
+      
+      for (var i = 0; i < 10 && i < xml.getElementsByTagName('item').length; i++) {
+        var item = xml.getElementsByTagName('item')[i]
+        var iTitle = item.getElementsByTagName('title')[0].childNodes[0].nodeValue;
+        var iLink  = item.getElementsByTagName('link')[0].childNodes[0].nodeValue;
+        //var i_desc  = item.getElementsByTagName('descriptiona')[0].childNodes[0].nodeValue;
+        buf += '<li><a href="' + iLink + '">' + iTitle + '</a></li>'
+      };
+      
+      if (buf != '') {
+        buf = '<ul>' + buf + '</ul>';
+      }
+      buf = '<p><a href="' + link + '">' + title + '</a></p>' + buf;
+      
+      document.getElementById(_this.output).innerHTML = buf;
+    }});
+  }
+}
+
+function CmsToolFeed_addEvent(element, listener, func){
+  try {
+    element.addEventListener(listener, func, false);
+  } 
+  catch (e) {
+    element.attachEvent('on' + listener, func);
+  }
+}
+CmsToolFeed.addEvent = CmsToolFeed_addEvent;
+
+</script>
+
+<script type="text/javascript">var feed = new CmsToolFeed('<%= @uri %>', '<%= Site.current_piece.css_id %>-feed');</script>
+
+<div<%= Site.current_piece.css_attributes %>>
+<div class="pieceContainer">
+<div class="pieceHeader"><h2><%=h Site.current_piece.title %></h2></div>
+<div class="pieceBody">
+  <div id="<%= Site.current_piece.css_id %>-feed"></div>
+</div>
+<div class="pieceFooter"></div>
+</div>
+<!-- end .piece --></div>

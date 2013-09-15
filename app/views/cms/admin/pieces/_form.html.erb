@@ -1,0 +1,33 @@
+<table class="show">
+  
+  <tr>
+    <th>状態</th>
+    <td><%=radio f, :state, @item.states, :class => 'state' %></td>
+  </tr><tr>
+    <th>コンテンツ</th>
+    <td><%= f.select(:content_id, Cms::Content.find(:all).collect{|i| [i.title, i.id]}, :include_blank => true) %></td>
+  </tr><tr>
+    <th>コントローラ名</th>
+    <td><%= f.text_field :controller, :class => 'string controller', :style => 'width: 200px;' %></td>
+  </tr><tr>
+    <th>概略</th>
+    <td><%= f.text_field :outline, :class => 'string outline' %></td>
+  </tr><tr>
+    <th>内部名称</th>
+    <td><%= f.text_field :name, :class => 'string name', :style => 'width: 200px;' %></td>
+  </tr><tr>
+    <th>表示名称</th>
+    <td><%= f.text_field :title, :class => 'string title' %></td>
+  </tr><tr>
+    <th>ヘッダー</th>
+    <td><%= f.text_area :head, :class => 'string head' %></td>
+  </tr><tr>
+    <th>本文</th>
+    <td><%= f.text_area :body, :class => 'string body' %></td>
+  </tr>
+
+</table>
+
+<%#= recognizer_form f, @item %>
+
+<%#= task_form f, @item %>

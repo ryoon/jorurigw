@@ -1,0 +1,39 @@
+<div class="bbsDocList circular">
+<div class="pieceHeader">
+<h2 class="pieceTitle">テンプレート作成</h2>
+<div class="btsHeaderLeft"><span class="btNew"><%=link_to('新規作成', "#{@system_path}/new") if @is_sysadm%></span></div>
+<%if @is_sysadm%>
+<%end%>
+</div>
+
+<div class="pieceBody">
+<%= render :partial => 'header' %>
+<div class="editingBox">
+<span class="docLink"><%= link_to '&lt;&lt; 設問登録', @title.form_field_path %></span>
+</div>
+
+<table class="index">
+<tr>
+<th style="width: 60px; text-align: center;"></th>
+<th style="width: 60px; text-align: center;"></th>
+<th style="width: 220px;">タイトル</th>
+<th>概要説明</th>
+<th style="width: 120px;">最終更新日</th>
+</tr>
+<%for item in @items %>
+<tr <%= cycle '', 'class="cycle"' %>>
+<td style="text-align: left;"><%=link_to('適用する', item.apply_template_path(@title.id),:confirm => "既に設定されている設問がある場合は削除されます。このテンプレートを利用しますか？") %></td>
+<td style="text-align: left;"><%=link_to('プレビュー', item.preview_new_path, :target => "_blank") %></td>
+<td style="text-align: left;"><%=item.manage_title %></td>
+<td style="text-align: left;"><%=item.title %></td>
+<td style="text-align: left;"><%=item.updated_at.strftime('%Y-%m-%d %H:%M')%></td>
+</tr>
+<%end %>
+</table>
+<%= paginate @items %>
+
+<div class="btReturn"><%=link_to('設問登録へ戻る', @title.form_field_path) %></div>
+
+</div>
+
+</div>

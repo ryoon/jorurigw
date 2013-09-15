@@ -1,0 +1,27 @@
+<%
+
+title_str = "スケジュール設定"
+
+header = <<-EOL
+#{render :partial => '/gw/public/schedules/piece_header'}
+EOL
+
+
+body = { :header => <<-EOL,
+#{show_notice}
+<div class="titleLine">
+<span class="title">#{title_str}</span>
+</div><!--titleLine-->
+EOL
+:body => <<-EOL }
+<ul>
+<!--
+<li>
+<span class="function"><a href="/gw/schedule_settings/admin_deletes">削除設定</a></span>
+<span class="explanation">削除対象期間を設定します。　毎日午前３時に削除を実行します。</span>
+</li>
+--?
+</ul>
+EOL
+concat hhbff_struct(:schedulePiece, :setting, :header=>header, :body=>body)
+%>

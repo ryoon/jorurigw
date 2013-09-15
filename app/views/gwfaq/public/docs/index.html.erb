@@ -1,0 +1,12 @@
+
+<%= render :partial => 'header' %>
+
+<%=gwfaq_form_indices%>
+
+<%=render :partial => 'limit_change'%>
+
+<%=paginate @items %>
+
+<div class="btReturn">
+　　<a href="/gwfaq/">FAQ一覧へ戻る</a>
+</div>

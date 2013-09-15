@@ -1,0 +1,16 @@
+<table class="index">
+ <th style="width: 60px; text-align: left;">状態</th>
+ <th style="width: 120px; text-align: left;">分類</th>
+ <th style="width: 60px; text-align: left;">区分</th>
+ <th style="width: 150px; text-align: left;">通知日</th>
+ <th style="text-align: left;">文書名</th>
+<% for item in @items%>
+<tr>
+ <td><%=link_to(item.ststus_name, item.show_path)%></td>
+ <td><%=link_to(gwbd_category_name(@d_categories,item.category1_id), item.show_path)%></td>
+ <td><%=link_to(item.inpfld_002, item.show_path)%></td>
+ <td><%=link_to(item.inpfld_006, item.show_path)%></td>
+ <td><%=link_to(item.title, item.show_path)%></td>
+</tr>
+<%end%>
+</table>

@@ -1,0 +1,43 @@
+<div class="piece linkSetting">
+<%= render :partial => 'header_str' %>
+<div class="pieceBody">
+<%= render :partial => 'header_new_botton' %>
+<%= render :partial => 'header_navi' %>
+<div class="editingBox">
+  <span class="btEdit">
+  <%= link_to '編集', "#{Site.current_node.public_uri}#{@item.id}/edit?pid=#{@parent.id}" %>
+  </span>
+  <span class="btDestroy">
+  <%= link_to_destroy @item.id, nil, :qs=>"pid=#{@parent.id}" %>
+  </span>
+</div>
+<%= div_notice %>
+
+<table class="show">
+  <tr><th>公開</th><td><%= Gw::EditLinkPiece.published_show(@item.published) %></td></tr>
+  <tr><th>状態</th><td><%=h Gw::EditLinkPiece.state_show(@item.state) %></td></tr>
+  <tr><th>表示名</th><td><%=h @item.name %></td></tr>
+  <tr><th>並び順</th><td><%=h @item.sort_no %></td></tr>
+  <% if @item.level_no == 1 %>
+  <tr><th>タブキー</th><td><%=h @item.tab_keys %></td></tr>
+  <% end %>
+</table>
+<% if @parent.level_no >= 2 %>
+<table class="show">
+  <tr><th>リンク先URL</th>
+  <% if @item.class_external == 2 %>
+    <td><%= link_to_wec(@item.link_url, @item.get_link_url, :target=>'_blank') %></td>
+  <% else %>
+    <td><%= link_to(@item.link_url, @item.get_link_url) %></td>
+  <% end %>
+  </tr>
+  <tr><th>接続先区分</th><td><%=h Gw::EditLinkPiece.external_show(@item.class_external) %></td></tr>
+  <tr><th>SSO利用</th><td><%=h Gw::EditLinkPiece.sso_show(@item.class_sso) %></td></tr>
+  <tr><th>アカウント項目名</th><td><%=h @item.field_account %></td></tr>
+  <tr><th>パスワード項目名</th><td><%=h @item.field_pass %></td></tr>
+  <tr><th>備考</th><td><%=h @item.remark %></td></tr>
+</table>
+<% end %>
+
+</div>
+</div>

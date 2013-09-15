@@ -1,0 +1,22 @@
+<div class="inner">
+<%= render :partial => 'header' %>
+<table class="docFolder">
+<tr>
+<th style="width: 40px; text-align: center;">索引</th>
+<th >見出し</th>
+<th style="width: 30px; text-align: center;">　</th>
+<th style="width: 30px; text-align: center;">　</th>
+<th style="width: 60px; text-align: center;">　</th>
+</tr>
+<% for item in @items %>
+ <tr <%= cycle '', 'class="cycle"' %>>
+ <td style="text-align: left;"><%= item.seq_name %></td>
+ <td><%=h item.title %></td>
+ <td style="text-align: center;"><%=  link_to_list_gwboard_category item %></td>
+ <td style="text-align: center;"><%= link_to '詳細', item.show_folder_path %></td>
+ <td style="text-align: center;"><%= item.status.name %></td>
+ </tr>
+<% end %>
+</table>
+<%= paginate @items %>
+</div>

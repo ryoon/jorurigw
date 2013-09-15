@@ -1,0 +1,167 @@
+<%
+
+
+_map  = item.find_map_by_name('1')
+
+map_lat  = _map && _map.map_lat  != '' ? _map.map_lat : 34.074598
+map_lng  = _map && _map.map_lng  != '' ? _map.map_lng : 134.551411
+map_zoom = _map && _map.map_zoom != '' ? _map.map_zoom : 15
+
+_input = Proc.new do |name, col, options|
+  _name = f.object_name.to_s + "[_maps][#{name}][#{col}]"
+  value = _map ? _map.send(col) : ''
+  value = params[f.object_name] ? params[f.object_name][:_maps][name][col] : value
+  text_field_tag _name, value, options
+end
+
+%><script type="text/javascript">
+//<![CDATA[
+function chageMapDisp(obj) {
+  var display = document.getElementById('map_form').style.display;
+  if (display == 'block') {
+    obj.innerHTML = '開く▼';
+    document.getElementById('map_form').style.display = 'none';
+  } else if (display == 'none') {
+    obj.innerHTML = '閉じる▲';
+    document.getElementById('map_form').style.display = 'block';
+  }
+}
+//]]>
+</script>
+
+<table class="show">
+  
+  <tr>
+    <th>地図</th>
+    <td><a id="map_disp" href="#" onclick="chageMapDisp(this); return false;">開く▼</a></td>
+  </tr>
+</table>
+
+<table id="map_form" class="show" style="display: none;">
+    
+  <tr>
+    <th style="width: 360px;">表示範囲</th>
+    <td rowspan="20" style="vertical-align: top;">
+      <script type="text/javascript" src="/_common/modules/pref/js/map.js"></script>
+      <script type="text/javascript">PrefMap.init('<%= Util::Config.load('map', 'admin_key') %>');</script>
+      <script type="text/javascript">
+      //<![CDATA[
+      var map = new PrefMap('map', <%=h map_lat %>, <%=h map_lng %>, <%=h map_zoom %>);
+      map.centerDisplay = 'centerDisp';
+      map.zoomDisplay   = 'zoomDisp';
+      map.clickDisplay  = 'clickDisp';
+      map.mapWidth       = 600;
+      map.mapHeight      = 300;
+      
+      <% if _map %>
+      <% if _map.is_point(1) %>map.addMarker(<%= _map.get_point_params(1) %> , 'point1');<% end %>
+      <% if _map.is_point(2) %>map.addMarker(<%= _map.get_point_params(2) %> , 'point2');<% end %>
+      <% if _map.is_point(3) %>map.addMarker(<%= _map.get_point_params(3) %> , 'point3');<% end %>
+      <% if _map.is_point(4) %>map.addMarker(<%= _map.get_point_params(4) %> , 'point4');<% end %>
+      <% if _map.is_point(5) %>map.addMarker(<%= _map.get_point_params(5) %> , 'point5');<% end %>
+      <% end %>
+      
+      function mySyncro(from, to) {
+        document.getElementById('item__maps_1_' + to + '_lat').value = document.getElementById(from + 'Lat').value;
+        document.getElementById('item__maps_1_' + to + '_lng').value = document.getElementById(from + 'Lng').value;
+        return false;
+      }
+      function mySyncroZoom(from, to) {
+        document.getElementById('item__maps_1_' + to).value = document.getElementById(from).value;
+        return false;
+      }
+      function myAddMarker(from, to) {
+        map.removeMarker(to);
+        map.addMarker(document.getElementById(from + 'Lat').value, document.getElementById(from + 'Lng').value, document.getElementById('item__maps_1_' + to +  '_name').value, to);
+        map.viewMarker(to);
+        
+        document.getElementById('item__maps_1_' + to + '_lat').value = document.getElementById(from + 'Lat').value;
+        document.getElementById('item__maps_1_' + to + '_lng').value = document.getElementById(from + 'Lng').value;
+        return false;
+      }
+      
+      //]]>
+      </script>
+      
+      <div id="map" style="width: 600px;height:300px"></div>
+      
+      <table style="margin-top: 10px;">
+      <tr>
+        <td>マップ中央の座標</td>
+        <td>
+          <input id="centerDispLat" name="centerDispLat" type="text" value="" style="width: 150px" /> .
+           <input id="centerDispLng" name="centerDispLng" type="text" value="" style="width: 150px" /></td>
+          <td>縮尺</td>
+          <td><input id="zoomDisp" name="zoomDisp" type="text" value="" style="width: 30px" /></td>
+      </tr>
+      <tr>
+        <td>クリックした座標</td>
+        <td>
+          <input id="clickDispLat" name="clickDispLat" type="text" value="" style="width: 150px" /> .
+          <input id="clickDispLng" name="clickDispLng" type="text" value="" style="width: 150px" /></td>
+      </tr>
+      </table>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      名称<br />
+      <%= _input.call '1', 'title', :style => 'width:310px;' %><br />
+      <br style="line-height: 2px;" />
+      位置<br />
+      <%= _input.call '1', 'map_lat', :style => 'width:130px;' %> . <%= _input.call '1', 'map_lng', :style => 'width:130px;' %>
+      <a href="" onclick="return mySyncro('centerDisp', 'map');">≪取得</a><br />
+      <br style="line-height: 2px;" />
+      縮尺<br />
+<%= _input.call '1', 'map_zoom', :style => 'width:100px;' %>
+      <a href="" onclick="return mySyncroZoom('zoomDisp', 'map_zoom');">≪取得</a><br />
+    </td>
+  <tr>
+    <th>マーカー</th>
+  </tr>
+  <tr>
+    <td>
+      名称<br />
+           <%= _input.call '1', 'point1_name', :style => 'width:310px;' %><br />
+           <br style="line-height: 2px;" />
+      位置<br />
+           <%= _input.call '1', 'point1_lat', :style => 'width:130px;' %> . 
+           <%= _input.call '1', 'point1_lng', :style => 'width:130px;' %>
+           <a href="" onclick="return myAddMarker('clickDisp', 'point1');">≪取得</a><br />
+  </td></tr><tr><td>
+      名称<br />
+           <%= _input.call '1', 'point2_name', :style => 'width:310px;' %><br />
+           <br style="line-height: 2px;" />
+      位置<br />
+           <%= _input.call '1', 'point2_lat', :style => 'width:130px;' %> . 
+           <%= _input.call '1', 'point2_lng', :style => 'width:130px;' %>
+           <a href="" onclick="return myAddMarker('clickDisp', 'point2');">≪取得</a><br />
+  </td></tr><tr><td>
+      名称<br />
+           <%= _input.call '1', 'point3_name', :style => 'width:310px;' %><br />
+           <br style="line-height: 2px;" />
+      位置<br />
+           <%= _input.call '1', 'point3_lat', :style => 'width:130px;' %> . 
+           <%= _input.call '1', 'point3_lng', :style => 'width:130px;' %>
+           <a href="" onclick="return myAddMarker('clickDisp', 'point3');">≪取得</a><br />
+  </td></tr><tr><td>
+      名称<br />
+           <%= _input.call '1', 'point4_name', :style => 'width:310px;' %><br />
+           <br style="line-height: 2px;" />
+      位置<br />
+           <%= _input.call '1', 'point4_lat', :style => 'width:130px;' %> . 
+           <%= _input.call '1', 'point4_lng', :style => 'width:130px;' %>
+           <a href="" onclick="return myAddMarker('clickDisp', 'point4');">≪取得</a><br />
+  </td></tr><tr><td>
+      名称<br />
+           <%= _input.call '1', 'point5_name', :style => 'width:310px;' %><br />
+           <br style="line-height: 2px;" />
+      位置<br />
+           <%= _input.call '1', 'point5_lat', :style => 'width:130px;' %> . 
+           <%= _input.call '1', 'point5_lng', :style => 'width:130px;' %>
+           <a href="" onclick="return myAddMarker('clickDisp', 'point5');">≪取得</a><br />
+    </td>
+  </tr>
+
+</table>
+

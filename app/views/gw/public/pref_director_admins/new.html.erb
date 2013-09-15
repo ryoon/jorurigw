@@ -1,0 +1,18 @@
+<%
+  @action = "create"
+  @create_path = "#{Site.current_node.public_uri}"
+%>
+
+<div class="piece AdminSetting">
+
+<%= render :partial => 'header_str' %>
+
+<div class="pieceBody">
+  <%= render :partial => 'header_new_botton' %>
+  <%= div_notice %>
+  <% form_for :item, :url => @create_path ,:action=>:create ,:method=>:post , :html => {:id => "itemForm", :multipart => true} do |f| %>
+    <%= render :partial => 'form', :locals => {:f => f} %>
+  <% end  %>
+</div>
+
+</div>

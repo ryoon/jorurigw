@@ -1,0 +1,51 @@
+<table class="show">
+  <tr>
+    <th>記事管理課<br />（所属フォルダ）<%= required('※') %></th>
+    <td>
+      <%= f.select(:section_code, Gwboard::Group.level3_all.collect{|i|
+      [i.name, i.code]}, :include_blank => '記事の管理課を選択してください') %>
+    </td>
+  </tr>
+</table>
+<table class="show">
+  <tr>
+    <th>分類フォルダ<%= required('※') %></th>
+    <td>
+      <%= required('分類フォルダが登録されていません') if @category_levels == []%>
+      <%= f.select(:category1_id, @category_levels, :include_blank => '分類を選択してください')  unless @category_levels == []%>
+    </td>
+  </tr>
+</table>
+<table class="show">
+  <tr>
+    <th>タイトル<%= required('※') %></th></tr><tr>
+    <td><%= f.text_area :title, :cols=>"82", :rows=>"2" %></td>
+  </tr>
+</table>
+
+<table class="show">
+  <tr>
+    <th>説明</th></tr><tr>
+    <td class="mceEditor"><%= f.text_area :body, :class => 'mceEditor', :style => 'width:100%' %></td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+//<![CDATA[
+  function chageDisp(obj,changeObjId) {
+    var display = document.getElementById(changeObjId).style.display;
+    if (display == '') {
+      obj.innerHTML = '開く▼';
+    } else if (display == 'none') {
+      obj.innerHTML = '閉じる▲';
+    }
+    Element.toggle($(changeObjId));
+  }
+//]]>
+</script>
+<%if attach_use_old%>
+  <%=gwboard_image_form(f, @item, 'item_body')%>
+  <%=gwboard_attach_form(f, @item)%>
+<%else%>
+  <%=gwboard_attachments_form(f, @item)%>
+<%end%>

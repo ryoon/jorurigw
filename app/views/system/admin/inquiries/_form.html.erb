@@ -1,0 +1,68 @@
+<%
+
+#collection = Site.user_group.users.collect
+group      = System::Group.new
+group.and('level_no', '3')
+collection = group.find(:all).collect
+
+_select = Proc.new do |name|
+  _name  = f.object_name.to_s + "[_inquiry][#{name.to_s}]"
+  _blank = '<option></option>'
+  value  = params[f.object_name] ? params[f.object_name][:_inquiry][name] : ''
+  eval("value = item.inquiry.#{name}") if value == "" && item.inquiry
+  value  = Site.user_group.id if value == ""
+  select_tag _name, _blank + options_from_collection_for_select(collection, :id, :name, value)
+end
+
+_input = Proc.new do |name, width|
+  _name = f.object_name.to_s + "[_inquiry][#{name}]"
+  value = params[f.object_name] ? params[f.object_name][:_inquiry][name] : ''
+  eval("value = item.inquiry.#{name}") if value == "" && item.inquiry
+  case name
+  when 'email'
+    value = Site.user_group.email;
+  end if value == ''
+  text_field_tag _name, value, :style => "width: #{width}px"
+end
+
+_input_state = Proc.new do
+  name = 'state'
+  _name = f.object_name.to_s + "[_inquiry][#{name}]"
+  value = params[f.object_name] ? params[f.object_name][:_inquiry][name] : ''
+  eval("value = item.inquiry.#{name}") if value == "" && item.inquiry
+  value = 'visible' if value.to_s == ''
+
+  h = ''
+  item.inquiry_states.each do |k, v|
+    label = '<label for="' + f.object_name.to_s + '__inquiry_state_' + k.to_s + '">' + v + '</label>'
+    c = (value == k.to_s)
+    h += radio_button_tag(_name, k.to_s, c) + label + '&nbsp;' + "\n"
+  end
+  h
+end
+
+%><table class="show">
+  
+  <tr>
+    <th>連絡先</th>
+    <td>
+      <%= _input_state.call %>
+      <hr />
+      <tt>課  　 　 　 　：</tt><%= _select.call('group_id') %>
+      <br /><br style="line-height: 0.5;" />
+      <tt>室・担当  　 　：</tt><%= _input.call('charge', 400) %>
+      <br /><br style="line-height: 0.5;" />
+      <tt>電話番号 　 　：</tt><%= _input.call('tel', 140) %>
+      <br /><br style="line-height: 0.5;" />
+      <tt>ファクシミリ　：</tt><%= _input.call('fax', 140) %>
+      <br /><br style="line-height: 0.5;" />
+      <tt>メールアドレス：</tt><%= _input.call('email', 400) %>
+    </td>
+  </tr>
+
+</table>
+
+<%#= observe_field(f.object_name.to_s + '__inquiry_group_id',
+    :update => f.object_name.to_s + '__inquiry_user_id',
+    :on => 'change',
+    :url => system_users_groups_path(0)) %>

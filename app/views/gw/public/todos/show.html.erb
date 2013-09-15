@@ -1,0 +1,25 @@
+<%# app/views/gw/public/todos/show.html.erb %>
+<%
+concat render(:partial => '/gw/public/todos/header')
+header = <<-EOL
+#{render :partial => '/gw/public/todos/piece_header'}
+EOL
+body = { :body => <<-"EOL"
+#{show_notice}
+<div class="editingBox">
+<div class="btEdit">#{ link_to_edit(@item.id) if @item.is_finished != 1 }</div>
+<div class="btQuote">#{ link_to '引用作成', "/gw/todos/#{@item.id}/quote" }</div>
+#{@item.is_finished != 1 ? %Q(<div class="btFinish">#{link_to_id :finish, @item.id, '完了する'}</div>) :
+  %Q(<div class="btUnfinish">#{link_to_id :finish, @item.id, '未完了に戻す'}</div>)}
+<div class="btDestroy">#{ link_to_destroy @item.id }</div>
+</div>
+#{table_to_show2 @item, 'field_td_criteria' => {'ed_at' => Proc.new{|item|
+  ret = Gw.date_common(item.ed_at)
+  ed_at = ( item.ed_at.nil? ? '' : item.ed_at.strftime("%Y-%m-%d"))
+  item.nil? || item.ed_at.nil? ? ed_at : (Time.now > item.ed_at && nz(item.is_finished,0) != 1 ? %Q(<font color="red">#{ed_at}</font>) : ed_at)
+}}}
+<div class="btReturn">#{link_to_index 'ToDo一覧へ戻る'}</div>
+EOL
+}
+concat hhbff_struct(:todo, :show, :header=>header, :body=>body)
+%>

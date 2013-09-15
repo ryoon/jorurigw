@@ -1,0 +1,129 @@
+<%# app/views/gw/public/memos/index.html.erb %>
+<%
+if params[:s_finished]=='2'
+  finished_str  = "選択未読"
+  confirm_str   = "未読"
+else
+  finished_str  = "選択既読"
+  confirm_str   = "既読"
+end
+path_index = Site.request_path
+send_cls = nz(params[:s_send_cls], 1).to_s
+
+# 一覧表示対象があれば、選択可能とする
+if @items.size > 0
+select_menu = <<-EOL
+<form id="listForm" method="post" enctype="multipart/form-data" action="/gw/memos/list">
+#{hidden_field_tag('authenticity_token', form_authenticity_token)}
+#{hidden_field_tag('s_send_cls' , nz(params[:s_send_cls],'1'))}
+#{hidden_field_tag('s_index_cls', nz(params[:s_index_cls],'1'))}
+#{hidden_field_tag('s_finished' , nz(params[:s_finished],'1'))}
+<table  class="batchProcess">
+<tbody>
+<tr>
+<td>
+<!--   <div class="submitters"> -->
+  #{submit_tag(" #{finished_str} " , :id=>'finished_submit' , :name=>'finished_submit' , :confirm=>"#{confirm_str}にしますか？")}
+<!--   </div> -->
+</td>
+<td>
+<!--  <div class="submitters"> -->
+  #{submit_tag(" 選択削除 " , :id=>'delete_submit' , :name=>'delete_submit' , :confirm=>"削除しますか？")}
+<!--  </div> -->
+</td>
+<td>
+#{link_to('全選択', "javascript:List_Form.checkAll('listForm', 'ids', 1);")  + "<br />" + link_to('全解除', "javascript:List_Form.checkAll('listForm', 'ids', 0);")}
+</td></tr></tbody></table>
+EOL
+else
+#select_menu = %Q(<div class="notice">一覧表示対象・選択対象はありません。</div>)
+end
+%>
+
+<div class="piece memo index">
+<div class="pieceHeader">
+<%= render :partial => '/gw/public/memos/piece_header' %>
+</div>
+<div class="pieceBody">
+<div class="pieceBodyHeader">
+<%= render(:partial => 'search') %>
+<%= memos_tabbox_struct send_cls, @qsa %>
+<%= show_notice %>
+<%= select_menu %>
+<table class='index'>
+<tr>
+<th></th>
+<th></th>
+<th><%= sort_link '相手', @sort_keys, path_index, '_send_cls', @qs %></th>
+<th><%= sort_link '未/既', @sort_keys, path_index, '_is_finished', @qs %></th>
+<th><%= sort_link '所属/担当/社名', @sort_keys, path_index, 'fr_group', @qs %></th>
+<th><%= sort_link '担当者', @sort_keys, path_index, 'fr_user', @qs %></th>
+<th><%= sort_link '伝言', @sort_keys, path_index, 'title', @qs %></th>
+<th><%= sort_link '時刻', @sort_keys, path_index, 'ed_at', @qs %></th>
+</tr>
+<% if @s_index_cls=='2' -%>
+  <%  @items.each do |item| -%>
+  <tr <%= cycle '','class="cycle"' -%> >
+  <td><%= check_box_tag "ids[]", "#{item.id}" -%></td>
+  <td><%= link_to_show item.id -%></td>
+  <td><%= item._send_cls(@s_send_cls) -%></td>
+  <td class="<%= item.is_finished.blank? ? 'unRead' : 'read' %>" ><%= item._is_finished -%></td>
+  <td><%= item.fr_group -%></td>
+  <td><%= item.fr_user -%></td>
+  <td><%= item.title -%></td>
+  <td><%= Gw.date_common(item.ed_at) -%></td>
+  </tr>
+  <% end -%>
+<% else -%>
+  <%  @items.each do |item| -%>
+  <tr <%= cycle '','class="cycle"' -%> >
+  <td rowspan="2"><%= check_box_tag "ids[]", "#{item.id}" -%></td>
+  <td rowspan="2"><%= link_to_show item.id -%></td>
+  <td><%= item._send_cls(@s_send_cls) -%></td>
+  <td class="<%= item.is_finished.blank? ? 'unRead' : 'read' %>" ><%= item._is_finished -%></td>
+  <td><%= item.fr_group -%></td>
+  <td><%= item.fr_user -%></td>
+  <td><%= item.title -%></td>
+  <td><%= Gw.date_common(item.ed_at) -%></td>
+  </tr>
+  <tr>
+  <td colspan="6"><%= item.memo_text -%></td>
+  </tr>
+  <% end -%>
+<% end -%>
+</table>
+<%= %Q(<div class="notice">表示対象がありません</div>) if @items.blank? or @items.size==0 %>
+<%= select_menu %>
+<%= paginate @items %>
+</div>
+<div class="pieceBodyBody"></div>
+</div>
+</div>
+<script type="text/javascript">
+//<![CDATA[
+
+/**
+ * List Utility.
+ */
+function List_Form() {
+}
+
+/**
+ * Methods.
+ */
+List_Form.checkAll   = _List_Form_checkAll;
+
+/**
+ * Checks the checkbox.
+ */
+function _List_Form_checkAll(formId, itemId, value) {
+	form = document.getElementById(formId);
+	for (var i = 0; i < form.elements.length; i++) {
+		pattern = new RegExp('^' + itemId + '\\[.*\\]');
+		if(form.elements[i].name.match(pattern)) {
+			form.elements[i].checked = value;
+		}
+	}
+}
+//]]>
+</script>

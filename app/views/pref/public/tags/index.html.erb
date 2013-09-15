@@ -1,0 +1,29 @@
+<div class="contentPrefDocs">
+
+<%= render :partial => 'search' %>
+
+<%if params[:search] %>
+<div class="hit">検索結果<span class="count"><%= "#{@items.total_entries}" %></span>件</div>
+<% end %>
+
+<table class="list">
+  
+  <tr>
+    <th>タイトル</th>
+    <th style="width: 100px; text-align: center;">公開日</th>
+  </tr>
+  
+  <% for item in @items %>
+  <tr>
+    <td class="title">
+      <%=link_to h(item.title), item.public_uri %></td>
+    <td style="text-align: center;">
+      <%=h item.published_at.strftime('%-m月%-d日') %></td>
+  </tr>
+  <% end %>
+  
+</table>
+
+<%= paginate @items %>
+
+</div>

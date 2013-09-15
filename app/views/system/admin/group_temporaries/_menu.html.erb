@@ -1,0 +1,9 @@
+<%# app/views/system/admin/group_temporaries/_menu.html %>
+<%#= render :partial => 'system/admin/header2' %>
+<%= render :partial => 'system/admin/group_changes/menu' %>
+<div class="navi">
+<% tree = @parent.parent_tree; tree.each_with_index do |c, k|
+%><%=link_to '('+c.code+')'+c.name, url_for(:action => :index, :parent => c )
+%> <% if tree.size != k + 1 %>&gt;<% end %>
+<% end %>
+</div>

@@ -1,0 +1,17 @@
+<div class="contentPrefRecentDocs">
+
+<% unless Site.mobile %>
+<div class="feed">
+  <%=link_to 'RSS', Site.current_node.public_uri + 'index.rss', :class => 'feedRss' %>
+  <%=link_to 'Atom', Site.current_node.public_uri + 'index.atom', :class => 'feedAtom' %>
+</div>
+<% end %>
+
+<ul>
+  <% for doc in @docs %>
+  <li><%=link_to h(doc.title), doc.public_uri %>
+    （<%= doc.published_at.strftime('%-m月%-d日') %>・<%= doc.creator.group.name if doc.creator.group %>）</li>
+  <% end %>
+</ul>
+
+</div>

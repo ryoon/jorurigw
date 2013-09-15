@@ -1,0 +1,63 @@
+<%
+reserved_state = Gw.yaml_to_array_for_select("t1f0_kyoka_fuka")
+type_ids = Gw.yaml_to_array_for_select("gw_prop_other_type_ids")
+parent_groups = Gw::PropOther.get_parent_groups
+@prop_master = @genre
+
+@hedder2lnk = 2
+@hedder3lnk = 2
+@sp_mode = :prop
+params[:s_genre] = @genre
+
+%>
+<div class="piece prop index">
+  <div class="pieceHeader">
+  <%= render :partial => '/gw/public/prop_genre_common/piece_header' -%>
+  </div>
+  <div class="pieceBody">
+  <div class="pieceBodyHeader">
+    <%= render(:partial => '/gw/public/schedules/schedule_bt_box', :locals=>{:d=>Date.today, :mode=>'month'}) %>
+  <div class="titleLine">
+    <span class="title">主管課マスタ</span>
+    <span class="linkSpace">
+    </span><!--linkSpace-->
+  </div>
+  </div>
+  <div class="pieceBodyBody">
+    <%  render(:partial => 'search') -%>
+    <%= @content_for_search -%>
+    <% if @items.blank? -%>
+      <%= Gw.div_notice('表示する項目はありません。') -%>
+    <% else -%>
+    <%= div_notice -%>
+    <table class="index">
+      <tr>
+        <th></th>
+        <th>予約</th>
+        <th>種別</th>
+        <th>名称</th>
+        <th>施設管理所属</th>
+        <th>予約可能所属</th>
+        <th>照会可能所属</th>
+      </tr>
+      <% @items.each do | item| -%>
+      <%
+        type = type_ids.rassoc(item.type_id)
+      -%>
+      <tr<%= cycle '', ' class="cycle"' -%>>
+        <td><%= link_to('詳細', "/gw/prop_#{@genre}s/#{item.id}?cls=#{@cls}") -%></td>
+        <td><%= reserved_state[item.reserved_state][0] -%></td>
+        <td><%= type[0] -%></td>
+        <td><%= item.name -%></td>
+        <td><%= Gw.join [item.admin(:show, parent_groups)], '<br />' -%></td>
+        <td><%= Gw.join [item.editor(:show, parent_groups)], '<br />' -%></td>
+        <td><%= Gw.join [item.reader(:show, parent_groups)], '<br />' -%></td>
+      </tr>
+      <% end %>
+    </table>
+    <% end -%>
+  </div>
+  <%=  nz(paginate(@page)) %>
+
+  </div>
+</div>

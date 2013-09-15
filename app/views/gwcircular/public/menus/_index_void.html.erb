@@ -1,0 +1,20 @@
+<table class="index">
+<tr class="headIndex">
+<th style="width:60px;">状態</th>
+<th class="docTitle">回覧件名</th>
+<th class="update">回覧状況</th>
+<th style="width:120px;">回覧期限日時</th>
+<th style="width:120px;">最終更新日時</th>
+<th style="width:100px;">CSVファイル出力</th>
+</tr>
+<%for item in @items%>
+ <tr <%= cycle 'class="article"', 'class="article cycle"' %>>
+ <td style="width:60px;"><%=item.status_name%></td>
+ <td class="docTitle"><%=link_to(item.title, "#{item.show_path}?cond=void")%></td>
+ <td class="update"><%=item.commission_info%></td>
+ <td class="update"><%=item.expiry_date.strftime('%Y-%m-%d %H:%M').to_s %></td>
+ <td class="update"><%=item.latest_updated_at.strftime('%Y-%m-%d %H:%M').to_s %></td>
+ <td align="center"><%=link_to('出力', "#{item.csv_export_path}?cond=void")%></td>
+ </tr>
+<%end%>
+</table>

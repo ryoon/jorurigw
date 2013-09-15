@@ -1,0 +1,45 @@
+<%
+
+header = <<-EOL
+#{render :partial => 'piece_header'}
+EOL
+
+@key = 'reminder'
+
+content_for :item do
+  form_for :item, :url => "/gw/todo_settings/edit_#{@key}", :html => {:method=>:put, :multipart => true} do |f|
+    concat '<table class="show">'
+    concat "<tr><th>完了</th><td>"
+    concat select_by_list(f, :finish_todos_display, Gw.yaml_to_array_for_select('gw_todos_display_term', :for_select_by_list=>1),
+        {}, @item[:finish_todos_display].to_i)
+    concat "</td></tr>"
+    concat "<tr><th>未完</th><td>"
+    concat select_by_list(f, :unfinish_todos_display_start, Gw.yaml_to_array_for_select('gw_todos_display_start_term', :for_select_by_list=>1),
+        {}, @item[:unfinish_todos_display_start].to_i)
+	concat "&nbsp;&nbsp;"
+    concat select_by_list(f, :unfinish_todos_display_end, Gw.yaml_to_array_for_select('gw_todos_display_end_term', :for_select_by_list=>1),
+        {}, @item[:unfinish_todos_display_end].to_i)
+    concat "</td></tr>"
+    concat '</table>'
+    concat submit_for_update(f, :id=>"item_submit_#{@key}", :caption => '保存')
+  end
+end
+
+#titles = Gw::NameValue.get_cache('yaml', nil, 'gw_settings')
+
+body = {  :header => <<-EOL,
+#{show_notice}
+<div class="titleLine">
+<span class="title">リマインダー表示設定</span>
+</div>
+EOL
+  :body => <<-EOL
+<a name="#{@key}"></a>
+#{@content_for_item}
+EOL
+}
+
+concat hhbff_struct(:todo, :setting, :header=>header, :body=>body)
+
+
+%>

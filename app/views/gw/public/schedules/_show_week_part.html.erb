@@ -1,0 +1,88 @@
+<%
+@total_out_count = nz(@total_out_count,0)
+dv = nz(dv, d)
+
+tr_header = '<tr class="scheduleTableHead dayHead">'
+tr_header += %Q(<th class="scheduleUser" nowrap="nowrap"><span class="nobr">#{@title}</span></th>) if @hide_user_col.nil?
+
+@format ||= schedule_settings["#{mode}_view_dayhead_format"]
+d1 = d
+d2 = d+6
+@holidays = Gw::Holiday.find_by_range_cache(d1,d2)
+uid = nz(params[:uid], Site.user.id)
+link_params = Gw.a_to_qs(["gid=#{params[:gid]}", "uid=#{uid}", "cgid=#{params[:cgid]}"])
+7.times { |i|
+  class_str = %Q(scheduleData #{Gw.weekday_s(d+i, :mode=>:eh, :no_weekday=>1, :holidays=>@holidays)})
+  class_str += ' rangeOut' unless (d+i).year == dv.year && (d+i).month == dv.month
+  class_str += ' today' if (d+i) == Date.today
+  class_str += ' selectDay' if (d+i) == nz(params[:s_date], Date.today.to_s).to_date
+  tr_header += <<-EOL
+#{%Q(<th class="#{class_str}"><span class="nobr">)}
+#{link_to(date_format(@format, d+i),
+  @sp_mode == :schedule ? %Q(/gw/schedules/#{(d+i).strftime('%Y%m%d')}#{link_params}) :
+    "/gw/schedule_props/#{(d+i).strftime('%Y%m%d')}?s_genre=#{@genre}&cls=#{@cls}#{params[:prop_id].nil? ? '' :
+    "&amp;prop_id=#{params[:prop_id]}"}#{params[:type_id].nil? ? '' :
+    "&amp;type_id=#{params[:type_id]}"}#{params[:s_other_admin_gid].nil? ? '' : "&amp;s_other_admin_gid=#{params[:s_other_admin_gid]}"}")}
+</span></th>
+EOL
+}
+
+tr_header += '</tr>'
+
+@header_each ||= @schedule_settings[:header_each] rescue 5
+header_each = nz(@header_each, 5).to_i
+
+captions_hash = Gw::NameValue.get_cache('yaml', nil, 'gw_schedules_settings_system_default')
+
+if @sp_mode == :schedule
+
+	todo = false
+    todo = true if params[:gid].blank? && params[:cgid].blank?
+
+	users = @users ? @users :  Gw::Model::Schedule.get_users(params)
+	lns = 0
+	users.each_with_index{|user, ln|
+
+          hash = { :dv => dv, :hide_user_col => @hide_user_col, :count => @total_out_count,
+	    :request => request, :sp_mode => @sp_mode, :mode => mode, :user => user, :lns=>lns,
+            :holidays=>@holidays, :captions_hash => captions_hash, :schedule_settings => @schedule_settings,
+            :todo => todo, :is_gw_admin => @is_gw_admin}
+
+          out, count = Gw::Model::Schedule.create_user_prop_view(d, user.id, params,hash)
+	  concat tr_header if header_each == 0 && ln == 0 || header_each != 0 && ln % header_each == 0
+	  concat out
+	  @total_out_count += count
+	  lns += 1
+	}
+
+else
+	props  =  Gw::Model::Schedule.get_props(params, @is_gw_admin, {:s_other_admin_gid=>@s_other_admin_gid})
+        lns = 0
+	props.each_with_index{|prop, ln|
+
+          is_prop_edit = Gw::ScheduleProp.is_prop_edit?(prop.id, @genre, {:prop => prop, :is_gw_admin => @is_gw_admin}) # 権限があるかどうか確認
+
+          hash = {:dv => dv, :hide_user_col => @hide_user_col, :count => @total_out_count,
+	    :request => request, :sp_mode => @sp_mode, :mode => mode, :lns=>lns,
+            :holidays=>@holidays, :captions_hash => captions_hash, :schedule_settings => @schedule_settings,
+            :delete_state => prop.delete_state, :reserved_state => prop.reserved_state,
+            :type_id => prop.type_id, :prop => prop, :is_prop_edit => is_prop_edit,
+            :is_gw_admin => @is_gw_admin, :s_genre=>params[:s_genre], :s_other_admin_gid=>@s_other_admin_gid}
+
+          if params[:s_genre] == 'other'
+            out, count = Gw::Model::Schedule.create_user_prop_view(d, prop.id, params, hash)
+          else
+            out, count = Gw::Model::Schedule.create_user_prop_view_cache(d, prop.id, params, hash)
+          end
+
+          concat tr_header if header_each == 0 && ln == 0 || header_each != 0 && ln % header_each == 0
+	  concat out
+	  @total_out_count += count
+	  lns += 1
+	}
+end
+
+
+concat tr_header if header_each > 0 && lns > 1
+
+%>

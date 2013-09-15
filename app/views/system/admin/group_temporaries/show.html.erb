@@ -1,0 +1,22 @@
+<%# app/views/system/admin/group_temporaries/show.html %>
+<%
+options={}
+options['field_td_criteria'] = {
+  'code' => Proc.new{|item|
+    if item.level_no > 2
+      item.code.to_i == 0 ? item.code : sprintf("%06d",item.code.to_i)
+    else
+      item.code
+    end
+  #},
+  #'version_id' => Proc.new{|item|
+    #Gw.date_str(item.g_ver.start_at)
+  }
+}
+%>
+<%#*<div class="showMenu">%>
+<%#=link_to_edit      @item if @item.editable? %>
+<%#=link_to_destroy   @item if @item.deletable? %>
+<%#*</div>%>
+
+<%= table_to_show2 @item,options %>

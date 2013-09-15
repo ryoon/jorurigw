@@ -1,0 +1,10 @@
+<div class="showMenu">
+<%#= link_to '一覧'   ,url_for(gw_year_fiscal_jps_path)  %>
+<%= link_to_edit     @item.id  %>
+<%= link_to_destroy  @item.id  %>
+</div>
+<br />
+<%= table_to_show2 @item, { 'table_name' => 'gw_year_fiscal_jps' } %>
+<br />
+<%#= render :partial => 'gwsub/public/sb09/sb09_common_info_show' %>
+<br />

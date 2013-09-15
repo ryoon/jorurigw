@@ -1,0 +1,18 @@
+<%# path_index = "#{Site.request_path}" %>
+  <%# @path_index  = "#{Site.current_node.public_uri}" %>
+  <%# @path_edit   = "#{Site.current_node.public_uri}#{@item.id}/edit" %>
+  <%# @path_delete = "#{Site.current_node.public_uri}#{@item.id}" %>
+  <% @path_index  = system_group_versions_path %>
+  <% @path_edit   = edit_system_group_version_path %>
+  <% @path_delete = system_group_version_path %>
+<div>
+  <%= link_to '一覧', @path_index %>&nbsp;&nbsp;|&nbsp;&nbsp;
+  <%= link_to '編集', @path_edit  %>&nbsp;&nbsp;|&nbsp;&nbsp;
+  <%= link_to '削除', @path_delete ,:action=>:destroy,:method=>:delete %>
+</div>
+<br/>
+<!-- table_helper.rb -->
+<%= table_to_show2 @item, { 'table_name' => 'system_group_versions' } %>
+<!-- system/creators_helper.rb -->
+<%#= creator_view @item %>
+

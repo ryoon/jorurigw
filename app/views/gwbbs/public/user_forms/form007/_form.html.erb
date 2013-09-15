@@ -1,0 +1,47 @@
+<%
+  notes01 = []#区分
+  notes01 = JsonParser.new.parse(@title.notes_field01) unless @title.notes_field01.blank?
+%>
+<table class="show">
+ <tr>
+  <th>国通知日<%= required('※') %></th>
+  <td>
+  <%
+    [:inpfld_006d].each do |x|
+      concat %Q[#{f.text_field x, :style => 'width:10em;'}]
+      concat %Q[<button type="button" id="#{x}_bt" onclick="showCalendar('#{x}_bt','#{f.object_name}_#{x}')" class="show_cal_bt"></button>]
+    end
+  %>　カレンダーを利用して西暦で入力してください。
+  </td>
+ </tr>
+ <tr>
+  <th>国文書番号</th>
+  <td><%= f.text_field :inpfld_001, :size=>"20"%></td>
+ </tr>
+ <tr>
+  <th>担当別<%= required('※') %></th>
+  <td><%= f.select :inpfld_002, notes01, :include_blank=>false%></td>
+ </tr>
+ <tr>
+  <th>文書名<%= required('※') %></th>
+  <td><%= f.text_field :title, :size=>"60", :style => 'width:100%'%></td>
+ </tr>
+ <tr>
+  <th>摘要</th>
+  <td><%= f.text_field :inpfld_003, :size=>"60", :style => 'width:100%'%></td>
+ </tr>
+ <tr>
+  <th>備考</th>
+  <td><%= f.text_field :inpfld_004, :size=>"60", :style => 'width:100%'%></td>
+ </tr>
+ <tr>
+  <th>参考</th>
+  <td><%= f.text_field :inpfld_005, :size=>"60", :style => 'width:100%'%></td>
+ </tr>
+</table>
+
+<%if attach_use_old%>
+  <%=gwboard_attach_form(f, @item)%>
+<%else%>
+  <%=gwboard_attachments_form(f, @item)%>
+<%end%>

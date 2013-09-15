@@ -1,0 +1,10 @@
+<%# path_index = "#{Site.request_path}" %>
+<div>
+<%#=link_to '一覧' , url_for(path_index) %>
+</div>
+<% @action = "create" %>
+<%# @create_path = path_index %>
+<%# form_for :item, :url => @create_path ,:action=>:create ,:method=>:post , :html => {:multipart => true} do |f| %>
+<% form_for :item, :url => {:action => :create}, :method => :post, :html => { :multipart => true} do |f| %>
+  <%= render :partial => 'form', :locals => {:f => f} %>
+<% end %>

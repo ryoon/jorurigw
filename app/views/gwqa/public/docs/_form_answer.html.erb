@@ -1,0 +1,53 @@
+<% _path = '/_common/modules/gwqa/'%>
+<%
+  if @item.blank?
+    mce_base_url = ''
+  else
+    mce_base_url = _path + sprintf("%06d", @item.title_id) + '/' + @item.name + "/" unless @item.name.blank?
+  end
+%>
+<%= tool_tiny_mce(mce_base_url, {:leftbar_mode=>true}) %>
+
+<table class="show">
+ <tr>
+ <th>編集可能課</th></tr>
+ <tr>
+ <td colspan="3">
+  <%= f.select(:section_code, Gwboard::Group.level3_all.collect{|i|
+   [i.name, i.code]}, :include_blank => '記事の管理課を選択してください') %>
+ </td>
+ </tr>
+ <tr>
+ <th>回答本文</th></tr>
+ <tr>
+ <td class="mceEditor"><%= f.text_area :body, :class => 'mceEditor', :style => 'width:100%' %></td>
+ </tr>
+</table>
+
+
+<script type="text/javascript">
+//<![CDATA[
+  function chageDisp(obj,changeObjId) {
+    var display = document.getElementById(changeObjId).style.display;
+    if (display == '') {
+      obj.innerHTML = '開く▼';
+    } else if (display == 'none') {
+      obj.innerHTML = '閉じる▲';
+    }
+    Element.toggle($(changeObjId));
+  }
+//]]>
+</script>
+
+<%if attach_use_old%>
+  <%=gwboard_image_form(f, @item, 'item_body')%>
+  <%=gwboard_attach_form(f, @item)%>
+<%else%>
+  <%=gwboard_attachments_form(f, @item)%>
+<%end%>
+
+<input type="hidden" name="title_id" value='<%="#{params[:title_id]}"%>' />
+<input type="hidden" name="p_id" value='<%="#{params[:p_id]}"%>' />
+<input type="hidden" name="limit" value='<%="#{params[:limit]}"%>' />
+<input type="hidden" name="cat1" value='<%="#{params[:cat1]}"%>' />
+<%= f.hidden_field :doc_type,:value=>@item.doc_type %>

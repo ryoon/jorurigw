@@ -1,0 +1,17 @@
+development:
+  host:
+  port: 389
+  host: 127.0.0.1
+  base: dc=pref,dc=tokushima,dc=jp
+
+test:
+  host:
+  port: 389
+  host: 127.0.0.1
+  base: dc=pref,dc=tokushima,dc=jp
+
+production:
+  host:
+  port: 389
+  host: 127.0.0.1
+  base: dc=pref,dc=tokushima,dc=jp

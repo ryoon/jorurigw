@@ -1,0 +1,35 @@
+<%
+params[:st] = '0' if params[:st].blank?
+s_params = "?st=#{params[:st]}"
+%>
+<div class="bbsDocList">
+<div class="pieceHeader">
+<h2>背景画像一覧</h2>
+</div><!--pieceHeader-->
+<!--カラム用タグ-->
+<div class="pieceBanner">
+<h3><%=@sub_title%>編集</h3>
+<div class="helpBox">
+<div><%=link_to('ポータルへ戻る &gt;&gt;', '/') %></div>
+</div>
+</div>
+<div class="pieceBody">
+<%=render :partial => 'header' %>
+<% form_for :item, :url => "#{@item.update_path}#{s_params}", :html => {:multipart => true} do |f| %>
+<%= f.error_messages %>
+
+<table class="show bbsText">
+<tr><th>利用範囲</th>
+<td><%=f.select(:range_of_use, @item.range_of_use_name, :class => 'state') %></td></tr>
+<tr><th>画像説明</th>
+<td><%= f.text_field :memo, :size=>'60'%></td></tr>
+</table>
+
+<%= hidden_field_tag(:_upload, @item._upload)%>
+<div class="submitters"><%= submit_tag '登録する' %></div>
+<% end %>
+
+<%= %Q(<div class="notice">#{flash[:notice]}</div>) if flash[:notice] %>
+
+</div>
+</div><!--piece gwbbs-->

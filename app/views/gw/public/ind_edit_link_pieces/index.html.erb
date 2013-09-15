@@ -1,0 +1,58 @@
+<div class="piece linkSetting">
+<%= render :partial => 'header_str' %>
+<div class="pieceBody">
+<%= render :partial => 'header_new_botton' %>
+<%= render :partial => 'header_navi' %>
+<%= div_notice %>
+
+<% if @items.count == 0 %>
+  <div class="notice">表示対象がありません。</div>
+<% else %>
+  <table class="index">
+    <tr>
+    <th class="action"><%# 展開 %></th>
+    <th class="action"><%# 詳細 %></th>
+    <th class="action"><%# 編集 %></th>
+    <th class="action"><%# 削除 %></th>
+    <th class="state">公開</th>
+    <th class="state">状態</th>
+    <th class="sort" colspan="2" >並び順</th>
+    <th class="title">表示名</th>
+    <% if @parent.level_no >= 2 %>
+      <th class="url">リンク先URL</th>
+      <th class="ext">接続先区分</th>
+      <th class="sso">SSO利用</th>
+    <% end %>
+    </tr>
+    <% @items.each_with_index do |item,idx| %>
+      <% uid = did = 0 %>
+      <% uid = @items[idx-1].id if idx >= 1 %>
+      <% did = @items[idx+1].id if idx <= @items.length-2 %>
+      <tr <%= cycle '', 'class="cycle"' %> >
+      <td><%= link_to '展開', "#{Site.current_node.public_uri}?pid=#{item.id}" if item.expandable? %></td>
+      <td><%= link_to '詳細', "#{Site.current_node.public_uri}#{item.id}?pid=#{@parent.id}" %></td>
+      <td><%= link_to '編集', "#{Site.current_node.public_uri}#{item.id}/edit?pid=#{@parent.id}" %></td>
+      <td><%= link_to '削除', "#{Site.current_node.public_uri}#{item.id}?pid=#{@parent.id}", :confirm=>"削除してよろしいですか？", :method=>:delete %></td>
+      <td><span <%= item.get_published_color %> ><%= Gw::EditLinkPiece.published_show(item.published) %></span></td>
+      <td><span <%= item.get_state_color %> ><%=h Gw::EditLinkPiece.state_show(item.state) %></span></td>
+      <td class="up"><%= link_to '▲', "#{Site.current_node.public_uri}#{item.id}/swap?pid=#{@parent.id}&sid=#{uid}" if uid != 0 %></td>
+      <td class="down"><%= link_to '▼', "#{Site.current_node.public_uri}#{item.id}/swap?pid=#{@parent.id}&sid=#{did}" if did != 0 %></td>
+      <td><span <%= item.get_name_color %> ><span title="<%= item.get_tooltip %>"><%=h item.name %></span></span></td>
+      <% if @parent.level_no >= 2 %>
+        <td>
+        <% if item.class_external == 2 %>
+          <%= link_to_wec(item.link_url, item.get_link_url, :target=>'_blank') %>
+        <% else %>
+          <%= link_to(item.link_url, item.get_link_url) %>
+        <% end %>
+        </td>
+        <td><%=h Gw::EditLinkPiece.external_show(item.class_external) %></td>
+        <td><%=h Gw::EditLinkPiece.sso_show(item.class_sso) %></td>
+      <% end %>
+    </tr>
+    <% end %>
+  </table>
+<% end %>
+
+</div>
+</div>

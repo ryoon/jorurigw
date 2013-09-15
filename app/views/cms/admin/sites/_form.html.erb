@@ -1,0 +1,22 @@
+<table class="show">
+  
+  <tr>
+    <th>状態</th>
+    <td><%=radio f, :state, @item.states, :class => 'state' %></td>
+  </tr><tr>
+    <th>ドメイン</th>
+    <td><%= f.text_field :domain, :class => 'string module', :style => 'width: 200px;' %></td>
+  </tr><tr>
+    <th>サイト名称</th>
+    <td><%= f.text_field :name, :class => 'string name' %></td>
+  </tr><tr>
+    <th>携帯サイト</th>
+    <td><%= f.select(:mobile_id, Cms::Site.find(:all).collect{|i| [i.name, i.id]}, :include_blank => true) %></td>
+  </tr><tr>
+    <th>ルートノード</th>
+    <td><%= f.select(:node_id, Cms::Node.find(:all, :conditions => {:parent_id => 0}).collect{|i| [i.title, i.id]}, :include_blank => true) %></td>
+  </tr>
+
+</table>
+
+<%= task_form f, @item %>

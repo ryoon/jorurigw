@@ -1,0 +1,47 @@
+<%
+  number = @items.blank? ? 0 : @items.length
+%>
+<div class="piece prop schedulePiece index">
+
+<div class="pieceHeader">
+  <%= render :partial => '/gw/public/schedules/piece_header' -%>
+</div>
+
+<div class="pieceBody">
+
+<div class="pieceBodyHeader">
+  <%= render(:partial => '/gw/public/schedules/schedule_bt_box', :locals=>{:d=>@st_date, :mode=>'month'}) -%>
+  <%# メニュー 置き場 -%>
+</div>
+<div class="menu">
+</div>
+
+<% if @motion == :user_add -%>
+  <%= render(:partial => 'user_add') -%>
+<% else -%>
+  <%= render(:partial => 'user_delete') -%>
+<% end -%>
+
+<div class="titleLine">
+  <span class="title">スケジュール一覧</span>
+  <span class="linkSpace">
+  </span>
+</div>
+
+<div class="pieceBodyBody">
+<%= div_notice %>
+<% if @items.blank? %>
+  <div class="notice">表示する項目はありません。</div>
+<% else %>
+<%= render(:partial => 'list') %>
+<% end %>
+<script language = "JavaScript" type="text/javascript">
+//<![CDATA[
+
+//]]>
+</script>
+
+</div>
+
+</div>
+</div>

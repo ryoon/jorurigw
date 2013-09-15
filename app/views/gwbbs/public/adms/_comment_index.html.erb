@@ -1,0 +1,24 @@
+<%unless @comments.blank?%>
+<table class="bbsCommentlist">
+  <tr>
+    <th style="width: 40px; text-align: center;">No.</th>
+    <th style="text-align: left;">1行コメント</th>
+    <th style="width: 220px; text-align: left;">所属</th>
+    <th style="width: 120px; text-align: center;">最終更新日</th>
+  </tr>
+<%@i = 0%>
+<% for item in @comments %>
+  <%@i = @i + 1%>
+  <tr>
+    <td style="text-align: right;"><%= @i %></td>
+    <td><%= link_to hbr(item.body), item.show_comment_path +  gwbbs_params_set %></td>
+    <td>
+      <%= item.editordivision.blank? ? item.createrdivision : item.editordivision %>
+      <%= ' : ' %>
+      <%= item.creater.blank? ? '' : item.creater %>
+    </td>
+    <td style="text-align: center;"><%= item.latest_updated_at.strftime('%Y-%m-%d %H:%M') %></td>
+  </tr>
+  <% end %>
+</table>
+<%end%>

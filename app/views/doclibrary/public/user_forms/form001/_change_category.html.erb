@@ -1,0 +1,13 @@
+<% form_tag '', :method => :get, :class => 'changeCategory' do %>
+<%= hidden_field_tag(:title_id, params[:title_id]) unless params[:title_id].blank? %>
+<%= hidden_field_tag(:state, params[:state]) unless params[:state].blank? %>
+<%= hidden_field_tag(:gcd, params[:gcd]) unless params[:gcd].blank? %>
+<span>分類選択</span>
+<%if params[:cat].blank?%>
+ <%=select_tag(:cat, "<option value=''>全て</option>#{options_from_collection_for_select(@select_categories, :first, :last, '')}", :onchange => 'submit();')%>
+<%else%>
+ <%=select_tag(:cat, "<option value=''>全て</option>#{options_from_collection_for_select(@select_categories, :first, :last, params[:cat].to_i)}", :onchange => 'submit();')%>
+<%end%>
+<%= hidden_field_tag(:kwd, params[:kwd]) unless params[:kwd].blank? %>
+<%= hidden_field_tag(:limit, params[:limit]) unless params[:limit].blank? %>
+<!-- end .search --><% end %>

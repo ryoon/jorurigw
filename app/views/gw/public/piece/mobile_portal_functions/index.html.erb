@@ -1,0 +1,20 @@
+□<%= link_to  "メール" ,"/logout" -%><br />
+□<%= link_to  "スケジュール" ,"/" -%><br />
+&nbsp;&nbsp;<%= link_to  "個人（日表示）" ,"/" -%><br />
+&nbsp;&nbsp;<%= link_to  "個人（週表示）" ,"/" -%><br />
+&nbsp;&nbsp;<%= link_to  "グループ" ,"/" -%><br />
+□<%= link_to  "スケジュール" ,"/" -%><br />
+<%
+
+todos = []
+memos = []
+  %w(todo memo).each{|mod|
+    if mod == "todo"
+      todos += eval("Gw::Model::#{mod.capitalize}.remind.collect{|x| x[:c]='#{mod}'; x}")
+    else
+      memos += eval("Gw::Model::#{mod.capitalize}.remind.collect{|x| x[:c]='#{mod}'; x}")
+    end
+  }
+%>
+□<%= link_to  "ToDo（#{todos.size.to_s}件）" ,"/" -%><br />
+□<%= link_to  "連絡メモ（#{memos.size.to_s}件）" ,"/" -%><br />

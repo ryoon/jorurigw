@@ -1,0 +1,102 @@
+<div class="inner">
+<% _path = '/_common/modules/digitallibrary/'%>
+<%
+  if @item.blank?
+    mce_base_url = ''
+  else
+    mce_base_url = _path + sprintf("%06d", @item.title_id) + '/' + @item.name + "/" unless @item.name.blank?
+  end
+%>
+<%= tool_tiny_mce(mce_base_url, {:leftbar_mode=>true}) %>
+
+<%= render :partial => 'folder_name' %>
+
+<table class="show">
+  <tr>
+    <th>記事管理課<%= required('※') %></th>
+    <td>
+      <%= f.select(:section_code, Gwboard::Group.level3_all.collect{|i|
+      [i.name, i.code]}, :include_blank => '記事の管理課を選択してください') %>
+    </td>
+  </tr>
+</table>
+
+<%= required('記事参照が設定されています。文書名、記事の変更は親記事で行ってください。<br />この記事のみで変更を行いたいときは、[通常の記事として登録する]を選択してください。') unless @item.doc_alias == 0 %>
+<table class="show">
+  <tr>
+    <th class="titleTop">親記事を参照する<%= required('参照する親記事を選択すると、記事の状態・記事内容が登録時コピーされます。') %></th></tr><tr>
+    <td>
+      <%= required('記事が登録されていません') if @parent_docs == []%>
+      <%= f.select(:doc_alias, @parent_docs, :include_blank => false) unless @parent_docs == []%>
+      <%=link_to('（親記事の編集を行う）',"#{@item.alias_edit_path}&cat=#{@parent_item.parent_id}") unless @parent_item.blank? unless @item.doc_alias == 0%>
+    </td>
+  </tr>
+</table>
+<table class="show">
+  <tr>
+    <th class="titleTop">見出し（階層）</th></tr><tr>
+    <td>
+      <%= required('見出しが登録されていません') if @tree_list == []%>
+      <%= f.select(:chg_parent_id, @tree_list, :include_blank => false) unless @tree_list == []%>
+    </td>
+  </tr>
+  <tr>
+    <th>記事の順</th></tr><tr>
+    <td>
+      <%= required('記事が登録されていません') if @position == []%>
+      <%= f.select(:seq_no, @position, :include_blank => false) unless @position == []%>
+    </td>
+  </tr>
+  <tr>
+  <th class="titleTop">ツリーの並び順　<%=required('※通常は変更しないでください')%></th></tr><tr>
+    <td><%= f.text_field :display_order, :size => '5'%></td>
+  </tr>
+</table>
+<table class="show">
+  <tr>
+    <th>タイトル</th></tr><tr>
+    <td><%= f.text_area :title, :cols => '140', :rows=>"2", :style => 'width:100%; height:45px'%></td>
+  </tr>
+</table>
+
+<%unless @item.doc_alias == 0%>
+<%= required('この記事は、親記事を参照して作成されています。<br />記事や添付ファイルの変更を行う時は、親記事から修正を行ってください。')%>
+<%=link_to('（親記事の編集を行う）',"#{@item.alias_edit_path}&cat=#{@parent_item.parent_id}") unless @parent_item.blank?%>
+<table class="show">
+  <tr>
+    <th>記事</th></tr><tr>
+    <td class="docformBody"><%=@item.body%></td>
+  </tr>
+</table>
+<%= render :partial => '/gwboard/public/docs/upload_index' %>
+<%else%>
+<table class="show">
+  <tr>
+    <th>記事</th></tr><tr>
+    <td class="mceEditor"><%= f.text_area :body, :class => 'mceEditor', :style => 'width:100%' %></td>
+  </tr>
+</table>
+<script type="text/javascript">
+//<![CDATA[
+  function chageDisp(obj,changeObjId) {
+    var display = document.getElementById(changeObjId).style.display;
+    if (display == '') {
+      obj.innerHTML = '開く▼';
+    } else if (display == 'none') {
+      obj.innerHTML = '閉じる▲';
+    }
+    Element.toggle($(changeObjId));
+  }
+//]]>
+</script>
+  <%if attach_use_old%>
+   <%=gwboard_image_form(f, @item, 'item_body')%>
+   <%=gwboard_attach_form(f, @item)%>
+  <%else%>
+   <%=gwboard_attachments_form(f, @item)%>
+  <%end%>
+<%end%>
+
+<%= render :partial => 'digitallibrary/public/docs/hidden_form' %>
+
+</div>

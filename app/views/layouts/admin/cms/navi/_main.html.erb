@@ -1,0 +1,20 @@
+<%
+
+link = lambda do |label, uri, name, auth|
+  cname = []
+  cname << 'current' if current == name
+  unless true#Site.user.has_auth?(auth)
+    return ''
+    cname << 'disabled'
+    uri = '#'
+  end
+  link_to label, uri, :class => cname.join(' ')
+end
+
+%><div class="mainMenu">
+<%= link.call 'データ'      , gw_icon_groups_path  , :data     , :editor %>
+<%= link.call 'コンテンツ'  , cms_contents_path    , :content,   :editor %>
+<%= link.call 'デザイン'    , cms_pieces_path      , :design   , :designer %>
+<%= link.call 'サイト構成', cms_nodes_path(0)    , :directory, :designer %>
+<%= link.call 'ユーザー'    , system_groups_path(0), :user     , :manager %>
+</div>

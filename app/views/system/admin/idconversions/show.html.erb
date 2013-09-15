@@ -1,0 +1,39 @@
+  <% @path_index  = system_idconversions_path %>
+  <% @path_edit   = edit_system_idconversion_path %>
+  <% @path_delete = system_idconversion_path %>
+<div>
+  <%= link_to '一覧', @path_index %>&nbsp;&nbsp;|&nbsp;&nbsp;
+  <%= link_to '編集', @path_edit  %>&nbsp;&nbsp;|&nbsp;&nbsp;
+  <%= link_to '削除', @path_delete ,:action=>:destroy,:method=>:delete %>
+</div>
+<br/>
+<!-- table_helper.rb -->
+<%= table_to_show2 @item, { 'table_name' => 'system_idconversions' } %>
+<!-- system/creators_helper.rb -->
+<%#= creator_view @item %>
+
+<!-- table column get and conversion go -->
+<%  _tablename = @item.tablename
+    _model = @item.modelname.blank? ? _tablename.singularize.split('_').collect{|x| x.capitalize}.join('::') : @item.modelname
+    _cols = eval(_model).column_names
+    _columns = _cols.join(':')
+    _count = eval(_model).count(:all)
+%>
+<br/>
+<p>変換対象テーブルのカラム一覧　<%= "対象件数：#{_count}件"%></p>
+<table class="show">
+  <tr>
+    <th><%= "#{_model}" %></th>
+    <td><%= "#{_columns}" %></td>
+  </tr>
+</table>
+<br/>
+<% if @item.converted_at.blank? %>
+  <div class="showMenu">
+  <%= link_to '変換実行' , edit_system_idconversion_path(@item.id ,:convert=>"#{_model}") %>
+  </div>
+<% else %>
+  <div class="showMenu">
+  <%=h '変換済み' %>
+  </div>
+<% end %>

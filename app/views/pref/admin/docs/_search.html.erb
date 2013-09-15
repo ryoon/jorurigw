@@ -1,0 +1,33 @@
+<% form_tag('', :method => :get, :class => 'search') do %>
+
+<table>
+<tr>
+  <th>所属</th>
+  <td colspan="3"><%= select_tag('s[section_id]', '<option></option>' + options_for_select(
+      Pref::Section.find(:all).collect{|i| [ i.title, i.id ]}, @sv[:section_id].to_i ))%></td>
+  
+  <th>分野</th>
+  <td><%= select_tag('s[category_id]', '<option></option>' + options_for_select(
+      Pref::Category.find(:all).collect{|i| [ i.title, i.id ]}, @sv[:category_id].to_i ))%></td>
+</tr>
+<tr><td style="height: 10px;"></td></tr>
+<tr>
+  <th>地域</th>
+  <td><%= select_tag('s[city_id]', '<option></option>' + options_for_select(
+      Pref::City.find(:all).collect{|i| [ i.title, i.id ]}, @sv[:city_id].to_i ))%></td>
+  
+  <th>属性</th>
+  <td><%= select_tag('s[attribute_id]', '<option></option>' + options_for_select(
+      Pref::Attribute.find(:all).collect{|i| [ i.title, i.id ]}, @sv[:attribute_id].to_i ))%></td>
+  
+  <th>資料名</th>
+  <td><%= text_field_tag('s[title]', @sv[:title], :style => 'width:150px;') %></td>
+  
+  <td class="submitters">
+      <%= submit_tag '検索' %>
+    <%= submit_tag 'リセット', :name => 's[reset]' %>
+  </td>
+</tr>
+</table>
+
+<!-- end form --><% end %>

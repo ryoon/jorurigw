@@ -1,0 +1,18 @@
+<div class="navi">
+<%if @parent%>
+  <%mark_f = ''%>
+  <% tree = @parent.parent_tree; tree.each_with_index do |c, k| %>
+    <%=link_to("#{mark_f}#{c.name}", url_for(c.link_list_path))%>
+    <%mark_f = '> '%>
+  <% end %>
+<%end%>
+</div>
+
+
+<%if @is_admin %>
+<div class="editingBox">
+<span class="btNewFolder">
+  <%= link_to 'フォルダ追加', "/doclibrary/folders/new?title_id=#{params[:title_id]}&state=#{params[:state]}&cat=#{params[:cat]}" %>
+</span>
+</div>
+<%end%>

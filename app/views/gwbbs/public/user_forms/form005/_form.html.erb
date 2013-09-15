@@ -1,0 +1,16 @@
+<table class="show">
+ <tr>
+  <th>事務の名称<%= required('※') %></th>
+  <td><%= f.text_field :title, :size=>"60" %></td>
+ </tr>
+ <tr>
+  <th>保有課名<%= required('※') %></th>
+  <td><%= f.text_field :body, :size=>"60" %></td>
+ </tr>
+</table>
+
+<%if attach_use_old%>
+  <%=gwboard_attach_form(f, @item)%>
+<%else%>
+  <%=gwboard_attachments_form(f, @item)%>
+<%end%>

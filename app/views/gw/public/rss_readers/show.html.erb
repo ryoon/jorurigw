@@ -1,0 +1,40 @@
+<div class="piece AdminSetting">
+<%= render :partial => 'header' %>
+<div class="pieceBody">
+<%= render :partial => 'button_new' %>
+
+<table class="show">
+  <tr>
+    <th class="title">タイトル</th>
+    <th class="uri">URI</th>
+    <th class="max">取得件数</th>
+    <th class="interval">更新間隔</th>
+  </tr>
+  <tr>
+    <td class="title"><%=h @item.title %></td>
+    <td class="uri"><%= link_to_wec(@item.uri, @item.uri, :target=>'_blank') %></td>
+    <td class="max"><%=h @item.max %></td>
+    <td class="interval"><%=h @item.interval %>分</td>
+  </tr>
+</table>
+<table class="index">
+  <tr>
+    <th class="title">新着ヘッドライン</th>
+    <th class="published_at"><% # 取得時刻 %></th>
+  </tr>
+  <% if @item.caches.length == 0 %>
+    <tr><td colspan="2"><div class="notice">ヘッドラインを取得できませんでした。</div></td>
+  <% else %>
+  	<% @item.caches.each do |cache| %>
+  	  <tr <%= cycle '', 'class="cycle"' %>>
+  	    <td class="title"><%= link_to_wec(cache.title, cache.link, :target=>'_blank') %></td>
+  	    <td class="published_at"><%=h Gw.datetime_str(cache.published_at) %></td>
+  	  </tr>
+    <% end %>
+  <% end %>
+</table>
+
+<%= render :partial => 'button_return' %>
+
+</div>
+</div>

@@ -1,0 +1,24 @@
+<%
+
+return '' if item.commitments.size == 0
+
+%><table class="show">
+  
+  <tr>
+    <th>公開履歴</th>
+    <td style="line-height: 1.2;">
+      <% item.collect_recent_commitments.each do |coms| %>
+        VERSION-<%= coms[0].version %>
+        [
+        <% coms.each_with_index do |com, k| %>
+        <%= ' | ' if k != 0 %>
+        <%=link_to com.name.humanize, system_commitment_path(com.id) + '?do=preview', :target => :blank %>
+        <% end %>
+        ]
+        <%=link_to 'Rollback!!', '?do=rollback&version=' + coms[0].version, :confirm => 'データを置換してよろしいですか？' %>
+        <br />
+      <% end %>
+    </td>
+  </tr>
+
+</table>

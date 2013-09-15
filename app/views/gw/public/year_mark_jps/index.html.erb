@@ -1,0 +1,30 @@
+<div class="piece YearMarkJp">
+<%= render :partial => 'gw/public/year_mark_jps/header' %>
+<div class="pieceBody">
+<%= render :partial => 'gw/public/year_mark_jps/menu' %>
+
+<%= render :partial => 'gw/public/year_mark_jps/search' %>
+<%
+path_index = Gw.chop_with("#{Site.current_node.public_uri}",'/')
+link_to_action = nil
+link_to_show = 1
+options = {
+ 'table_name' => 'gw_year_mark_jps' ,
+ 'sort_link_options' => {
+  'sort_keys' => @sort_keys,
+  'path_index' => path_index,
+  'other_query_string' => @qs
+  },
+  'link_to_show'    => nz(link_to_show,1)
+}
+
+%>
+
+<br/>
+<%= table_to_index2 @items, options %>
+<br/>
+<%= paginate @items %>
+<br/>
+</div>
+
+</div><!--piece admin_messages-->

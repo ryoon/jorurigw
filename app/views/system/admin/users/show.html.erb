@@ -1,0 +1,91 @@
+<%# app/views/system/admin/users/show.html.erb %>
+<%
+err_str = %Q(<span style="color: red;">** 所属未登録 **</span>)
+options={
+  'field_td_criteria' => {
+    '_groups' => Proc.new{|item|
+      x = item.groups.collect{|x| (x.level_no > 2 && x.code.to_i != 0 ? %Q(#{"%06d" % x.code}) : "#{x.code}") + %Q(#{x.name})}.join(' ')
+      !x.blank? ? x : err_str
+    }
+  }
+}
+@user_groups = @item.user_groups
+link_to_action = nil
+link_to_show = 0
+group_options = {
+  'link_to_edit'    => link_to_action,
+  'link_to_destroy' => link_to_action,
+  'link_to_show'    => nz(link_to_show,1),
+  'table_name'=>'system_users_groups',
+  :action =>'index_for_users',
+  'field_td_criteria' => {
+    'rid' =>Proc.new{|item|
+      %Q(<A href="/_admin/system/#{item.group_id}/users_groups/#{item.rid}">詳細</a>)
+    },
+    '_group' => Proc.new{|item|
+      x = item.group
+      x = x.blank? ?
+        '' :
+        (((x.level_no > 2 && x.code.to_i != 0) ?
+          %Q(#{"%06d" % x.code}) :
+          "#{x.code}") + %Q(#{x.name}))
+      !x.blank? ? x : err_str
+    },
+    #'_u_start_at' => Proc.new{|item|
+      #item.start_at.blank? ? '' : Gw.date_str(item.start_at)
+    #},
+    #'_u_end_at' => Proc.new{|item|
+      #item.end_at.blank? ? '' : Gw.date_str(item.end_at)
+    #},
+    '_groups' => Proc.new{|item|
+        if item.group.blank?
+          %Q(<span style="color: red;">** 所属未登録 **</span>)
+        else
+          item.group.ou_name
+#      '(' + item.group.code + ') ' + item.group.name
+        end
+    },
+    '_g_start_at' => Proc.new{|item|
+      if item.group.blank?
+        ''
+      else
+        item.group.start_at.blank? ? '' : Gw.date_str(item.group.start_at)
+      end
+    },
+    '_g_end_at' => Proc.new{|item|
+      if item.group.blank?
+        ''
+      else
+        item.group.end_at.blank? ? '' : Gw.date_str(item.group.end_at)
+      end
+    },
+    '_level' => Proc.new{|item|
+      if item.group.blank?
+        ''
+      else
+        item.group.level_no
+      end
+    },
+    '_parent_name' => Proc.new{|item|
+      if item.group.blank?
+        ''
+      else
+        item.group.parent.blank? ? item.group.name : item.group.parent.name
+      end
+    #},
+    #'_group_state' => Proc.new{|item|
+      #System::Group.group_states(item.group.state)
+    }
+  }
+}
+%>
+
+<div class="showMenu">
+<%=link_to_edit      @item %>
+<%=link_to_destroy   @item %>
+</div>
+<%= table_to_show2 @item,options %>
+<br/>
+<div>現在の所属状況</div>
+<%= table_to_index2 @user_groups, group_options if !@user_groups.blank? %>
+<%#= table_to_index2 @groups, group_options unless @groups.blank? %>

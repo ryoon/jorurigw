@@ -1,0 +1,22 @@
+<%# app/views/system/admin/group_updates/show.html %>
+<%
+options = {
+  'table_name'=>'system_group_nexts',:action=>'show'
+}
+options1 = {
+  'table_name'=>'system_group_updates',:action=>'index',
+  'link_to_show'=>0
+}
+options1['field_td_criteria']={
+  '_parent_ou'=>Proc.new{|item|    item.parent_code+item.parent_name  } ,
+  '_group_ou' =>Proc.new{|item|    item.code+item.name  }
+}
+%>
+<%= table_to_index2 [@group_updates],options1 %>
+<br />
+<div class="showMenu">
+<%=link_to '戻る',   system_group_update_path(@item.group_update_id)  %>
+<%=link_to_edit     @item.id  %>
+<%=link_to_destroy  @item.id  %>
+</div>
+<%= table_to_show2 @item,options %>

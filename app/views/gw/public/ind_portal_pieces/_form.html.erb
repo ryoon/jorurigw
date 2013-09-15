@@ -1,0 +1,60 @@
+<%= f.error_messages %>
+<%= f.hidden_field :uid %>
+<%= f.hidden_field :sort_no %>
+<%= f.hidden_field :position %>
+<%= required_head %>
+<br>
+<table class="show">
+  <tr>
+    <th>並び順</th>
+    <td><%=h @item.sort_no %></td>
+  </tr>
+  <tr>
+    <th>コンテンツ<%= required %></th>
+    <td><%= f.select :name, Gw::IndPortalPiece.piece_select_list(@cand_items), { :selected => @item.piece_name_for_select }, { :onchange=>"ind_portal_on_change_genre(false);" } %></td>
+  </tr>
+  <tr>
+    <th>タイトル<%= required %></th>
+    <td><%= f.text_field :title, :size=>80 %></td>
+  </tr>
+  <tr>
+    <th>表示件数</th>
+    <td><%= f.select :limit, Gw::IndPortalPiece.limit_select_list, :selected => @item.limit.to_i %>　<span class="required">※</span>ツール以外のコンテンツを選択する場合は必須です。</td>
+  </tr>
+</table>
+<div class="preserve">
+  <%= f.submit '保存' %>
+</div>
+
+<script type="text/javascript">
+//<![CDATA[
+  
+  var ind_portal_on_change_genre = function (isload) {
+    var name_node = $('item_name');
+    var title_node = $('item_title');
+    var limit_node = $('item_limit');
+    if (name_node && title_node && limit_node) {
+      var text = name_node.options[name_node.selectedIndex].innerHTML;
+      var strs = text.split('/', 2);
+      if (strs.length >= 2) {
+        if (!isload) {
+          title_node.value = strs[1].replace("&amp;", "&").replace("&lt;", "<").replace("&gt;", ">");
+        }
+        if (strs[0] == 'ツール') {
+          limit_node.disabled = true;
+        } else {
+          limit_node.disabled = false;
+        }
+      } else {
+        if (!isload) {
+          title_node.value = "";
+        }
+        limit_node.disabled = false;
+      }
+    }
+  }
+  
+  window.onload = ind_portal_on_change_genre(true);
+  
+//]]>
+</script>

@@ -1,0 +1,12 @@
+<%# app/views/system/admin/group_change_pickups/_form %>
+<!-- 未設定　表示画面 入力 -->
+<%= required_head %>
+<table class="show">
+<tr>
+<th>抽出対象日<%= required %></th>
+<td><%= f.text_field :target_at ,:value => @item.target_at.strftime("%Y-%m-%d") %>
+<button type="button" id="target_at_bt" onclick="showCalendar('target_at_bt','<%= "#{f.object_name}_target_at" %>')" class="show_cal_bt"></button>
+</td>
+</tr>
+</table>
+<%= gw_js_include_full %>

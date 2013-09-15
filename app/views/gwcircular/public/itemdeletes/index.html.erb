@@ -1,0 +1,24 @@
+<div class="bbsDocList circular setting">
+<div class="pieceHeader">
+<h2 class="pieceTitle">回覧板 夜間データ削除設定</h2>
+<div class="btsHeaderLeft">
+</div>
+</div><!--pieceHeader-->
+<!--カラム用タグ-->
+<div class="pieceBanner">
+</div>
+<div class="pieceBody">
+
+  <table class="show">
+<tr>
+<td>現在の設定 （<%=link_to('編集', "#{@item.edit_path}")%>）</td>
+<td><%= @item.limit_line_name %>  経過した期限切れの回覧を削除</td>
+</tr>
+</table>
+
+<!--戻るボタン-->
+<div class="btReturn">
+  <%=link_to '管理者設定へ戻る', '/gw/admin_settings' %>
+</div>
+</div><!--pieceBody-->
+</div><!--piece gwbbs-->

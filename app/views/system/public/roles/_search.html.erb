@@ -1,0 +1,23 @@
+
+<%
+if @is_dev == true
+  roles = System::RoleName.find(:all, :order => :sort_no)
+else
+  roles = System::RoleName.find(:all, :conditions => ['table_name != "gwsub"'], :order => :sort_no)
+end
+#privs = System::PrivName.find(:all, :conditions => ['state = "public"'], :order => :sort_no)
+%>
+
+<% form_tag('', :method => :get, :class => 'search', :name=>'frmSearch') do %>
+<%= hidden_field_tag 'pre_dived_id', params[:pre_dived_id] ,:value=>@dived_id if @dived_id %>
+<table>
+<tr>
+  <td>機能名</td>
+  <td><%= select_tag( 'role_id',options_for_select( [['すべて',0]] + roles.collect{|x| [x.display_name, x.id]} , @role_id.to_i ), :onchange=>'submit();' ) %></td>
+<!--  <td>対象権限 </td>
+  <td><%#= select_tag( 'priv_id',options_for_select( [['',0]] + privs.collect{|x| [x.display_name, x.id]} , @priv_id.to_i ), :onchange=>'submit();' ) %></td>-->
+  <td><%= submit_tag 'リセット', :name => :reset  %></td>
+</tr>
+</table>
+<!-- end form -->
+<%end%>

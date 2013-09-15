@@ -1,0 +1,9 @@
+<div>所属幹部　初期一括登録</div>
+
+<table class="show">
+  <tr><th>全初期化</th><th><%= @counts1 %></th><td><%= link_to '初期化' ,gw_pref_directors_path(:init=>'clear_all') %></td></tr>
+</table>
+
+<table class="show">
+  <tr><th>初期作成</th><th><%= @counts2 %></th><td><%= link_to '初期データ作成' ,gw_pref_directors_path(:init=>'init_setup') %></td></tr>
+</table>

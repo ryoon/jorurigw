@@ -1,0 +1,67 @@
+<table class="show bbsText">
+<tr>
+<th>名称<%= required('※') %></th>
+<td><%= f.text_field :if_name, :class => 'string name' %></td>
+</tr>
+<% unless @icons.blank? %>
+<tr>
+<th>タイトルアイコン指定</th>
+<td><%= f.select(:if_icon_id, @icons.collect{|i| [ "#{i.memo}（#{i.width.to_s}x#{i.height.to_s}）" , i.id ]}, {:include_blank => '指定しない'}) %></td>
+</tr>
+<% end %>
+<tr>
+<th>タイトルデザイン設定</th>
+<td><%= radio f, :if_bg_setup , @item.bg_select , :class => 'state'  ,:onclick => 'sel_bg_select()' %></td>
+</tr>
+<tr>
+<th>タイトルフォント色指定</th>
+<td>
+<% unless @font_colors.blank? %>
+<%= ug_collection_radio(@item.if_font_color,'if_font_color',@font_colors) %>
+<% end %>
+</td>
+</tr>
+</table>
+<div id="item_bgselect_type1" style="display:inline;" >
+<table class="show bbsText">
+<tr>
+<th>タイトル背景色指定</th>
+<td>
+<% unless @bg_colors.blank? %>
+<%= ug_collection_radio(@item.if_css,'if_css',@bg_colors) %>
+<% end %>
+</td>
+</tr>
+</table>
+</div>
+<div id="item_bgselect_type2" style="display:none;" >
+<table class="show bbsText">
+<tr>
+<th>タイトル背景画像指定</th>
+<td>
+<% unless @wallpapers.blank? %>
+<%= f.select(:if_wallpaper_id, @wallpapers.collect{|i| [ "#{i.memo}（#{i.width.to_s}x#{i.height.to_s}）" , i.id ]}, {:include_blank => '指定しない'}) %>
+<% end %>
+</td>
+</tr>
+</table>
+</div>
+
+<script type="text/javascript">
+<!--
+  var sel_bg_select = function() {
+    idx =  radio_selected('item[if_bg_setup]')
+    switch (idx) {
+    case 0:
+      $('item_bgselect_type1').setStyle("display : inline;");
+      $('item_bgselect_type2').setStyle("display : none;");
+      break;
+    case 1:
+      $('item_bgselect_type1').setStyle("display : none;");
+      $('item_bgselect_type2').setStyle("display : inline;");
+    break;
+    }
+  }
+sel_bg_select();
+// -->
+</script>

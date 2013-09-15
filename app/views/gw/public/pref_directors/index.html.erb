@@ -1,0 +1,36 @@
+<%#*<h1>Gw::Public::PrefDirectors#index</h1>%>
+<%#*<p>Find me in app/views/gw/public/pref_directors/index.html.erb</p>%>
+<%
+  title_str = "所属幹部在庁表示"
+  fyear = Gw::YearFiscalJp.get_record(Time.now)
+  display_time  = '(' + fyear.namejp.to_s + '年' + Time.now.strftime('%m月%d日 %H:%M 現在') + ')'
+  # スケジュラーメニューのパラメーター
+  d=Time.now
+  @st_date=Time.now.strftime('%Y%m%%d')
+  mode='directors'
+%>
+<div id="contentBody">
+<div class="piece schedulePiece">
+<div class="pieceHeader"><h2 class="pieceTitle">スケジュール</h2>
+<div class="btsHeaderLeft">
+<span class="btNew"><a href="/gw/schedules/new">新規作成</a></span>
+</div>
+</div>
+<div class="pieceBody">
+
+<div class="pieceBodyHeader">
+<%= render :partial => "gw/public/schedules/schedule_bt_box"  ,:locals=>{:d=>d , :mode=>mode} %>
+<div class="scheduleTableTitle"><%= title_str %><span class="presentTime"><%= display_time %></span></div>
+
+</div><!--pieceBodyHeader-->
+
+<div class="pieceBodyBody">
+<%if @u_role==true%>
+<%=render(:partial => 'index' ,:locals=>{:d=>d , :mode=>mode} )%>
+<%else%>
+<%=render(:partial => 'index_prepare' ,:locals=>{:d=>d , :mode=>mode} )%>
+<%end%>
+</div><!--pieceBodyBody-->
+</div><!--pieceBody-->
+</div><!--schedulePiece-->
+</div><!--contentBody-->

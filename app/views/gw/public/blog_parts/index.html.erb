@@ -1,0 +1,43 @@
+<div class="piece AdminSetting">
+<%= render :partial => 'header' %>
+<div class="pieceBody">
+<div class="editingBox">
+  <%= render :partial => 'button_new' %>
+</div>
+<%= render :partial => 'search' %>
+
+<% if @items.length == 0 %>
+  <div class="notice">表示する内容はありません。</div>
+<% else %>
+  <table class="index">
+  <tr>
+    <th class="action"><%# 詳細 %></th>
+    <th class="action"><%# 編集 %></th>
+    <th class="action"><%# 削除 %></th>
+    <th class="state">状態</th>
+    <th class="sortNo" colspan="2" >並び順</th>
+    <th class="title">タイトル</th>
+    <th class="preview">プレビュー</th>
+  </tr>
+  <% @items.each_with_index do |item, idx| %>
+    <% next if item.deleted? %>
+    <% uid = did = 0 %>
+    <% uid = @items[idx-1].id if idx >= 1 %>
+    <% did = @items[idx+1].id if idx <= @items.length-2 %>
+    <tr <%= cycle '', 'class="cycle"' %>>
+      <td class="action"><%= link_to '詳細', "#{Site.current_node.public_uri}#{item.id}" %></td>
+      <td class="action"><%= link_to '編集', "#{Site.current_node.public_uri}#{item.id}/edit" %></td>
+      <td class="action"><%= link_to '削除', "#{Site.current_node.public_uri}#{item.id}", :confirm=>"削除してよろしいですか？", :method=>:delete %></td>
+      <td class="state"><%= item.show_state %></td>
+      <td class="upSort"><%= link_to '▲', "#{Site.current_node.public_uri}#{item.id}/swap?sid=#{uid}" if uid != 0 %></td>
+      <td class="dSort"><%= link_to '▼', "#{Site.current_node.public_uri}#{item.id}/swap?sid=#{did}" if did != 0 %>
+      <td class="title"><%=h item.title %></td>
+      <td class="preview"><div class="preview" style="width:220px; height:200px; overflow-x:auto; overflow-y:scroll;"><%= item.body %></div></td>
+    </tr>
+  <% end %>
+  </table>
+  <%= paginate @items %>
+<% end %>
+
+</div>
+</div>

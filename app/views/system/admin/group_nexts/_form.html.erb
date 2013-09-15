@@ -1,0 +1,13 @@
+<%# app/views/system/admin/group_updates/_form %>
+<%
+old_group = System::Group.select_dd_tree2
+%>
+<%= f.hidden_field :group_update_id  %>
+<%= f.hidden_field :operation  %>
+<%= required_head %>
+<table class="show">
+<tr>
+<th>引継元所属<%= required %></th>
+<td><%= f.select :old_group_id , options_for_select(old_group,@old_group_id.to_i) %></td>
+</tr>
+</table>

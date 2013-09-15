@@ -1,0 +1,13 @@
+<% path_index = "#{Site.request_path}" %>
+<br/>
+<%= table_to_index2 @items, {'sort_link_options' => {
+    'sort_keys' => @sort_keys,
+    'path_index' => path_index,
+    'other_query_string' => @qs
+    },
+   'link_to_edit' => 1
+  }
+%>
+<br/>
+<%= paginate @items %>
+<br/>

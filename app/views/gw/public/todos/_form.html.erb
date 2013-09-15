@@ -1,0 +1,19 @@
+<%# app/views/gw/public/todos/_form.html.erb %>
+<%
+# hidden parameters
+options={
+  '_textarea_fields'=>%w(body),
+  'required_cols'=>%w(title),
+  'field_td_criteria' => {'ed_at' => Proc.new{|@item|
+   _opt_dtp = {:errors=>@item.errors, :time=>'false'}
+   date_picker3(f, :ed_at, (@item.ed_at.nil? ? '' : @item.ed_at.strftime('%Y-%m-%d')), _opt_dtp)
+  }}
+}
+
+concat <<-EOL
+#{get_form_title_div params}
+#{required_head}
+#{table_to_form(f, @item, options)}
+#{gw_js_include_full}
+EOL
+%>

@@ -1,0 +1,40 @@
+<%
+  uri = '/login'
+  #caption = "JoruriGw ログイン(#{@mode})#{Gw.svn_str}"
+case request.mobile
+when Jpmobile::Mobile::Docomo
+  num_input_mode = {:istyle=>"4",:style=>"-wap-input-format:&quot;*&lt;ja:n&gt;&quot;" }
+  en_input_mode = {:istyle=>"3",:style =>"-wap-input-format:&quot;*&lt;ja:en&gt;&quot;" }
+else
+  num_input_mode = {:istyle=>"4", :format=>"*N", :MODE=>"numeric"}
+  en_input_mode = {:istyle=>"3", :format=>"*x" ,:MODE=>"alphabet"}
+end
+%>
+<div class="headerTop">
+<img src="/_common/themes/gw/files/mobile/header-logo.gif" border="0" />
+</div>
+<% form_tag uri do -%>
+<%= hidden_field_tag :url, h(params[:url]) %>
+
+<p><%#= caption %></p>
+<%#= div_notice if flash[:notice] %>
+
+<%= div_notice %>
+
+ユーザID<br />
+<%= text_field_tag 'account', '' , num_input_mode%><br />
+<br style="line-height: 0.8;" />
+パスワード<br />
+<%= password_field_tag 'password', '' , en_input_mode%><br />
+<br style="line-height: 0.8;" />
+モバイルパスワード<br />
+<%= password_field_tag 'mobile_password', '' ,en_input_mode%><br />
+<br />
+<%= submit_tag "ログイン"  %>
+<br />
+<br />
+<% end -%>
+<div class="footer">
+<img src="/_common/themes/gw/files/mobile/footer.gif" border="0" />
+</div>
+<%#= set_focus_to_id 'account' %>

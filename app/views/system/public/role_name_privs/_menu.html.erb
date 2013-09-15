@@ -1,0 +1,7 @@
+<%# app/views/system/public/role_name_privs/_menu.html.erb -%>
+<%#= render :partial => 'system/admin/header' -%>
+<div class="menu">
+<p>ロール</p>
+<%= link_to '登録', new_system_role_path + @params_set -%>
+<%= link_to '編集', system_roles_path + @params_set -%>
+</div>

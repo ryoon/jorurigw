@@ -1,0 +1,77 @@
+<div class="menu bbs">
+  <%if @previous.blank? and @next.blank?%>
+  <%else%>
+    <% unless @previous.blank? %>
+      <%=link_to '前ページ', @previous.show_path + "&pp=#{@prev_page}" + gwfaq_params_set %>
+    <% else %>
+      先頭ページです
+    <% end %>
+
+    <% unless @next.blank? %>
+      <%=link_to '次ページ', @next.show_path + "&pp=#{@next_page}" + gwfaq_params_set %>
+    <% else %>
+      最終ページです
+    <% end %>
+  <%end%>
+
+  <%=link_to '編集', @item.edit_path if @is_editable %>
+  <%=link_to('承認', @item.recognize_update_path) if @is_recognize %>
+  <%=link_to('公開', @item.publish_update_path) if @is_publish %>
+  <%=link_to '一覧', @title.adm_docs_path + gwbbs_params_set %>
+  <%=link_to('削除', @item.delete_path, :confirm => '削除をすると元に戻せません。削除しますか', :method => :delete) if @is_editable %>
+</div>
+
+<table class="bbsCreator">
+  <tr>
+    <th style="width: 50px; text-align: left;">作成者</th>
+    <td style="width: 150px; text-align: left;"><%= @item.createdate %></td>
+    <td style="text-align: left;"><%= @item.createrdivision %></td>
+    <td style="width: 150px; text-align: left;"><%= @item.creater %></td>
+  </tr>
+  <tr>
+    <th style="width: 50px; text-align: left;">編集者</th>
+    <td style="width: 150px; text-align: left;"><%= @item.editdate %></td>
+    <td style="text-align: left;"><%= @item.editordivision %></td>
+    <td style="width: 150px; text-align: left;"><%= @item.editor %></td>
+  </tr>
+</table>
+
+<table class="bbsCreator">
+  <tr>
+    <th style="width: 120px; text-align: left;">記事管理課</th>
+    <td style="text-align: left;"><%=@item.section_name%></td>
+  </tr>
+</table>
+
+<%if @title.category == 1 %>
+  <table class="bbsImportance">
+    <tr>
+      <th>
+        <%= @title.category1_name + ' : ' unless @title.category1_name.blank? %>
+        <%= gwbd_category_name(@categories1,@item.category1_id) %>
+    </th>
+    </tr>
+  </table>
+<% end %>
+
+<table class="bbsUserformTitle">
+  <tr>
+    <th>質問</th>
+  </tr>
+  <tr>
+    <td><%=@item.title%></td>
+  </tr>
+</table>
+
+<table class="bbsUserformBody">
+  <tr>
+    <th>回答</th>
+  </tr>
+  <tr>
+    <td><%=@item.body%></td>
+  </tr>
+</table>
+
+<%= render :partial => '/gwboard/public/docs/upload_index' %>
+
+<%=render(:partial => 'recognize_users') if @title.use_recognize %>

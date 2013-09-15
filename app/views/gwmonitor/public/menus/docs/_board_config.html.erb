@@ -1,0 +1,19 @@
+<%
+  item = Gw::UserProperty.new
+  item.and :class_id, 3
+  item.and :name, 'gwmonitor'
+  item.and :type_name, 'help_link'
+  help = item.find(:first)
+  array_help = Array.new(2, ['', ''])
+  array_help = JsonParser.new.parse(help.options) unless help.blank?
+%>
+<table class="show">
+<%if @title.state == 'closed'%>
+<tr><th>状態</th>
+<td><%= h @title.status_name%></td></tr>
+<%end%>
+<tr><th>回答表示設定<span class="help"><%=array_help[1]%></span></th>
+<td><%=@title.spec_config_name_status%></td></tr>
+<tr><th>回答期限日</th>
+<td><%=@title.expiry_date.strftime('%Y-%m-%d %H:%M') unless @title.expiry_date.blank?%></td></tr>
+</table>

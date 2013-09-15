@@ -1,0 +1,37 @@
+<%# app/views/system/admin/group_changes/_menu.html %>
+<%#= render :partial => 'system/admin/header2' %>
+<div id="navigation">
+<table><tr>
+<td><p>組織変更(1)</p></td>
+<td class="menu">
+<div class="contentMenu">
+<div class="menu">
+<p>組織変更</p>
+<%= link_to '作業状況', system_group_changes_path                   ,:class=> (@current == 'main'      ? 'current' : '') %>
+<%= link_to '事前準備', prepare_system_group_changes_path          ,:class=> (@current == 'prepare'   ? 'current' : '') %>
+<%= link_to '変更登録', system_group_updates_path                   ,:class=> (@current == 'updates'   ? 'current' : '')   %>
+<%= link_to '引継反映', reflects_system_group_changes_path         ,:class=> (@current == 'reflects'  ? 'current' : '') %>
+<%= link_to '反映確認', system_group_history_temporaries_path      ,:class=> (@current == 'history'   ? 'current' : '') %>
+<%= link_to '抽出設定', system_group_change_pickups_path            ,:class=> (@current == 'pickups'    ? 'current' : '')%>
+</div>
+</div>
+</td></tr></table>
+</div>
+
+<div id="navigation">
+<table><tr>
+<td><p>組織変更(2)</p></td>
+<td class="menu">
+<div class="contentMenu">
+<div class="menu">
+<p>組織変更</p>
+<%= link_to 'LDAP同期', system_group_change_ldaps_path              ,:class=> (@current == 'ladp'       ? 'current' : '') %>
+<%= link_to '最新抽出', pickup_system_group_changes_path            ,:class=> (@current == 'pickup'     ? 'current' : '') %>
+<%= link_to '抽出確認', system_group_temporaries_path(0)            ,:class=> (@current == 'temporary'  ? 'current' : '') %>
+<%= link_to '変更確定', fixed_system_group_changes_path             ,:class=> (@current == 'fixed'      ? 'current' : '') %>
+<%#= link_to 'CSV 出力', csv_system_group_changes_path               ,:class=> (@current == 'csv'        ? 'current' : '') %>
+<%#= link_to '不要削除', deletes_system_group_changes_path           ,:class=> (@current == 'deletes'    ? 'current' : '') %>
+</div>
+</div>
+</td></tr></table>
+</div>

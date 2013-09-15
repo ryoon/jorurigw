@@ -1,0 +1,17 @@
+<%# app/views/system/admin/group_changes/index.html %>
+<%
+options = {
+  'table_name'=>'system_group_change_pickups',:action=>'index',
+  'link_to_show'=>1
+}
+-%>
+<br />
+<div class="showMenu">
+  <%= link_to '登録' ,new_system_group_change_pickup_path %>
+</div>
+<br />
+<div>
+  抽出日設定の履歴は以下の通りです。
+</div>
+<br />
+<%= table_to_index2 @items,options %>

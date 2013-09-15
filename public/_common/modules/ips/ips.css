@@ -1,0 +1,106 @@
+.ips_wrapper {
+  border-top:    2px ridge gray;
+  border-left:   2px ridge gray;
+  border-bottom: 1px solid #b2b2b2;
+  border-right:  1px solid #b2b2b2;
+  position: relative;
+  cursor: text;
+  margin: 0;
+  margin-left: 3px;
+  padding: 0;
+  width: 65px;
+  display: inline-block;
+  vertical-align: top;
+}
+.ips_wrapper .ips_text {
+  padding: 0px 5px;
+  overflow: hidden;
+  display: inline-block;
+  font-family: Arial,sans-serif;
+}
+.ips_input {
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  border-top: ridge 2px;
+  border-left: ridge 2px;
+  border-bottom: 1px solid #b2b2b2;
+  border-right: 1px solid #b2b2b2;
+  display: inline-block;
+  width: 65px;
+}
+.hidden {
+  margin-left: -10000px;
+}
+.ips_trigger {
+  position: absolute; 
+  top: 0;
+  right: 0;
+  text-align: center;
+  border-left: 1px solid #ddf;
+  width: 20px;
+  cursor: pointer;
+  color: #ccc;
+  height: 100%;
+  margin: 0;
+}
+.ips_trigger span {
+  margin: 3px auto;
+  display: inline-block;
+  width: 14px;
+}
+.ips_wrapper.over .ips_trigger {
+  border-left: 1px solid #578bc5;
+}
+.ips_trigger.over {
+  color: #333;
+}
+.ips_options_list, .ips_options_list li {
+  margin: 0;
+  padding: 0;
+}
+.ips_options_list {
+  position: absolute;
+  background: #578bc5;
+  border: 1px solid #578bc5;
+  z-index: 100;
+  left: -1px;
+  width: 100%;
+  margin-top: 5px;
+}
+.ips_options_list li {
+  padding: 1px 5px 1px 5px;
+  background: #fff;
+  color: #578bc5;
+  cursor: pointer;
+  overflow: hidden;
+  height: 18px;
+  list-style-type: none;
+  background: #fff 0 0 no-repeat;
+}
+.ips_options_list li.over {
+  background: #E8EFF7 0 0 no-repeat;
+  color: #f55;
+}
+.ips_options_list li.off {
+  background: #fff 0 -18px no-repeat;
+}
+.ips_options_list li.off.over {
+  background: #E8EFF7 0 -18px no-repeat;
+  color: #f55;
+}
+.ips_options_list li.half {
+  background: #fff 0 -36px no-repeat;
+}
+.ips_options_list li.half.over {
+  background: #E8EFF7 0 -36px no-repeat;
+  color: #f55;
+}
+
+
+/* my stuff */
+
+.ips_wrapper {
+/*  margin: 1em;
+  font-family: Georgia; */
+}

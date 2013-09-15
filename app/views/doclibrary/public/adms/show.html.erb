@@ -1,0 +1,37 @@
+<div class="menu bbs">
+  <%=link_to '編集', @item.edit_path if @is_editable %>
+  <%=link_to('承認', @item.recognize_update_path) if @is_recognize %>
+  <%=link_to('公開', @item.publish_update_path) if @is_publish %>
+  <%=link_to '一覧', @title.adm_docs_path + gwbbs_params_set %>
+  <%=link_to('削除', @item.delete_path, :confirm => '削除をすると元に戻せません。削除しますか', :method => :delete) if @is_editable %>
+</div>
+
+<table class="docCreator">
+  <tr>
+    <th style="width: 50px; text-align: left;">作成者</th>
+    <td style="width: 150px; text-align: left;"><%= @item.createdate %></td>
+    <td style="text-align: left;"><%= @item.createrdivision %></td>
+    <td style="width: 150px; text-align: left;"><%= @item.creater %></td>
+  </tr>
+  <tr>
+    <th style="width: 50px; text-align: left;">編集者</th>
+    <td style="width: 150px; text-align: left;"><%= @item.editdate %></td>
+    <td style="text-align: left;"><%= @item.editordivision %></td>
+    <td style="width: 150px; text-align: left;"><%= @item.editor %></td>
+  </tr>
+</table>
+
+<table class="docformBody">
+  <tr>
+    <th><%=hbr(@item.title)%></th>
+  </tr>
+  <tr>
+    <td><%=@item.body%></td>
+  </tr>
+</table>
+
+<%= render :partial => '/gwboard/public/docs/upload_index' %>
+
+<%=render(:partial => 'recognize_users') if @title.use_recognize %>
+
+<%= render :partial => 'doclibrary/public/docs/hidden_form' %>

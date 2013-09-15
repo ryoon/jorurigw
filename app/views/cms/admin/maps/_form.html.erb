@@ -1,0 +1,21 @@
+<table class="show">
+  
+  <tr>
+    <th>状態</th>
+    <td><%=radio f, :state, @item.states, :class => 'state' %></td>
+  </tr><tr>
+    <th>並び順</th>
+    <td><%= f.text_field :sort_no, :class => 'num sort_no' %></td>
+  </tr><tr>
+    <th>ディレクトリ</th>
+    <td><%= f.select :node_id, Site.root_node.all_nodes_collection(:indent => '　　'), :include_blank => true %></td>
+  </tr><tr>
+    <th>表示名称（省略可）</th>
+    <td><%= f.text_field :title, :class => 'string title' %></td>
+  </tr>
+
+</table>
+
+<%#= recognizer_form f, @item %>
+
+<%#= task_form f, @item %>

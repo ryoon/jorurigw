@@ -1,0 +1,57 @@
+<%# app/views/system/admin/roles/_form.html.erb %>
+<table class="show">
+  <tr>
+    <th>権限ロール名</th>
+    <td><%= f.text_field :table_name, :class => 'string', :style => 'width: 200px;' %></td>
+  </tr>
+  <tr>
+    <th>対象権限</th>
+    <td><%= f.text_field :priv_name, :class => 'string', :style => 'width: 200px;' %></td>
+  </tr>
+  <tr>
+    <th>優先順位</th>
+    <td><%= f.text_field :idx, :class => 'string', :style => 'width: 200px;' %></td>
+  </tr>
+  <tr>
+    <th>種別</th>
+    <td><%= radio f, 'class_id', @item.role_classes, :onClick => 'sel_class();' %></td>
+  </tr>
+  <tr>
+    <th>ユーザ</th>
+    <td><%= select_tag("item[uid_raw]", Gw.options_for_select(System::User.find(:all, :conditions=>"state='enabled'").collect{|x| [x.display_name, x.id]}, @item.class_id == 1 ? @item.uid.to_i : nil)) %></td>
+  </tr>
+  <tr>
+    <th>グループ</th>
+    <td><%= select_tag("item[gid_raw]", Gw.options_for_select(System::Group.find(:all, :conditions=>"state='enabled' and level_no in (2,3)").collect{|x| ["[L#{x.level_no}]#{x.name}", x.id]}, @item.class_id == 2 ? @item.uid.to_i : nil)) %></td>
+  </tr>
+  <tr>
+    <th>許可</th>
+    <td><%=radio f, 'priv', @item.privs %></td>
+  </tr>
+</table>
+<div id="pp"></div>
+<script language = "JavaScript">
+//<![CDATA[
+  var sel_class = function() {
+    //pp(arguments.callee.toString())
+    //pp(radio_selected('item[class_id]'))
+    //pp(gdbn('item[class_id]')[radio_selected('item[class_id]')])
+    idx = arguments.length == 1 ? arguments[0] : radio_selected('item[class_id]')
+    switch (idx) {
+    case 0:
+      $('item_uid_raw').disabled = true;
+      $('item_gid_raw').disabled = true;
+      break;
+    case 1:
+      $('item_uid_raw').disabled = false;
+      $('item_gid_raw').disabled = true;
+      break;
+    case 2:
+      $('item_uid_raw').disabled = true;
+      $('item_gid_raw').disabled = false;
+      break;
+    }
+  }
+  sel_class();
+//]]>
+</script>

@@ -1,0 +1,125 @@
+<% # app/views/gw/public/prop_extras/index.html.erb
+
+@hedder2lnk = 3 if @history.blank?
+@hedder2lnk = 4 if @history == '1'
+@hedder2lnk = 5 if @history == '2'
+@hedder2lnk = 8 if params[:s_genre] == @genre && @genre == "other"
+
+@sp_mode = :prop
+@sp_mode_extra = @genre
+
+@hedder3lnk = 1
+@hedder3lnk = 2 if nz(params[:order], 'st_at') == 'group' && @genre == 'rentcar'
+@hedder3lnk = 4 if @results == "make"
+
+
+#concat render(:partial => "#{@erb_base}/header")
+header_str = render(:partial => '/gw/public/schedules/schedule_bt_box', :locals=>{:d=>Date.today, :mode=>'month'})
+#header_str += render(:partial => "#{@erb_base}/header")
+
+def search_field(tag_id, caption)
+  %Q(<div class="#{tag_id}">#{caption}#{text_field_tag(tag_id, params[tag_id])}</div>)
+end
+
+today = Date.today
+year = today.year
+
+@wdays = ["日", "月", "火", "水", "木", "金", "土"]
+
+search_fields = nil
+
+search_fields_hidden = %Q(#{hidden_field_tag('s_genre', params[:s_genre])}
+  #{hidden_field_tag('sort_keys', params[:sort_keys])}
+  #{hidden_field_tag('history', params[:history])}
+  #{hidden_field_tag('s_prop_name', @s_prop_name)}
+  #{hidden_field_tag('cls', params[:cls])}
+  #{hidden_field_tag('results', params[:results])}
+)
+
+case params[:s_genre]
+when 'other'
+  render(:partial => '/gw/public/prop_extras/index_other')
+  case params[:cls]
+  when 'other'
+    search_fields = [search_fields_hidden +
+      "施設名" + select_tag('s_prop_name' , options_for_select( @prop_list, @s_prop_name) ),
+      "利用責任者所属" + select_tag('s_owner_gid' , options_for_select( @owner_group_list, @s_owner_gid) ),
+      "設備の状態" + select_tag('s_prop_state' , options_for_select( @prop_state_list, @s_prop_state) ),
+      "開始日" + select_tag('s_st_at' , options_for_select( @st_at_list, nz(params[:s_st_at], 0 )) )
+    ]
+  end
+
+end
+#render :partial => 'gw/public/prop_extras/search'
+
+title_s = case @s_order
+when 'st_at'
+  '予約一覧'
+when 'group'
+  '所属別一覧'
+end
+
+check_flg = false
+
+body = ""
+body = "#{@page.total_entries}件、データが存在します。"
+body += search_struct(search_fields, :old=>1) if !search_fields.blank?
+body += "<div class=\"functionBox\">#{link_to( "CSV出力", "/gw/prop_extras/csvput#{@prop_params}" , :class => "borderButton")}</div>" if !@results_flg
+body += nz(@table_str, "")
+body += nz(paginate(@page))
+
+#@edit_path = "/gw/prop_extras/list#{@prop_params}"
+#form_for :items, @items, :url => @edit_path ,:action=>:update ,:html => {:method=>:put , :multipart => true} do |item|
+#  body += table_to_index2(@items, options)
+#  item.submit '保存'
+#end
+header = <<-EOL
+<h2 class="title">管理画面</h2>
+EOL
+
+header_str = header_str.gsub(/\r\n|\r|\n/, "")  # デザインからの依頼で、改行を削除している。
+
+#{render :partial => "search"}
+body = {
+  :header => <<-EOL,
+#{header_str}
+<div class="date">#{Gw.date_str(Date.today)}</div>
+<div class="title">#{title_s}</div>
+#{show_notice}
+EOL
+  :body => body
+}
+
+#concat piece_struct('prop_extra', 'index', head, body)
+
+
+concat hhbff_struct(:prop_extra, :index, :header=>header, :body=>body)
+%>
+<script type="text/javascript">
+//<![CDATA[
+
+/**
+ * List Utility.
+ */
+function List_Form() {
+}
+
+/**
+ * Methods.
+ */
+List_Form.checkAll   = _List_Form_checkAll;
+
+/**
+ * Checks the checkbox.
+ */
+function _List_Form_checkAll(formId, itemId, value) {
+	form = document.getElementById(formId);
+	for (var i = 0; i < form.elements.length; i++) {
+		pattern = new RegExp('^' + itemId + '\\[.*\\]');
+		if(form.elements[i].name.match(pattern)) {
+			form.elements[i].checked = value;
+		}
+	}
+}
+//]]>
+</script>

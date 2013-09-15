@@ -1,0 +1,10 @@
+<div>
+  <%=h @item.title %>
+  <span><%=h @item.published_at ? @item.published_at.strftime('%Y年%-m月%-d日') : '0000-00-00' %></span>
+</div>
+
+<br />
+
+<div>
+<%= @item.mobile_body == '' ? @item.body : @item.mobile_body %>
+</div>

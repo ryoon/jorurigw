@@ -1,0 +1,6 @@
+<% # app/views/gw/public/prop_genre_common/_form.html.erb
+concat <<-EOL
+#{render :partial => '/gw/public/prop_form', :locals => {:f => f}}
+#{gw_js_include_full}
+EOL
+%>

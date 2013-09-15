@@ -1,0 +1,21 @@
+<%
+
+_input = Proc.new do |name|
+  _name = f.object_name.to_s + "[_tags][#{name}]"
+  value = item.find_tag_by_name(name)
+  value = params[f.object_name] ? params[f.object_name][:_tags][name.to_s] : value
+  text_field_tag _name, value, :style => 'width: 140px'
+end
+
+%><table class="show">
+  
+  <tr>
+    <th>関連ワード</th>
+    <td>
+      <%= _input.call('1') %> &nbsp;
+      <%= _input.call('2') %> &nbsp;
+      <%= _input.call('3') %> &nbsp;
+    </td>
+  </tr>
+  
+</table>

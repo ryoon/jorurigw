@@ -1,0 +1,8 @@
+<%=render(:partial => "gwbbs/public/user_forms/form006/index_charge") if params[:state].to_s == 'GROUP'%>
+<%=render(:partial => "gwbbs/public/user_forms/form006/index_category") if params[:state].to_s == 'CATEGORY'%>
+<%=render(:partial => "gwbbs/public/user_forms/form006/index_date") if params[:state].to_s == 'DATE'%>
+<%=render(:partial => "gwbbs/public/user_forms/form006/index_draft") if params[:state].to_s == 'DRAFT'%>
+<%=render(:partial => "gwbbs/public/user_forms/form006/index_draft") if params[:state].to_s == 'NEVER'%>
+<%=render(:partial => "gwbbs/public/user_forms/form006/index_draft") if params[:state].to_s == 'VOID'%>
+<%=render(:partial => "gwbbs/public/user_forms/form006/index_date") if params[:state].blank?%>
+

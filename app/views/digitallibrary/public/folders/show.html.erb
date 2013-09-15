@@ -1,0 +1,9 @@
+<%=render(:partial => 'show_doc') %>
+<div class="btReturn">
+<%
+str_params = ''
+str_params += "&cat=#{@item.parent_id}" unless @item.parent_id == 0 unless @item.parent_id.blank?
+str_params += "&limit=#{params[:limit]}" unless params[:limit].blank?
+%>
+<%=link_to('一覧へ戻る', "#{@title.docs_path}#{str_params}")%>
+</div>

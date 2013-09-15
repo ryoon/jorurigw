@@ -1,0 +1,93 @@
+<% # app/views/gw/public/schedules/_show_month.html.erb
+d = @st_date
+
+@hedder2lnk = 1
+@hedder2lnk = 7 if params[:be] == "other"
+@hedder2lnk = 7 if @gid.to_i != @prop_gid.to_i && params[:be].blank? && params[:s_genre] == "other" && !params[:prop_id].blank?
+
+@view = "month"
+
+table_summary = '<table summary="スケジュール詳細">'
+
+header_str = ""
+show_flg = true
+case @sp_mode
+when :schedule
+when :prop
+  _mdl = Gw::Model::Schedule.get_prop_model(params)
+  prop = _mdl.find_by_id(params[:prop_id])
+  show_flg = prop.delete_state == 0 ? true : false
+  if show_flg && @genre == 'other' && !@is_gw_admin
+    if !Gw::PropOtherRole.is_edit?(params[:prop_id]) && !Gw::PropOtherRole.is_read?(params[:prop_id])
+      show_flg = false
+    end
+  end
+end
+
+header_str = header_str.gsub(/\r\n|\r|\n/, "")
+
+@hide_user_col = true
+default = Gw::NameValue.get('yaml', nil, "gw_schedules_settings_system_default")
+d_org = d
+d_1day = Date::new(d.year, d.month, 1)
+d = d_1day - d_1day.wday
+if @up_schedules.blank?
+  d += default['month_view_leftest_weekday'].to_i
+else
+  d += nz(@up_schedules['schedules']['month_view_leftest_weekday'], default['month_view_leftest_weekday']).to_i
+end
+
+d = d - 7 if d_1day < d
+
+header = <<-EOL
+#{render :partial => '/gw/public/schedules/piece_header', :locals=>{:d=>d_1day, :mode=>'month'}}
+EOL
+
+@total_out_count = 0
+
+
+body_str = Gw.div_notice('表示する項目はありません。')
+
+if show_flg
+  body_str = <<-EOL
+  #{table_summary}
+  <tr class="scheduleTableHead weekdayHead">
+  #{ret=''; 7.times { |i|
+    wday = (d+i).wday
+    class_str = %Q(scheduleData #{Gw.weekday(wday,'eh')})
+    ret += %Q(<th class="#{class_str}">&nbsp;<span class="nobr">) +
+      "#{Gw.weekday(wday)}" +
+      '</span></th>'
+  }; ret}
+  </tr>
+  #{ret=''; 6.times {|i|
+    d_st = d + i * 7
+    ret += render(:partial => '/gw/public/schedules/show_week_part', :locals=>{
+      :d=>d_st, :dv=>d_1day, :mode=>'month'}) if (d_st.year * 12 + d_st.month) <= (d_1day.year * 12 + d_1day.month)
+  }; ret}
+  </table>
+EOL
+end
+body = {
+  :header => <<-EOL,
+#{render(:partial => '/gw/public/schedules/schedule_header', :locals=>{:d=>d_org, :mode=>'month', :show_flg => show_flg})}
+#{header_str}
+#{show_notice}
+EOL
+  :body => body_str,
+  :footer => render(:partial => '/gw/public/schedules/schedule_footer', :locals=>{:d=>d, :mode=>'month', :show_flg => show_flg})
+}
+
+concat <<-EOL
+#{hhbff_struct(:schedulePiece, :monthview, :header=>header, :body=>body)}
+#{gw_js_ind_popup}
+<script type="text/javascript">
+//<![CDATA[
+  var my_load = function() {
+    gw_js_ind_popup();
+  }
+  window.onload = my_load;
+//]]>
+</script>
+EOL
+%>

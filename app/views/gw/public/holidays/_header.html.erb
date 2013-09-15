@@ -1,0 +1,10 @@
+<% # app/views/gw/public/holidays/_header.html.erb
+@hcs = Gw.yaml_to_array_for_select('gw_holiday_categories') if @hcs.blank?
+hcs = @hcs.collect{|x| link_to x[0], "/gw/holidays?category=#{x[1]}"}.join
+concat <<-EOL
+<div class="menu">
+<p>休日管理</p>
+#{hcs}
+</div>
+EOL
+%>

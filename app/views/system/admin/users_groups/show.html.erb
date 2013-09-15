@@ -1,0 +1,21 @@
+<%
+options={
+  'table_name'=>'system_users_groups',
+  :action=>'show'
+}
+options['field_td_criteria'] = {
+  '_user_code' => Proc.new{|item|
+     %Q(<a href=/_admin/system/users/#{item.user_id}></a>#{item.user_id})},
+  '_group' => Proc.new{|item|
+     item.group.name+'('+item.group.code+')' },
+  '_user_state'=>Proc.new{|item| System::UsersGroup.state_show(item.user.state) },
+  '_user_post'=>Proc.new{|item| System::User.find(item.user_id).offitial_position }
+}
+%>
+
+<div class="showMenu">
+<%=link_to_edit      @item if @item.editable? %>
+<%=link_to_destroy   @item if @item.deletable? %>
+</div>
+
+<%= table_to_show2 @item,options %>

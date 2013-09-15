@@ -1,0 +1,27 @@
+<table class="index">
+  
+  <tr>
+    <th style="width: 60px; text-align: center;">Show</th>
+    <th style="width: 60px; text-align: center;">Ext</th>
+    <th style="width: 60px; text-align: right;">Id</th>
+    <th style="width: 20%;">Name</th>
+    <th style="width: ;">Outline</th>
+    <th style="width: 20%;">Controller</th>
+    <th style="width: 60px; text-align: center;">Status</th>
+  </tr>
+  
+  <% for item in @items %>
+  <tr <%= cycle '', 'class="cycle"' %>>
+    <td style="text-align: center;"><%= link_to_show item %></td>
+    <td style="text-align: center;"><%=link_to 'リンク集', cms_piece_links_url(item) if item.controller == 'links' %></td>
+    <td style="text-align: right;"><%=h item.id %></td>
+    <td><%=h item.name %></td>
+    <td><%=h item.outline %></td>
+    <td><%=h item.module %>/<%=h item.controller %></td>
+    <td style="text-align: center;"><%= item.status.name %></td>
+  </tr>
+  <% end %>
+
+</table>
+
+<%= paginate @items %>

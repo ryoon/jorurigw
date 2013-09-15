@@ -1,0 +1,234 @@
+<%
+d = @st_date
+
+@hedder2lnk = 1
+@hedder2lnk = 7 if params[:be] == "other"
+@hedder2lnk = 7 if @gid.to_i != @prop_gid.to_i && params[:be].blank? && params[:s_genre] == "other" && !params[:prop_id].blank?
+
+@hedder3lnk = 1
+
+@view = "day"
+
+table_summary = '<table summary="スケジュール詳細"  class="scheduleTable">'
+
+items_all = {}
+header_str = ""
+show_flg = true
+
+case @sp_mode
+when :schedule
+
+  users = @users ? @users :  Gw::Model::Schedule.get_users(params)
+  users.each{|x| items_all[x.id] = Gw::Model::Schedule.select_my_data(d, d, x.id , {:user => x, :is_gw_admin => @is_gw_admin}).select{|x| x[:genre] != :holiday}}
+
+when :prop
+
+  raise ArgumentError, "呼び出しが不正です" if params[:s_genre].blank?
+  props = Gw::Model::Schedule.get_props(params, @is_gw_admin, {:s_other_admin_gid=>@s_other_admin_gid})
+  show_flg = false if props.length == 0
+  if !params[:prop_id].blank?
+    _mdl = Gw::Model::Schedule.get_prop_model(params)
+    prop = _mdl.find_by_id(params[:prop_id])
+    show_flg = (prop.delete_state == 0 || props.length != 0) ? true : false
+    if show_flg && @genre == 'other' && !@is_gw_admin
+      if !Gw::PropOtherRole.is_edit?(params[:prop_id]) && !Gw::PropOtherRole.is_read?(params[:prop_id])
+        show_flg = false
+      end
+    end
+  end
+  props.each{|x| items_all[x.id] = Gw::Model::Schedule.select_prop_data(d, d, x.id, params, {:is_gw_admin => @is_gw_admin, :sp_mode => @sp_mode, :s_genre => params[:s_genre]})}
+
+end
+
+def td(colspan=1, options={})
+  caption = options[:caption]
+  class_s = Gw.join([:scheduleData, options[:class]], ' ')
+  %Q(<td class="#{class_s}" colspan="#{(colspan*2).to_int}">#{caption}</td>)
+end
+
+def td_range(st, ed, options={})
+  ret = ''
+  (ed - st + 1).times { ret += td 1, options}
+  ret
+end
+
+def show_user(r, uid = Site.user.id, d = Date::today, items_all={}, options={})
+
+  items = items_all[uid]
+  ln = 0
+  allday_flg = false
+  allday_cnt = 0
+
+  items.each {|item|
+    allday_flg = true if item[:allday] == 1 || item[:allday] == 2
+    allday_cnt += 1 if item[:allday] == 1 || item[:allday] == 2
+  }
+
+  itemlen = items.length
+  allday_flg ? trc = "alldayLine" : trc = "scheduleTableBody categoryBorder"
+  trc = "scheduleTableBody" if itemlen == 0
+  allday_flg ? row = (items.length * 2) - ((allday_cnt * 2) - 1) : row = items.length * 2
+
+  ret = ''
+  ret = <<-EOL
+<tr class="#{trc}">
+<th class="scheduleUser" rowspan="#{items.length == 0 ? 1 : row}">
+#{@sp_mode == :schedule ? Gw::Model::Schedule.user_left_header(d, uid, params, :view=>:day, :user=>options[:user]) :
+  Gw::Model::Schedule.prop_left_header(d, uid, params[:s_genre], params, :view=>:day, :is_gw_admin => @is_gw_admin)}
+</th>
+EOL
+  if items.length == 0
+    ret += td_range r.first, r.last
+    ret += '</tr>'
+  else
+	col = ((r.last - r.first) * 2) + 2
+    items.each {|item|
+      if !item[:allday].blank?
+        ret += "<td colspan=\"#{col}\">" if ln == 0 && allday_flg
+        ret += Gw::Model::Schedule.translate_one_schedule_for_view(item, 1, {:no_image=>1,
+            :request=>request, :mode=>'day', :schedule_settings => @schedule_settings, :is_gw_admin => @is_gw_admin, :sp_mode => @sp_mode})
+        ret += '</td>' if ln == allday_cnt && allday_flg
+      else
+        ret += '<tr class="scheduleTableBody categoryBorder">' if ln != 0
+        _item = item[:item]
+        if _item.ed_at.to_date > d
+          ed_at = 23.5
+        else
+          ed_at = _item.ed_at.hour
+          ed_at += 0.5 if _item.ed_at.min > 30
+          ed_at -= 0.5 if _item.ed_at.min == 0 && ed_at != 0 && _item.st_at != _item.ed_at
+        end
+        if _item.is_a?(Gw::Schedule)
+          if item[:st_at].to_date < d
+            st_at = 0
+          else
+            st_at = item[:st_at].hour
+            st_at += 0.5 if item[:st_at].min >= 30
+          end
+        else
+          st_at = ed_at
+        end
+        ((st_at - (r.first)).floor).times { ret += td }
+        ret += td(0.5) if st_at != st_at.floor
+        len = ed_at - st_at + 0.5
+        if len == 0 && _item.ed_at == _item.st_at
+          len = 0.5
+          ed_at += 0.5
+        end
+        @out_count += 1
+        ret += td(len, :caption=>Gw::Model::Schedule.translate_one_schedule_for_view(item, @out_count, {:sp_mode => @sp_mode, :no_image=>1,
+              :request=>request, :mode=>'day', :schedule_settings => @schedule_settings, :is_gw_admin => @is_gw_admin, :sp_mode => @sp_mode}))
+        ret += td(0.5) if ed_at == ed_at.floor
+        (((r.last) - ed_at).ceil).times { ret += td }
+        ret +='</tr>'
+        ret +='<tr class="scheduleTableBody explanation">' if itemlen != ln + 1
+        ret +='<tr class="scheduleTableBody explanation end">' if itemlen == ln + 1
+        ((st_at - (r.first)).floor).times { ret += td }
+        ret += td(0.5) if st_at != st_at.floor
+        ret += "<td colspan=\"#{(((r.last - st_at) * 2) + 2)}\">"
+        item_st_at = item[:st_at].to_date
+        item_ed_at = item[:ed_at].to_date
+        if ed_at == 23.5
+          if len == 24
+            ret += "#{item[:title_raw]}"
+          elsif item_st_at == d
+            ret += "#{item[:st_at].strftime("%H:%M")} -　　#{item[:title_raw]}"
+          end
+        elsif st_at == 0 && item_st_at != item_ed_at
+          ret += "- #{item[:ed_at].strftime("%H:%M")}　　#{item[:title_raw]}"
+        else
+          ret += "#{item[:st_at].strftime("%H:%M")} - #{item[:ed_at].strftime("%H:%M")}  #{item[:title_raw]}"
+        end
+	    if @schedule_settings[:view_place_display] == '1'
+	      	ret += "（#{item[:item].place}）" if !item[:item].place.blank?
+	    end
+        ret += "</td>"
+        ret +='</tr>'
+      end
+      ln += 1
+    }
+  end
+  ret
+end
+
+@out_count = 0
+r_st, r_ed = 8, 19
+
+items_all.each{|k,v|
+  v.each{|x|
+    _item = x[:item]
+    if _item.is_a?(Gw::Schedule)
+      r_st = 0 if x[:st_at].to_date < d
+      r_st = x[:st_at].hour if x[:st_at].to_date == d && x[:st_at].hour < r_st
+    end
+    r_ed = 23 if _item.ed_at.to_date > d
+    r_ed = _item.ed_at.hour if _item.ed_at.to_date == d && _item.ed_at.hour > r_ed
+  }
+}
+
+r = (r_st..r_ed)
+
+th_1hours = ''
+
+r.each do |i|
+  th_1hours += %Q(<th class="scheduleData" colspan="2"><span class="nobr t#{"%02d" % (i % 12 == 0 ? 12 : i % 12)}">#{i}</span></th>)
+end
+
+tr_header = <<-EOL
+<tr class="scheduleTableHead">
+<th class="scheduleUser"><span class="nobr">#{@title}</span></th>
+#{th_1hours}</tr>
+EOL
+
+header_each = nz(schedule_settings[:header_each], 5).to_i rescue 5
+
+header = <<-EOL
+#{show_notice}
+#{render :partial => '/gw/public/schedules/piece_header', :locals=>{:d=>d, :mode=>'day'}}
+EOL
+
+header_str = header_str.gsub(/\r\n|\r|\n/, "")
+
+ret = ''
+if show_flg
+  if @sp_mode == :schedule
+    users.each_with_index{|user, ln|
+      ret += tr_header if header_each == 0 && ln == 0 || header_each != 0 && ln % header_each == 0
+      ret += show_user(r, user.id, d, items_all, :user=>user)
+    }
+  else
+    props.each_with_index{|prop, ln|
+      value = show_user(r, prop.id, d, items_all)
+      ret += tr_header if header_each == 0 && ln == 0 || header_each != 0 && ln % header_each == 0
+      ret += value
+    }
+  end
+  ret += tr_header if header_each > 0
+else
+  ret = Gw.div_notice('表示する項目はありません。')
+end
+
+body = {
+  :header => header_str + render(:partial => '/gw/public/schedules/schedule_header', :locals=>{:d=>d, :mode=>'day', :show_flg => show_flg}),
+  :body => <<-EOL,
+#{table_summary}
+#{ret}
+</table>
+EOL
+  :footer => render(:partial => '/gw/public/schedules/schedule_footer', :locals=>{:d=>d, :mode=>'day', :show_flg => show_flg})
+}
+
+concat <<-EOL
+#{hhbff_struct(:schedulePiece, :dayview, :header=>header, :body=>body)}
+#{gw_js_ind_popup}
+<script type="text/javascript">
+//<![CDATA[
+  var my_load = function() {
+    gw_js_ind_popup();
+  }
+  window.onload = my_load;
+//]]>
+</script>
+EOL
+
+%>

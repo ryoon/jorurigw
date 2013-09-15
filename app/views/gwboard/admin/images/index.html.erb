@@ -1,0 +1,86 @@
+<style type="text/css">
+html {
+  overflow-x: hidden;
+}
+</style>
+<%
+  _form_id = 'item_body'  #デフォルト値
+  _form_id = params[:form_id].to_s unless params[:form_id].blank?
+%>
+<% form_for :item, :url => {:action => :create, :system => params[:system],:title_id => params[:title_id], :form_id => params[:form_id]}, :html => {:multipart => true} do |f| %>
+
+  <%=@capacity_message%>
+  <%= f.error_messages %>
+  <% unless @disk_full %>
+    <p>
+      <label>画像ファイル:</label>
+      <%= f.file_field :uploaded_data %><%= submit_tag 'アップロード' %>
+      <%=@max_file_message%>
+    </p>
+  <% end %>
+  <%= %Q(<div class="notice">#{flash[:notice]}</div>) if flash[:notice] %>
+  <input type="hidden" name="system" value='<%="#{params[:system]}"%>' />
+  <input type="hidden" name="title_id" value='<%="#{params[:title_id]}"%>' />
+
+<% end %>
+
+  <script type="text/javascript">
+//<![CDATA[
+  function mceInsertContent(value) {
+    parent.tinyMCE.execInstanceCommand('<%= _form_id %>','mceInsertContent',true, value);
+  }
+
+  function selectAction() {
+    var filesForm = document.filesForm;
+    var selectFile;
+      for(i=0; i < filesForm.elements.s_item.length; i++) {
+        if(filesForm.elements.s_item[i].checked == true){
+          var element = document.getElementById("link_attach" + filesForm.elements.s_item[i].value);
+          alert(element.getAttribute("onclick"));
+        }
+      }
+  }
+//]]>
+</script>
+
+<table class="list" style="margin-right: 18px; margin-bottom:0px;">
+<tr>
+<th style="width: 100px; text-align: center;">画像</th>
+<th>画像ファイル名</th>
+<th style="width: 120px; text-align: center;">サイズ（幅x高さ）</th>
+<th style="width: 80px; text-align: center;">画像貼付</th>
+<th style="width: 40px;  text-align: center;">削除</th>
+</tr>
+
+<% for item in @items %>
+ <tr>
+ <td style="text-align: center;">
+ <img src="<%=item.image_file_path%>" style="<%= item.reduced_size(:width => 80, :height => 40, :output => :css) %>" alt= ''/>
+ </td>
+ <td style="text-align: left;"><%=item.filename%></td>
+ <td style="text-align: center;"><%= item.eng_unit %>
+ <%= '<br />（' + item.width.to_s + ' x ' + item.height.to_s + '）' %>
+ </td>
+ <td style="text-align: center;">
+ <% if item.image? %>
+  <%
+  if item.is_big_width
+    if @title.system_name == 'doclibrary'
+      #書庫のみ画像幅680pc
+      rst = item.regulate_size(700)
+    else
+      rst = item.regulate_size
+    end
+  %>
+    <a href="#" id="link_image_regulate" onclick="mceInsertContent('<img src=\'<%=item.image_file_path%>\' alt=\'<%= item.filename %>\' height=\'<%="#{rst[:height]}"%>\' width=\'<%="#{rst[:width]}"%>\' >'); return false;">貼付</a>
+   <%else%>
+    <a href="#" id="link_image" onclick="mceInsertContent('<img src=\'<%=item.image_file_path%>\' alt=\'<%= item.filename %>\'>'); return false;">貼付</a>
+   <% end %>
+  <% end %>
+ </td>
+ <td style="text-align: center;">
+ <%=link_to '削除',{:action => :destroy, :id => item, :system => params[:system], :title_id => item.title_id, :form_id => params[:form_id]}, :confirm => '削除してよろしいですか？', :method => :delete%>
+ </td>
+ </tr>
+<% end %>
+</table>

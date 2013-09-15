@@ -1,0 +1,7 @@
+<% sel = [:data, :zip] %>
+<div class="mainMenu">
+<%= render :partial => 'layouts/admin/cms/navi/main', :locals => {:current => sel[0]} %>
+</div>
+<div class="contentMenu">
+<%= render :partial => "layouts/admin/cms/navi/#{sel[0]}", :locals => {:current => sel[1]} %>
+</div>

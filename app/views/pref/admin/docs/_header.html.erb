@@ -1,0 +1,10 @@
+<%= render :partial => 'pref/admin/header' %>
+
+<div class="menu">
+<p>記事</p>
+<%= link_to '新規登録', new_pref_doc_path(@content) %>
+<%= link_to '編集可能', pref_edit_docs_path(@content) %>
+<%= link_to '承認待ち', pref_recognize_docs_path(@content) %>
+<%= link_to '公開待ち', pref_publish_docs_path(@content) %>
+<%= link_to '全庁一覧', pref_docs_path(@content) %>
+</div>

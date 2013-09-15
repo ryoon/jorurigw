@@ -1,0 +1,15 @@
+<%
+@action = "create"
+@create_path = "#{Site.current_node.public_uri}"
+%>
+<%= render :partial => 'header' %>
+<% form_for :item, :url => @create_path ,:action=>:create ,:method=>:post , :html => {:multipart => true} do |f| %>
+
+  <%= f.error_messages %>
+  <%= render :partial => 'form', :locals => {:f => f} %>
+
+  <div class="submitters">
+  <input id="<%= f.object_name %>_state" name="<%= f.object_name %>[state]" type="hidden" value="" />
+  </div>
+
+<% end %>

@@ -1,0 +1,20 @@
+<%#*<p>Find me in app/views/gw/public/edit_tabs/new.html.erb</p>%>
+<%
+  @action = "create"
+  @create_path = "#{Site.current_node.public_uri}?pid=#{@parent.id}"
+%>
+
+<div class="piece AdminSetting">
+
+<%= render :partial => 'header_str' %>
+
+<div class="pieceBody">
+  <%= render :partial => 'header_new_botton' %>
+  <%= render :partial => 'header_navi' %>
+  <%= div_notice %>
+  <% form_for :item, :url => @create_path ,:action=>:create ,:method=>:post , :html => {:id => "itemForm", :multipart => true} do |f| %>
+    <%= render :partial => 'form', :locals => {:f => f} %>
+  <% end  %>
+</div>
+
+</div>

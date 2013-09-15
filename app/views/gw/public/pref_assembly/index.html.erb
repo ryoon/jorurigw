@@ -1,0 +1,104 @@
+<%#*<h1>Gw::Public::PrefAssembly#index</h1>%>
+<%#*<p>Find me in app/views/gw/public/pref_assembly/index.html.erb</p>%>
+<%
+  title_str = "ジョールリ市議会議員在庁表示"
+  fyear = Gw::YearFiscalJp.get_record(Time.now)
+  display_time  = '(' + fyear.namejp.to_s + '年' + Time.now.strftime('%m月%d日 %H:%M 現在') + ')'
+  # スケジュラーメニューのパラメーター
+  d=Time.now
+  @st_date=Time.now.strftime('%Y%m%%d')
+  mode='assembly'
+%>
+<div id="contentBody">
+<div class="piece schedulePiece">
+<div class="pieceHeader"><h2 class="pieceTitle">スケジュール</h2>
+<div class="btsHeaderLeft">
+<span class="btNew"><a href="/gw/schedules/new">新規作成</a></span>
+</div>
+</div>
+<div class="pieceBody">
+
+<div class="pieceBodyHeader">
+<%= render :partial => "gw/public/schedules/schedule_bt_box"  ,:locals=>{:d=>d , :mode=>mode} %>
+<div class="scheduleTableTitle"><%= title_str %><span class="presentTime"><%= display_time %></span></div>
+</div><!--pieceBodyHeader-->
+
+<div class="pieceBodyBody assembly">
+
+  <div class="unitBox">
+<%if @items1.size > 0%>
+    <div class="unit">
+    <div class="unitHeader"><%= @items1[0].g_name.to_s %></div>
+    <div class="scheduleUser <%= @items1[0].state if @items1[0].state=='off'%> ">
+    <div class="leftHeader userIcon1  ">
+    <%if @u_role == true%>
+      <a class="userIcon" href="<%= %Q(/gw/pref_assembly/#{@items1[0].id}/state_change?p_state=#{@items1[0].state}) %>">
+      <%=Gw::PrefAssemblyMember.state_show(@items1[0].state)%>
+      </a>
+    <%else%>
+    <span class="userIcon"><%=Gw::PrefAssemblyMember.state_show(@items1[0].state)%></span>
+    <%end%>
+    <div class="username">
+    <span><%= @items1[0].u_lname %><%= @items1[0].u_name %></span>
+    </div><!--username-->
+    </div><!--leftHeader-->
+    </div><!--scheduleUser-->
+    </div><!--unit-->
+<%end%>
+<%if @items2.size > 0%>
+    <div class="unit">
+    <div class="unitHeader"><%= @items2[0].g_name.to_s %></div>
+    <div class="scheduleUser <%= @items2[0].state if @items2[0].state=='off'%> ">
+    <div class="leftHeader userIcon2  ">
+    <%if @u_role == true%>
+      <a class="userIcon" href="<%= %Q(/gw/pref_assembly/#{@items2[0].id}/state_change?p_state=#{@items2[0].state}) %>">
+      <%=Gw::PrefAssemblyMember.state_show(@items2[0].state)%>
+      </a>
+    <%else%>
+    <span class="userIcon"><%=Gw::PrefAssemblyMember.state_show(@items2[0].state)%></span>
+    <%end%>
+    <div class="username">
+    <span><%= @items2[0].u_lname %><%= @items2[0].u_name %></span>
+    </div><!--username-->
+    </div><!--leftHeader-->
+    </div><!--scheduleUser-->
+    </div><!--unit-->
+<%end%>
+  </div><!--unitBox-->
+
+<% if @items3.size > 0 %>
+  <% dept_in   = @items3[0].g_name %>
+  <div class="unit">
+  <div  class="unitHeader"><%= @items3[0].g_name %></div>
+  <% @items3.each do |item| %>
+    <% if item.g_name != dept_in %>
+    <%# 政党名が変わったら、unit end %>
+    </div><!--unit-->
+    <%
+      dept_in = item.g_name
+    %>
+    <div class="unit">
+    <div  class="unitHeader"><%= item.g_name %></div>
+    <% end %>
+    <div class="scheduleUser <%= item.state if item.state=='off'%> ">
+    <div class="leftHeader userIcon2  ">
+    <%if @u_role == true%>
+      <a class="userIcon" href="<%= %Q(/gw/pref_assembly/#{item.id}/state_change?p_state=#{item.state}) %>">
+      <%=Gw::PrefAssemblyMember.state_show(item.state)%>
+      </a>
+    <%else%>
+    <span class="userIcon"><%=Gw::PrefAssemblyMember.state_show(item.state)%></span>
+    <%end%>
+    <div class="username">
+    <span><%= item.u_lname %><%= item.u_name %></span>
+    </div><!--username-->
+    </div><!--leftHeader-->
+    </div><!--scheduleUser-->
+  <% end %>
+  <%# データの終わりで　unit end %>
+  </div><!--unit-->
+<% end %>
+</div><!--pieceBodyBody-->
+</div><!--pieceBody-->
+</div><!--schedulePiece-->
+</div><!--contentBody-->

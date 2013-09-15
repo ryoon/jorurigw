@@ -1,0 +1,10 @@
+<!--
+<%#*<div class="menu">%>
+  <%#*<span class="gwfaq_menu_item nobr"><%= link_to '分類を追加する', "#{Site.current_node.public_uri}new/?parent_id=#{params[:parent_id]}&title_id=#{params[:title_id]}" %></span>%>
+  <%#*<span class="gwfaq_menu_item nobr"><a class="" href='/gwqa/makers/<%="#{params[:title_id]}"%>'>QA詳細</a></span>%>
+<%#*</div>%>
+-->
+<div class="editingBox">
+  <span class="btNew"><%= link_to '分類を追加する', "#{Site.current_node.public_uri}new/?parent_id=#{params[:parent_id]}&title_id=#{params[:title_id]}" %></span>
+　<span class="docLink"><a href='/gwqa/makers/<%="#{params[:title_id]}"%>'>QA詳細画面へ &gt;&gt;</a></span>
+</div>

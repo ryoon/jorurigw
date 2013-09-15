@@ -1,0 +1,26 @@
+<%
+
+if !@item.unid && @item.class.include?(Cms::Model::Base::TmpFile)
+
+%><table class="show">
+    <th>添付ファイル</th>
+    <td>
+      <%= link_to '添付ファイル', cms_tmp_files_path(@item.tmp_id), :target => :blank %>
+      <%= f.hidden_field :tmp_id %>
+    </td>
+  </tr>
+</table>
+<%
+
+elsif @item.unid
+
+%><table class="show">
+    <th>添付ファイル</th>
+    <td>
+      <%= link_to '添付ファイル', cms_files_path(@item.unid), :target => :blank %>
+    </td>
+  </tr>
+</table>
+<%
+
+end %>

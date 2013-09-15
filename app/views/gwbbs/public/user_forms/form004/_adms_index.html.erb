@@ -1,0 +1,17 @@
+<table class="index">
+<th style="width: 60px; text-align: left;">状態</th>
+<th style="text-align: left;">所属名</th>
+<th style="width:100px; text-align: left;">職</th>
+<th style="width:100px; text-align: left;">氏名</th>
+<th style="width:100px; text-align: left;">電話番号</th>
+<th style="text-align: left;">メールアドレス</th>
+<% for item in @items%>
+<tr>
+ <td><%= link_to item.section_name, item.show_path %></td>
+ <td><%= link_to item.inpfld_001, item.show_path %></td>
+ <td><%= link_to item.title, item.show_path %></td>
+ <td><%= link_to item.body, item.show_path %></td>
+ <td><%= link_to item.inpfld_002, item.show_path %></td>
+ </tr>
+<%end%>
+</table>

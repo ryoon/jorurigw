@@ -1,0 +1,23 @@
+<%
+  str_catg = '階層毎一覧'
+  str_draft = '下書き'
+  str_recognize = '承認待ち'
+  str_publish = '公開待ち'
+  str_all = '全記事'
+  str_catg = '【階層毎一覧】' if params[:state].blank?
+  str_draft = '【下書き】' if params[:state] == 'DRAFT'
+  str_recognize = '【承認待ち】' if params[:state] == 'RECOGNIZE'
+  str_publish = '【公開待ち】' if params[:state] == 'PUBLISH'
+  str_all = '【全記事】' if params[:state] == 'ALL'
+%>
+<%= render(:partial => 'folder_name') if params[:state].blank? %>
+<div class="menu bbs">
+<!--  <a class="" href='<%#="/#{@title.item_home_path}/adms/new?title_id=#{params[:title_id]}"%>'>新規記事</a> -->
+  <a class="" href='<%="#{@title.item_home_path}adms/new?title_id=#{params[:title_id]}&cat=#{params[:cat]}"%>'>新規記事</a>
+  <%=link_to(str_catg, gwbd_public_url_base)%>
+  <%=link_to(str_draft, "#{gwbd_public_url_base}&state=DRAFT")%>
+  <%=link_to(str_recognize, "#{gwbd_public_url_base}&state=RECOGNIZE")%>
+  <%=link_to(str_publish, "#{gwbd_public_url_base}&state=PUBLISH")%>
+  <%=link_to(str_all, "#{gwbd_public_url_base}&state=ALL")%>
+  <%=link_to("公開画面へ移動", @title.docs_path) %>
+</div>

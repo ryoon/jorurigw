@@ -1,0 +1,49 @@
+<%
+
+anc_list = {}
+anc = lambda do |_k|
+  return '' unless anc_list[_k].nil?
+  anc_list[_k] = true
+  '<a name="day' + _k.to_s.gsub(/..(..)/, '\1') + '"></a>'
+end
+
+%><div class="contentPrefEventDocs">
+<% if false %>
+<h3><%= @calendar.month %>月　<%= Site.current_node.title %></h3>
+
+<div class="navi">
+<%= link_to "#{@calendar.prev_month}月", @calendar.prev_month_uri, :class => "prevMonth" %>
+<%= link_to "#{@calendar.next_month}月", @calendar.next_month_uri, :class => "nextMonth" %>
+</div>
+<% end %>
+<table class="calendar">
+  
+  <% @days.each do |k, d| %>
+  
+  <% if d[:docs].size > 0; d[:docs].each do |doc| %>
+  <tr>
+    <td class="<%= d[:day][:class] %>"><%= anc.call(k) %>
+      <%= d[:day][:month] %>月<%= d[:day][:day] %>日（<%= d[:day][:wday_label] %>）</td>
+<% if false %>
+    <td class="category"><%=h doc.categories[0].category.title if doc.categories[0] && doc.categories[0].category %></td>
+<% end %>
+    <td class="attribute"><%#=h doc.attribute.title %></td>
+    <td class="title"><%= link_to h(doc.title), doc.public_uri %></td>
+  </tr>
+  <% end; else %>
+  <tr>
+    <td class="<%= d[:day][:class] %>"><%= anc.call(k) %>
+      <%= d[:day][:month] %>月<%= d[:day][:day] %>日（<%= d[:day][:wday_label] %>）</td>
+<% if false %>
+    <td class="category">&nbsp;</td>
+<% end %>
+    <td class="attribute">&nbsp;</td>
+    <td class="title">&nbsp;</td>
+  </tr>
+  <% end %>
+  
+  <% end %>
+
+</table>
+
+</div>

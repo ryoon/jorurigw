@@ -1,0 +1,40 @@
+<div style="margin: 10px 0px;">
+LDAPサーバとの同期処理
+</div>
+
+<div class="showMenu">
+<%= link_to '確認', url_for(:actoin => :show, :id => 0, :do => :test) %>
+<%= link_to '同期', url_for(:action => :show, :id => 0, :do => :synchronize), :confirm => '同期してよろしいですか？' %>
+</div>
+
+<% if @groups && @groups.size > 0 %>
+
+<div style="margin: 10px 0px; font-size: 90%; font-family: 'MS Gothic';">
+  <% @groups.each do |dep| %>
+    <div style="background-color: #ddd; <%= 'color: red;' if dep[:duplicated] %>">
+      <%#= dep[:parent_id] %><%= dep[:parent_code] %>,<%= dep[:id] %>,<%= dep[:name] %>,<%= dep[:name_en] %>,<%= dep[:email] %>
+    </div>
+    <% dep[:sections].each do |sec| %>
+      <span style="<%= 'color: red;' if sec[:duplicated] %>">
+        <%#= sec[:parent_id] %><%= sec[:parent_code] %>,<%= sec[:id] %>,<%= sec[:name] %>,<%= sec[:name_en] %>,<%= sec[:email] %>
+      </span><br />
+    <% end %>
+  <% end %>
+</div>
+
+<% end %>
+
+<% if @users && @users.size > 0 %>
+
+<div style="margin: 10px 0px; font-size: 90%; font-family: 'MS Gothic';">
+  <div style="background-color: #ddd;">
+    ユーザー
+  </div>
+  <% @users.each do |user| %>
+    <span style="<%= 'color: red;' if user[:duplicated] %>">
+      <%#= user[:group_id] %><%= user[:group_code] %>,<%= user[:code] %>,<%= user[:name] %>,<%= user[:name_en] %>,<%= user[:email] %>
+    </span><br />
+  <% end %>
+</div>
+
+<% end %>

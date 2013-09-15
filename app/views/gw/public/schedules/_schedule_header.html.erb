@@ -1,0 +1,38 @@
+<%
+
+if !defined?(show_flg)
+  show_flg = true
+end
+
+if @sp_mode == :prop
+  raise ArgumentError, 'piece_header 呼び出し前に d/@st_date を設定してください。' if d.nil?
+  raise ArgumentError, 'piece_header 呼び出し前に params[:s_genre] を設定してください。' if params[:s_genre].nil?
+end
+
+concat render(:partial => '/gw/public/schedules/schedule_bt_box', :locals=>{:d=>d, :mode=>mode})
+
+if @custom_group
+  concat '<div class="scheduleTableTitle">' + @custom_group.name + '</div>'
+end
+
+other_group_select_flg = (params[:s_genre] == 'other' && mode != 'month' && params[:prop_id].blank? && @is_gw_admin)
+render(:partial => '/gw/public/schedule_props/other_group_select') if other_group_select_flg
+concat @content_for_search_group  if other_group_select_flg
+
+if show_flg
+concat render(:partial => '/gw/public/schedules/schedule_line_box', :locals=>{:d=>d, :mode=>mode, :move_mode=>:header})
+
+%>
+<% if !@line_box.blank? %>
+<%= hidden_field_tag('my_url', @schedule_move_url_directive.sub('%q', "#{@schedule_move_qs}")) %>
+<% end %>
+
+<% end %>
+<script language = "JavaScript" type="text/javascript">
+//<![CDATA[
+
+var search_group_search_submit = function () {
+  document.forms['search'].submit();
+}
+//]]>
+</script>

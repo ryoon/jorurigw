@@ -1,0 +1,23 @@
+<div<%= Site.current_piece.css_attributes %>>
+<div class="pieceContainer">
+<div class="pieceHeader"><% if false %><h2><%=h Site.current_piece.title %></h2><% end %></div>
+<div class="pieceBody">
+
+<div class="calendarTitle">
+<% if false %>
+  <%= @calendar.month %>月 <%=h Site.current_piece.title %>
+<% end %>
+</div>
+
+<%= @calendar.to_html %>
+
+<div class="navi">
+<%= link_to "前の月", @calendar.prev_month_uri %> |
+<%= link_to "次の月", @calendar.next_month_uri %>　
+<%= link_to '一覧へ', @calendar.current_month_uri %>
+</div>
+
+</div>
+<div class="pieceFooter"></div>
+</div>
+<!-- end .piece --></div>

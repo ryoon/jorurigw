@@ -1,0 +1,20 @@
+<%#*<h1>Gw::Public::YearFiscalJps#index</h1>%>
+<%#*<p>Find me in app/views/gw/public/year_fiscal_jps/index.html.erb</p>%>
+<%
+  options={:table_name=>"gw_year_fiscal_jps",:action=>"index",:link_to_show=>1}
+%>
+
+<div class="piece YearFiscalJp">
+
+  <%= render :partial => 'header_str' %>
+
+<div class="pieceBody">
+  <%= render :partial => 'header' %>
+  <%= render :partial => 'search' %>
+
+  <%= table_to_index2 @items,options %>
+  <%= paginate @items %>
+
+</div>
+
+</div><!--piece admin_messages-->

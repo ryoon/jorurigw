@@ -1,0 +1,30 @@
+<%#*<h1>Gw::Public::MemoSettings#index</h1>%>
+<%#*<p>Find me in app/views/gw/public/memo_settings/index.html.erb</p>%>
+
+<div class="piece todo setting">
+
+<%= render :partial => 'header_str' %>
+
+<div class="pieceBody">
+<%= show_notice %>
+<ul>
+<li>
+<span class="function"><%= link_to 'リマインダー表示設定' , "/gw/todo_settings/reminder" %></span>
+<span class="explanation">ポータルのリマインダーに表示するToDoの設定を行います。</span>
+</li>
+<li>
+<span class="function"><%= link_to 'スケジュール表示設定' , "/gw/todo_settings/schedule" %></span>
+<span class="explanation">ToDoの期限日を、スケジュール上に表示する設定を行います。</span>
+</li>
+<!--
+<li>
+<span class="function"><%#= link_to '削除設定' , "/gw/memo_settings" %></span>
+<span class="explanation">ToDoの自動削除設定を行います。</span>
+</li>
+-->
+</ul>
+<div class="btReturn">
+  <%=link_to 'ToDo一覧へ戻る', "/gw/schedule_todos" %>
+</div>
+</div>
+</div>

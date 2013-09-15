@@ -1,0 +1,40 @@
+@charset "UTF-8";
+@import "../base/style.css";
+@import "../base/common.css";
+@import "common.css";
+@import "outline.css";
+@import "scaffold.css";
+@import "navi.css";
+@import "front.css";
+
+/* =========================================================
+   Initializes.
+========================================================= */
+
+/* Elements.
+----------------------------------------------- */
+body {
+}
+li {
+ margin: 0.1em 0px 0.1em 0px;
+ padding: 2px 0px 2px 12px;
+}
+blockquote {
+ margin: 0px 0px 0px 20px;
+}
+a {
+ color: #15c;
+}
+a:visited {
+ /* color: #47b; */
+}
+a:hover {
+ color: #f2c;
+}
+hr {
+  height: 1px;
+  margin: 7px 0px;
+  _margin: 0px 0px;
+  border: none;
+  border-bottom: 1px solid #ccc;
+}caption {  text-align: left;}

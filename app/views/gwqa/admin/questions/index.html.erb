@@ -1,0 +1,27 @@
+<h5><%= @title.title unless @title.blank? %></h5>
+<table class="index">
+  <tr>
+    <th style="width:  40px;  text-align: center;">表示</th>
+    <th style="width:  40px;  text-align: right;">質問No</th>
+    <th style="text-align: left;">タイトル</th>
+    <th style="width: 40px; text-align: center;">回答</th>
+    <th style="width: 50px; text-align: center;">状態</th>
+    <th style="width: 120px;  text-align: center;">質問日</th>
+    <th style="width: 120px;  text-align: center;">最終更新日</th>
+  </tr>
+
+  <% for item in @items %>
+    <tr  <%= cycle '', 'class="cycle"' %>>
+      <% item.creator %>
+      <td style="text-align: center;"><%= link_to_show item %></td>
+      <td style="text-align: right;"> <%=h item.id %></td>
+      <td style="text-align: left;"> <%=h item.head %></td>
+      <td style="text-align: center;"><%= link_to '回答', gwqa_answers_path(item.id) %></td>
+      <td style="text-align: center;"><%= item.status.name %></td>
+      <td style="text-align: center;"><%=h item.created_at.strftime("%Y-%m-%d %H:%M") %></td>
+      <td style="text-align: center;"><%=h item.updated_at.strftime("%Y-%m-%d %H:%M") %></td>
+    </tr>
+  <% end %>
+</table>
+
+<%= paginate @items %>

@@ -1,0 +1,384 @@
+## JoruriGw v1.0.0 インストールマニュアル                   2011.05.23
+
+**********************************************************************
+ 1 想定環境
+**********************************************************************
+
+[システム]
+OS         : CentOS 5.4
+Webサーバ  : Apache 2.2
+DBシステム : MySQL 5
+Ruby       : 1.8.7
+Rails      : 2.3.4
+キャッシュ : memcached 1.4.5
+
+[設定]
+IPアドレス : 192.168.0.2
+ドメイン   : 192.168.0.2
+
+**********************************************************************
+ 2 CentOS のインストール
+**********************************************************************
+
+CentOSをインストールします。
+
+rootユーザに変更します。
+
+  $ su -
+
+======================================================================
+ 2.1 SELinux の無効化
+======================================================================
+
+SELinuxを無効にします。
+  
+  # /usr/sbin/setenforce 0
+
+自動起動を無効にします。
+
+  # vi /etc/sysconfig/selinux 
+  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+  SELINUX=disabled    #変更
+  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+  ※セキュリティ設定は環境に応じて適切に設定してください。
+
+======================================================================
+ 2.2 Firewall の無効化
+======================================================================
+
+iptablesを停止し、自動起動を無効にします。
+
+  # /sbin/service iptables stop
+  # /sbin/chkconfig iptables off
+
+======================================================================
+ 2.3 パッケージのインストール
+======================================================================
+
+ソースのコンパイルに必要なパッケージをインストールします。
+
+既にインストールされているかを確認します。
+
+  # rpm -qa make gcc-c++ libxslt libxslt-devel libxml2-devel readline-devel curl-devel
+  
+なければインストールします。
+
+  # yum install -y make gcc-c++ libxslt libxslt-devel libxml2-devel readline-devel curl-devel
+
+**********************************************************************
+ 3 事前準備
+**********************************************************************
+
+必要なパッケージをダウンロードします。
+
+  # cd /usr/local/src/
+  # wget http://joruri.org/download/jorurigw-1.0.0.tar.gz
+  # wget http://image_magick.veidrodis.com/image_magick/ImageMagick-6.4.7-8.tar.gz
+  # wget http://rubyforge.org/frs/download.php/71096/ruby-enterprise-1.8.7-2010.02.tar.gz
+  # wget http://downloads.sourceforge.net/ruby-ldap/ruby-ldap-0.9.7.tar.gz
+  # wget http://memcached.googlecode.com/files/memcached-1.4.5.tar.gz
+Joruriユーザを作成します。
+
+  # useradd joruri
+  # passwd joruri
+
+JoruriGwソースコードを設置します。
+
+  # mkdir /var/share
+  # tar xvzf jorurigw-1.0.0.tar.gz -C /var/share
+  # chown -R joruri:joruri /var/share/jorurigw
+
+**********************************************************************
+ 4 Apache のインストール
+**********************************************************************
+
+Apacheをインストールします。
+
+  # yum install -y httpd httpd-devel
+
+設定ファイルを編集します。
+
+  # vi /etc/httpd/conf/httpd.conf
+  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+  ServerName 192.168.0.2    #変更
+  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+設定ファイルにエラーがないことを確認し、Apacheを起動します。
+
+  # /sbin/service httpd configtest
+  # /sbin/service httpd start
+
+自動起動に設定します。
+
+  # /sbin/chkconfig httpd on
+
+**********************************************************************
+ 5 MySQL のインストール
+**********************************************************************
+
+MySQLをインストールします。
+
+  # yum install -y mysql-server mysql-devel
+
+文字エンコーディングの標準を UTF-8 に設定します。
+
+  # vi /etc/my.cnf
+  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+  [mysqld]
+  default-character-set=utf8    #追加
+  
+  [client]                      #追加（末尾に追加）
+  default-character-set=utf8    #追加
+  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+MySQLを起動します。
+
+  # /usr/bin/mysql_install_db --user=mysql
+  # /sbin/service mysqld start
+
+自動起動に設定します。
+
+  # /sbin/chkconfig mysqld on
+  
+rootユーザのパスワードを設定します。
+  # /usr/bin/mysqladmin -u root password "pass"
+
+joruriユーザを作成します。
+  # /usr/bin/mysql -u root -p \
+  #     -e "grant all on *.* to joruri@localhost IDENTIFIED BY 'pass'"
+
+**********************************************************************
+ 6 ImageMagick のインストール
+**********************************************************************
+
+画像関連のパッケージをインストールします。
+
+  # yum -y install libjpeg-devel libpng-devel
+
+ImageMagickをインストールします。
+
+  # cd /usr/local/src/
+  # tar xvzf ImageMagick-6.4.7-8.tar.gz
+  # cd ImageMagick-6.4.7-8
+  # ./configure --enable-lzw
+  # make && make install
+
+ライブラリをインストールします。
+
+  # cd /lib
+  # ln -s /usr/local/lib/libMagickCore.so.1
+  # ln -s /usr/local/lib/libMagickCore.so.2
+  # ln -s /usr/local/lib/libMagick.so.10
+
+**********************************************************************
+ 7 Ruby on Rails のインストール
+**********************************************************************
+
+======================================================================
+ 7.1 REE(Ruby Enterprise Edision) のインストール
+======================================================================
+  
+REEをインストールします。
+
+  # cd /usr/local/src
+  # tar xvzf ruby-enterprise-1.8.7-2010.02.tar.gz
+  # cd ruby-enterprise-1.8.7-2010.02
+  # ./installer
+    ※インストール先は下記の通り指定してください。
+      [/opt/ruby-enterprise-1.8.7-2010.02] : /usr/local
+
+======================================================================
+ 7.2 Phusion Passenger のインストール
+======================================================================
+
+Phusion Passengerをインストールします。
+
+  # gem uninstall passenger
+  # gem install passenger -v 3.0.5
+  # passenger-install-apache2-module
+  
+  ( 画面の内容を確認して Enterキーを押してください。 )
+
+Phusion Passengerの動作環境を設定します。
+
+  # vi /etc/httpd/conf/httpd.conf
+  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+  #下記を追加
+  LoadModule passenger_module /usr/local/lib/ruby/gems/1.8/gems/passenger-3.0.5/ext/apache2/mod_passenger.so
+  PassengerRoot /usr/local/lib/ruby/gems/1.8/gems/passenger-3.0.5
+  PassengerRuby /usr/local/bin/ruby
+  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+======================================================================
+ 7.3 gemライブラリ のインストール
+======================================================================
+
+Rails
+  # gem uninstall rails
+  # gem install rails --include-dependencies -v 2.3.4
+
+Mysql/Ruby
+  # gem uninstall mysql
+  # gem install mysql -v=2.7 -- --with-mysql-config=/usr/bin/mysql_config 
+
+LDAPアダプタ
+  # cd /usr/local/src
+  # tar zxvf ruby-ldap-0.9.7.tar.gz
+  # cd ruby-ldap-0.9.7
+  # ruby extconf.rb --with-openldap2
+  # make
+  # make install
+
+ActiveLdap
+  # gem install activeldap -v 1.2.1
+
+RMagick
+  # gem install rmagick  -v 2.9.1
+
+TamTam
+  # gem install tamtam -v 0.0.3
+
+Zip/Ruby
+  # gem install zipruby -v 0.3.6
+
+mime-types
+  # gem install mime-types -v 1.16
+
+jpmobile
+  # gem install jpmobile -v 0.0.4
+
+FasterCSV
+  # gem install fastercsv -v 1.5.4
+
+feed-normalizer
+  # gem install feed-normalizer -v 1.5.2
+
+PassiveRecord
+  # gem install passiverecord -v 0.2
+
+RiCal
+  # gem install ri_cal -v 0.8.8
+
+iCalendar
+  # gem install icalendar -v 1.1.6
+
+memcached
+  # gem install memcache-client -v 1.8.3
+
+prawn/prawnto
+  # gem install prawn -v 0.8.4
+  # cd /var/share/jorurigw
+  # ./script/plugin install git://github.com/thorny-sun/prawnto.git
+
+**********************************************************************
+  8 JoruriGw のインストール
+**********************************************************************
+
+Joruriユーザに変更します。
+
+  # su - joruri
+  $ cd /var/share/jorurigw
+
+======================================================================
+ 8.1 設定ファイル
+======================================================================
+
+環境に応じて設定ファイルを編集します。
+
+DB接続情報
+
+  $ vi config/database.yml
+  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+  username: joruri
+  password: pass
+  host    : 192.168.0.2
+  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+======================================================================
+ 8.2 データベースの作成
+======================================================================
+
+データベースを作成します。
+
+  $ /usr/bin/mysql -u root -p -e "create database development_jgw_core"
+  $ /usr/bin/mysql -u root -p -e "create database development_jgw_gw"
+  $ /usr/bin/mysql -u root -p -e "create database development_jgw_bbs_000001"
+
+テーブルを作成します。
+
+  $ /usr/bin/mysql -u root -p development_jgw_core < ./db/development_jgw_core_schema.sql
+  $ /usr/bin/mysql -u root -p development_jgw_gw < ./db/development_jgw_gw_schema.sql
+  $ /usr/bin/mysql -u root -p development_jgw_bbs_000001 < ./db/development_jgw_bbs_000001_schema.sql
+
+初期データを登録します。
+
+  $ /usr/bin/mysql -u root -p development_jgw_core < ./db/development_jgw_core_init.sql
+  $ /usr/bin/mysql -u root -p development_jgw_gw < ./db/development_jgw_gw_init.sql
+  $ /usr/bin/mysql -u root -p development_jgw_bbs_000001 < ./db/development_jgw_bbs_000001_init.sql
+
+※Railsの実行モードがproductionの場合、データベース名は下記のようにしてください。
+production_jgw_core
+production_jgw_gw
+production_jgw_bbs_000001
+
+======================================================================
+ 8.3 memcached のインストール
+======================================================================
+
+libeventをインストールします。
+
+  $ su -
+  # yum install libevent libevent-devel
+
+  ( 画面の内容を確認して yを入力してください。 )
+  
+memcachedをインストールします。
+
+  # cd /usr/local/src/
+  # tar xvzf memcached-1.4.5.tar.gz
+  # cd memcached-1.4.5
+  # ./configure
+  # make
+  # make install
+  
+自動起動に設定します。
+
+	# cp /usr/local/src/memcached-1.4.5/scripts/memcached.sysv /etc/rc.d/init.d/memcached
+	# vi /etc/rc.d/init.d/memcached
+  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+  #16行目に下記を追加
+  PATH=$PATH:/usr/local/bin ; export PATH
+  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+	# mkdir /var/run/memcached
+  # /sbin/chkconfig --add memcached
+  # chkconfig --level 35 memcached on
+
+memcachedを起動します。
+
+  # /sbin/service memcached start
+
+======================================================================
+ 8.4 VirtualHost の反映
+======================================================================
+
+Apacheに設定を追加します。
+  # vi /etc/httpd/conf.d/vhosts.conf
+  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+  NameVirtualHost *:80
+  
+  <VirtualHost *:80>
+      ServerName default
+      DocumentRoot /var/share/jorurigw/public
+      RailsEnv "development"
+      PassengerHighPerformance on
+  </VirtualHost>
+  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+Apache を再起動します。
+  # /sbin/service httpd configtest
+  # /sbin/service httpd restart
+
+
+**********************************************************************
+

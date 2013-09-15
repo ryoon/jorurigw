@@ -1,0 +1,19 @@
+<%# app/views/system/admin/group_changes/index.html %>
+<%
+runs = "未実行"
+runs = @item.updated_at.strftime("%Y-%m-%d %H:%M") unless @item.blank?
+%>
+<br />
+<div>
+組織変更情報を、HP用にCSVで出力します。
+<br />
+複数ファイルをzip圧縮して出力します。
+</div>
+<br />
+<div>
+  前回実行日　<%= h runs %>
+</div>
+<br />
+<div class="showMenu">
+  <%= link_to '実行' ,csv_run_system_group_changes_path -%>
+</div>

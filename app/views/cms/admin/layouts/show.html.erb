@@ -1,0 +1,12 @@
+<div class="showMenu">
+<%=link_to_edit      @item if @item.editable? %>
+<%=link_to 'CSS書出', url_for(:action => :show, :id => @item, :do => :publish), :confirm => '公開してよろしいですか？' %>
+<%=link_to_destroy   @item if @item.deletable? %>
+</div>
+
+<%= table_to_show2 @item %>
+
+<%= css_view @item %>
+<%= creator_view @item %>
+<%= recognizer_view @item %>
+<%= commitments_view @item %>

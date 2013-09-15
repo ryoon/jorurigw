@@ -1,0 +1,24 @@
+<% # app/views/gw/public/schedules/_new.html.erb
+#concat render(:partial => '/gw/public/schedules/header')
+
+#header_str = render(:partial => "/gw/public/schedules/header")
+#header_str = header_str.gsub(/\r\n|\r|\n/, "")  # デザインからの依頼で、改行を削除している。
+
+header = <<-EOL
+#{show_notice}
+#{render :partial => '/gw/public/schedules/piece_header'}
+EOL
+content_for :form do
+  form_for :item, :url => '/gw/schedules?s_date=' + params[:s_date].to_s + '&sh=' + params[:sh].to_s + '&prop_id=' + params[:prop_id].to_s + '&s_genre=' + params[:s_genre].to_s, :html => {:multipart => true, :id => 'itemForm'} do |f|
+    concat <<-EOL
+#{f.error_messages}
+#{render(:partial => 'form', :locals => {:f => f})}
+#{submit_for_create(f, :js_submitter => 'my_submit()', :class=>:mockblock)}
+EOL
+#<span class="mock">繰り返しUI作業中につき登録・編集できません</span>
+  end
+end
+body = { :header => render(:partial => '/gw/public/schedules/schedule_bt_box', :locals=>{:d=>Date.today, :mode=>'form'}),
+  :body => @content_for_form }
+concat hhbff_struct(:schedulePiece, :form, :header=>header, :body=>body)
+%>

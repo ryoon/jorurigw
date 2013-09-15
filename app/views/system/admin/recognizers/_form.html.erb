@@ -1,0 +1,109 @@
+<%
+collection = []
+Site.user_group.users.each do |u|
+  next if u == Site.user && Site.user.ldap != 0
+  collection << u
+end
+
+_recognize_list = Proc.new do 
+  _name  = "recognize_list"
+  if params[f.object_name] then
+    value = [params[f.object_name][:_recognizers]["1"],
+            params[f.object_name][:_recognizers]["2"],
+            params[f.object_name][:_recognizers]["3"],
+            params[f.object_name][:_recognizers]["4"],
+            params[f.object_name][:_recognizers]["5"]
+          ]
+  else
+    value = ""
+  end
+#  value  = params[f.object_name] ? params[f.object_name][:_recognizers] : ""
+  select_tag _name, options_from_collection_for_select(collection, :id, :display_name, value), :multiple => true, :size => 5, :style => "width:180px;", :ondblclick => "fnMoveSelect(this.form, 'recognize_list[]','recognize_select_list[]');"
+end
+
+_select_list = Proc.new do 
+  _name  = "recognize_select_list"
+  select_tag _name, nil, :multiple => true, :size => 5, :style => "width:180px;", :ondblclick => "fnMoveSelect(this.form, 'recognize_select_list[]','recognize_list[]');"
+end
+
+
+_select_proc = Proc.new do |name|
+  _name  = f.object_name.to_s + "[_recognition][#{name}]"
+  _blank = '<option></option>'
+  value  = item.recognition ? item.recognition.after_process : ''
+  value  = params[f.object_name] ? params[f.object_name][:_recognition][name.to_s] : value
+  select_tag _name, _blank + options_for_select([['自動公開', 'publish']], value)
+end
+
+%>
+<table class="show">
+  <tr>
+    <th>承認者</th>
+    <td>
+      <table>
+        <tr>
+          <td><%= _recognize_list.call() %></td>
+          <td>
+            <input type="button" name="mv1" value=" → " onclick="fnMoveSelect(this.form, 'recognize_list[]','recognize_select_list[]');" />
+            <br /><br />
+            <input type="button" name="mv2" value=" ← " onclick="fnMoveSelect(this.form, 'recognize_select_list[]','recognize_list[]');" />
+          </td>
+          <td>
+            <div class="<%= 'fieldWithErrors' if @item.errors.invalid?('承認者') %>">
+            <%= _select_list.call() %></div>
+<script type="text/javascript">
+//<![CDATA[
+  fnMoveSelect(document.forms[0], 'recognize_list[]','recognize_select_list[]');
+//]]>
+</script>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+<!--
+  <tr>
+    <th>承認後処理</th>
+    <td><%= _select_proc.call('after_process') %></td>
+  </tr>
+-->
+</table>
+<input type="hidden" id="_recognizers_1" name="<%= f.object_name.to_s + "[_recognizers][1]" %>" value="" />
+<input type="hidden" id="_recognizers_2" name="<%= f.object_name.to_s + "[_recognizers][2]" %>" value="" />
+<input type="hidden" id="_recognizers_3" name="<%= f.object_name.to_s + "[_recognizers][3]" %>" value="" />
+<input type="hidden" id="_recognizers_4" name="<%= f.object_name.to_s + "[_recognizers][4]" %>" value="" />
+<input type="hidden" id="_recognizers_5" name="<%= f.object_name.to_s + "[_recognizers][5]" %>" value="" />
+<input type="hidden" id="<%= f.object_name.to_s + "__recognition_after_process" %>" name="<%= f.object_name.to_s + "[_recognition][after_process]" %>" value="" />
+
+<script type="text/javascript">
+//<![CDATA[
+  // セレクトボックスのリストを移動
+  // 引数（移動元セレクトボックス名, 移動先セレクトボックス名）
+  function fnMoveSelect(fm, sel1, sel2) {
+    selI = 0
+    selForm1 = document.getElementById(sel1);
+    selForm2 = document.getElementById(sel2);
+    for (i = 0; i < fm[sel1].length; i++)
+      if (fm[sel1].options[i].selected)
+        selI++;
+    if (sel2 == "recognize_select_list[]" && (fm[sel2].length + selI) > 5) {
+      alert("承認者の設定はは5人までです")
+      return false;
+    }
+    for (i = 0; i < fm[sel1].length; i++) {
+      if (fm[sel1].options[i].selected) {
+        fm[sel2].options[fm[sel2].length] = new Option(fm[sel1].options[i].text, fm[sel1].options[i].value);
+        fm[sel1].options[fm[sel1].selectedIndex] = null;
+        i--;
+      }
+    }
+    for (i = 0; i < 5; i++)
+      document.getElementById('_recognizers_' + (i+1)).value = "";
+
+    for (i = 0; i < fm["recognize_select_list[]"].options.length; i++) {
+      if (i > 4) return false;
+      document.getElementById('_recognizers_' + (i+1)).value = fm["recognize_select_list[]"].options[i].value;
+    }
+  }
+//]]>
+</script>

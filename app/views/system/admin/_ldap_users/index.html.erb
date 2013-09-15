@@ -1,0 +1,26 @@
+<div style="margin-bottom: 10px;">
+<%= link_to "&lt;&lt;戻る", url_for(:back) %>
+&nbsp; <%= @parent %>
+</div>
+
+<table class="index">
+  
+  <tr>
+    <th style="width: 60px; text-align: center;">Show</th>
+    <th style="width: 20%;">Uid</th>
+    <th style="width: 20%;">Cn</th>
+    <th style="width: ;">Cn(lang-en)</th>
+  </tr>
+  
+  <% for item in @items %>
+  <tr <%= cycle '', 'class="cycle"' %>>
+    <td style="text-align: center;"><%#= link_to_show item %></td>
+    <td><%=h item[1]['uid'] %></td>
+    <td><%=h item[1]['cn'][0] %></td>
+    <td><%=h item[1]['cn'][1]['lang-en'] %></td>
+  </tr>
+  <% end %>
+
+</table>
+
+<%#= paginate @items %>

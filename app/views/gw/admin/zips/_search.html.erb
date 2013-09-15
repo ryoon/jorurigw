@@ -1,0 +1,14 @@
+<% form_tag '', :method => :get, :class => 'search' do %>
+<table>
+  <tr>
+    <td>
+      名称 <%= text_field_tag('s_name', params[:s_name]) %>
+      <%#= hidden_field_tag('s_status', params[:s_status]) %>
+    </td>
+    <td class="submitters">
+      <%= submit_tag '検索',     :name => :search %>
+      <%= submit_tag 'リセット', :name => :reset %>
+    </td>
+  </tr>
+</table>
+<!-- end .search --><% end %>

@@ -1,0 +1,59 @@
+<%= required_head %>
+<table class="show">
+<tr>
+<th>ユーザID<%= required %></th><td><%= f.text_field :code, :class => 'string', :style => 'width: 200px;' %></td>
+</tr>
+<tr>
+<th>状況<%= required %></th><td><%= radio f, :state, System::User.user_states, :class => 'state' %></td>
+</tr>
+<tr>
+<th>LDAP同期<%= required %></th><td><%= radio f, :ldap, @item.ldap_states, :class => 'state' %></td>
+</tr>
+<tr>
+<th>名前<%= required %></th><td><%= f.text_field :name, :class => 'string name', :style => 'width: 200px;' %></td>
+</tr>
+<tr>
+<th>名前(英)</th><td><%= f.text_field :name_en, :class => 'string name', :style => 'width: 200px;' %></td>
+</tr>
+<tr>
+<th>パスワード</th><td><%= f.text_field :password, :class => 'string name', :style => 'width: 200px;' %></td>
+</tr>
+<tr>
+<th>メールアドレス</th><td><%= f.text_field :email, :class => 'string email', :style => 'width: 400px;' %></td>
+</tr>
+</table>
+<% if @action!='edit' %>
+<%
+#select_dd_group(day=nil,level=nil,parent_id=nil,all=nil)
+groups = System::Group.select_dd_tree
+%>
+<br />
+<div>登録するユーザーの所属を指定してください</div>
+<table class="show">
+<tr>
+<th>グループ</th>
+<td><%= select_tag('ug[group_id]', options_for_select( groups,@group_id ) , :include_blank => true) %></td>
+</tr>
+<tr>
+<th>本務・兼務</th>
+<td>
+<%= radio_button_tag  'ug[job_order]' , 0 ,false ,:class=>'state' %><%= label_tag( 'ug[job_order]' ,'本務') %>
+<%= radio_button_tag  'ug[job_order]' , 1 ,false ,:class=>'state' %><%= label_tag( 'ug[job_order]' ,'兼務') %>
+<%= radio_button_tag  'ug[job_order]' , 9 ,true  ,:class=>'state' %><%= label_tag( 'ug[job_order]' ,'仮配属') %>
+</td>
+</tr>
+<tr>
+<th>配属開始日</th>
+<td><%= text_field_tag( 'ug[start_at]', Gw.date_str(Time.now) ) %>
+<button type="button" id="ug_start_at_bt" onclick="showCalendar('ug_start_at_bt','ug_start_at')" class="show_cal_bt"></button>
+</td>
+</tr>
+<tr>
+<th>配属終了日</th>
+<td><%= text_field_tag( 'ug[end_at]' , nil) %>
+<button type="button" id="ug_end_at_bt" onclick="showCalendar('ug_end_at_bt','ug_end_at')" class="show_cal_bt"></button>
+</td>
+</tr>
+</table>
+<% end %>
+<%= gw_js_include_full %>

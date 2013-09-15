@@ -1,0 +1,11 @@
+<%# app/views/system/admin/group_histories/show.html %>
+<%
+options = {
+  'table_name'=>'system_group_change_pickups',:action=>'show'
+}
+-%>
+<div class="showMenu">
+<%=link_to_edit     @item.id  %>
+<%#=link_to_destroy  @item.id  %>
+</div>
+<%= table_to_show2 @item,options %>

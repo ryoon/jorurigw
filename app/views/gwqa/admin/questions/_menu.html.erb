@@ -1,0 +1,8 @@
+<% if @items.blank? %>
+<% else %>
+<div class="menu">
+<p>Ｑ＆Ａ 一覧</p>
+<% item = @items[0] %>
+<%= link_to '回答のみ表示', qa_answers_path(item.id) %>
+</div>
+<% end %>

@@ -1,0 +1,29 @@
+<%
+
+return '' if item.maps.size == 0
+
+_map = item.find_map_by_name('1')
+return '' if _map.map_lat == '' || _map.map_lng == ''
+
+%><table class="show">
+  
+  <tr>
+    <th>地図</th>
+    <td>
+      <script type="text/javascript" src="/_common/modules/pref/js/map.js"></script>
+      <script type="text/javascript">PrefMap.init('<%= Util::Config.load('map', 'admin_key') %>');</script>
+      <script type="text/javascript">
+      //<![CDATA[
+      var map = new PrefMap('map1', <%=h _map.map_lat %>, <%=h _map.map_lng %>, <%=h _map.map_zoom %>);
+      <% if _map.is_point(1) %>map.addMarker(<%= _map.get_point_params(1) %>);<% end %>
+      <% if _map.is_point(2) %>map.addMarker(<%= _map.get_point_params(2) %>);<% end %>
+      <% if _map.is_point(3) %>map.addMarker(<%= _map.get_point_params(3) %>);<% end %>
+      <% if _map.is_point(4) %>map.addMarker(<%= _map.get_point_params(4) %>);<% end %>
+      <% if _map.is_point(5) %>map.addMarker(<%= _map.get_point_params(5) %>);<% end %>
+      //]]>
+      </script>
+      <div id="map1" style="width: 600px;height:300px"></div>
+    </td>
+  </tr>
+
+</table>

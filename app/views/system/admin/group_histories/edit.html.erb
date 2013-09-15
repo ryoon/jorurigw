@@ -1,0 +1,14 @@
+<%# app/views/system/admin/group_histories/edit.html %>
+<div class="showMenu">
+<%= link_to_show @item.id %>
+</div>
+
+<% form_for :item, :url => {:action => :update}, :html => {:method => :put} do |f| %>
+  
+<%= f.error_messages %>
+
+<%= render :partial => 'form', :locals => {:f => f} %>
+
+<%= submit_for_update f %>
+
+<% end %>

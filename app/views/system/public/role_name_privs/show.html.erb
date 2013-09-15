@@ -1,0 +1,32 @@
+<%# app/views/system/public/role_names/show.html.erb -%>
+<%
+  t01 = '編集'
+  edit_path       = "#{Site.current_node.public_uri}#{@item.id}/edit#{@params_set}"
+  t02 = '削除'
+  delete_path     = "#{Site.current_node.public_uri}#{@item.id}#{@params_set}"
+-%>
+<div class="piece AdminMessage">
+
+<%= render :partial => 'header' -%>
+<div class="pieceBody">
+<div class="editingBox">
+ <span class="btEdit"><%= link_to t01 , url_for(edit_path) if @item.editable? -%></span>
+ <span class="btDestroy"><%= link_to t02 , url_for(delete_path),:confirm=>"削除して、よろしいですか？",:method=>:delete if @item.deletable? -%></span>
+</div>
+
+<table class="show">
+  <tr>
+    <th>機能名</th>
+    <td><%=h @item.role.display_name -%></td>
+  </tr>
+  <tr>
+    <th>権限名</th>
+    <td><%=h @item.priv.display_name -%></td>
+  </tr>
+</table>
+<!--戻るボタン-->
+<div class="btReturn">
+  <%=link_to '戻る', Gw.chop_with("#{Site.current_node.public_uri}",'/') + @params_set -%>
+</div>
+</div>
+</div>

@@ -1,0 +1,18 @@
+<%# app/views/system/admin/group_changes/index.html %>
+<%
+runs = "未実行"
+runs = @item.updated_at.strftime("%Y-%m-%d %H:%M") unless @item.blank?
+%>
+<br />
+<div>
+  作業用DBを作成します。<br />
+  登録済の変更情報もクリアします。
+</div>
+<br />
+<div>
+  前回実行日　<%= h runs %>
+</div>
+<br />
+<div class="showMenu">
+  <%= link_to '実行' ,prepare_run_system_group_changes_path ,:confirm=>"作業途中の場合、強制的に初期化となります。よろしいですか？",:method=>:get -%>
+</div>

@@ -1,0 +1,15 @@
+<%# app/views/system/public/role_names/edit.html.erb %>
+<%
+@edit_path = "#{Site.current_node.public_uri}#{@item.id}"
+%>
+<div class="piece AdminMessage">
+
+<%= render :partial => 'header' %>
+<div class="pieceBody">
+<% form_for :item, :url => @edit_path, :html => {:method => :put, :multipart => true, :id => 'itemForm'} do |f| %>
+  <%= f.error_messages %>
+  <%= render :partial => 'form', :locals => {:f => f} %>
+  <%= submit_for(f, {:caption => '保存'}) %>
+<% end %>
+</div>
+</div>

@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<!-- http://www.foo.com/crossdomain.xml -->
+<!-- flex urlloaderで下記ドメインからのアクセスを許可する -->
+<cross-domain-policy>
+    <allow-access-from domain="dev.cms.pref.idsinc.jp"/>
+    <allow-access-from domain="*.idsinc.jp"/>
+</cross-domain-policy>

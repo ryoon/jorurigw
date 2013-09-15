@@ -1,0 +1,97 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+<meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+<meta http-equiv="Content-Style-Type" content="text/css" />
+<meta http-equiv="Content-Script-Type" content="text/javascript" />
+<title>JoruriGw admin</title>
+<%= javascript_include_tag '/_common/js/prototype' %>
+<%= javascript_include_tag '/_common/js/prettyprint' %>
+<%= javascript_include_tag '/_common/js/gw' %>
+<%= stylesheet_link_tag '/_common/themes/admin/style', :media=>'all' %>
+<%= stylesheet_link_tag '/_common/js/yui/build/calendar/assets/calendar' %>
+<%= stylesheet_link_tag '/_common/js/yui/build/container/assets/skins/sam/container' %>
+<%= stylesheet_link_tag '/_common/js/yui/build/calendar/assets/skins/sam/calendar' %>
+<%= stylesheet_link_tag '/_common/js/yui/build/fonts/fonts-min.css' %>
+<%= stylesheet_link_tag '/_common/js/yui/build/button/assets/skins/sam/button' %>
+<%= stylesheet_link_tag '/_common/js/popup_calendar/popup_calendar' %>
+<%
+
+@js = nz(@js, []) + ['/_common/js/gw_schedules.js'] +
+  %w(yahoo dom event container menu).collect{|x| "/_common/js/yui/build/#{x}/#{x}-min.js"} +
+  %w(calendar_date_select format_db locale/ja).collect{|x| "/javascripts/calendar_date_select/#{x}.js"}
+@css = nz(@css, []) + %w(/_common/js/yui/build/menu/assets/menu.css /stylesheets/calendar_date_select/default.css)
+
+@js.each{|file| concat javascript_include_tag(file)} unless @js.nil?
+@css.each{|file| concat stylesheet_link_tag(file)} unless @css.nil?
+concat %Q(<script type="text/javascript"><!--#{@js_raw}--></script>) unless @js_raw.nil?
+concat %Q(<style type="text/css"><!--#{@css_raw}--></style>) unless @css_raw.nil?
+%>
+</head>
+<body>
+
+<div id="container">
+
+<div id="header">
+<div id="headerContainer">
+
+<%= render :partial => 'layouts/admin/cms/header' %>
+
+<!-- /#headerContainer --></div>
+<!-- /#header --></div>
+
+<div id="banner">
+<div id="bannerContainer">
+
+<!-- /#bannerContainer --></div>
+<!-- /#banner --></div>
+
+<div id="navigation">
+<div id="navigationContainer">
+
+<%= render :partial => 'layouts/admin/cms/navi' %>
+
+<!-- /#navigationContainer --></div>
+<!-- /#navigation --></div>
+
+<div id="main">
+
+<div id="content">
+<div id="contentContainer">
+
+<div id="contentHeader2">
+<%
+dir = %Q(#{RAILS_ROOT}/app/views/#{controller.controller_path})
+concat render(:partial => %Q(#{controller.controller_path}/menu)) if FileTest.exist?(%Q(#{dir}/_menu.html.erb))
+%>
+</div>
+
+<div id="contentBody">
+<div class="notice"><%= flash[:notice] %></div>
+<%= yield  %>
+</div>
+
+<div id="contentFooter"></div>
+
+<!-- /#contentContainer --></div>
+<!-- /#content --></div>
+
+<div id="menu">
+<div id="menuContainer">
+<!-- /#menuContainer --></div>
+<!-- /#menu --></div>
+
+<!-- /#main --></div>
+
+<div id="footer">
+<div id="footerContainer">
+
+<%= render :partial => 'layouts/admin/footer' %>
+
+<!-- /#footerContainer --></div>
+<!-- /#footer --></div>
+
+<!-- /#container --></div>
+
+</body>
+</html>

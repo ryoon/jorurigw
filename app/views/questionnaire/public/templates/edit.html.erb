@@ -1,0 +1,29 @@
+<div class="bbsDocList circular">
+<div class="pieceHeader">
+<h2 class="pieceTitle"><%=@system_title%></h2>
+<div class="btsHeaderLeft"><span class="btNew"><%=link_to('新規作成', "#{@system_path}/new")%></span></div>
+</div>
+
+<div class="pieceBody">
+<%= render :partial => 'header' %>
+
+<% form_for :item, :url => @item.update_path ,:html => {:method=>:put , :multipart => true, :id => 'itemForm'} do |f| %>
+
+<%= f.error_messages %>
+
+<%= render :partial => 'form', :locals => {:f => f} %>
+
+<div class="submitters">
+ <div align="center">
+ <table>
+ <tr>
+ <td><%= submit_for_update(f, :js_submitter => "my_submit('public');",:caption=>'公開する') -%></td>
+ <td><%= submit_for_update(f, :js_submitter => "my_submit('draft');",:caption=>'下書き')%></td>
+ </tr>
+ </table>
+ </div>
+</div>
+
+<% end %>
+</div>
+</div>

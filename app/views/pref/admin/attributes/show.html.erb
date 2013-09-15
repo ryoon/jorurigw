@@ -1,0 +1,6 @@
+<div class="showMenu">
+<%=link_to_edit      @item if @item.editable? %>
+<%=link_to_destroy   @item if @item.deletable? %>
+</div>
+
+<%= table_to_show @item %>

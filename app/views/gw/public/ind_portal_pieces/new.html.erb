@@ -1,0 +1,27 @@
+<div class="piece portalSetting">
+<%= render :partial => 'header' %>
+<div class="pieceBody">
+<%= render :partial => 'button_return' %>
+
+<script type="text/javascript">
+//<![CDATA[
+  var ind_portal_on_submit = function (form) {
+    for (i=0; i<form.elements.length; i++) {
+      form.elements[i].disabled = false;
+    }
+  }
+//]]>
+</script>
+
+<% if @cand_items.length == 0 %>
+  <div class="notice">追加できるコンテンツはありません。</div>
+<% elsif @setting.max_contents <= @user_items.length %>
+  <div class="notice">コンテンツ数が上限に達しました。不要なコンテンツがあれば削除してください。</div>
+<% else %>
+  <% form_for :item, :url => "#{Site.current_node.public_uri}", :html => {:method => :post, :onsubmit => "ind_portal_on_submit(this);"} do |f| %>
+    <%= render :partial => 'form', :locals => {:f => f} %>
+  <% end  %>
+<% end  %>
+
+</div>
+</div>

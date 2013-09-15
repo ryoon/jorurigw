@@ -1,0 +1,50 @@
+@charset "UTF-8";
+
+/* =========================================================
+   Doc
+========================================================= */
+
+/* doc
+----------------------------------------------- */
+body {
+  font-size: 100%;
+}
+
+.relMaps h3 {
+ background-color: #f7f7f7;
+}
+
+.relDocs h3 {
+ background-color: #f7f7f7;
+}
+
+.relTags h3 {
+ background-color: #f7f7f7;
+}
+
+strong,
+b {
+  font-weight: bold;
+}
+
+em,
+i {
+  font-style: oblique;
+}
+
+ul  {
+  margin-left: 20px;
+  list-style-type: disc;
+}
+
+ol  {
+  margin-left: 20px;
+}
+
+*html ol {
+  margin-left: 30px;
+}
+
+*:first-child+html ol {
+  margin-left: 30px;
+}

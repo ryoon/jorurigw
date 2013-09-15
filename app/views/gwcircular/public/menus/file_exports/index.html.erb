@@ -1,0 +1,26 @@
+<div class="bbsDocList circular">
+<div class="pieceHeader">
+<h2 class="pieceTitle">回覧板</h2>
+<div class="btsHeaderLeft">
+</div>
+<%if @is_admin %>
+<div class="btsHeadeRight">
+<span class="btManager"><a href="/gwcircular/basics/">管理者</a></span>
+</div>
+<%end%>
+</div><!--pieceHeader-->
+<!--カラム用タグ-->
+<div class="pieceBanner">
+<h3><%=@title.title%></h3>
+<div class="helpBox">
+</div>
+</div>
+<div class="pieceBody">
+<%=render :partial => 'form' %>
+
+<!--戻るボタン-->
+<div class="btReturn">
+  <%=link_to '記事一覧へ戻る', "#{@title.menus_path}?cond=owner" %>
+</div>
+</div><!--pieceBody-->
+</div><!--piece gwbbs-->

@@ -1,0 +1,23 @@
+<div class="piece portalSetting">
+<%= render :partial => 'header' %>
+<div class="pieceBody">
+<%= render :partial => 'button_return' %>
+
+<%= div_notice %>
+<table class="index">
+  <tr>
+  <th class="action"><%#ブックマーク%></th>
+  <th class="genre">コンテンツ</th>
+  <th class="title">リンク</th>
+  </tr>
+<% @items.each do |item| %>
+  <tr <%= cycle '', 'class="cycle"' %>>
+  <td class="action"><%= link_to 'ブックマーク追加', "/gw/ind_edit_link_pieces/bookmark?title=#{CGI.escape(item.name)}&url=#{CGI.escape(item.get_link_str)}&redirect=/gw/ind_portal_pieces/bookmark" %></td>
+  <td><%=h item.name %></td>
+  <td><%=h item.get_link_str %></td>
+  </tr>
+<% end %>
+</table>
+
+</div>
+</div>

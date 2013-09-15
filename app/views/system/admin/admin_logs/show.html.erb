@@ -1,0 +1,12 @@
+<div class="showMenu">
+<%#=link_to_edit      @item if @item.editable? %>
+<%#=link_to_destroy   @item if @item.deletable? %>
+</div>
+
+<p>Log data</p>
+<%= table_to_show @item %>
+
+<% if @item.unid_data %>
+<p style="margin-top: 20px;">Item data</p>
+<%= table_to_show @item.unid_data %>
+<% end %>

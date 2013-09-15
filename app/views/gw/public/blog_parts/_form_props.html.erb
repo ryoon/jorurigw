@@ -1,0 +1,25 @@
+<% item = @items[i] %>
+<% selected = item.selected_by_user?(@ids) %>
+<td <%= 'class="selected"' if selected %>>
+  <center>
+  <div class="preview" style="width:220px; height:200px; overflow-x:auto; overflow-y:scroll;"><%= item.body %></div>
+  <div class="title"><%=h item.title %></div>
+  <% if selected %>
+    <% form_for :item, :url => "#{Site.current_node.public_uri}save_props", :html => {:method => :post} do |f| %>
+      <input type="hidden" name="id" value="<%=h item.id %>">
+      <input type="hidden" name="mode" value="delete">
+      <div class="delete">
+        <span class="selected">設定済</span> <%= f.submit '削除', :class=>"delete" %>
+      </div>
+    <% end %>
+  <% else %>
+    <% form_for :item, :url => "#{Site.current_node.public_uri}save_props", :html => {:method => :post} do |f| %>
+      <input type="hidden" name="id" value="<%=h item.id %>">
+      <input type="hidden" name="mode" value="add">
+      <div class="add">
+        <%= f.submit '追加', :class=>"add" %>
+      </div>
+    <% end %>
+  <% end %>
+  </center>
+</td>

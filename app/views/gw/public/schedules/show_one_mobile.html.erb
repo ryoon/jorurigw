@@ -1,0 +1,172 @@
+<%
+
+wdays = ["日", "月", "火", "水", "木", "金", "土"]
+
+ref = 'show_one'
+u = Site.user
+uid = u.id
+link_params = Gw.a_to_qs(["gid=#{params[:gid]}", "uid=#{uid}", "cgid=#{params[:cgid]}","dis=#{@dis}"])
+@link_format = "%Y%m%d"
+%>
+<hr class="borderDash" />
+<p class="mobileSchedule"><%=link_to("新規作成", %Q(/gw/schedules/new#{link_params}&s_date=#{date_format(@link_format, @items[0].st_at)}))%></p>
+<%=render(:partial => '/gw/public/schedules/mobile_header')%>
+<%@items.each do |item|%>
+<%
+dts = dt = item.st_at.to_datetime
+dte = dt = item.ed_at.to_datetime
+is_repeated = item.repeated?
+edit_path   = "#{Site.current_node.public_uri}#{item.id}/edit"
+delete_path = "/gw/mobile_shcedules/confirm#{item.id}"
+
+  is_public_show = Gw::Schedule.is_public_show(item.is_public)
+  is_user = item.is_schedule_user?
+  othlinkflg = false
+
+  is_repeated = item.repeated?
+
+  prop_stat = nil
+  editlending_flg = false
+  is_prop_edit = true
+
+  props = []
+  if params[:sh] == "sh" && !item.schedule_parent_id.blank?
+    item_parents = Gw::Schedule.find(:all, :conditions=>"schedule_parent_id = #{item.schedule_parent_id}", :order => "id")
+    item_parents.each do |item_parent|
+      item_parent.schedule_props.each do |prop|
+        if (prop.prop_type == "Gw::PropOther" && prop.prop.is_admin_or_editor_or_reader?) || is_user
+          props << prop if !prop.prop.blank? && prop.prop.delete_state == 0
+        end
+      end
+    end
+  else
+    item.schedule_props.each do |prop|
+        if (prop.prop_type == "Gw::PropOther" && prop.prop.is_admin_or_editor_or_reader?) || is_user
+          props << prop if !prop.prop.blank? && prop.prop.delete_state == 0
+        end
+    end
+  end
+
+
+  sid = item.id
+  props.each do |prop|
+    prop_stat = prop.prop_stat
+    genre = prop.is_return_genre?
+    if prop.prop_type == 'Gw::PropOther'
+      othlinkflg = true
+      be_str = @gid.to_i != prop.prop.gid.to_i ? '&be=other' : ""
+    end
+    is_prop_edit = Gw::ScheduleProp.is_prop_edit?(prop.prop.id, genre) unless prop.prop.blank?
+  end
+
+
+  sid = item.id
+  props.each do |prop|
+    prop_stat = prop.prop_stat
+    genre = prop.is_return_genre?
+    if prop.prop_type == 'Gw::PropOther'
+      othlinkflg = true
+      be_str = @gid.to_i != prop.prop.gid.to_i ? '&be=other' : ""
+    end
+    is_prop_edit = Gw::ScheduleProp.is_prop_edit?(prop.prop.id, genre) unless prop.prop.blank?
+  end
+
+
+@back_todo = false
+user_exist_check = Gw::ScheduleUser.user_exist_check(item.id, Site.user.id)
+if nz(item.todo, 0).to_i == 0
+  @back_todo = false
+else
+  if !item.schedule_todo.blank? && (user_exist_check || @is_gw_admin || item.creator_uid == Site.user.id )
+    @back_todo = true
+    @s_finished = nz(params[:s_finished],'1')
+    if nz(item.schedule_todo.is_finished, 0).to_i == 0
+      todo_str      =  '未完了'
+      todo_link_str =  '完了する'
+    else
+      todo_str      =  '完了'
+      todo_link_str =  '未完了に戻す'
+    end%>
+<%=%Q([Todo]#{todo_str})%><br />
+<%= link_to todo_link_str, "/gw/schedule_todos/#{item.schedule_todo.id}/finish#{link_params}&link=show_one&topdate=#{@topdate}" %>
+<br />
+<%end%>
+<%end%>
+<%@back_todo = false unless params[:topdate].blank?%>
+
+<p class="leftPad1">
+<%=item.st_at.strftime('%Y年%m月%d日') unless item.st_at.blank?%>(<%=wdays[item.st_at.wday] unless item.st_at.blank?%>)
+</p>
+<%
+title_category = Gw.yaml_to_array_for_select('gw_schedules_title_categories', :include_blank=>1).to_a.rassoc(item.title_category_id.to_i)
+
+if item.allday.blank?
+  st_at_s = dts.strftime('%H:%M')
+  ed_at_s = dte.strftime('%H:%M')
+  time_str = st_at_s + "-" + ed_at_s
+elsif item.allday == 1
+  time_str = "時間未定"
+elsif item.allday == 2
+  time_str = "終日"
+end
+
+%>
+<p class="bgYellow"><%=h time_str %><br />
+<%= "【#{title_category[0]}】　" unless title_category.blank? %><%=h item.title %><br /></p>
+<%# @items.each end %>
+<%
+is_pref_admin_users = item.is_schedule_pref_admin_users?
+if is_pref_admin_users && @is_pref_admin
+  quote_flg = true
+elsif is_pref_admin_users && !@is_pref_admin
+  quote_flg = false
+elsif !is_pref_admin_users
+  quote_flg = true
+else
+  quote_flg = true
+end
+%>
+<p class="leftPad2">
+<% if @auth_level[:edit_level] == 1 %>
+  <%= link_to('編集', "/gw/schedules/#{item.id}/edit") %>
+<% end %>
+<%= link_to '引用作成', "/gw/schedules/#{item.id}/quote#{"?sh=sh" if !params[:sh].blank?}" if quote_flg && is_prop_edit %>
+<% if @auth_level[:delete_level] == 1 %>
+<br />
+  <%= link_to '削除', "/gw/mobile_schedules/#{item.id}/confirm#{link_params}&is_repeat=false" %>
+  <% if is_repeated %>
+    <%= link_to '繰返一括削除', "/gw/mobile_schedules/#{item.id}/confirm#{link_params}&is_repeat=true" %>
+  <% end %>
+<% end %>
+</p>
+<p class="leftPad2">場所</p>
+<p class="leftPad1"><%=hbr item.place%></p>
+<p class="leftPad2">メモ</p><p class="leftPad1"><%=hbr item.memo %></p>
+<p class="leftPad2">公開</p>
+<p class="leftPad1"><%= is_public_show %></p>
+<% if item.is_public == 2 %>
+<p class="leftPad2">公開所属</p>
+<p class="leftPad1"><%= Gw.join([item.public_groups_display], '<br />') %></p>
+<% end %>
+<%=render(:partial => '/gw/public/schedules/show_participant', :locals => {:schedule_users => item.schedule_users})%>
+<hr class="borderDash"/>
+
+<%
+if @back_todo == false
+  if params[:gid].blank?
+    link_str = %Q(/gw/schedules/#{@items[0].st_at.strftime('%Y%m%d')}#{link_params}&topdate=#{@topdate})
+  else
+    link_str = %Q(/gw/schedules/#{@items[0].st_at.strftime('%Y%m%d')}#{link_params}&topdate=#{@topdate})
+  end
+else
+  link_str = %Q(/gw/schedule_todos?s_finished=#{@s_finished})
+end%>
+
+<p class="leftPad2"><%=link_to("&lt;戻る", link_str)%></p>
+<%if @dis=="week"%>
+<hr class="borderDash"/>
+<p class="leftPad2">
+<%=link_to("&lt;&lt;週表示へ", %Q(/gw/schedules/#{link_params}&st_date=#{@topdate}))%>
+</p>
+<%end%>
+<%end%>

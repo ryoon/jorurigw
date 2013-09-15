@@ -1,0 +1,52 @@
+<%= f.hidden_field :uid %>
+<%= f.hidden_field :class_created %>
+<%= f.hidden_field :published %>
+<%= f.hidden_field :level_no %>
+<%= f.hidden_field :sort_no %>
+<%= f.hidden_field :tab_keys %>
+<%= f.hidden_field :display_auth_priv %>
+<%= f.hidden_field :role_name_id %>
+<%= f.hidden_field :display_auth %>
+<%= f.hidden_field :block_icon_id %>
+<%= f.hidden_field :block_css_id %>
+<%= f.hidden_field :icon_path %>
+<%= f.hidden_field :link_div_class %>
+<%= f.hidden_field :class_external %>
+<%= f.hidden_field :ssoid %>
+<%= f.hidden_field :class_sso %>
+<%= f.hidden_field :field_account %>
+<%= f.hidden_field :field_pass %>
+<%= f.hidden_field :css_id %>
+
+<%= f.error_messages %>
+
+<%= required_head %>
+<table class="show">
+  <tr>
+    <th>状態</th>
+    <td><%= radio f, :state ,Gw::EditLinkPiece.state_select ,:class=>'state' %></td>
+  </tr>
+  <tr>
+    <th>表示名<%= required %></th>
+    <td><%= f.text_field :name, :size=>80 %></td>
+  </tr>
+  <tr id="link_url">
+    <th><font id="f_link_url">リンク先URL<%= required %></font></th>
+    <td><%= f.text_area :link_url, :rows=>3, :cols=>80, :class=>'IMEoff' %></td>
+  </tr>
+  <tr id="remark">
+    <th><font id="f_link_url">備考</font></th>
+    <td><%= f.text_area :remark, :rows=>3, :cols=>80 %></td>
+  </tr>
+</table>
+
+<table class="show">
+  <tr id="parent_id">
+    <th>保存先<%= required %></font></th>
+    <td><%= f.select :parent_id, Gw::EditLinkPiece.parent_select_list, :selected => @item.parent_id.to_s %></td>
+  </tr>
+</table>
+
+<div class="preserve">
+<%= f.submit '保存' %>
+</div>

@@ -1,0 +1,14 @@
+<%
+
+link_s = %Q(<span class="current_menu">)
+link_s_end = %Q(</span>)
+
+ret = <<-EOL
+<div class="menu">
+<!-- <p>#{@extra_name_s}</p>-->
+
+#{link_to(lnks1, "#{@uri_base_prop_extras}?s_genre=#{@genre}&amp;cls=#{@cls}")}
+EOL
+ret += '</div>'
+concat ret
+%>

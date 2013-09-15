@@ -1,0 +1,41 @@
+<%
+str_tab1_class = 'tab'
+str_tab2_class = 'tab'
+str_tab3_class = 'tab'
+str_tab4_class = 'tab'
+str_tab5_class = 'tab'
+str_tab6_class = 'tab'
+str_tab7_class = 'tab'
+
+str_tab1_class += ' current' if params[:state] == 'DRAFT'
+str_tab2_class += ' current' if params[:state] == 'RECOGNIZE'
+str_tab3_class += ' current' if params[:state] == 'PUBLISH'
+str_tab4_class += ' current' if params[:state] == 'NEVER'
+str_tab5_class += ' current' if params[:state] == 'VOID'
+str_tab6_class += ' current' if params[:state] == 'ALL'
+
+%>
+<!--掲示板タブ-->
+<div class="tabBox">
+<table class="tabtable">
+<tbody>
+<tr>
+<td class="spaceLeft"></td>
+<td class="<%=str_tab1_class%>"><%=link_to("下書一覧", gwbd_public_url_base + "&state=DRAFT")%></td>
+<td class="spaceCenter"></td>
+<td class="<%=str_tab2_class%>"><%=link_to("承認待ち", gwbd_public_url_base + "&state=RECOGNIZE")%></td>
+<td class="spaceCenter"></td>
+<td class="<%=str_tab3_class%>"><%=link_to("公開待ち", gwbd_public_url_base + "&state=PUBLISH")%></td>
+<td class="spaceCenter"></td>
+<td class="<%=str_tab4_class%>"><%=link_to("公開前", gwbd_public_url_base + "&state=NEVER")%></td>
+<td class="spaceCenter"></td>
+<td class="<%=str_tab5_class%>"><%=link_to("期限切れ", gwbd_public_url_base + "&state=VOID")%></td>
+<td class="spaceCenter"></td>
+<td class="<%=str_tab6_class%>"><%=link_to("全記事", gwbd_public_url_base + "&state=ALL")%></td>
+<td class="spaceCenter"></td>
+<td class="<%=str_tab7_class%>"><%=link_to "公開記事一覧", @title.docs_path %></td>
+<td class="spaceRight">
+</td></tr>
+</tbody>
+</table>
+</div><!--tabBox-->

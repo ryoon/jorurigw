@@ -1,0 +1,39 @@
+<%
+
+header = <<-EOL
+#{render :partial => 'piece_header'}
+EOL
+
+@key = 'schedule'
+
+content_for :item do
+  form_for :item, :url => "/gw/todo_settings/edit_#{@key}", :html => {:method=>:put, :multipart => true} do |f|
+    concat '<table class="show">'
+    concat "<tr><th>スケジュール表示</th><td>"
+	concat "ToDoの期限日を、スケジュール上に"
+    concat select_by_list(f, :todos_display_schedule, Gw.yaml_to_array_for_select('gw_todos_display_schedule', :for_select_by_list=>1),
+        {}, @item[:todos_display_schedule].to_i)
+    concat "</td></tr>"
+    concat '</table>'
+    concat submit_for_update(f, :id=>"item_submit_#{@key}", :caption => '保存')
+  end
+end
+
+#titles = Gw::NameValue.get_cache('yaml', nil, 'gw_settings')
+
+body = {  :header => <<-EOL,
+#{show_notice}
+<div class="titleLine">
+<span class="title">スケジュール表示設定</span>
+</div>
+EOL
+  :body => <<-EOL
+<a name="#{@key}"></a>
+#{@content_for_item}
+EOL
+}
+
+concat hhbff_struct(:todo, :setting, :header=>header, :body=>body)
+
+
+%>

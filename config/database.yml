@@ -1,0 +1,62 @@
+<%
+env_prefix = case RAILS_ENV
+when 'production'
+  'production'
+when 'test'
+  'test'
+else
+  'development'
+end
+%>
+development:
+  adapter : mysql
+  database: <%= env_prefix %>_jgw_core
+  username: joruri
+  password: pass
+  timeout : 5000
+  encoding: utf8
+  host: 127.0.0.1
+#  socket  : /tmp/mysql.sock
+
+test:
+  adapter : mysql
+  database: <%= env_prefix %>_jgw_core
+  username: joruri
+  password: pass
+  timeout : 5000
+  encoding: utf8
+  host: 127.0.0.1
+#  socket  : /tmp/mysql.sock
+
+production:
+  adapter : mysql
+  database: <%= env_prefix %>_jgw_core
+  username: joruri
+  password: pass
+  timeout : 5000
+  encoding: utf8
+  host: 127.0.0.1
+#  socket  : /tmp/mysql.sock
+
+gw:
+  adapter : mysql
+  database: <%= env_prefix %>_jgw_gw
+  username: joruri
+  password: pass
+  timeout : 5000
+  encoding: utf8
+  host: 127.0.0.1
+#  socket  : /tmp/mysql.sock
+
+mailcore:
+  adapter : mysql
+  database: webmail
+  username: joruri
+  password: pass
+  timeout : 5000
+  encodinf: utf8
+  host: 127.0.0.1
+#  socket  : /tmp/mysql.sock
+
+
+

@@ -1,0 +1,16 @@
+<%
+
+return '' if item.rel_docs.size == 0
+
+%><table class="show">
+
+  <tr>
+    <th>関連記事</th>
+    <td>
+      <% item.rel_docs.each_with_index do |_rel, i| %>
+      <%= '<hr />' if i != 0 %><%=h _rel.rel_doc.title %><br />
+      <% end %>
+    </td>
+  </tr>
+
+</table>

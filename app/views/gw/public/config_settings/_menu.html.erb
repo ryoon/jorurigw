@@ -1,0 +1,7 @@
+<%#*<p>Find me in app/views/gw/public/config_settings/_menu.html.erb</p>%>
+<%
+%>
+<div class="menu">
+<a href="/gw/config_settings?c1=1"><span<%= (params[:c1].to_i == 1) ? ' class="current_menu"' : ''%>>管理者設定</span></a>
+<a href="/gw/config_settings/ind_settings?c1=2"><span<%= (params[:c1].to_i == 2) ? ' class="current_menu"' : ''%>>個人設定</span></a>
+</div>

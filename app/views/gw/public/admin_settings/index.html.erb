@@ -1,0 +1,31 @@
+<%
+
+@role_users           = System::User.is_editor?
+@role_tabs            = Gw::EditTab.is_editor?(Site.user.id)
+@role_rss             = Gw::RssReader.is_editor?(Site.user.id)
+@role_blogparts       = Gw::BlogPart.is_editor?(Site.user.id)
+@role_ind_portals     = Gw::IndPortalSetting.is_editor?(Site.user.id)
+
+@editor_role = @role_users || @role_tabs || @role_rss || @role_blogparts || @role_ind_portals
+%>
+
+<div class="piece AdminSetting">
+
+<%= render :partial => 'header_str' %>
+
+<div class="pieceBody">
+
+<%= show_notice %>
+<% if @role_developer == true || @role_admin ==true %>
+  <%# システム管理者用メニュー %>
+  <%= render :partial => 'index_admin' %>
+<% else -%>
+  <% if @editor_role == true -%>
+  　<%# 特定機能の編集者用メニュー %>
+    <%= render :partial => 'index_editor' %>
+  <% end -%>
+<% end -%>
+
+</div>
+
+</div>

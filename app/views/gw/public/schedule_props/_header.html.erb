@@ -1,0 +1,45 @@
+<%
+
+genre = Gw.trim(nz(@genre)).downcase
+if /^(.+)_extra$/ =~ genre
+  genre = $1
+end
+
+if !params[:prop_id].blank?
+  type_id = Gw::Model::Schedule.get_prop_model(params).find(:first, :conditions => "id=#{params[:prop_id]} and delete_state = 0").type_id
+else
+  if @is_gw_admin
+    type_id = nz(params[:type_id], 100).to_i
+  else
+    type_id = nz(params[:type_id], 0).to_i
+  end
+end
+
+url_mode = mode != 'month' ? mode : "week"
+url_mode = url_mode.to_sym
+
+a_genres = Gw::ScheduleProp.get_genres
+raise Gw::ApplicationError, "指定がおかしいです(genre=#{genre})" if !genre.blank? && a_genres.assoc(genre).nil?
+
+cls = @cls
+title = genre.blank? ? '施設' : a_genres.assoc(genre)[1]
+
+link_s = %Q(<span class="current_menu">)
+link_s_end = %Q(</span>)
+
+lnks2 = (@hedder2lnk == 2 ? "#{link_s}#{title}マスタ#{link_s_end}" : "<span>#{title}マスタ</span>")
+lnks9 = (@hedder2lnk == 9 ? "#{link_s}一般施設マスター件数制限#{link_s_end}" : "<span>一般施設マスター件数制限</span>")
+
+if genre == 'other' && params[:controller] == "gw/public/schedule_props"
+  concat link_to("<span#{type_id == 0 ? ' class="current_menu"': ""}>すべて</span>", "#{hrefs[:group][url_mode]}&amp;type_id=0") unless @is_gw_admin
+  Gw.yaml_to_array_for_select("gw_prop_other_type_ids").each {|k, v|
+    concat link_to("<span#{type_id == v ? ' class="current_menu"': ""}>#{k}</span>", "#{hrefs[:group][url_mode]}&amp;type_id=#{v}")
+  }
+end
+
+concat <<-EOL
+#{link_to lnks2, "/gw/prop_#{genre}s?cls=#{cls}" unless genre.blank?}
+#{link_to lnks9, "/gw/prop_other_limits" if !genre.blank? && genre == "other" && @is_gw_admin && genre == 'other' && params[:controller] == "gw/public/prop_others"}
+EOL
+
+%>

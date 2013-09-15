@@ -1,0 +1,13 @@
+<div class="contentPrefCategory">
+
+<% for item in @items %>
+<h3><%=link_to h(item.title), Site.current_node.public_uri + item.name + '/' %></h3>
+
+<div class="children">
+  <% for child in item.public_children %>
+  <%=link_to h(child.title), Site.current_node.public_uri + child.name + '/'  %>
+  <% end %>
+</div>
+<% end %>
+
+</div>

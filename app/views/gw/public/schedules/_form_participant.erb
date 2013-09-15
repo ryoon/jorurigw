@@ -1,0 +1,57 @@
+<%
+
+hidden_users_json_s = hidden_field_tag('init[schedule_users_json]',
+  (params[:item] && params[:item][:schedule_users_json] ? params[:item][:schedule_users_json] : nz(@users_json) ))
+
+concat "<!--#{@users_json}-->"
+concat hidden_users_json_s
+if !params[:uid].nil?
+  u = System::User.find(params[:uid])
+  ucls = 1
+  uid = u.id
+  uname = u.display_name
+elsif !params[:gid].nil?
+  u = System::Group.find(params[:gid])
+  ucls = 2
+  uid = u.id
+  uname = u.name
+else
+  ucls = 1
+  uid = Site.user.id
+  uname = Site.user.display_name
+end
+
+user_selects = System::CustomGroup.schedule_get_user_select
+user_selects = System::User.get_user_select if user_selects.size == 0
+%>
+
+<%= hidden_field_tag('init[ucls]', ucls) %>
+<%= hidden_field_tag('init[uid]', uid) %>
+<%= hidden_field_tag('init[uname]', uname) %>
+<table class="show">
+
+<% f.fields_for :schedule_users do |schedule_user| %>
+
+<tr><th>参加者<%= required('※<br/>最低1名') %></th><td>
+<table border="0"><tr>
+<td class="userChange">
+<%= show_group_link 'item[schedule_users][user_type_id]', :onchange=>'update_user_cand();', :mode=>:form_schedule, :priv=>:edit %><br />
+<%= show_group_link 'item[schedule_users][child_gid]', :onchange=>'update_child_gid_cand();', :mode=>:form_schedule_child %><br />
+<%= select_tag 'item[schedule_users][uid]', Gw.options_for_select(
+  user_selects, Site.user.id, :title=>1), :size=>10,
+  :style => 'width:300px;', :ondblclick => 'add_participant()', :multiple => true %>
+</td>
+<td>
+<%= button_to_function '追加 →', 'add_participant()' %><br /><br />
+<%= button_to_function '← 削除', 'del_participant()' %>
+</td>
+<td>
+<%= select_tag 'item[schedule_users_add_buf]', [], :size=>10, :style => 'width:300px;', :ondblclick => 'del_participant()', :multiple => true %>
+<%= hidden_field_tag 'item[schedule_users_json]', '' %>
+</td>
+</tr>
+
+</table>
+</td></tr>
+<% end %>
+</table>

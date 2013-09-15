@@ -1,0 +1,65 @@
+<% if params[:c2].to_i==1 -%>
+<% if @portal_editor == true -%>
+<div class="titleLine">
+ <p class="title">ポータル設定</p>
+</div>
+<ul>
+  <% if @role_tabs == true -%>
+  <li>
+  <span class="function"><%= link_to 'タブ編集' , "/gw/edit_tabs?pid=0" %></span>
+  <span class="explanation">タブ内のリンク配置編集およびリンク先登録を行います。</span>
+  </li>
+  <% end -%>
+</ul>
+<% end -%>
+<% end -%>
+
+<% if params[:c2].to_i==5 -%>
+<% if @base_editor == true -%>
+<div class="titleLine">
+ <p class="title">基本設定</p>
+</div>
+<ul>
+  <% if @role_users == true -%>
+  <li>
+  <span class="function"><%= link_to 'ユーザー管理' , "/system/users" %></span>
+  <span class="explanation">ユーザー情報の閲覧、登録及び編集を行います。</span>
+  </li>
+  <% end -%>
+</ul>
+<% end -%>
+<% end -%>
+
+<% if params[:c2].to_i==6 -%>
+<% if @role_board2 == true -%>
+<div class="titleLine">
+ <p class="title">掲示板等設定</p>
+</div>
+<ul>
+  <% if @role_bbs == true -%>
+    <li>
+    <span class="function"><%= link_to '掲示板設定' , "/gwbbs/makers/"  ,:target=>"_blank"  %></span>
+    <span class="explanation">権限がある掲示板の設定を行います。</span>
+    </li>
+  <% end -%>
+  <% if @role_faq == true or @role_qa == true -%>
+    <li>
+    <span class="function"><%= link_to '質問管理（FAQ/Q&A）設定' , "/gwfaq/controls/"  ,:target=>"_blank"  %></span>
+    <span class="explanation">権限がある質問管理（FAQ/Q&A）の設定を行います。</span>
+    </li>
+  <% end -%>
+  <% if @role_doclibrary == true -%>
+    <li>
+    <span class="function"><%= link_to '書庫設定' , "/doclibrary/cabinets/"  ,:target=>"_blank"  %></span>
+    <span class="explanation">権限がある書庫の設定を行います。</span>
+    </li>
+  <% end -%>
+  <% if @role_digitallibrary == true -%>
+    <li>
+    <span class="function"><%= link_to '電子図書設定' , "/digitallibrary/cabinets/"  ,:target=>"_blank"  %></span>
+    <span class="explanation">権限がある電子図書の設定を行います。</span>
+    </li>
+  <% end -%>
+</ul>
+<% end -%>
+<% end -%>

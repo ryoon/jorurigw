@@ -1,0 +1,23 @@
+<%#*<p>Find me in app/views/gw/public/edit_link_pieces/new.html.erb</p>%>
+<%
+  @action = "create"
+  @create_path = "#{Site.current_node.public_uri}?pid=#{@pid}"
+%>
+
+<div class="piece AdminSetting">
+
+<%= render :partial => 'header_str' %>
+
+<div class="pieceBody">
+  <%= render(:partial => 'menu', :locals=>{:d=>@st_date, :mode=>'month'}) %>
+  <%= render :partial => 'header_new_botton' %>
+  <% if !@parent.blank? %>
+    <%= render :partial => 'header_navi' %>
+  <% end %>
+  <%= div_notice %>
+  <% form_for :item, :url => @create_path ,:action=>:create ,:method=>:post , :html => {:id => "itemForm", :multipart => true} do |f| %>
+    <%= render :partial => 'form', :locals => {:f => f} %>
+  <% end  %>
+</div>
+
+</div>

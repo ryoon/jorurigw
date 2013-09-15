@@ -1,0 +1,214 @@
+<%
+raise ArgumentError, 'piece_header 呼び出し前に d/@st_date を設定してください。' if d.nil?
+
+td_s = d.strftime("%Y%m%d")
+td_s = params[:s_date] if !params[:s_date].blank?
+
+genre = params[:s_genre] if !params[:s_genre].blank?
+controller = params[:controller]
+
+td1 = Date.new(d.year, d.month, 1)
+td1_s = td1.strftime("%Y%m%d")
+
+link_uid = @myuid
+
+captions_hash = Gw::NameValue.get_cache('yaml', nil, 'gw_schedules_settings_system_default')
+
+hrefs = case @sp_mode
+when :schedule, :event, :list, :meetings, :todo
+  {:group => {
+    :day => "/gw/schedules/#{td_s}?" + (params[:gid].blank? ? "cgid=#{@cgid}" : "gid=#{@gid}" ),
+    :week => "/gw/schedules/?s_date=#{td_s}&amp;" + (params[:gid].blank? ? "cgid=#{@cgid}" : "gid=#{@gid}" )
+  }, :user => {
+    :day => "/gw/schedules/#{td_s}?uid=#{link_uid}",
+    :week => "/gw/schedules/?s_date=#{td_s}&amp;uid=#{link_uid}",
+    :month => "/gw/schedules/show_month?s_date=#{td1_s}&amp;uid=#{link_uid}",
+	:custom => "/gw/schedules/?s_date=#{td_s}&amp;cgid=" + (@first_custom_group.blank? ? "#{@cgid}" : "#{@first_custom_group.id}" ),
+	:list => "/gw/schedule_lists/?s_year=#{d.year}&amp;s_month=#{d.month}",
+    :executives=> "/gw/pref_executives",
+    :directors=> "/gw/pref_directors",
+    :assembly=> "/gw/pref_assembly"
+  }}
+when :zaichou
+  #{:group => {
+    #:day => "/gw/schedules/#{td_s}?" + (params[:gid].blank? ? "cgid=#{@cgid}" : "gid=#{@gid}" ),
+    #:week => "/gw/schedules/?s_date=#{td_s}&amp;" + (params[:gid].blank? ? "cgid=#{@cgid}" : "gid=#{@gid}" )
+  #}, :user => {
+    #:day => "/gw/schedules/#{td_s}?uid=#{link_uid}",
+    #:week => "/gw/schedules/?s_date=#{td_s}&amp;uid=#{link_uid}",
+    #:month => "/gw/schedules/show_month?s_date=#{td1_s}&amp;uid=#{link_uid}",
+	#:custom => "/gw/schedules/?s_date=#{td_s}&amp;cgid=" + (@first_custom_group.blank? ? "#{@cgid}" : "#{@first_custom_group.id}" ),
+	#:list => "/gw/schedule_lists/?s_year=#{d.year}&amp;s_month=#{d.month}"
+  #}, :pref=>{
+  {:pref=>{
+    :executives=> "/gw/pref_executives",
+    :directors=> "/gw/pref_directors",
+    :assembly=> "/gw/pref_assembly"
+  }}
+when :zaichou_assembly
+  {:pref_only=>{
+    :executives=> "/gw/pref_only_executives",
+    :directors=> "/gw/pref_only_directors",
+    :assembly=> "/gw/pref_only_assembly"
+  }}
+when :prop
+#  be_str = Gw::PropOther.is_my_belong_params?(params) ? "" : "&amp;be=other"
+#  be_str = @pgid_flg ? "&amp;be=other" : ""
+  {:group => {
+    :day => "/gw/schedule_props/#{td_s}#{@s_genre}&amp;cls=#{@cls}",
+    :week => "/gw/schedule_props/show_week#{@s_genre}&amp;cls=#{@cls}&amp;s_date=#{td_s}"
+  }}
+end
+
+current_no = 0
+other_equipment = ""; title_str = ""; other_equipment_title_str = ""; other_equipment_url = ""; type_id_str = "";
+current_rentcar = false; current_meeting = false; current_other1 = false; current_other2 = false;
+
+if @sp_mode == :prop && !genre.blank?
+
+  case genre
+  when "other"
+    current_no = 5 if mode == 'day'
+    current_no = 6 if mode == 'week'
+    current_other1 = true
+    title_str = "一般施設"
+    other_equipment_title_str = "利用可能なその他施設"
+    other_equipment_url = "/gw/schedule_props/show_week?s_date=#{td_s}&cls=other&s_genre=other&be=other"
+    other_equipment = <<-EOL
+<span class="otherEquipment"><a href="#{other_equipment_url}">
+&gt;#{other_equipment_title_str}</a></span>
+EOL
+  end
+
+end
+
+
+concat <<-EOL
+#{
+  #show_notice
+}
+
+<div class="btBox">
+EOL
+
+if ( genre.blank? || @sp_mode == :schedule )&&(@sp_mode!=:zaichou and @sp_mode!=:zaichou_assembly)
+concat <<-EOL
+<div class="btGroup">グループ</div>
+<div class="schSelBox">#{show_group_link 'item[btbox][user_type_id]', :onchange=>"select_group_link('item_btbox_user_type_id',#{Gw.date8_str(d)});", :selected=>@group_selected}</div>
+EOL
+end
+
+if (genre.blank? || @sp_mode == :schedule )&&(@sp_mode!=:zaichou and @sp_mode!=:zaichou_assembly)
+concat <<-EOL
+<div class="btIndex dayLink nobr#{((@state_user_or_group != :group && @state_user_or_group != :custom_group) || mode != 'day') ? '' : ' current'}"><a href="#{hrefs[:group][:day]}">#{captions_hash['dayview_button_caption']}</a></div>
+<div class="btIndex weekLink nobr#{((@state_user_or_group != :group && @state_user_or_group != :custom_group) || mode != 'week') ? '' : ' current'}"><a href="#{hrefs[:group][:week]}">#{captions_hash['weekview_button_caption']}</a></div>
+EOL
+end
+
+if !genre.blank? && @sp_mode == :prop
+  if genre == "other" #&& is_my_belong
+    concat <<-EOL
+    <div class="btEtc btHead#{(current_other1) ? ' currentHead' : ''}">一般施設</div>
+    <div class="btDayLink btIndex#{(current_no == 5) ? ' current' : ''}"><a href="/gw/schedule_props/#{td_s}?s_genre=other&cls=other#{type_id_str}">日表示</a></div>
+    <div class="btWeekLink btIndex#{(current_no == 6) ? ' current' : ''}"><a href="/gw/schedule_props/show_week?s_genre=other&cls=other&s_date=#{td_s}#{type_id_str}">週表示</a></div>
+    EOL
+  else
+    concat <<-EOL
+    <div class="btEtc btHead"><a href="/gw/schedule_props/show_week?s_genre=other&cls=other&s_date=#{td_s}#{type_id_str}">一般施設</a></div>
+    EOL
+  end
+
+
+end
+
+concat <<-EOL if !hrefs[:user].blank?
+<div class="btPerson current">個人</div>
+<div class="btIndex dayLink nobr#{(@state_user_or_group != :user || mode != 'day') || @sp_mode == :event ? '' : ' current'}"><a href="#{hrefs[:user][:day]}">#{captions_hash['dayview_button_caption']}</a></div>
+<div class="btIndex weekLink nobr#{(@state_user_or_group != :user || mode != 'week') || @sp_mode == :event ? '' : ' current'}"><a href="#{hrefs[:user][:week]}">#{captions_hash['weekview_button_caption']}</a></div>
+<div class="btIndex monthLink nobr#{(@state_user_or_group != :user || mode != 'month') || @sp_mode == :event ? '' : ' current'}"><a href="#{hrefs[:user][:month]}">#{captions_hash['monthview_button_caption']}</a></div>
+<div class="btIndex customLink nobr#{@sp_mode == :list ? ' current' : ''}"><a href="#{hrefs[:user][:list]}">#{captions_hash['list_button_caption']}</a></div>
+<div class="btIndex customLink nobr#{(@state_user_or_group != :user || mode != 'custom_group') || @sp_mode == :event ? '' : ' current'}"><a href="#{hrefs[:user][:custom]}">カスタム</a></div>
+<div class="btZaichou current">在庁</div>
+<div class="btIndex kanbu nobr"><a href="#{hrefs[:user][:executives]}">幹部</a></div>
+<div class="btIndex bukachou nobr"><a href="#{hrefs[:user][:directors]}">部課長</a></div>
+<div class="btIndex giin nobr"><a href="#{hrefs[:user][:assembly]}">議員</a></div>
+  EOL
+
+todo_url = ''
+is_todos_display = false
+# Todo切り替え
+if false
+if !hrefs[:user].blank? && @sp_mode == :schedule && mode != 'day' &&
+    (params[:action] != 'show_one' && params[:action] != 'edit' && params[:action] != 'quote' && params[:action] != 'new' && params[:action] != 'create' && params[:action] != 'update')
+#  is_todos_display = Gw::UserProperty.is_todos_display?
+  #todo_url = Gw::ScheduleTodo.create_todo_url(request.url, params[:todo])
+  dump request.referer
+  todo_url = "/gw/schedule_todos/edit_user_property_schedule?url=#{CGI.escape(request.url)}"
+  concat <<-EOL
+<div class="btIndex kirikae nobr#{is_todos_display == true ? ' current' : ''}"><a href="#{todo_url}">切替</a></div>
+  EOL
+end
+end
+
+if !hrefs[:pref].blank?
+#  is_todos_display = Gw::UserProperty.is_todos_display?
+  todo_url = "/gw/schedule_todos/edit_user_property_schedule?url=#{CGI.escape(request.url)}"
+  pref_t={:group => {
+    :day => "/gw/schedules/#{td_s}?" + (params[:gid].blank? ? "cgid=#{@cgid}" : "gid=#{@gid}" ),
+    :week => "/gw/schedules/?s_date=#{td_s}&amp;" + (params[:gid].blank? ? "cgid=#{@cgid}" : "gid=#{@gid}" )
+  }, :user => {
+    :day => "/gw/schedules/#{td_s}?uid=#{link_uid}",
+    :week => "/gw/schedules/?s_date=#{td_s}&amp;uid=#{link_uid}",
+    :month => "/gw/schedules/show_month?s_date=#{td1_s}&amp;uid=#{link_uid}",
+	:custom => "/gw/schedules/?s_date=#{td_s}&amp;cgid=" + (@first_custom_group.blank? ? "#{@cgid}" : "#{@first_custom_group.id}" ),
+	:list => "/gw/schedule_lists/?s_year=#{d.year}&amp;s_month=#{d.month}"
+  }}
+end
+#pp hrefs
+concat <<-EOL if !hrefs[:pref].blank?
+<div class="btGroup">グループ</div>
+<div class="schSelBox">#{show_group_link 'item[btbox][user_type_id]', :onchange=>"select_group_link('item_btbox_user_type_id',#{Gw.date8_str(d)});", :selected=>@group_selected}</div>
+<div class="btIndex dayLink nobr"><a href="#{pref_t[:group][:day]}">#{captions_hash['dayview_button_caption']}</a></div>
+<div class="btIndex weekLink nobr"><a href="#{pref_t[:group][:week]}">#{captions_hash['weekview_button_caption']}</a></div>
+<div class="btPerson">個人</div>
+<div class="btIndex dayLink nobr"><a href="#{pref_t[:user][:day]}">#{captions_hash['dayview_button_caption']}</a></div>
+<div class="btIndex weekLink nobr"><a href="#{pref_t[:user][:week]}">#{captions_hash['weekview_button_caption']}</a></div>
+<div class="btIndex monthLink nobr"><a href="#{pref_t[:user][:month]}">#{captions_hash['monthview_button_caption']}</a></div>
+<div class="btIndex customLink nobr"><a href="#{pref_t[:user][:list]}">#{captions_hash['list_button_caption']}</a></div>
+<!-- <div class="btIndex customLink nobr">#{captions_hash['list_button_caption']}</a></div> -->
+<div class="btIndex customLink nobr"><a href="#{pref_t[:user][:custom]}">カスタム</a></div>
+<div class="btZaichou current">在庁</div>
+<div class="btIndex kanbu nobr#{mode == 'executives' ? ' current' : ''}"><a href="#{hrefs[:pref][:executives]}">幹部</a></div>
+<div class="btIndex bukachou nobr#{mode == 'directors' ? ' current' : ''}"><a href="#{hrefs[:pref][:directors]}">部課長</a></div>
+<div class="btIndex giin nobr#{mode == 'assembly' ? ' current' : ''}"><a href="#{hrefs[:pref][:assembly]}">議員</a></div>
+<!--
+<div class="btTodo">ToDo</div>
+<div class="btIndex ichiran nobr"><a href="/gw/schedule_todos">一覧</a></div>
+<div class="btIndex kirikae nobr"><a href="#{todo_url}">切替</a></div>
+-->
+  EOL
+if @sp_mode==:zaichou_assembly and !hrefs[:pref_only].blank?
+concat <<-EOL
+<div class="btZaichou current">在庁</div>
+<div class="btIndex kanbu nobr#{mode == 'only_executives' ? ' current' : ''}"><a href="#{hrefs[:pref_only][:executives]}">幹部</a></div>
+<div class="btIndex bukachou nobr#{mode == 'only_directors' ? ' current' : ''}"><a href="#{hrefs[:pref_only][:directors]}">部課長</a></div>
+<div class="btIndex giin nobr#{mode == 'only_assembly' ? ' current' : ''}"><a href="#{hrefs[:pref_only][:assembly]}">議員</a></div>
+  EOL
+end
+concat "</div>"
+
+if @sp_mode == :prop
+
+concat <<-EOL
+  <div class="menu">
+  #{render(:partial => '/gw/public/schedule_props/header', :locals=>{:hrefs=>hrefs, :mode=>mode} )}
+  #{render(:partial => '/gw/public/schedule_props/header_view')}
+  EOL
+
+concat <<-EOL
+  </div>
+EOL
+
+end
+
+%>

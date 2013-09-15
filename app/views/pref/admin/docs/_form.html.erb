@@ -1,0 +1,133 @@
+<%
+  if @item.unid
+    mce_base_url = cms_files_path(@item.unid) + "/"
+  else
+    mce_base_url = cms_tmp_files_path(@item.tmp_id) + "/"
+  end
+%>
+<%= tool_tiny_mce mce_base_url%>
+
+<script type="text/javascript" src="/_common/js/prototype.js"></script>
+
+<table class="show">
+  
+  <tr>
+    <th>タイトル</th>
+    <td><%= f.text_field :title, :class => 'title', :style => 'width: 500px;', :maxlength => '40' %></td>
+    <th style="width: 60px;">言語</th>
+  	<td style="width: 150px;"><%= f.select(:language_id, System::Language.find(:all).collect{|i| [i.title + "　", i.id]}) %></td>
+  </tr><tr>
+    <th colspan="4">内容</th></tr><tr>
+    <td colspan="4" class="mceEditor"><%= f.text_area :body, :class => 'string body mceEditor', :style => 'width:100%'%><br />
+      <%= link_check :item, :body %>
+      <%= uri_import :item, :body %>
+      <%= file_import :item, :body %>
+      <%= toggle_editor :item, :body %>
+    </td>
+  <!--
+  </tr><tr>
+    <th>ヘッダー</th>
+    <td><%= f.text_area :head, :class => 'string head' %></td>
+  -->
+  </tr>
+
+</table>
+
+<%= doc_file_form f, @item %>
+
+<table class="show">
+  
+  <tr>
+    <th>分野</th>
+    <td><%= render :partial => 'pref/admin/doc/categories/form', :locals => {:f => f, :item => @item} %></td>
+  </tr><tr>
+    <th>属性</th>
+    <td><%= f.select(:attribute_id, Pref::Attribute.find(:all).collect{|i| [i.title, i.id]}, :include_blank => true) %></td>
+  </tr><tr>
+    <th>地域</th>
+    <td>
+      <a href="#" onclick="chageDisp(this,'area_form');return false;">開く▼</a>
+    </td>
+  </tr>
+  
+</table>
+
+<div id="area_form" style="display: none;">
+<%= render :partial => 'pref/admin/doc/areas/form', :locals => {:f => f, :item => @item} %>
+</div>
+
+<table class="show">
+  
+  <tr>
+    <th>注目情報表示</th>
+    <td><%=radio f, :notice_state, @item.notice_states, :class => 'state' %></td>
+  </tr><tr>
+    <th>新着記事表示</th>
+    <td><%=radio f, :recent_state, @item.recent_states, :class => 'state' %></td>
+  </tr><tr>
+    <th>記事一覧表示</th>
+    <td><%=radio f, :list_state, @item.list_states, :class => 'state' %></td>
+  </tr><tr>
+    <th>イベントカレンダー表示</th>
+    <td>
+      <%=radio f, :event_state, @item.event_states, :class => 'state' %>
+      &nbsp; イベント日付：<%= f.text_field :event_date, :class => 'date eventDate' %>
+      <button type="button" id="event_date_bt" onclick="showCalendar('event_date_bt','<%= "#{f.object_name}_event_date" %>')" class="show_cal_bt"></button>
+    </td>
+  </tr>
+  
+</table>
+
+<%= tag_form f, @item %>
+
+<%= doc_rel_form f, @item %>
+
+<%= map_form f, @item %>
+
+<script type="text/javascript">
+//<![CDATA[
+  function chageDisp(obj,changeObjId) {
+    var display = document.getElementById(changeObjId).style.display;
+    if (display == '') {
+      obj.innerHTML = '開く▼';
+    } else if (display == 'none') {
+      obj.innerHTML = '閉じる▲';
+    }
+    Element.toggle($(changeObjId));
+  }
+//]]>
+</script>
+<table class="show">
+  
+  <tr>
+    <th>携帯</th>
+    <td>
+      <a href="#" onclick="chageDisp(this,'mobile_form');return false;">開く▼</a>
+    </td>
+  </tr>
+  
+</table>
+
+<table id="mobile_form" class="show" style="display: none;">
+  
+  <tr>
+    <th>携帯本文</th>
+    <td><%= f.text_area :mobile_body, :class => 'string mobile_body' %>
+      <%= link_check :item, :mobile_body %>
+    </td>
+  </tr>
+
+</table>
+
+<%= inquiry_form f, @item %>
+
+<%= task_form f, @item %>
+
+<%= recognizer_form f, @item %>
+
+<div class="submitters">
+<% @item.states.to_a.each do |k, v| %>
+  <%=  f.submit("#{v}", :onclick => "document.getElementById('#{f.object_name}_state').value='#{k}';this.form.submit()") %>
+<% end %>
+  <input id="<%= f.object_name %>_state" name="<%= f.object_name %>[state]" type="hidden" value="" />
+</div>

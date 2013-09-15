@@ -1,0 +1,46 @@
+<%= render :partial => '/gw/admin/zips/search' %>
+
+<script language = "JavaScript">
+<!--
+  function get(zip) {
+    url = '/_admin/gw/zips/'+zip+'/get.json';
+    new Ajax.Request(url, {method:'get', onComplete: function(x){
+      eval('xh='+x.responseText);
+      alert(xh['zip']['city']+xh['zip']['town']);
+    }})
+  }
+//-->
+</script>
+<form id="ajax_test" class="search">
+Ajax Search:
+<input id="i1" type="text" value="7700841">
+<input type="button" onclick="get($('i1').value)" value="ajaxAlert!">
+</form>
+
+<table class="index">
+  <tr>
+    <th style="width:  50px;  text-align: center;" nowrap>表示</th>
+    <th style="width:  30px;  text-align: right;" nowrap>ID</th>
+    <th style=" text-align: left;" nowrap>郵便番号</th>
+    <th style=" text-align: left;" nowrap>都道府県</th>
+    <th style=" text-align: left;" nowrap>市区町村</th>
+    <th style=" text-align: left;" nowrap>町域名</th>
+    <th style=" text-align: left;" nowrap>投稿日</th>
+    <th style=" text-align: left;" nowrap>更新日</th>
+  </tr>
+
+<% for item in @items %>
+  <tr <%= cycle '', 'class="cycle"' %>>
+    <td style="width:  50px;  text-align: center;" nowrap><%= link_to_show item %></td>
+    <td style="width:  30px;  text-align: right;" nowrap><%=h item.id %></td>
+    <td style="text-align: left;" nowrap><%=h item.zip %></td>
+    <td style="text-align: left;" nowrap><%=h item.prefecture_id %></td>
+    <td style="text-align: left;" nowrap><%=h item.city %></td>
+    <td style="text-align: left;" nowrap><%=h item.town %></td>
+    <td style="text-align: left;" nowrap><%=h date_common(item.created_at) %></td>
+    <td style="text-align: left;" nowrap><%=h date_common(item.updated_at) %></td>
+  </tr>
+<% end %>
+</table>
+
+<%= paginate @items %>

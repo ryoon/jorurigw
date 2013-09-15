@@ -1,0 +1,14 @@
+<%#*<h1>Gw::Public::Piece::AdminMessages#index</h1>%>
+<%#*<p>Find me in app/views/gw/public/piece/admin_messages/index.html.erb</p>%>
+<%# メッセージをタブの上に表示するための、render partial用 %>
+<% if @items.length > 0 %>
+
+<div id="message">
+  <%  if  @items.length == 1 -%>
+    <div><%=   "#{@items[0].body}" %> </div>
+  <% else %>
+    <div><%=   "#{@items[0].body}" %> </div>
+    <div><%=   "#{@items[1].body}" %> </div>
+  <% end %>
+</div>
+<% end %>

@@ -1,0 +1,11 @@
+<%# app/views/system/admin/users_groups/edit.html %>
+<% @action='edit' %>
+<% form_for :item, :url => {:action => :update}, :html => {:method => :put} do |f| %>
+
+<%= f.error_messages %>
+
+<%= render :partial => 'form', :locals => {:f => f} %>
+
+<%= submit_for_update f %>
+
+<% end %>

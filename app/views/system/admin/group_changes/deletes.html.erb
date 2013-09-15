@@ -1,0 +1,29 @@
+<%# app/views/system/admin/group_changes/index.html %>
+<%
+runs = "未実行"
+runs = @item.updated_at.strftime("%Y-%m-%d %H:%M") unless @item.blank?
+%>
+<div>
+  不要削除
+</div>
+<br />
+<div>
+  事前準備で作成した、作業用データを削除します。
+</div>
+<br />
+<table class="show">
+  <tr><th>削除対象</th><td></td></tr>
+  <tr><th>所属履歴</th><td><%= System::GroupHistoryTemporary.count(:all) %></td></tr>
+  <tr><th>ユーザー所属履歴</th><td><%= System::UsersGroupHistoryTemporary.count(:all) %></td></tr>
+  <tr><th>所属</th><td><%= System::GroupTemporary.count(:all) %></td></tr>
+  <tr><th>ユーザー所属</th><td><%= System::UsersGroupTemporary.count(:all) %></td></tr>
+  <tr><th>ユーザー</th><td><%= System::UserTemporary.count(:all) %></td></tr>
+</table>
+<br />
+<div>
+  事前準備　実行日　<%= h runs %>
+</div>
+<br />
+<div class="showMenu">
+  <%= link_to '実行' ,deletes_run_system_group_changes_path -%>
+</div>

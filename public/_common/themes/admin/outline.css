@@ -1,0 +1,496 @@
+/* =========================================================
+    Outline.
+========================================================= */
+
+/* Container
+----------------------------------------------- */
+#container {
+  position: relative;
+  width: 100%;
+  min-height:100%;
+  _height:100%;
+}
+
+/* Header
+----------------------------------------------- */
+#header {
+  height: 60px;
+  padding: 0px;
+  background-image: url(images/header_re.jpg);
+  background-position: left top;
+  background-repeat: repeat-x;
+
+}
+
+
+#header h1 {
+  float: left;
+  background-image: url(images/header.jpg);
+  background-position: left top;
+  background-repeat: no-repeat;
+  width: 360px;
+  padding-left: 10px;
+  line-height: 60px;
+  letter-spacing: 2px;
+}
+
+.menu-top {
+  margin-top: 28px;/* cms */
+  margin-bottom:14px;
+  margin-left:42px;
+  padding:0;
+  text-align:center;}
+
+*html .menu-top {
+  margin-left:53px;
+  margin-bottom:30px;
+}
+.menu-top ul {
+  margin: 0px;
+  padding: 0px;
+  list-style-type: none;
+  background-color: #FFFFFF;
+}
+
+.menu-top li {
+  float:left;
+  margin:0px;
+  padding:0px 0px;
+  text-indent:-9999px;
+  text-align:left;
+}
+
+.menu-top a {
+  background-repeat:no-repeat;
+  height:23px;
+  display:block;
+  outline-color:-moz-use-text-color;
+  outline-style:none;
+  outline-width:medium;
+}
+
+li#manual {
+  width: 95px;
+  height: 23px;
+  background-image: url(images/bt_manual2.jpg);
+  margin: 0px 5px 0px 0px;
+  padding: 0px 0px 0px 0px;
+  background-repeat:no-repeat;
+ 
+}
+
+*html li#manual {
+  width: 95px;
+  height: 23px;
+  background-image: url(images/bt_manual2.jpg);
+  margin: 0px -20px 0px 0px;
+  paddign: 0px 0px 0px 0px;
+  background-repeat:no-repeat;
+}
+
+
+/**html li#manual {
+  width: 95px;
+  height: 23px;
+  background-image: url(images/bt_manual2.jpg);
+  margin: 0px 5px 0px 0px;
+  paddign: 0px 0px 0px 0px;
+  background-repeat:no-repeat;
+}*/
+
+li#manual a {
+  width: 95px;
+  height: 23px;
+  background-image: url(images/bt_manual2.jpg);
+  background-repeat:no-repeat;
+}
+
+li#qa {
+  width: 95px;
+  height: 23px;
+  background-image: url(images/bt_qa2.jpg);
+  margin: 0px 5px 0px 0px;
+  paddign: 0px 0px 0px 0px;
+  background-repeat:no-repeat;
+}
+
+*html li#qa {
+  width: 95px;
+  height: 23px;
+  background-image: url(images/bt_qa2.jpg);
+  margin: 0px -20px 0px 0px;
+  paddign: 0px 0px 0px 0px;
+  background-repeat:no-repeat;
+}
+
+
+li#qa a {
+  width: 95px;
+  height: 23px;
+  background-image: url(images/bt_qa2.jpg);
+  background-repeat:no-repeat;
+}
+
+li#faq {
+  width: 95px;
+  height: 23px;
+  background-image: url(images/bt_faq2.jpg);
+  margin: 0px 0px 0px 0px;
+  padding: 0px 0px 0px 0px;
+  background-repeat:no-repeat;
+}
+
+li#faq a {
+  width: 95px;
+  height: 23px;
+  background-image: url(images/bt_faq2.jpg);
+  background-repeat:no-repeat;
+}
+
+/*.menu-top #manual {
+  width: 94px;
+  height: 24px;
+  background-image:url(images/bt_manual2.jpg);
+  background-repeat:no-repeat;
+  margin: 0px 5px 20px 0px;
+  paddign: 0px 0px 0px 0px;
+}
+
+.menu-top #qa {
+  width: 94px;
+  height: 24px;
+  background-image:url(images/bt_qa2.jpg);
+  background-repeat:no-repeat;
+  margin: 0px 5px 20px 0px;
+  paddign: 0px 0px 0px 0px;
+}
+
+.menu-top #faq {
+  width: 94px;
+  height: 24px;
+  background-image:url(images/bt_faq2.jpg);
+  background-repeat:no-repeat;
+  margin: 0px 5px 20px 0px;
+  paddign: 0px 0px 0px 0px;
+}*/
+/*
+.menu-top #manual {
+  background-image:url(images/bt_manual2.jpg);
+  background-repeat: no-repeat;
+  height:24px;
+  width:94px;
+}*/
+
+#header span.time { /* cms */
+  margin-right: 20px;
+  color: #ffffff;
+  font-family: 'MS Gothic';
+}
+#header h1 a {
+  color: #ffffff;
+  text-decoration: none;
+}
+#header .menu {
+  float: right;
+  text-align: right;
+  margin-top:10px;
+}
+#header .menu a {
+  margin: 0px 20px 0px 0px;
+}
+#header .menu a {
+  color: #ffffff;
+  text-decoration: none;
+}
+
+#header .menu a:hover {
+  color: #FFCC00;
+  text-decoration: none;
+}
+
+#header  .group {
+  color: #ffffff;
+  margin: 0px 0px 0px 0px;
+}
+#header  .user {
+  color: #ffffff;
+  margin: 0px 20px 0px 0px;
+}
+
+/* Banner
+----------------------------------------------- */
+#banner {
+}
+
+/* navigation
+----------------------------------------------- */
+#navigation {
+}
+#navigation table {
+  width: 100%;
+  border-bottom: 1px solid #CCCCCC;
+}
+
+#navigation td.selector {
+  width: 210px;
+  border-right: 1px solid #CCCCCC;
+  background-color: #fafafa;
+  background-image: url(images/leftside_back.gif);
+  background-position: right top;
+  background-repeat: repeat-y;
+}
+#navigation td.selector .upper,
+#navigation td.selector .lower {
+  width: 200px;
+  height: 32px;
+  margin-left: 5px;
+}
+#navigation td.selector .upper select,
+#navigation td.selector .lower select {
+  width: 200px;
+  margin-top: 5px;
+  font-size: 13px;
+}
+
+#navigation td.menu {
+  background-image: url(images/mainMenu_back.gif);
+  background-position: left top;
+  background-repeat: repeat-x;
+  vertical-align: top;
+}
+
+#navigation td.menu .mainMenu {
+  height: 32px;
+}
+
+#navigation td.menu .contentMenu {
+  background-color: #ffffff;
+}
+
+#navigation td.menu .mainMenu a {
+  display: block;
+  float: left;
+  width: 84px;
+  padding:0px 0px;
+  border-right: 1px solid #999999;
+  border-bottom: 1px solid #8AA8E8;
+  background-color:#E3EFFD;
+  font-size: 12px;
+  font-family: Verdana;
+  text-decoration: none;
+  text-align: center;
+  line-height: 31px;
+}
+#navigation td.menu .contentMenu a.current {
+  color: #CC3300;
+  text-decoration: none;
+}
+
+#navigation td.menu .mainMenu a:hover {
+  background-color:#ffffff;
+  border-bottom: 1px solid #ffffff;
+}
+
+#navigation td.menu .mainMenu a.current {
+  background-color:#ffffff;
+  border-bottom: 1px solid #ffffff;
+  color: #CC3300;
+}
+
+#navigation td.menu .contentMenu h2 {
+  margin: 0px 0px 0px 10px;
+  font-size: 100%;
+  font-weight: lighter;
+  line-height: 31px;
+}
+#navigation td.menu .contentMenu a {
+  display: inline;
+  border-right: 1px solid #cccccc;
+  padding:0px 20px;
+  text-decoration: none;
+  line-height: 32px;
+}
+
+#navigation td.menu .menu p,
+#navigation td.menu .action p {
+  display: none;
+}
+#navigation td.menu .contentMenu .empty {
+  background-color: #FAFAFA;
+  height: 32px;
+}
+
+/* Menu
+------------------------------------- */
+#banner .menu {
+  padding: 13px 15px 0px 0px;
+  text-align: right;
+}
+#banner .menu a, #banner .menu span {
+  padding:0px 2px;
+}
+
+/* Header
+----------------------------------------------- */
+#header {
+}
+
+/* Wrapper
+----------------------------------------------- */
+#wrapper {
+  padding-bottom: 50px; 
+}
+
+/* Menu Wrapper
+----------------------------------------------- */
+#menuWrapper {
+  width: 100%;
+}
+
+/* Content
+----------------------------------------------- */
+#content {
+  width: 100%;
+  margin: 0px 0px 0px 0px;
+}
+#contentContainer {
+  margin: 0px 20px;
+}
+#contentHeader {
+  margin-top: 2px;
+}
+
+#contentHeader .navi {
+  margin: 0px 15px;
+  padding: 0px 0px;
+  border-bottom: 1px dashed #aaa;
+  line-height: 30px;
+}
+#contentHeader .navi a {
+  display: inline-block;
+  padding: 0px 5px;
+  text-decoration: none;
+}
+
+#contentHeader .menu {
+  margin: 0px 15px;
+  padding: 0px 10px;
+  border-bottom: 1px dashed #aaa;
+  line-height: 30px;
+  font-family: Verdana;
+}
+#contentHeader .menu p {
+  display: none;
+  margin-right: 10px;
+}
+#contentHeader .menu a {
+  display: inline-block;
+  margin-right: 5px;
+  padding: 0px 5px;
+  text-decoration: none;
+  text-align: center;
+}
+#contentHeader2 {
+  margin: 10px 0px 0px 0px;
+}
+#contentBody {
+  margin: 20px 0px 20px 0px;
+}
+
+#contentHeader2 .menu {
+  margin: 3px 0px 0px 0px;
+  padding: 0px 0px 3px 0px;
+  border-bottom: 1px dashed #bbb;
+  line-height: 1.5;
+}
+#contentHeader2 .menu p {
+  float: left;
+  width: 140px;
+  padding: 0px 0px 0px 10px;
+  border-left: 1px solid #ccc;
+  border-right: 1px solid #ccc;
+  font-size: 100%;
+  font-weight: lighter;
+}
+#contentHeader2 .menu a {
+  display: inline-block;
+  padding: 0px 15px;
+  border-right: 1px solid #ccc;
+  text-decoration: none;
+}
+#contentHeader2 .navi {
+  margin: 15px 0px 0px 10px;
+}
+
+
+/* Main menu xxx
+------------------------------------- */
+#contentHeader .mainMenu {
+  margin: 5px 0px 0px 0px;
+  padding: 5px 0px;
+  border-bottom: 1px dashed #bbb;
+}
+#contentHeader .mainMenu h2 {
+  position: absolute;
+  width: 140px;
+  font-size: 100%;
+  font-weight: lighter;
+  text-align: center;
+}
+#contentHeader .mainMenu .menu {
+  margin: 0px 0px 0px 140px;
+}
+#contentHeader .mainMenu .menu a {
+  padding: 0px 15px;
+  border-left: 1px solid #ccc;
+  text-decoration: none;
+}
+#contentHeader .mainMenu .menu a:hover {
+}
+
+/* Sub menu xx
+------------------------------------- */
+#contentHeader .subMenu {
+  margin: 0px 0px 0px 0px;
+  padding: 5px 0px;
+  border-bottom: 1px dashed #bbb;
+}
+#contentHeader .subMenu h3 {
+  position: absolute;
+  width: 140px;
+  font-size: 100%;
+  font-weight: lighter;
+  text-align: center;
+}
+#contentHeader .subMenu h3 span {
+  display: block;
+  position: absolute;
+  top: 4px;
+  left: 50px;
+  width: 100%;
+  margin: 9px 0px 0px 0px;
+  padding: 2px 5px;
+  border: 1px solid #b86;
+  background-color: #fff;
+}
+#contentHeader .subMenu .menu {
+  margin: 0px 0px 0px 140px;
+}
+#contentHeader .subMenu .menu a {
+  padding: 0px 15px;
+  border-left: 1px solid #ccc;
+  text-decoration: none;
+}
+
+/* Footer
+----------------------------------------------- */
+#footer {
+  padding: 0px 10px;
+}
+#footerContainer {
+  height: 40px;
+  border-top: 1px solid #ccc;
+  color: #555;
+  text-align: center;
+  line-height: 40px;
+}

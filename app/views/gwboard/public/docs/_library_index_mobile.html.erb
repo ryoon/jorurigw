@@ -1,0 +1,21 @@
+<%
+#旧設定では表示させないように注意が必要
+dsp_flag = false
+for item in @files
+  dsp_flag = true unless item.is_image  #画像以外のファイルがある時は表示する
+end unless @files.blank?
+%>
+<%if dsp_flag %>
+<p class="bgAsh">添付ファイル</p>
+
+<%
+for item in @files
+  download_url = "#{item.file_uri(item.system_name)}"
+%>
+<%unless item.is_image %>
+<p class="leftPad2"><%= link_to(%Q[#{item.filename} (#{item.eng_unit})],download_url) %></p>
+<%end%>
+<%
+end %>
+<span style="color: #ff0000;">※パケット定額サービスに入っていない場合、高額の通信料が発生する場合があります。</span>
+<%end%>

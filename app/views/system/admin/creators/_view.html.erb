@@ -1,0 +1,14 @@
+<%
+return unless item.creator
+%><table class="show">
+  
+  <tr>
+    <th>作成者</th>
+    <td>
+      <tt>課　　　　　　：</tt><%= item.creator.group.nil? ? '' : item.creator.group.display_name %>
+      <br /><br style="line-height: 0.5;" />
+      <tt>氏名　　　　　：</tt><%= item.creator.user.nil? ? '公開画面からの投稿' : item.creator.user.display_name %>
+    </td>
+  </tr>
+
+</table>

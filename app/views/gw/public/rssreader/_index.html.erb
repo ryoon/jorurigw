@@ -1,0 +1,30 @@
+<%# app/views/gw/public/rssreader/_index.html.erb %>
+<div class="piece gadget rss">
+<div class="pieceHeader">
+<h3>RSSリーダ</h3>
+<div class="btsHeaderRight">
+<span class="btSet"><%= link_to '設定を編集', '/gw/rssreader/edit_properties' %></span>
+<%#= link_to 'もっと見る...', '/gw/rssreader' %>
+</div>
+
+</div>
+<div class="pieceBody">
+<table cellspacing="0" cellpadding="0" class="index">
+<colgroup class="title"></colgroup>
+<colgroup class="update_at"></colgroup>
+<% if hx.size == 0 %>
+<tr><th colspan="2"><%=h "RSSリーダが設定されていません" %></th></tr>
+<% else %>
+<% hx.each do |feed| %>
+<tr><th colspan="2"><h4><%=h "#{feed['title']}新着ヘッドライン" %></h4></th></tr>
+<%
+    feed['heads'].each do |x|
+      tx = nz(x['result'], 1) == 1 ? link_to_wec(x['title'], x['link'], :target => '_blank') : "#{x['title']} [#{x['link']}]"
+      concat %Q(<tr#{cycle '', ' class="cycle"'}><td class="title">#{tx}</td><td>#{x['date']}</td></tr>)
+    end
+  end
+end
+%>
+</table>
+</div>
+</div>

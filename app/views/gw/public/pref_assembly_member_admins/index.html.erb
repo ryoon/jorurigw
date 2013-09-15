@@ -1,0 +1,26 @@
+<%
+  length = @items.length
+  today = Time.parse(Time.now.strftime('%Y-%m-%d 00:00:00'))
+-%>
+
+<div class="piece AdminSetting">
+
+<%= render :partial => 'header_str' %>
+
+<div class="pieceBody">
+  <%= render :partial => 'header_new_botton' %>
+  <%= div_notice %>
+  <%= render :partial => 'tree_str' %>
+  <% if @items.size == 0 -%>
+  <%= Gw.div_notice '表示対象がありません。' -%>
+  <% else -%>
+  <%if @g_cat == '0'%>
+    <%= render :partial => 'index_group', :locals => {:length => length} %>
+  <%else%>
+    <%= render :partial => 'index', :locals => {:length => length} %>
+  <%end%>
+  <%= paginate @items %>
+  <% end -%>
+</div>
+
+</div>

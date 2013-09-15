@@ -1,0 +1,42 @@
+<%#*<p>Find me in app/views/gw/public/config_settings/index.html.erb</p>%>
+
+<div class="piece AdminSetting">
+
+<%= render :partial => 'header_str' %>
+
+<div class="pieceBanner">
+</div>
+
+<div class="pieceBody">
+<%= render :partial => 'menu'        if @u_role==true -%>
+
+<%if @u_role == true -%>
+  <% if @admin_role == true -%>
+    <%= render :partial => 'tabs_admin' -%>
+  <% else %>
+    <%= render :partial => 'tabs_editor' -%>
+  <% end -%>
+<% end -%>
+
+<%= show_notice %>
+<% if @u_role ==true %>
+  <% if params[:c1].to_i==1 %>
+    <% if @admin_role == true -%>
+      <%# システム管理者用メニュー %>
+      <%= render :partial => 'index_admin' %>
+    <% else %>
+      <%# 特定機能の編集者用メニュー %>
+      <%= render :partial => 'index_editor' %>
+    <% end -%>
+  <% else %>
+    <%# 個人設定メニュー %>
+    <%= render :partial => 'index_ind' %>
+  <% end -%>
+<% else -%>
+    <%# 個人設定メニュー %>
+    <%= render :partial => 'index_ind' %>
+<% end -%>
+
+</div>
+
+</div>

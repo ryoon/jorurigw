@@ -1,0 +1,15 @@
+<%= render :partial => 'folder_name' %>
+
+<% form_for :item, :url => "#{Site.current_node.public_uri}create?title_id=#{params[:title_id]}&state=#{params[:state]}&cat=#{params[:cat]}&grp=#{params[:grp]}&gcd=#{params[:gcd]}", :html => {:multipart => true, :id => 'itemForm'} do |f| %>
+
+  <%= f.error_messages %>
+
+  <%= render :partial => 'form', :locals => {:f => f} %>
+
+  <%= submit_for_update(f, :js_submitter => 'my_submit()')%>
+
+<% end %>
+
+<div class="btReturn">
+  <%= link_to 'ファイル一覧へ', "#{@title.docs_path}&state=#{params[:state]}&grp=#{params[:grp]}&gcd=#{params[:gcd]}" %>
+</div>
