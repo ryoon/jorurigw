@@ -5,9 +5,9 @@ gem 'rails', '3.2.7'
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
-gem 'mysql2'
-gem 'execjs'
-gem 'therubyracer'
+gem 'mysql2','0.3.11'
+gem 'execjs','1.4.0'
+gem 'therubyracer','0.10.2'
 
 gem 'ruby-ldap', '0.9.11'
 gem 'will_paginate', '3.0.2'
