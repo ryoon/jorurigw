@@ -2,7 +2,7 @@
 class Gw::Admin::LinkSsoController < Gw::Controller::Admin::Base
   include System::Controller::Scaffold
   layout 'base'
-  
+
   def index
 
   end
@@ -43,10 +43,45 @@ EOL
     render :text => redirect_page
   end
 
+
+ def redirect_to_plus
+    plus_uri = Gw::UserProperty.find(:first,
+              :conditions=>["class_id = ? AND name = ? ",3,"plus_sso"])
+    host = ""
+    host = plus_uri.options unless plus_uri.blank?
+    pass = Site.user.password
+    para = CGI.escape(pass)
+    require 'net/http'
+    Net::HTTP.version_1_2
+    plus_use_ssl = Gw::UserProperty.find(:first,
+      :conditions=>["class_id = ? AND name = ? and options = ?",3,"plus_ssl","true"])
+    if plus_use_ssl.blank?
+      sso_use_ssl = false
+    else
+      sso_use_ssl = true
+    end
+    if sso_use_ssl == true
+      http     = Net::HTTP.new(host, 443)
+      http.use_ssl = true
+      http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+      http_prefix = "https://"
+    else
+      http = Net::HTTP.new(host, 80)
+      http_prefix = "http://"
+    end
+
+    res      = http.post("/_admin/air_sso", "account=#{Site.user.code}&password=#{para}")
+    token    = (res.body.to_s =~ /^OK/i) ? res.body.to_s.gsub(/^OK /i, '') : nil
+    next_uri = "#{http_prefix}#{host}/_admin/air_sso?account=#{Site.user.code}&token=#{token}"
+    next_uri += "&path=#{params[:path]}" unless params[:path].blank?
+
+    return redirect_to next_uri
+  end
+
   def redirect_pref_pieces
     id = params[:id]
     raise Gw::SystemError, '呼び出しが不正です。' if !Gw.int?(id)
-    
+
     id = id.to_i
     if params[:src] == 'tab'
       item = Gw::EditTab.find_by_id(id)
@@ -54,7 +89,7 @@ EOL
       item = Gw::EditLinkPiece.find_by_id(id)
     end
     raise Gw::SystemError, '呼び出しが不正です。' if item.blank?
-    
+
     if item.name=='メール' or  params[:id].to_i==64 or params[:id].to_i==65
       if request.mobile?
         mobile_uri = Gw::UserProperty.find(:first,
@@ -74,6 +109,10 @@ EOL
     end
     render :text => redirect_page
   end
+
+
+
+
 
 private
 

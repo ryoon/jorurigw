@@ -79,7 +79,7 @@ protected
   end
 
   def send_recognition_mail(item)
-    mail_fr = 'admin@192.168.0.2'
+    mail_fr = 'admin@127.0.0.1'
     subject = '【' + Core.title + '】 承認依頼'
     message = '下記URLから承認処理をお願いします。' + "\n\n" +
       url_for(:action => :show)

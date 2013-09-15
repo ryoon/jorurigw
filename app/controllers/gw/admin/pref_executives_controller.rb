@@ -11,41 +11,12 @@ class Gw::Admin::PrefExecutivesController < Gw::Controller::Admin::Base
 
   def index
     init_params
-
-    item1 = Gw::PrefExecutive.new #.readable
-    item1.and 'sql', "deleted_at IS NULL"
-    item1.and 'sql', "u_lname is not null"
-    item1.and 'sql', "is_other_view = 1"
-    item1.order  params[:id], @sort_keys
-    @items1 = item1.find(:all)
-
-    item2 = Gw::PrefExecutive.new #.readable
-    item2.and 'sql', "deleted_at IS NULL"
-    item2.and 'sql', "u_lname is null"
-    item2.and 'sql', "is_other_view = 1"
-    item2.order  params[:id], @sort_keys
-    @items2 = item2.find(:all)
-
+		@items1 = Gw::PrefExecutive.get_members(:u_lname => FALSE).order(@sort_keys)
+		@items2 = Gw::PrefExecutive.get_members(:u_lname => TRUE).order(@sort_keys)
   end
 
   def state_change
-    @item = Gw::PrefExecutive.find_by_uid(params[:id])
-    old_state = params[:p_state]
-    if old_state == "on"
-      new_state = "off"
-    elsif  old_state == "off"
-      new_state = "on"
-    end
-    @item.state = new_state
-    @item.save
-
-     update_field = "state = '#{new_state}'"
-    sql_where = "id != #{@item.id} AND uid = #{params[:id]}"
-    Gw::PrefExecutive.update_all(update_field,sql_where)
-
-    set_sql_where = "uid = #{params[:id]}"
-    Gw::PrefDirector.update_all(update_field,set_sql_where)
-
+		@item = Gw::PrefExecutive.state_change(params[:id])
     return redirect_to(@public_uri)
   end
 

@@ -3307,3 +3307,28 @@ CREATE TABLE IF NOT EXISTS `questionnaire_temporaries` (
 DROP TABLE IF EXISTS `enquete_view_questions`;
 
 CREATE ALGORITHM=UNDEFINED VIEW `enquete_view_questions` AS select `enquete_base_users`.`base_user_code` AS `base_user_code`,`questionnaire_bases`.`id` AS `id`,`questionnaire_bases`.`unid` AS `unid`,`questionnaire_bases`.`include_index` AS `include_index`,`questionnaire_bases`.`content_id` AS `content_id`,`questionnaire_bases`.`state` AS `state`,`questionnaire_bases`.`created_at` AS `created_at`,`questionnaire_bases`.`updated_at` AS `updated_at`,`questionnaire_bases`.`section_code` AS `section_code`,`questionnaire_bases`.`section_name` AS `section_name`,`questionnaire_bases`.`section_sort` AS `section_sort`,`questionnaire_bases`.`enquete_division` AS `enquete_division`,`questionnaire_bases`.`manage_title` AS `manage_title`,`questionnaire_bases`.`title` AS `title`,`questionnaire_bases`.`form_body` AS `form_body`,`questionnaire_bases`.`able_date` AS `able_date`,`questionnaire_bases`.`expiry_date` AS `expiry_date`,`questionnaire_bases`.`spec_config` AS `spec_config`,`questionnaire_bases`.`send_change` AS `send_change`,`questionnaire_bases`.`createdate` AS `createdate`,`questionnaire_bases`.`createrdivision_id` AS `createrdivision_id`,`questionnaire_bases`.`createrdivision` AS `createrdivision`,`questionnaire_bases`.`creater_id` AS `creater_id`,`questionnaire_bases`.`creater` AS `creater`,`questionnaire_bases`.`editdate` AS `editdate`,`questionnaire_bases`.`editordivision_id` AS `editordivision_id`,`questionnaire_bases`.`editordivision` AS `editordivision`,`questionnaire_bases`.`editor_id` AS `editor_id`,`questionnaire_bases`.`editor` AS `editor`,`questionnaire_bases`.`custom_groups` AS `custom_groups`,`questionnaire_bases`.`custom_groups_json` AS `custom_groups_json`,`questionnaire_bases`.`reader_groups` AS `reader_groups`,`questionnaire_bases`.`reader_groups_json` AS `reader_groups_json`,`questionnaire_bases`.`custom_readers` AS `custom_readers`,`questionnaire_bases`.`custom_readers_json` AS `custom_readers_json`,`questionnaire_bases`.`readers` AS `readers`,`questionnaire_bases`.`readers_json` AS `readers_json`,`questionnaire_bases`.`default_limit` AS `default_limit` from (`enquete_base_users` join `questionnaire_bases`) where (`questionnaire_bases`.`state` = _utf8'public');
+
+--
+-- テーブルの構造 `gw_plus_updates`
+--
+DROP TABLE IF EXISTS `gw_plus_updates`;
+CREATE TABLE `gw_plus_updates` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `doc_id` varchar(255) DEFAULT NULL,
+  `post_id` varchar(255) DEFAULT NULL,
+  `state` varchar(255) DEFAULT NULL,
+  `project_users` text,
+  `project_users_json` text,
+  `project_id` varchar(255) DEFAULT NULL,
+  `project_code` varchar(255) DEFAULT NULL,
+  `class_id` int(11) DEFAULT NULL,
+  `title` text,
+  `doc_updated_at` datetime DEFAULT NULL,
+  `author` text,
+  `project_url` text,
+  `body` text,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) DEFAULT CHARSET=utf8;
+

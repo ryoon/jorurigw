@@ -8,10 +8,12 @@
   # 照会回答
   ['monitor','monitor'],
   # TODO
-  ['todo','todo']
+  ['todo','todo'],
+  # JoruriPlus
+  ['plus_update','plus_update']
   ]
   remind = []
-  %w(todo memo circular monitor).each{|mod|
+  %w(todo memo circular monitor plus_update).each{|mod|
     remind += eval("Gw::Model::#{mod.capitalize}.remind.collect{|x| x[:c]='#{mod}'; x}")
   }
 %>

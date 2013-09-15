@@ -32,4 +32,10 @@ class Gwqa::Category < Gwboard::CommonDb
     return "#{Site.current_node.public_uri}#{self.id}/update?parent_id=#{self.parent_id}&title_id=#{self.title_id}"
   end
 
+
+  def is_deletable?
+    cnt = Gwqa::Doc.where(:category1_id=>self.id).count
+    return false if cnt > 0
+    return true
+  end
 end

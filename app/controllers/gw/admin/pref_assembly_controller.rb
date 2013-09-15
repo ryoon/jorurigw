@@ -11,38 +11,13 @@ class Gw::Admin::PrefAssemblyController < Gw::Controller::Admin::Base
 
   def index
     init_params
-
-    item1 = Gw::PrefAssemblyMember.new #.readable
-    item1.and 'sql', "deleted_at IS NULL"
-    item1.and 'sql', "g_order=10"
-    item1.order  params[:id], @sort_keys
-    @items1 = item1.find(:all)
-
-    item2 = Gw::PrefAssemblyMember.new #.readable
-    item2.and 'sql', "deleted_at IS NULL"
-    item2.and 'sql', "g_order=20"
-    item2.order  params[:id], @sort_keys
-    @items2 = item2.find(:all)
-
-    item3 = Gw::PrefAssemblyMember.new #.readable
-    item3.and 'sql', "deleted_at IS NULL"
-    item3.and 'sql', "g_order > 20"
-    item3.order  params[:id], @sort_keys
-    @items3 = item3.find(:all)
+		@items1 = Gw::PrefAssemblyMember.get_chairman().order(@sort_keys)
+		@items2 = Gw::PrefAssemblyMember.get_vicechairmen().order(@sort_keys)
+		@items3 = Gw::PrefAssemblyMember.get_members().order(@sort_keys)
   end
 
   def state_change
-    @item = Gw::PrefAssemblyMember.find_by_id(params[:id])
-    old_state = params[:p_state]
-    if old_state == "on"
-      new_state = "off"
-    elsif  old_state == "off"
-      new_state = "on"
-    end
-    unless @item.blank?
-      @item.state = new_state
-      @item.save
-    end
+		@item = Gw::PrefAssemblyMember.state_change(params[:id])
     location  = @public_uri
     location += "##{params[:locate]}" unless params[:locate].blank?
     return redirect_to(location)

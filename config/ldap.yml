@@ -1,13 +1,12 @@
 development:
-#  host: 192.168.32.197
-  host: 192.168.32.219
+  host: 127.0.0.1
   port: 389
   base: dc=pref,dc=tokushima,dc=jp
 
 test:
-  host: 192.168.32.219
-  port: 389
-  base: dc=pref,dc=tokushima,dc=jp
+  host: 
+  port: 
+  base: 
 
 production:
   host: 

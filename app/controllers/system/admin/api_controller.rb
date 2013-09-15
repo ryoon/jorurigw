@@ -5,9 +5,7 @@ class System::Admin::ApiController < ApplicationController
 
   def checker
     state,xml = api_checker
-    respond_to do |format|
-      format.xml { render :text=>xml ,:layout=>false ,:state=>state }
-    end
+    render(:xml=>xml, :state=>state)
   end
 
   def checker_login

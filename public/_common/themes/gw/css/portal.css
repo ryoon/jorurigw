@@ -6,7 +6,7 @@
    _common/themes/gw/css/portal.css
 ========================================================= */
 
-/* ƒXƒPƒWƒ…[ƒ‰‚©‚ç‰º@ƒJƒ‰ƒ€İ’è
+/* ï¿½Xï¿½Pï¿½Wï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½ï¿½ï¿½ç‰ºï¿½@ï¿½Jï¿½ï¿½ï¿½ï¿½ï¿½İ’ï¿½
 ---------------------------------------------*/
 #content {
   float: right;
@@ -23,13 +23,13 @@
   width: 200px;
 }
 
-/* ‰EƒJƒ‰ƒ€@‘å˜g
+/* ï¿½Eï¿½Jï¿½ï¿½ï¿½ï¿½ï¿½@ï¿½ï¿½g
 ----------------------------------------------- */
 #content .pieceBody {
   border: none;
 }
 
-/* ‰EƒJƒ‰ƒ€@ƒŠƒ}ƒCƒ“ƒ_[
+/* ï¿½Eï¿½Jï¿½ï¿½ï¿½ï¿½ï¿½@ï¿½ï¿½ï¿½}ï¿½Cï¿½ï¿½ï¿½_ï¿½[
 ----------------------------------------------- */
 .reminder {
   background-image: url(/_common/themes/gw/files/title/title_remainder.gif);
@@ -63,7 +63,7 @@
   line-height: 2.3;
 }
 #content .reminder table td.cls {
-  width: 105px;
+  width: 115px;
 }
 #content .reminder .borderbox .pieceBody {
   border: none;
@@ -99,8 +99,12 @@
 .reminder table .expired td.date_ste {
   color: red;
 }
+.reminder td.plus_update span {
+  background-image: url(/_common/themes/gw/files/icon/ic-rem-plus.gif);
+}
 
-/* ‰EƒJƒ‰ƒ€@‚»‚Ì‘¼
+
+/* ï¿½Eï¿½Jï¿½ï¿½ï¿½ï¿½ï¿½@ï¿½ï¿½ï¿½Ì‘ï¿½
 ----------------------------------------------- */
 .gadget {
   margin-top: -10px;
@@ -158,7 +162,7 @@ table.index th {
   margin-left: 40px;
 }
 
-/* ƒTƒCƒhƒƒjƒ…[
+/* ï¿½Tï¿½Cï¿½hï¿½ï¿½ï¿½jï¿½ï¿½ï¿½[
 ----------------------------------------------- */
 #menu .headLine h3 {
   height: 29px;
@@ -252,7 +256,7 @@ table.index th {
   border-bottom: 1px solid #1E3B8C;
 }
 
-/* Lİ’è
+/* ï¿½Lï¿½ï¿½ï¿½İ’ï¿½
 ---------------------------------------*/
 .adUpper {
   margin-bottom: 10px;

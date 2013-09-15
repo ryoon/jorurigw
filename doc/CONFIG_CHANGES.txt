@@ -1,2 +1,10 @@
+2.0.1
+－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－
+ * 定期実行設定の追加
+－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－
+ #一定期間が過ぎたJoruriPlusリマインダー連携データを削除します
+ 30 2 * * * /usr/local/bin/ruby /var/share/jorurigw/script/rails runner \
+ -e development 'Gw::Script::PlusUpdate.destroy_reminders'
+
 2.0.0
   * 新規リリース

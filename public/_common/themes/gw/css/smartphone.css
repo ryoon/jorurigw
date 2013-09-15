@@ -382,10 +382,13 @@ form.search #group_id {
 
 /* icon */
 .iconFile {
-  background-position: center 0;
+  display: inline-block;
+  background-image: url("/_common/images/icons/icon24/default.png");
+  background-position: 0 0.1em;
+  background-repeat: no-repeat;
   margin-top: 5px;
-  padding-left: 0;
-  line-height: 1.8;
+  padding-left: 30px;
+  line-height: 2;
 }
 .iconBmp {
   background-image: url(/_common/images/icons/icon24/bmp.png);
@@ -463,7 +466,6 @@ form.search #group_id {
 .iconMap {
   background-image: url(/_common/images/icons/icon24/map.png);
 }
-
 /* portal
 ----------------------------------------------- */
 #navi2 {

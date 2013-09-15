@@ -4,7 +4,7 @@ class Gw::Admin::PrefDirectorsController < Gw::Controller::Admin::Base
   layout "admin/template/pref"
 
   def initialize_scaffold
-    Page.title = "所属幹部在庁表示"
+    Page.title = "部課長在庁表示"
     @public_uri = '/gw/pref_directors'
     return redirect_to(request.env['PATH_INFO']) if params[:reset]
   end
@@ -12,36 +12,12 @@ class Gw::Admin::PrefDirectorsController < Gw::Controller::Admin::Base
   def index
     init_params
 
-    item = Gw::PrefDirector.new #.readable
-    item.and 'sql', "deleted_at IS NULL"
-    item.order  params[:id], @sort_keys
-    @items = item.find(:all)
-
-    item = Gw::PrefDirector.new #.readable
-    dept    =  "parent_g_code"
-    g_order = "parent_g_order"
-    @item_links  = item.find(:all ,:conditions=>"deleted_at IS NULL",:group=>dept , :order=>g_order)
+		@items = Gw::PrefDirector.get_members.order(@sort_keys)
+		@item_links = Gw::PrefDirector.get_members.group("parent_g_code").order("parent_g_order")
   end
 
-
   def state_change
-    @item = Gw::PrefDirector.find_by_uid(params[:id])
-    old_state = params[:p_state]
-    if old_state == "on"
-      new_state = "off"
-    elsif  old_state == "off"
-      new_state = "on"
-    end
-    @item.state = new_state
-    @item.save
-    update_field = "state = '#{new_state}'"
-
-    sql_where = "id != #{@item.id} AND uid = #{params[:id]}"
-    Gw::PrefDirector.update_all(update_field,sql_where)
-
-    set_sql_where = "uid = #{params[:id]}"
-    Gw::PrefExecutive.update_all(update_field,set_sql_where)
-
+    @item = Gw::PrefDirector.state_change(params[:id])
     location  = @public_uri
     location += "##{params[:locate]}" unless params[:locate].blank?
     return redirect_to(location)

@@ -1,9 +1,9 @@
 development:
   title  : Joruri Gw
-  uri    : http://192.168.217.137:8080/
+  uri    : http://127.0.0.1/
   proxy  : 
   map_key: 
-  mail_domain : 192.168.32.243
+  mail_domain : 127.0.0.1
   
 test:
   title  : 

@@ -1,2 +1,28 @@
+2.0.1
+  USE `xxxxxxx_jgw_gw`;
+  CREATE TABLE `gw_plus_updates` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `doc_id` varchar(255) DEFAULT NULL,
+  `post_id` varchar(255) DEFAULT NULL,
+  `state` varchar(255) DEFAULT NULL,
+  `project_users` text,
+  `project_users_json` text,
+  `project_id` varchar(255) DEFAULT NULL,
+  `project_code` varchar(255) DEFAULT NULL,
+  `class_id` int(11) DEFAULT NULL,
+  `title` text,
+  `doc_updated_at` datetime DEFAULT NULL,
+  `author` text,
+  `project_url` text,
+  `body` text,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+  ) DEFAULT CHARSET=utf8;
+
+  #下記はJoruriPlus+へのSSO設定となります。optionsの値（'localhost'）は該当するシステムのホスト名に変更してください。
+  INSERT INTO `gw_user_properties` (`class_id`, `uid`, `name`, `type_name`, `options`, `created_at`, `updated_at`) VALUES
+  ( 3, '0', 'plus_sso', 'sso', 'localhost', CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP());
+
 2.0.0
   * 新規リリース

@@ -91,6 +91,10 @@ class Gwbbs::Admin::CategoriesController < Gw::Controller::Admin::Base
   def destroy
     item = gwbbs_db_alias(Gwbbs::Category)
     @item = item.new.find(params[:id])
+    unless @item.is_deletable?
+      flash[:notice]="指定した分類に記事が登録されているため、削除できませんでした。"
+      return redirect_to gwbbs_categories_path({:title_id=>params[:title_id],:parent_id=>params[:parent_id]})
+    end
     _destroy @item, :success_redirect_uri => gwbbs_categories_path({:title_id=>params[:title_id],:parent_id=>params[:parent_id]})
   end
 

@@ -6,6 +6,55 @@ class Gw::PrefExecutive < Gw::Database
   before_create :set_creator
   before_update :set_updator
 
+	#option[:u_lname] TRUE/FALSE
+	def self.get_members(options={})
+		rs = self.where('deleted_at IS NULL AND is_other_view = 1')
+		if options[:u_lname]
+			rs = rs.where("u_lname IS NOT NULL")
+		else
+			rs = rs.where("u_lname IS NULL")
+		end
+		return rs		
+	end
+	
+	#
+	#在庁フラグをON/OFF切り替える。
+	# ==== Parameters
+	# * + id -対象レコードid
+	# * + state -指定のフラグ値('on', 'off')。指定しない場合は現在の状態を反転させる。
+	#
+	def self.state_change(uid, state=nil)
+		ids = self.where(:uid => uid)
+		raise "Not Found@PrefExective::state_change" unless ids
+		
+		rc = self.find(ids[0])
+		current_state = rc.state
+		
+		if state
+			states = ['on','off']
+
+			case state.downcase
+			when *states
+				self.update_all(ids, :state => state)
+
+			else
+				#'on','off'以外は'off'にして例外をスローする
+				self.update_all(ids, :state => 'off')
+				raise "Invalid Parameter@PrefExective::state_change"
+			end
+			new_state = state
+		else
+			#現在の状態の反転
+			new_state = current_state == 'on' ? 'off' : 'on'
+			self.update_all(['state = ?', new_state], ['uid = ?', uid])
+		end
+
+		#同じ状態を部課長オブジェクトに送る
+    Gw::PrefDirector.update_all(['state = ?', new_state], ['uid = ?', uid])
+		return self.select(:uid => uid)
+	end
+
+	
   def save_with_rels(params, mode, options={})
     users = ::JsonParser.new.parse(params[:item]['schedule_users_json'])
     if mode==:create && users.blank?

@@ -37,4 +37,10 @@ class Gwbbs::Category < Gwboard::CommonDb
   end
 
 
+  def is_deletable?
+    cnt = Gwbbs::Doc.where(:category1_id=>self.id).count
+    return false if cnt > 0
+    return true
+  end
+
 end

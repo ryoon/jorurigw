@@ -34,23 +34,12 @@ class Gwsub::Admin::Sb01::Sb01TrainingEntriesController < Gw::Controller::Admin:
     today = Time.now.strftime("%Y-%m-%d %H:%M")
     item = Gwsub::Sb01TrainingSchedule.new
     item.page   params[:page], params[:limit]
-    if params[:sort_keys]
-      @items = item.find(:all,
-      :include => [:training],
-      :conditions => "gwsub_sb01_training_schedules.state != 1",
+
+    @items = item.find(:all,
+			:include => [:training],
+      :conditions => "gwsub_sb01_training_schedules.state != 1 and from_start >= '#{today}'",
       :order => @sort_keys
     )
-    else
-      sub = "SELECT training_id,min(from_start) as min_date FROM gwsub_sb01_training_schedules WHERE state != 1 and from_start >= '#{today}' GROUP BY training_id "
-      from = "gwsub_sb01_training_schedules LEFT JOIN (#{sub}) AS ts ON ts.training_id = gwsub_sb01_training_schedules.training_id"
-      @items = item.find(:all,
-        :from => from,
-        :include => [:training],
-        :select => "gwsub_sb01_training_schedules.*, ts.min_date, gwsub_sb01_trainings.title",
-        :conditions => "gwsub_sb01_training_schedules.state != 1 and from_start >= '#{today}'",
-        :order => "ts.min_date, gwsub_sb01_trainings.title, gwsub_sb01_training_schedules.from_start"
-      )
-    end
     _index @items
   end
 
@@ -103,6 +92,7 @@ class Gwsub::Admin::Sb01::Sb01TrainingEntriesController < Gw::Controller::Admin:
     @qs = qsa.delete_if{|x| nz(params[x],'')==''}.collect{|x| %Q(#{x}=#{params[x]})}.join('&')
   end
   def sortkeys_setting
-     @sort_keys = nz(params[:sort_keys], 'from_start, gwsub_sb01_trainings.title' )
+		params[:sort_keys] = 'from_start, gwsub_sb01_trainings.title' if params[:sort_keys].blank?
+    @sort_keys = nz(params[:sort_keys], 'from_start, gwsub_sb01_trainings.title' )
   end
 end

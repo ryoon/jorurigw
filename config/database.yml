@@ -28,25 +28,33 @@ production:
   password: pass
   socket: /var/lib/mysql/mysql.sock
 
-#Railsの実行環境がproductionの場合、データベース名は下記のようにしてください。
-#production_jgw_gw
+
+<%
+env_prefix = case Rails.env
+when 'production'
+  'production'
+when 'test'
+  'test'
+else
+  'development'
+end
+%>
+
 dev_jgw_gw:
   adapter: mysql2
   encoding: utf8
   reconnect: false
-  database: development_jgw_gw
+  database: <%= env_prefix %>_jgw_gw
   pool: 5
   username: joruri
   password: pass
   socket: /var/lib/mysql/mysql.sock
 
-#Railsの実行環境がproductionの場合、データベース名は下記のようにしてください。
-#production_jgw_gw_pref
 gwsub:
   adapter: mysql2
   encoding: utf8
   reconnect: false
-  database: development_jgw_gw_pref
+  database: <%= env_prefix %>_jgw_gw_pref
   pool: 5
   username: joruri
   password: pass

@@ -19,8 +19,9 @@ module Gw::Controller::Mobile
     body.gsub!(/<a .*?href=".*?".*?>.*?<\/a>/iom) do |m|
       uri   = m.gsub(/<a .*?href="(.*?)".*?>.*?<\/a>/iom, '\1')
       label = m.sub(/(<a .*?href=".*?".*?>)(.*?)(<\/a>)/i, '\2')
-      convertd_link = self.convert_link(uri,label,session_id)
-      convertd_link
+      a_class = m.gsub(/<a .*?class="(.*?)".*?>.*?<\/a>/iom, '\1')
+      converted_link = self.convert_link(uri,label,session_id,{:class=>a_class})
+      converted_link
     end
     body.gsub!(/<a .*?href=.*? .*?>.*?<\/a>/iom) do |m|
       if m =~ /<a .*?href=".*?".*?>.*?<\/a>/iom
@@ -28,8 +29,9 @@ module Gw::Controller::Mobile
       else
         uri   = m.gsub(/<a .*?href=(.*?) .*?>.*?<\/a>/iom, '\1')
         label = m.sub(/(<a .*?href=.*?.*?>)(.*?)(<\/a>)/i, '\2')
-        convertd_link = self.convert_link(uri,label,session_id)
-        convertd_link
+        a_class = m.gsub(/<a .*?class="(.*?)".*?>.*?<\/a>/iom, '\1')
+        converted_link = self.convert_link(uri,label,session_id,{:class=>a_class})
+        converted_link
       end
     end
     if @file_link==true
@@ -38,10 +40,12 @@ module Gw::Controller::Mobile
     return body
   end
 
-  def self.convert_link(uri,label,session_id)
+  def self.convert_link(uri,label,session_id,options={})
     @file_link = true if uri =~ /\.(pdf|doc|docx|xls|xlsx|jtd|jst|jpg|gif)$/i
     @file_link = true if uri =~ /_attach/i
     @file_link = true if uri =~ /download_object/i
+    class_str =""
+    class_str =%Q( class="#{options[:class]}") if !options[:class].blank?
 
     if uri =~ /^\/$|^(\/|\.\/|\.\.\/)/
 
@@ -55,7 +59,7 @@ module Gw::Controller::Mobile
             uri += "?_session_id=#{session_id}"
           end
         end
-        converted_link = %Q(<a href="#{uri}">#{label}</a>)
+        converted_link = %Q(<a#{class_str} href="#{uri}">#{label}</a>)
       else
         converted_link = label
       end
@@ -73,12 +77,12 @@ module Gw::Controller::Mobile
             uri += "?_session_id=#{session_id}"
           end
         end
-        converted_link = %Q(<a href="#{uri}">#{label}</a>)
+        converted_link = %Q(<a#{class_str} href="#{uri}">#{label}</a>)
       else
         converted_link = label
       end
     else
-      converted_link = %Q(<a href="#{uri}">#{label}</a>)
+      converted_link = %Q(<a#{class_str} href="#{uri}">#{label}</a>)
     end
     return converted_link
   end
@@ -89,7 +93,6 @@ module Gw::Controller::Mobile
     return true if uri =~ /download_object/i
     if uri =~ /^\/$|gw\/memos|\/schedules|gw\/schedule_todos|gwbbs\/docs|gw\/todos|login|mobile|portal/
       return false if uri =~ /month/
-      #return false unless uri =~ /title_id=1/ if uri =~ /^gwbbs\/docs/
       return true
     else
       return false

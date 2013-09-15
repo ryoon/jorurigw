@@ -1,4 +1,5 @@
-## JoruriGw v2.0.0 インストールマニュアル                   2012.09.25
+## Joruri Gw 2.0.1 インストールマニュアル                   2012.11.08
+
 **********************************************************************
  1 想定環境
 **********************************************************************
@@ -12,6 +13,7 @@ Rails      : Rails 3.2.7
 キャッシュ : memcached 1.4.13
 
 [設定]
+※IPアドレス、ドメインは一例です。ご利用の環境に応じて変更してください。
 IPアドレス : 192.168.0.2
 ドメイン   : 192.168.0.2
 
@@ -59,15 +61,11 @@ iptablesを停止し、自動起動を無効にします。
  2.3 パッケージのインストール
 ======================================================================
 
-ソースのコンパイルに必要なパッケージをインストールします。
+Joruri Gw の実行に必要なパッケージをインストールします。
 
-既にインストールされているかを確認します。
-
-  # rpm -qa wget make gcc-c++
-
-なければインストールします。
-
-  # yum install -y wget make gcc-c++
+  # yum -y install wget make gcc-c++ httpd httpd-devel \ 
+    mysql-server mysql-devel libjpeg-devel libpng-devel \
+    ImageMagick ImageMagick-devel curl-devel libevent libevent-devel
 
 
 **********************************************************************
@@ -77,8 +75,7 @@ iptablesを停止し、自動起動を無効にします。
 必要なパッケージをダウンロードします。
 
   # cd /usr/local/src/
-  # wget http://joruri.org/download/jorurigw/jorurigw-2.0.0.tar.gz
-  # wget http://image_magick.veidrodis.com/image_magick/ImageMagick-6.7.7-0.tar.gz
+  # wget http://joruri.org/download/jorurigw/jorurigw-2.0.1.tar.gz
   # wget ftp://ftp.ruby-lang.org/pub/ruby/1.9/ruby-1.9.3-p194.tar.gz
   # wget http://memcached.googlecode.com/files/memcached-1.4.13.tar.gz
   # wget http://pyyaml.org/download/libyaml/yaml-0.1.4.tar.gz
@@ -90,25 +87,22 @@ Joruriユーザを作成します。
   # passwd joruri
   # 新しいパスワード： <= 任意のパスワードを入力してください
 
-JoruriGwソースコードを設置します。
+Joruri Gwソースコードを設置します。
 
   # mkdir /var/share
-  # tar xvzf jorurigw-2.0.0.tar.gz -C /var/share
+  # tar xvzf jorurigw-2.0.1.tar.gz -C /var/share
   # chown -R joruri:joruri /var/share/jorurigw
 
 **********************************************************************
- 4 Apache のインストール
+ 4 Apache の設定
 **********************************************************************
 
-Apacheをインストールします。
-
-  # yum install -y httpd httpd-devel
-
-設定ファイルを編集します。
+Apacheの設定ファイルを編集します。
 
   # vi /etc/httpd/conf/httpd.conf
   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  ServerName 192.168.0.2    #変更
+  #実際のサーバのアドレスを設定します
+  ServerName 192.168.0.2
   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 設定ファイルにエラーがないことを確認し、Apacheを起動します。
@@ -121,13 +115,10 @@ Apacheをインストールします。
   # /sbin/chkconfig httpd on
 
 **********************************************************************
- 5 MySQL のインストール
+ 5 MySQL の設定
 **********************************************************************
 
-MySQLをインストールします。
-
-  # yum install -y mysql-server mysql-devel
-
+MySQLの設定を行います。
 文字エンコーディングの標準を UTF-8 に設定します。
 
   # vi /etc/my.cnf
@@ -160,25 +151,8 @@ joruriユーザを作成します。
  6 ImageMagick のインストール
 **********************************************************************
 
-画像関連のパッケージをインストールします。
-
-  # yum -y install libjpeg-devel libpng-devel
-
-ImageMagickをインストールします。
-
-  # cd /usr/local/src/
-  # tar xvzf ImageMagick-6.7.7-0.tar.gz
-  # cd ImageMagick-6.7.7-0
-  # ./configure
-  # make
-  # make install
-
-ライブラリをインストールします。
-
-  # cd /lib
-  # ln -s /usr/local/lib/libMagickCore.so.1
-  # ln -s /usr/local/lib/libMagickCore.so.2
-  # ln -s /usr/local/lib/libMagick.so.10
+※旧バージョンからご利用の方へ
+ImageMagickのインストールは yum利用に移行しました。
 
 **********************************************************************
  7 Ruby on Rails のインストール
@@ -208,12 +182,9 @@ Rubyをインストールします。
   # /usr/local/bin/ruby -v
    => ruby 1.9.3p194 (2012-04-20 revision 35410) [i686-linux]
 
-
 ======================================================================
  7.2 Phusion Passenger のインストール
 ======================================================================
-
-  # yum -y install curl-devel
 
 Phusion Passengerをインストールします。
 
@@ -235,8 +206,9 @@ Phusion Passengerの動作環境を設定します。
 ======================================================================
  7.3 gemライブラリ のインストール
 ======================================================================
-  # PKG_CONFIG_PATH=/usr/local/src/ImageMagick-6.7.7-0/magick
-  # export PKG_CONFIG_PATH
+
+Joruri Gw実行に必要なライブラリをインストールします。
+
   # gem install bundler -v 1.1.4
   # cd /var/share/jorurigw
   # bundle install
@@ -245,9 +217,8 @@ Phusion Passengerの動作環境を設定します。
 正しく完了すれば次のようなメッセージが表示されます。
   =>Your bundle is complete! Use `bundle show [gemname]` to see where a bundled gem is installed.
 
-
 **********************************************************************
-  8 JoruriGw のインストール
+  8 Joruri Gw のインストール
 **********************************************************************
 
 Joruriユーザに変更します。
@@ -270,7 +241,7 @@ LDAP接続情報
   $ vi config/ldap.yml
 
   ※LDAPに関する設定は、ダウンロードページより補足資料をご参照下さい。
-    http://joruri.org/download/  【LDAP関連補足資料】LDAP_LDIF.zip
+    http://joruri.org/download/jorurigw/  【LDAP関連補足資料】LDAP_LDIF.zip
 
 SMTP接続情報
 
@@ -281,6 +252,7 @@ SMTP接続情報
 ======================================================================
  8.2 データベースの作成
 ======================================================================
+
 ※作業の途中でmysqlに設定したパスワードを聞かれますのでご用意ください。
 
 データベースを作成します。
@@ -307,10 +279,11 @@ SMTP接続情報
   $ /usr/bin/mysql -u root -p development_jgw_bbs_000001 < ./db/development_jgw_bbs_000001_init.sql
 
 ※Railsの実行環境がproductionの場合、データベース名は下記のようにしてください。
-production_jgw_core
-production_jgw_gw
-production_jgw_gw_pref
-production_jgw_bbs_000001
+  production_jgw_core
+  production_jgw_gw
+  production_jgw_gw_pref
+ production_jgw_bbs_000001
+
 さらに環境設定のために次のSQL文を実行してください。
   $ /usr/bin/mysql -u root -p -e "UPDATE production_jgw_gw.gwbbs_controls SET dbname = 'production_jgw_bbs_000001' WHERE gwbbs_controls.id =1;"
 
@@ -318,11 +291,10 @@ production_jgw_bbs_000001
 ======================================================================
  8.3 memcached のインストール
 ======================================================================
-
-libeventをインストールします。
-
+スーパーユーザーに戻ります。
+  $ exit
+もしくは
   $ su -
-  # yum -y install libevent libevent-devel
 
 memcachedをインストールします。
 
@@ -361,23 +333,26 @@ Apacheに設定を追加します。
   <VirtualHost *:80>
       ServerName default
       DocumentRoot /var/share/jorurigw/public
-      RailsEnv "development"
+      RackEnv development
       PassengerHighPerformance on
   </VirtualHost>
   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-※Railsの実行環境がproductionの場合、RailsEnvは下記のようにしてください。
-      RailsEnv "production"
-
+※Railsの実行環境がproductionの場合、RackEnvは下記のようにしてください。
+      RackEnv production
 
 Apache を再起動します。
   # /sbin/service httpd configtest
   # /sbin/service httpd restart
 
+以上でJoruri Gwのインストールが完了しました。
+
 
 **********************************************************************
  9 定期実行設定
 **********************************************************************
+
+ここではcrontabによる定期実行に関する設定例を説明しています。
 
 削除期間が過ぎた情報を削除します。
 以下の例は毎日3時～4時にかけて削除しています。

@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 class Gwfaq::Admin::CategoriesController < Gw::Controller::Admin::Base
 
   include Gwboard::Controller::Scaffold
@@ -79,6 +80,11 @@ class Gwfaq::Admin::CategoriesController < Gw::Controller::Admin::Base
   def destroy
     item = gwfaq_db_alias(Gwfaq::Category)
     @item = item.new.find(params[:id])
+
+    unless @item.is_deletable?
+      flash[:notice]="指定した分類に記事が登録されているため、削除できませんでした。"
+      return redirect_to gwfaq_categories_path({:title_id=>params[:title_id]})
+    end
     _destroy @item, :success_redirect_uri => gwfaq_categories_path({:title_id=>params[:title_id]})
   end
 

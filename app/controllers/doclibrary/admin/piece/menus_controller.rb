@@ -55,8 +55,15 @@ class Doclibrary::Admin::Piece::MenusController < Gw::Controller::Admin::Base
       end if item.state == 'public'
     end
   end
-
+	
   def make_hash_variable_doc_counts
+
+		#改善版を呼び出してリターン
+		if TRUE
+			make_hash_variable_doc_counts2
+			return
+		end
+		
     p_grp_code = ''
     p_grp_code = Site.user_group.parent.code unless Site.user_group.parent.blank?
     grp_code = ''
@@ -78,5 +85,39 @@ class Doclibrary::Admin::Piece::MenusController < Gw::Controller::Admin::Base
     item = doclib_db_alias(Doclibrary::ViewAclDocCount)
     @group_doc_counts = item.find_by_sql(str_sql).index_by(&:section_code)
   end
+
+	def make_hash_variable_doc_counts2
+    p_grp_code = ''
+    p_grp_code = Site.user_group.parent.code unless Site.user_group.parent.blank?
+    grp_code = ''
+    grp_code = Site.user_group.code unless Site.user_group.blank?
+		is_admin = @is_admin.blank? ? FALSE : TRUE
+		
+		@group_doc_counts = _make_hash_variable_doc_count2(Site.user.code, is_admin, 'public', @title.id, p_grp_code, grp_code).index_by(&:section_code)
+  end
+
+	def _make_hash_variable_doc_count2(user_code, is_admin, state, title_id, parent_group_code, group_code)
+    str_where  = " (state = '#{state}' AND doclibrary_folders.title_id = #{title_id}) AND ((acl_flag = 0)"
+    if is_admin
+      str_where  += " OR (acl_flag = 9))"
+    else
+      str_where  += " OR (acl_flag = 1 AND acl_section_code = '#{parent_group_code}')"
+      str_where  += " OR (acl_flag = 1 AND acl_section_code = '#{group_code}')"
+      str_where  += " OR (acl_flag = 2 AND acl_user_code = '#{user_code}'))"
+    end
+    
+		str_sql = 'SELECT doclibrary_folders.id FROM doclibrary_folder_acls, doclibrary_folders WHERE doclibrary_folder_acls.folder_id = doclibrary_folders.id'
+		str_sql += ' AND ( ' + str_where + ' )'
+		str_sql += ' GROUP BY doclibrary_folders.id'
+
+		cnn = doclib_db_alias(Doclibrary::ViewAclFolder)
+		items = cnn.find_by_sql(str_sql)
+		folder_ids = items.map{|f| f.id}
+		cnn.remove_connection
+		
+		item = doclib_db_alias(Doclibrary::Doc)
+    item.find_by_sql(['SELECT section_code, COUNT(id) AS total_cnt FROM doclibrary_docs WHERE category1_id IN (?) GROUP BY section_code', folder_ids])
+  end
+	
   Doclibrary::ViewAclDocCount.remove_connection
 end

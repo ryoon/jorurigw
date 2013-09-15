@@ -98,6 +98,11 @@ JoruriGw::Application.routes.draw do
           put :access_updates, :password_updates
         end
       end
+      resources :plus_update_settings do
+        member do
+          get :to_project
+        end
+      end
     end
   end
 
@@ -175,9 +180,10 @@ JoruriGw::Application.routes.draw do
   scope "_#{scp}" do
     namespace mod do
       scope :module => scp do
-        resources :link_sso do
+        resources :link_sso, :constraints => {:id  => /[0-9]+/}  do
           collection do
             post :convert_hash, :import_csv, :download, :params_viewer
+            get :redirect_to_plus
           end
           member do
             get :redirect_pref_soumu, :redirect_pref_cms, :redirect_pref_pieces, :redirect_to_dcn

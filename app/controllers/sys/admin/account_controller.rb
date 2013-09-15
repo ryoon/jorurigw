@@ -16,18 +16,6 @@ class Sys::Admin::AccountController < Sys::Controller::Admin::Base
     @uri = NKF::nkf('-w', @uri)
     return unless request.post?
 
-    if params[:password].to_s == 'p' + params[:account].to_s
-      cond = {:account => params[:account]}
-      if System::User.find(:first, :conditions => cond)
-        flash.now[:notice] = "初期パスワードではログインできません。<br />パスワードを変更してください。".html_safe
-        respond_to do |format|
-          format.html { render }
-          format.xml  { render(:xml => '<errors />') }
-        end
-        return true
-      end
-    end
-
     if request.mobile?
       login_ok = new_login_mobile(params[:account], params[:password], params[:mobile_password])
     else
