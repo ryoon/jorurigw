@@ -280,7 +280,7 @@ class Gwqa::Doc < Gwboard::CommonDb
 
   def set_title
     if self.doc_type == 0
-      strsql = "UPDATE gwqa_docs SET title = '#{self.title}' WHERE doc_type = 1 AND parent_id = #{self.id};"
+      strsql = "UPDATE gwqa_docs SET title = '#{Mysql::quote(self.title)}' WHERE doc_type = 1 AND parent_id = #{self.id};"
       connection.execute(strsql)
     else
       item = Gwqa::Doc.find_by_id(self.parent_id)

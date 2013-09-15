@@ -24,15 +24,6 @@
   </tr>
  <%end %>
 <% end %>
-<!-- Adminlibrary表示-->
-<% for item in @admin_items %>
-<tr <%= cycle 'class="article"', 'class="article cycle"' %>>
-<td class="libraryTitle"><%=link_to h(item.title), item.docs_path %></td>
-<td class="explanation"><%=item.caption %></td>
-<td class="manager"><%=admin_name(item.admingrps_json,item.adms_json) %></td>
-<td class="update"><%=item.docslast_updated_at.strftime('%y-%m-%d %H:%M').to_s unless item.docslast_updated_at.blank? %></td>
-</tr>
-<% end %>
 </table>
 <%=paginate @items %>
 </div>

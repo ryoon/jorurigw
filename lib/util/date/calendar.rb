@@ -68,7 +68,7 @@ class Util::Date::Calendar
   
   def end_day(year, month)
     day = [0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][month]
-    day += 1 if Date.new(year).leap?
+    day += 1 if Date.new(year).leap? && month == 2
     day
   end
   

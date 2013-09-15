@@ -1,0 +1,82 @@
+<%
+
+@prop_master = @genre
+mid_url = [@genre_prefix,@genre].delete_if{|x| x.nil?}.join('_')
+
+header_str = render(:partial => '/gw/public/schedules/schedule_bt_box', :locals=>{:d=>Date.today, :mode=>'month', :genre=>@genre})
+header_str = header_str.gsub(/\r\n|\r|\n/, "")
+
+
+header = ''
+_images_common_hash = Gw::NameValue.get('yaml', nil, "gw_prop_images_common")
+cols = _images_common_hash[:_cols].split(':').collect{|x| x.to_sym}
+options_images = {
+  'columns'=>cols,
+  'link_to_show' => 0,
+  'link_to_destroy' => 1,
+#  :destroy_path => %Q('/#{@module}/#{mid_url}s/[[id]]/image_destroy?cls=#{params[:cls]}'),
+  'field_td_criteria' => {:_size => Proc.new{|item|
+      path = "public#{item.path}"
+      ret = ''
+      if File.exists?(path) && File.stat(path).ftype == 'file'
+        s = File.stat path
+        siz = s.size.to_f
+        case
+        when siz > 1.kilobytes
+          ret += "#{(siz / 1.kilobytes).round 1}KB"
+        when siz > 1.megabytes
+          ret += "#{(siz / 1.megabytes).round 1}MB"
+        else
+          ret += "#{siz}"
+        end
+        require 'RMagick'
+        img = Magick::ImageList.new(path) rescue nil
+        ret += !img.nil? ? "(#{img.columns}x#{img.rows})" : ''
+      end
+      nz(ret)
+    },
+    :destroy=>Proc.new{|item|
+      link_to '削除', "/#{@module}/#{mid_url}s/#{item.id}/image_destroy?cls=#{params[:cls]}", :confirm=>"削除してよろしいですか。"
+    }
+  }, :force_td_class=>1,
+  :thumbnail=>1
+}
+qs = Gw.join(@image_upload_qsa, '&amp;')
+qs = qs.blank? ? '' : "?#{qs}"
+
+content_for :form do
+  form_for :item, :url => "#{Site.current_node.public_uri}#{params[:id]}/image_create#{qs}", :html => {:multipart => true, :id => 'itemForm'} do |f|
+    concat <<-EOL
+<p>
+<label for="item_upload">ファイル指定:</label>
+#{f.file_field :upload}
+</p>
+<p>
+<label for="item_note">ファイル備考:</label>
+#{text_field_tag 'item[note]', '', :size=>'60'}
+</p>
+<p>
+#{submit_tag 'アップロード'}#{div_notice}
+</p>
+EOL
+  end
+end
+body = {:header => header_str, :body=><<-EOL }
+#{show_notice}
+<table class="index">
+<tr><th>設備名称</th></tr>
+<tr><td>#{@item.name}</td></tr>
+</table>
+<p>この設備に画像を添付します。</p>
+#{@content_for_form}
+<hr />
+#{table_to_index2 @item.images, options_images}
+<hr/>
+#{table_to_show2 @item}
+<div class="btReturn">
+#{link_to('詳細へ戻る', "/#{@module}/#{mid_url}s/#{params[:id]}?cls=#{params[:cls]}")}
+</div>
+EOL
+concat hhbff_struct(:prop, :from, :header=>header, :body=>body, :prop_div=>'prop')
+
+%>
