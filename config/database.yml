@@ -1,72 +1,53 @@
-<%
-env_prefix = case RAILS_ENV
-when 'production'
-  'production'
-when 'test'
-  'test'
-else
-  'development'
-end
-%>
 development:
-  adapter : mysql
-  database: <%= env_prefix %>_jgw_core
+  adapter: mysql2
+  encoding: utf8
+  reconnect: false
+  database: development_jgw_core
+  pool: 5
   username: joruri
   password: pass
-  timeout : 5000
-  encoding: utf8
-  host: 127.0.0.1
-#  socket  : /tmp/mysql.sock
+  socket: /var/lib/mysql/mysql.sock
 
 test:
-  adapter : mysql
-  database: <%= env_prefix %>_jgw_core
+  adapter: mysql2
+  encoding: utf8
+  reconnect: false
+  database: test_jgw_core
+  pool: 5
   username: joruri
   password: pass
-  timeout : 5000
-  encoding: utf8
-  host: 127.0.0.1
-#  socket  : /tmp/mysql.sock
+  socket: /var/lib/mysql/mysql.sock
 
 production:
-  adapter : mysql
-  database: <%= env_prefix %>_jgw_core
+  adapter: mysql2
+  encoding: utf8
+  reconnect: false
+  database: production_jgw_core
+  pool: 5
   username: joruri
   password: pass
-  timeout : 5000
-  encoding: utf8
-  host: 127.0.0.1
-#  socket  : /tmp/mysql.sock
+  socket: /var/lib/mysql/mysql.sock
 
-gw:
-  adapter : mysql
-  database: <%= env_prefix %>_jgw_gw
+#Railsの実行環境がproductionの場合、データベース名は下記のようにしてください。
+#production_jgw_gw
+dev_jgw_gw:
+  adapter: mysql2
+  encoding: utf8
+  reconnect: false
+  database: development_jgw_gw
+  pool: 5
   username: joruri
   password: pass
-  timeout : 5000
-  encoding: utf8
-  host: 127.0.0.1
-#  socket  : /tmp/mysql.sock
+  socket: /var/lib/mysql/mysql.sock
 
+#Railsの実行環境がproductionの場合、データベース名は下記のようにしてください。
+#production_jgw_gw_pref
 gwsub:
-  adapter : mysql
-  database: <%= env_prefix %>_jgw_gw_pref
-  username: joruri
-  password: pass
-  timeout : 5000
+  adapter: mysql2
   encoding: utf8
-  host: 127.0.0.1
-#  socket  : /tmp/mysql.sock
-
-mailcore:
-  adapter : mysql
-  database: webmail
+  reconnect: false
+  database: development_jgw_gw_pref
+  pool: 5
   username: joruri
   password: pass
-  timeout : 5000
-  encodinf: utf8
-  host: 127.0.0.1
-#  socket  : /tmp/mysql.sock
-
-
-
+  socket: /var/lib/mysql/mysql.sock

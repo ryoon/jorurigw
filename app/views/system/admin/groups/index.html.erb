@@ -1,49 +1,46 @@
-<%# app/views/system/admin/groups/index.html %>
-<%
-options={
-  'table_name'=>'system_groups',
-  :action=>'index' ,
-  :link_to_explore=>1
-}
-%>
-<div class="indexTabs">
-<span>グループ</span>
-<%=link_to 'ユーザー', system_users_groups_path(@parent) %>
+<div class="piece AdminSetting AdminGroups">
+<%= render :partial => 'header' %>
+  <div class="pieceBody">
+    <%= render :partial => '/system/admin/users/header_menu' %>
+    <%= render :partial => 'switching' %>
+    <%= render :partial => 'navi' %>
+    <%= div_notice %>
+
+    <div class="editingBox">
+      <span class="btNew"><%= link_to '新規作成', new_system_group_path %></span>
+    </div>
+    <% if @items.blank? %>
+      <div class="notice">表示する項目はありません。</div>
+    <% else %>
+    <table class="index">
+      <tbody>
+        <tr>
+          <th></th>
+          <th></th>
+          <th>グループID</th>
+          <th>グループ名</th>
+          <th>メールアドレス</th>
+          <th>適用開始日</th>
+          <th>適用終了日</th>
+          <th>LDAP同期</th>
+          <th>状態</th>
+        </tr>
+        <% for item in @items %>
+        <tr class="<%= cycle '', 'cycle' %>">
+          <td><%= link_to '展開', "/system/#{item.id}/groups" %></td>
+          <td><%= link_to '詳細', "/system/#{@parent.id}/groups/#{item.id}" %></td>
+          <td><%= item.code %></td>
+          <td><%= item.name %></td>
+          <td><%= item.email %></td>
+          <td><%= Gw.date_str(item.start_at) %></td>
+          <td><%= Gw.date_str(item.end_at) %></td>
+          <td><%= System::UsersGroup.ldap_show(item.ldap) %></td>
+          <td><%= System::UsersGroup.state_show(item.state) %></td>
+        </tr>
+        <% end %>
+      </tbody>
+    </table>
+    <%= paginate @items %>
+    <% end %>
+  </div>
 </div>
-
-<%= table_to_index2 @items,options %>
-<!--
-<%#*<table class="index">%>
-
-<%#*<tr>%>
-<%#*<th style="width: 60px; text-align: center;">Open</th>%>
-<%#*<th style="width: 60px; text-align: center;">Show</th>%>
-<%#*<th style="width: 60px; text-align: right;">Code</th>%>
-    <%#*<th >Name</th>%>
-<%#*<th >Email</th>%>
-<%#*<th >Start_at</th>%>
-<%#*<th >End_at</th>%>
-<%#*<th >Ldap</th>%>
-<%#*<th style="width: 60px; text-align: center;">Status</th>%>
-<%#*</tr>%>
-
-<%#
-for item in @items
-  next if System::Group.usable?(item.id,nil) == false
-%>#
-<%#*<tr <%= cycle '', 'class="cycle"' %>>%>
-<%#*<td style="text-align: center;"><%= link_to_list item %></td>%>
-<%#*<td style="text-align: center;"><%= link_to_show item %></td>%>
-<%#*<td style="text-align: right;"><%=h item.code %><%#=h item.id %></td>%>
-<%#*<td><%=h item.name %></td>%>
-<%#*<td><%=h item.email %></td>%>
-<%#*<td><%=h Gw.date_str(item.start_at) %></td>%>
-<%#*<td><%=h Gw.date_str(item.end_at) %></td>%>
-<%#*<td><%=h System::Group.ldap_show(item.ldap) %></td>%>
-<%#*<td style="text-align: center;"><%= item.status.name %></td>%>
-<%#*</tr>%>
-<%# end %>
-
-<%#*</table>%>
--->
-<%= paginate @items %>

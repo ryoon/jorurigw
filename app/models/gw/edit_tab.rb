@@ -1,18 +1,25 @@
+# encoding: utf-8
 class Gw::EditTab < Gw::Database
   include System::Model::Base
   include System::Model::Base::Config
-  include Cms::Model::Base::Content
+  include System::Model::Base::Content
 
-  belongs_to :parent, :class_name => 'Gw::EditTab' , :foreign_key => :parent_id
+  belongs_to :parent, :class_name => 'Gw::EditTab', :foreign_key => :parent_id
 
-  has_many :children, :class_name => 'Gw::EditTab' , :foreign_key => :parent_id
+  has_many :children, :class_name => 'Gw::EditTab', :foreign_key => :parent_id
+  has_many :opened_children, :class_name => 'Gw::EditTab', :foreign_key => :parent_id,
+    :conditions => "published = 'opened' and state != 'deleted'",
+    :order => "sort_no"
   has_many :public_roles, :foreign_key => :edit_tab_id, :class_name => 'Gw::EditTabPublicRole'
 
-  validates_presence_of     :name,:sort_no,:is_public
-  validates_presence_of     :field_account     ,:if => Proc.new{ |item| item.class_sso == 2 }
-  validates_presence_of     :field_pass        ,:if => Proc.new{ |item| item.class_sso == 2 }
-  validates_presence_of     :display_auth      ,:if => Proc.new{ |item| item.is_public == 2 }
-  validates_uniqueness_of   :sort_no        ,:scope=>:parent_id
+  validates_presence_of :name, :sort_no, :is_public
+  validates_presence_of :field_account,
+    :if => Proc.new{ |item| item.class_sso == 2 }
+  validates_presence_of :field_pass, 
+    :if => Proc.new{ |item| item.class_sso == 2 }
+  validates_presence_of :display_auth, 
+    :if => Proc.new{ |item| item.is_public == 2 }
+  validates_uniqueness_of :sort_no, :scope=>:parent_id
   validate :validate_tab_keys
 
   before_create :set_creator
@@ -33,28 +40,6 @@ class Gw::EditTab < Gw::Database
   def self.is_editor?(uid = Site.user.id)
     role_editor = System::Model::Role.get(1, uid ,'edit_tab', 'editor')
     return role_editor
-  end
-
-  def validate_tab_keys
-    unless self.level_no == 2
-      return true
-    end
-    if self.tab_keys == 0
-      errors.add :tab_keys, 'は０以外の数値を入力してください。'
-      return false
-    end
-    cond = "level_no=2 and tab_keys=#{self.tab_keys}"
-    check = Gw::EditTab.find(:all,:conditions=>cond)
-    if check.blank?
-      return true
-    else
-      if check.size==1 and check[0].id==self.id
-        return true
-      end
-      errors.add :tab_keys, 'はすでに登録されています。'
-      return false
-    end
-    return true
   end
 
   def self.published_select
@@ -212,16 +197,6 @@ class Gw::EditTab < Gw::Database
     Util::Tree.climb(id, :class => self.class)
   end
 
-  def set_creator
-    self.created_user   = Site.user.name
-    self.created_group  = Site.user_group.name
-  end
-
-  def set_updator
-    self.updated_user   = Site.user.name
-    self.updated_group  = Site.user_group.name
-  end
-
   def save_with_rels(params, mode, options={})
 
     par_item = params[:item].dup
@@ -331,6 +306,71 @@ class Gw::EditTab < Gw::Database
     else
       return false
     end
+  end
+  
+  def link_options
+    options = {}
+    
+    if self.state == 'disabled' || (self.parent && self.parent.state == 'disabled')
+      options[:url] = "#void"
+      options[:disabled] = 'grayout'
+    else
+      if self.class_external != 0
+        if self.class_sso == 2
+          options[:url] = "/_admin/gw/link_sso/#{self.id}/redirect_pref_pieces?src=tab"
+        else
+          options[:url] = self.link_url
+        end
+      end
+    end
+    
+    case self.class_external
+    when 1
+      options[:target] = '_self';
+    when 2
+      options[:target] = '_blank';
+      options[:class_ext] = 'ext';
+    end
+    
+    if self.icon_path.present? && FileTest.exist?("#{Rails.root}/public/#{self.icon_path}")
+      options[:icon_path] = self.icon_path
+    end
+    
+    options
+  end
+  
+protected
+  
+  def validate_tab_keys
+    unless self.level_no == 2
+      return true
+    end
+    if self.tab_keys.blank? || self.tab_keys == 0
+      errors.add :tab_keys, 'は０以外の数値を入力してください。'
+      return false
+    end
+    cond = "level_no=2 and tab_keys=#{self.tab_keys}"
+    check = Gw::EditTab.find(:all,:conditions=>cond)
+    if check.blank?
+      return true
+    else
+      if check.size==1 and check[0].id==self.id
+        return true
+      end
+      errors.add :tab_keys, 'はすでに登録されています。'
+      return false
+    end
+    return true
+  end
+
+  def set_creator
+    self.created_user   = Site.user.name
+    self.created_group  = Site.user_group.name
+  end
+
+  def set_updator
+    self.updated_user   = Site.user.name
+    self.updated_group  = Site.user_group.name
   end
 
 end

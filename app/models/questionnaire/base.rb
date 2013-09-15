@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 class Questionnaire::Base < Gw::Database
   include System::Model::Base
   include System::Model::Base::Content
@@ -11,6 +12,12 @@ class Questionnaire::Base < Gw::Database
   after_destroy :form_fields_destroy
 
   attr_accessor :_commission_state  #回覧人数制限値エラー時のボタン表示制御用
+
+  def form_body_json
+    form_str = self.form_body
+    form_str = form_str.gsub(/\r\n?/, '\\n') unless form_str.blank?
+    return form_str
+  end
 
   def validate_title
     self.manage_title = self.title
@@ -43,7 +50,7 @@ class Questionnaire::Base < Gw::Database
 
     if self.state == 'public'
       field_lists = []
-      field_lists = JsonParser.new.parse(self.form_body) unless self.form_body.blank?
+      field_lists = JsonParser.new.parse(self.form_body_json) unless self.form_body.blank?
       if field_lists.size == 0
         errors.add :state, "設問が登録されていません。保存後,設問登録処理へ進んでください。"
         self.state = 'draft' unless self._commission_state == 'public'  #入力エラーが発生した時に下書きボタンが消えてしまう現象の対応：送信前が公開以外なら下書きボタンを表示させる
@@ -110,11 +117,12 @@ class Questionnaire::Base < Gw::Database
     rails_env = ENV['RAILS_ENV']
     ret = 'localhost'
     begin
-      site = YAML.load_file('config/site.yml')
-      ret = site[rails_env]['domain']
+      site = YAML.load_file('config/core.yml')
+      ret = site[rails_env]['uri']
     rescue
     end
-    ret = "http://#{ret}#{self.answer_new_path}?k=#{self.keycode}"
+    ret = ret.chop if ret.ends_with?('/') unless ret.blank?
+    ret = "#{ret}#{self.answer_new_path}?k=#{self.keycode}"
     return ret
   end
 
@@ -125,11 +133,12 @@ class Questionnaire::Base < Gw::Database
     rails_env = ENV['RAILS_ENV']
     ret = 'localhost'
     begin
-      site = YAML.load_file('config/site.yml')
-      ret = site[rails_env]['domain']
+      site = YAML.load_file('config/core.yml')
+      ret = site[rails_env]['uri']
     rescue
     end
-    ret = "http://#{ret}#{self.result_monitor_path}?k=#{self.keycode}"
+    ret = ret.chop if ret.ends_with?('/') unless ret.blank?
+    ret = "#{ret}#{self.result_monitor_path}?k=#{self.keycode}"
     return ret
   end
 

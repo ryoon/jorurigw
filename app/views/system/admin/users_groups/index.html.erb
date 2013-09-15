@@ -1,71 +1,45 @@
-<%# app/views/system/admin/users_groups/index.html %>
-<%
-path_index = "#{Site.request_path}"
-options = {
-  #'sort_link_options' => {
-    #'sort_keys' => @sort_keys,
-    #'path_index' => path_index,
-    #'other_query_string' => @qs
-  #},
-  'table_name' => 'system_users_groups',
-  :action=>'index',
-  'link_to_edit'    => nil,
-  'link_to_destroy' => nil,
-  'link_to_show'    => 0,
-  'field_td_criteria'=>{
-#    '_user_code'=>Proc.new{|item|  item.user.id  },
-#    '_user_code'=>Proc.new{|item|  item.user.code  },
-    '_user_mail'     =>Proc.new{|item|  item.user.email  },
-    '_rid'=>Proc.new{|item|
-      %Q(<a href="/_admin/system/#{item.group_id}/users_groups/#{item.rid}">詳細</a>)
-    },
-    '_user_ldap'=>Proc.new{|item| System::UsersGroup.ldap_show(item.user.ldap) },
-    '_user_state'=>Proc.new{|item| System::UsersGroup.state_show(item.user.state) },
-    '_user_post'=>Proc.new{|item| System::User.find(item.user_id).offitial_position },
-    '_group'=>Proc.new{|item|
-      if item.group.blank?
-        %Q(<span style="color: red;">** 所属未登録 **</span>)
-      else
-        if item.group.level_no > 2
-          if item.group.code.to_i == 0
-            item.group.ou_name
-#            item.group.code+item.group.name
-          else
-            sprintf("%06d",item.group.code)+item.group.name
-          end
-        else
-          item.group.ou_name
-        end
-      end
-    }
-  }
-}
-%>
-<div class="indexTabs">
-<%=link_to 'グループ', system_groups_path(@parent) %>
-<span>ユーザー</span>
+<div class="piece AdminSetting AdminUsersGroups">
+<%= render :partial => 'header' %>
+  <div class="pieceBody">
+    <%= render :partial => '/system/admin/users/header_menu' %>
+    <%= render :partial => 'switching' %>
+    <%= render :partial => '/system/admin/groups/navi' %>
+    <%= div_notice %>
+    <div class="editingBox">
+      <span class="btNew"><%= link_to '新規作成', new_system_users_group_path %></span>
+    </div>
+
+    <% if @items.blank? %>
+      <div class="notice">表示する項目はありません。</div>
+    <% else %>
+
+    <table class="index">
+      <tbody>
+        <tr>
+          <th>詳細</th>
+          <th>ユーザーID</th>
+          <th>氏名</th>
+          <th>役職</th>
+          <th>メールアドレス</th>
+          <th>本務・兼務</th>
+          <th>LDAP同期</th>
+          <th>状態</th>
+        </tr>
+        <% for item in @items %>
+        <tr class="<%= cycle '', 'cycle' %>">
+          <td><%= link_to '詳細', "/system/#{item.group_id}/users_groups/#{item.id}" %></td>
+          <td><%= item.user_code %></td>
+          <td><%= safe{item.user.name} %></td>
+          <td><%= safe{item.user.official_position} %></td>
+          <td><%= safe{item.user.email} %></td>
+          <td><%= System::UsersGroup.job_order_show(item.job_order) %></td>
+          <td><%= safe{System::UsersGroup.ldap_show(item.user.ldap)} %></td>
+          <td><%= safe{System::UsersGroup.state_show(item.user.state)} %></td>
+        </tr>
+        <% end %>
+      </tbody>
+    </table>
+    <%= paginate @items %>
+    <% end %>
+  </div>
 </div>
-<%= table_to_index2(@items,options) %>
-<!--
-<%#*<table class="index">%>
-  <%#*<tr>%>
-    <%#*<th style="width: 60px; text-align: right;">詳細</th>%>
-    <%#*<th style="width: 60px; text-align: right;">コード</th>%>
-    <%#*<th style="width: 15%;">名前</th>%>
-    <%#*<th >メール</th>%>
-    <%#*<th >グループ</th>%>
-    <%#*<th >本務・兼務</th>%>
-  <%#*</tr>%>
-  <%# for item in @items %>
-  <%#*<tr <%= cycle '', 'class="cycle"' %>>%>
-    <%#*<td style="text-align: right;"><%= link_to_show item.rid %></td>%>
-    <%#*<td style="text-align: right;"><%=h item.user.code if item.user %></td>%>
-    <%#*<td><%=h item.user.name if item.user %></td>%>
-    <%#*<td><%=h item.user.email if item.user %></td>%>
-    <%#*<td><%=h item.group.code+item.group.name %></td>%>
-    <%#*<td><%=h System::UsersGroup.jobs_show(item.job_order) %></td>%>
-  <%#*</tr>%>
-  <%# end %>
-<%#*</table>%>
--->
-<%= paginate @items %>

@@ -1,23 +1,30 @@
-class Gw::Admin::SchedulesController < ApplicationController
+# encoding: utf-8
+class Gw::Admin::SchedulesController < Gw::Controller::Admin::Base
   include System::Controller::Scaffold
+  layout "admin/template/schedule"
 
   def initialize_scaffold
     return redirect_to(request.env['PATH_INFO']) if params[:reset]
+    Page.title = "スケジュール"
   end
 
   def init_params
-    @title = 'ユーザ'
+    @title = 'ユーザー'
     @piece_head_title = 'スケジュール'
     @js = %w(/_common/js/yui/build/animation/animation-min.js /_common/js/popup_calendar/popup_calendar.js /_common/js/yui/build/calendar/calendar.js /_common/js/dateformat.js)
     @css = %w(/_common/themes/gw/css/schedule.css)
 
     @users = Gw::Model::Schedule.get_users(params)
     @user   = @users[0]
-    @uid    = @user.id if !@user.blank?
-    @uid = nz(params[:uid], Site.user.id) if @uid.blank?
-    @myuid = Site.user.id
-    @gid = nz(params[:gid], @user.groups[0].id) rescue Site.user_group.id
-    @mygid = Site.user_group.id
+
+    if @user.blank?
+      @uid = nz(params[:uid], Site.user.id).to_i
+      @uids = [@uid]
+    else
+      @uid    = @user.id
+      @uids = @users.collect {|x| x.id}
+    end
+    @gid = nz(params[:gid], @user.groups[0].id).to_i rescue Site.user_group.id
 
     if params[:cgid].blank? && @gid != 'me'
       x = System::CustomGroup.get_my_view( {:is_default=>1,:first=>1})
@@ -29,7 +36,6 @@ class Gw::Admin::SchedulesController < ApplicationController
     end
 
     @first_custom_group = System::CustomGroup.get_my_view( {:sort_prefix => Site.user.code,:first=>1})
-
     @ucode = Site.user.code
     @gcode = Site.user_group.code
 
@@ -43,14 +49,14 @@ class Gw::Admin::SchedulesController < ApplicationController
     a_qs.push "gid=#{params[:gid]}" unless params[:gid].nil? && !params[:cgid].nil?
     a_qs.push "cgid=#{params[:cgid]}" unless params[:cgid].nil? && !params[:gid].nil?
     a_qs.push "todo=#{params[:todo]}" unless params[:todo].nil?
-    @schedule_move_qs = a_qs.join('&amp;')
+    @schedule_move_qs = a_qs.join('&')
 
     @is_gw_admin = Gw.is_admin_admin?
 
     if params[:cgid].present?
       @custom_group = System::CustomGroup.find(:first, :conditions=>"id=#{params[:cgid]}")
       if @custom_group.present?
-        Page.title = @custom_group.name
+        Page.title = "#{@custom_group.name} - スケジュール"
       end
     end
 
@@ -60,18 +66,183 @@ class Gw::Admin::SchedulesController < ApplicationController
 
     @topdate = nz(params[:topdate]||Time.now.strftime('%Y%m%d'))
     @dis = nz(params[:dis],'week')
+
+
+    @show_flg = true
+
+    @params_set = Gw::Schedule.params_set(params.dup)
+    @ref = Gw::Schedule.get_ref(params.dup)
+    @link_params = Gw.a_to_qs(["gid=#{params[:gid]}", "uid=#{nz(params[:uid], Site.user.id)}", "cgid=#{params[:cgid]}"],{:no_entity=>true})
+
+    @ie = Gw.ie?(request)
+    @hedder2lnk = 1
+    @link_format = "%Y%m%d"
   end
 
   def index
     init_params
     @line_box = 1
-    @st_date = Gw.date8_to_date params['s_date']
+    @st_date = Gw.date8_to_date params[:s_date]
+    @calendar_first_day = @st_date
+    @calendar_end_day = @calendar_first_day + 6
+
+    @hedder3lnk = 2
+    @view = "week"
+
+    if @users.length > 0
+      @show_flg = true
+    else
+      @show_flg = false
+    end
+
+    _schedule_data
   end
 
   def show
     init_params
     @line_box = 1
     @st_date = Gw.date8_to_date params[:id]
+    @calendar_first_day = @st_date
+    @calendar_end_day = @calendar_first_day
+
+    @view = "day"
+
+    if @users.length > 0
+      @show_flg = true
+    else
+      @show_flg = false
+    end
+
+    _schedule_data
+    _schedule_day_data
+    _schedule_user_data
+  end
+
+  def show_month
+    init_params
+    @line_box = 1
+    kd = params[:s_date]
+    @st_date = kd =~ /[0-9]{8}/ ? Date.strptime(kd, '%Y%m%d') : Date.today
+
+    _month_date
+    @view = "month"
+    @read = true
+
+    if @is_gw_admin || params[:cgid].blank? ||
+        ( params[:cgid].present? && System::CustomGroupRole.new.editable?( params[:cgid], Site.user_group.id, Core.user.id ) )
+      @edit = true
+    else
+      @edit = false
+    end
+
+    _schedule_data
+  end
+
+  def _schedule_data
+    if @is_gw_admin || params[:cgid].blank? ||
+        ( params[:cgid].present? && System::CustomGroupRole.new.editable?( params[:cgid], Site.user_group.id, Site.user.id ) )
+      @edit = true
+    else
+      @edit = false
+    end
+
+    cond_date = "('#{@calendar_first_day.strftime('%Y-%m-%d 0:0:0')}' <= gw_schedules.ed_at" +
+          " and '#{@calendar_end_day.strftime('%Y-%m-%d 23:59:59')}' >= gw_schedules.st_at)"
+    cond = "gw_schedule_users.uid in (#{Gw.join(@uids, ',')})" +
+        " and #{cond_date}"
+
+    @schedules = Gw::Schedule.find(:all, :order => 'gw_schedules.allday DESC, gw_schedules.st_at, gw_schedules.ed_at, gw_schedules.id',
+      :include => :schedule_users, :conditions => cond)
+
+    @holidays = Gw::Holiday.find_by_range_cache(@calendar_first_day, @calendar_end_day)
+
+    todos_settings = Gw::Model::Schedule.get_settings 'todos',{:uid => @uid}
+    if @uid == Site.user.id && todos_settings['todos_display_schedule'].present? && todos_settings['todos_display_schedule'].to_i == 1
+      todos_cond = "class_id = 1 and uid = #{Site.user.id}" +
+        " and '#{@calendar_first_day.strftime('%Y-%m-%d 0:0:0')}' <= ed_at" +
+        " and '#{@calendar_end_day.strftime('%Y-%m-%d 23:59:59')}' >= ed_at"
+      @todos = Gw::Todo.find(:all, :conditions => todos_cond)
+    else
+      @todos = []
+    end
+  end
+
+  def _month_date
+    default = Gw::NameValue.get_cache('yaml', nil, "gw_schedules_settings_system_default")
+    @month_first_day = Date::new(@st_date.year, @st_date.month, 1)
+    @month_end_day = Date::new(@st_date.year, @st_date.month, -1)
+
+    @calendar_first_day = @month_first_day - @month_first_day.wday
+    if @up_schedules.blank?
+      @calendar_first_day += default['month_view_leftest_weekday'].to_i
+    else
+      @calendar_first_day += nz(@up_schedules['schedules']['month_view_leftest_weekday'], default['month_view_leftest_weekday']).to_i
+    end
+    @calendar_first_day = @calendar_first_day - 7 if @month_first_day < @calendar_first_day
+
+    @calendar_end_day = @calendar_first_day + (6 + 7 * 3)
+    @calendar_end_day = @calendar_end_day + 7 if @calendar_end_day < @month_end_day
+  end
+
+  def _schedule_day_data
+    @calendar_first_time = 8
+    @calendar_end_time = 19
+    @schedules.each do |schedule|
+      @calendar_first_time = 0 if schedule.st_at.to_date < @st_date
+      @calendar_first_time = schedule.st_at.hour if schedule.st_at.to_date == @st_date && schedule.st_at.hour < @calendar_first_time
+      @calendar_end_time = 23 if schedule.ed_at.to_date > @st_date
+      @calendar_end_time = schedule.ed_at.hour if schedule.ed_at.to_date == @st_date && schedule.ed_at.hour > @calendar_end_time
+    end
+
+    @calendar_space_time = (@calendar_first_time..@calendar_end_time) # 表示する予定表の「最初の時刻」と「最後の時刻」の範囲
+
+    @col = ((@calendar_space_time.last - @calendar_space_time.first) * 2) + 2
+
+    @header_each ||= @schedule_settings[:header_each] rescue 5
+    @header_each = nz(@header_each, 5).to_i
+  end
+
+  def _schedule_user_data
+
+    @user_schedules = Hash::new
+    @users.each do |user|
+      key = "user_#{user.id}"
+      @user_schedules[key] = Hash::new
+      @user_schedules[key][:schedules] = Array.new
+      @user_schedules[key][:allday_flg] = false
+      @user_schedules[key][:allday_cnt] = 0
+
+      @schedules.each do |schedule|
+        participant = false
+        schedule.schedule_users.each do |schedule_user|
+          break if participant
+          participant = schedule_user.uid == user.id
+        end
+        if participant
+          @user_schedules[key][:schedules] << schedule
+          if schedule.allday == 1 || schedule.allday == 2
+            @user_schedules[key][:allday_flg] = true
+            @user_schedules[key][:allday_cnt] += 1
+          end
+        end
+      end
+
+      @user_schedules[key][:schedule_len] = @user_schedules[key][:schedules].length
+
+      if @user_schedules[key][:schedule_len] == 0
+        @user_schedules[key][:trc] = "scheduleTableBody"
+        @user_schedules[key][:row] = 1
+      else
+        if @user_schedules[key][:allday_flg] == true
+          @user_schedules[key][:trc] = "alldayLine"
+          @user_schedules[key][:row] = (@user_schedules[key][:schedule_len] * 2) - ((@user_schedules[key][:allday_cnt] * 2) - 1)
+        else
+          @user_schedules[key][:trc] = "scheduleTableBody categoryBorder"
+          @user_schedules[key][:row] = @user_schedules[key][:schedule_len] * 2
+        end
+      end
+    end
+
   end
 
   def new
@@ -81,6 +252,12 @@ class Gw::Admin::SchedulesController < ApplicationController
     @system_role_classes = Gw.yaml_to_array_for_select('system_role_classes')
     @js += %w(/_common/modules/ips/ips.js)
     @css += %w(/_common/modules/ips/ips.css)
+    if params[:prop_id].present?
+      @_props = Array.new
+      @_prop = Gw::PropOther.find_by_id(params[:prop_id])
+      _get_prop_json_array
+      @props_json = @_props.to_json
+    end
     if request.mobile?
       unless flash[:mail_to].blank?
         @users_json = set_participants(flash[:mail_to]).to_json
@@ -126,61 +303,65 @@ class Gw::Admin::SchedulesController < ApplicationController
       public_groups.push ["", public_role.uid, name]
     end
 
-    props = Array.new
-    props_items = Array.new
-
-    if params[:sh] == 'sh'
-      props_items = @item.get_parent_props_items
-    else
-      props_items = @item.schedule_props
+    @_props = Array.new
+    @props_items = @item.schedule_props
+    @props_items.each do |props_item|
+      @_prop = props_item.prop
+      _get_prop_json_array
     end
 
-    props_items.each do |prop|
-      title = prop.prop_type.sub(/^Gw::Prop/,'').downcase
-      if !prop.prop.blank?
-        if title == "other"
-          gname = prop.prop.gname
-          gid = prop.prop.gid
-          kamei = !gname.blank? ? "(" + System::Group.find(gid).code.to_s + ")" : ""
-          props.push [title, prop.prop_id, kamei + prop.prop.name]
-        else
-          if prop.prop.delete_state == 0 && prop.prop.reserved_state == 1
-            props.push [title, prop.prop_id, prop.prop.name]
-          end
-        end
-      end
-    end
     @users_json = users.to_json
     if request.mobile?
       if flash[:mail_to].present?
         @users_json = set_participants(flash[:mail_to]).to_json
       end
     end
-    @props_json = props.to_json
+
+    @props_json = @_props.to_json
     @public_groups_json = public_groups.to_json
+  end
+
+  def _get_prop_json_array
+    # セレクトボックス施設の中身用の配列を作成
+    gid = @_prop.gid
+    if gid.present?
+      group = System::Group.find_by_id(gid)
+      code = "(#{System::Group.find_by_id(gid).code.to_s})" if group.present?
+    else
+      code = ""
+    end
+    @_props.push ["other", @_prop.id, "#{code}#{@_prop.name}"]
   end
 
   def show_one
     init_params
-
     @line_box = 1
-    if !params[:m].blank? && (params[:m] == "new" || params[:m] == "edit")
-      item = Gw::Schedule.find(params[:id])
-      @items = Gw::Schedule.find(:all, :conditions=>"schedule_parent_id = #{item.schedule_parent_id}")
-    else
-      @items = Gw::Schedule.find(:all, :conditions=>"id = #{params[:id]}")
-    end
+    @item = Gw::Schedule.find_by_id(params[:id])
+    return http_error(404) if @item.blank?
+    @schedule_props = @item.schedule_props
 
-    @items.each do |item|
-      @auth_level = item.get_edit_delete_level(auth = {:is_gw_admin => @is_gw_admin})
-    end
-  end
+    # 表示権限
+    public_auth = @item.is_public_auth?(@is_gw_admin)
+    return authentication_error(403) unless public_auth
 
-  def show_month
-    init_params
-    @line_box = 1
-    kd = params['s_date']
-    @st_date = kd =~ /[0-9]{8}/ ? Date.strptime(kd, '%Y%m%d') : Date.today
+    @auth_level = @item.get_edit_delete_level({:is_gw_admin => @is_gw_admin})
+
+    @repeated = @item.repeated?
+    @public_show = Gw::Schedule.is_public_show(@item.is_public)
+
+    @prop_edit = true
+    @use_prop = false
+    if @schedule_props.present?
+      @use_prop = true
+
+      @schedule_props.each do |schedule_prop|
+        break if @prop_edit == false
+        prop = schedule_prop.prop
+        if @prop_edit == true && prop.present?
+          @prop_edit = Gw::ScheduleProp.is_prop_edit?(prop.id, {:prop => prop, :is_gw_admin => @is_gw_admin})
+        end
+      end
+    end
   end
 
   def create
@@ -194,13 +375,9 @@ class Gw::Admin::SchedulesController < ApplicationController
     @item = Gw::Schedule.new()
     if Gw::ScheduleRepeat.save_with_rels_concerning_repeat(@item, _params, :create)
       flash_notice '予定の登録', true
-      redirect_url = @item.schedule_parent_id.blank? ? "/gw/schedules/#{@item.id}/show_one" : "/gw/schedules/#{@item.id}/show_one?m=new"
+      redirect_url = "/gw/schedules/#{@item.id}/show_one?m=new"
       if request.mobile?
-        if @item.schedule_parent_id.blank?
-          redirect_url += "?gid=#{params[:gid]}&cgid=#{params[:cgid]}&uid=#{params[:uid]}&dis=#{params[:dis]}"
-        else
-          redirect_url += "&gid=#{params[:gid]}&cgid=#{params[:cgid]}&uid=#{params[:uid]}&dis=#{params[:dis]}"
-        end
+        redirect_url += "&gid=#{params[:gid]}&cgid=#{params[:cgid]}&dis=#{params[:dis]}"
       end
       redirect_to redirect_url
     else
@@ -224,22 +401,14 @@ class Gw::Admin::SchedulesController < ApplicationController
       _params = reject_no_necessary_params params
     end
 
-    if !@item.schedule_parent_id.blank?
-      item_schedule_parents = Gw::Schedule.find(:all, :conditions=>"id != #{params[:id]} and schedule_parent_id = #{@item.schedule_parent_id}")
-      item_schedule_parents.each{ |item_schedule_parent|
-        item_schedule_parent.schedule_parent_id = nil
-        item_schedule_parent.save
-      }
-    end
-
     if Gw::ScheduleRepeat.save_with_rels_concerning_repeat(@item, _params, :update)
       flash[:notice] = '予定の編集に成功しました。'
-      redirect_url = @item.schedule_parent_id.blank? ? "/gw/schedules/#{@item.id}/show_one" : "/gw/schedules/#{@item.id}/show_one?m=edit"
+      redirect_url = "/gw/schedules/#{@item.id}/show_one?m=edit"
       if request.mobile?
         if @item.schedule_parent_id.blank?
-          redirect_url += "?gid=#{params[:gid]}&cgid=#{params[:cgid]}&uid=#{params[:uid]}&dis=#{params[:dis]}"
+          redirect_url += "?gid=#{params[:gid]}&cgid=#{params[:cgid]}&dis=#{params[:dis]}"
         else
-          redirect_url += "&gid=#{params[:gid]}&cgid=#{params[:cgid]}&uid=#{params[:uid]}&dis=#{params[:dis]}"
+          redirect_url += "&gid=#{params[:gid]}&cgid=#{params[:cgid]}&dis=#{params[:dis]}"
         end
       end
       redirect_to redirect_url
@@ -259,21 +428,17 @@ class Gw::Admin::SchedulesController < ApplicationController
 
     st = @item.st_at.strftime("%Y%m%d")
     othlinkflg = false
-    beflg = false
 
-    @item.schedule_props.each do |pro|
-      if pro.prop_type == 'Gw::PropOther'
-        othlinkflg = true
-        beflg = true if @gid.to_i != pro.prop.gid.to_i
-      end
+    if @item.schedule_props.length > 0
+      othlinkflg = true
     end
 
     if othlinkflg
-      location = "/gw/schedule_props/show_week?s_date=#{st}&cls=other&s_genre=other"
-      location += "&be=other" if beflg
+      location = "/gw/schedule_props/show_week?s_date=#{st}&s_genre=other"
     else
-      location = Gw.chop_with("#{Site.current_node.public_uri}",'/')
+      location = "/gw/schedules/show_month?s_date=#{st}"
     end
+    location = gw_schedules_path({:dis=>params[:dis],:gid=>params[:gid],:cgid=>params[:cgid],:s_date=>params[:s_date]}) if request.mobile?
 
     _destroy(@item,:success_redirect_uri=>location)
   end
@@ -297,15 +462,15 @@ class Gw::Admin::SchedulesController < ApplicationController
 
     repeat_items = Gw::Schedule.new.find(:all, :conditions=>"schedule_repeat_id=#{schedule_repeat_id}")
     repeat_items.each { |repeat_item|
-        repeat_item.destroy if !repeat_item.is_actual?
+        repeat_item.destroy
     }
 
     if otherlinkflg
-      redirect_url = "/gw/schedule_props/show_week?s_date=#{st}&cls=other&s_genre=other"
+      redirect_url = "/gw/schedule_props/show_week?s_date=#{st}&s_genre=other"
     else
-      redirect_url = "/gw/schedules/show_month"
+      redirect_url = "/gw/schedules/show_month?s_date=#{st}"
     end
-
+    redirect_url = gw_schedules_path({:dis=>params[:dis],:gid=>params[:gid],:cgid=>params[:cgid],:s_date=>params[:s_date]}) if request.mobile?
     flash_notice '繰り返し一括削除', true
     redirect_to redirect_url
   end
@@ -448,7 +613,7 @@ class Gw::Admin::SchedulesController < ApplicationController
     init_params
     @group_selected = 'all_group'
     @items = Gwsub.grouplist4(nil, nil, true ,nil , nil, :return_pattern => 1)
-    @st_date = Gw.date8_to_date params['s_date']
+    @st_date = Gw.date8_to_date params[:s_date]
   end
 
 private
@@ -473,7 +638,7 @@ private
     params_o[:item][:ed_at]= ed_at_str
     users_json = []
     if params_o[:item][:schedule_users].blank?
-      #
+      users_json << ["1",Site.user.id,"#{Site.user.name}"]
     else
       params_o[:item][:schedule_users].each do |u|
         if u[1].to_i != 0
@@ -481,22 +646,22 @@ private
           users_json << ["1",u[1],"#{user_name.name}"]
         end
       end
-      params_o[:item][:schedule_users_json] = users_json.to_json
     end
+    params_o[:item][:schedule_users_json] = users_json.to_json
     public_groups_json = []
     if params_o[:item][:public_groups].blank?
-      #
+      public_groups_json << ["1",Site.user_group.id,"#{Site.user_group.name}"]
     else
+      params_o[:item][:public_groups][:gid] = Site.user_group.parent_id
       params_o[:item][:public_groups].each do |g|
         if g[1].to_i != 0
           group_name = System::Group.find_by_id(g[1])
           public_groups_json << ["1",g[1],"#{group_name.name}"]
         end
       end
-      params_o[:item][:public_groups_json] = public_groups_json.to_json
-      params_o[:init][:public_groups_json] = public_groups_json.to_json
     end
-    params_o[:item][:public_groups][:gid] = Site.user_group.parent_id
+    params_o[:item][:public_groups_json] = public_groups_json.to_json
+    params_o[:init][:public_groups_json] = public_groups_json.to_json
     return params_o
   end
 
@@ -532,42 +697,5 @@ private
     params_o[:item].reject!{|k,v| /\(\di\)$/ =~ k}
     params_o
   end
-
-  def is_creator(item)
-    return true if @is_gw_admin
-
-    stat = 0
-    prop_type = ""
-    gid = 0
-    prop_id = 0
-    flg = false
-    item.schedule_props.each do |prop|
-      stat = prop.prop_stat
-      prop_type = prop.prop_type
-      gid = prop.prop.gid unless prop.prop.blank?
-      prop_id = prop.prop.id
-    end
-
-    stat = nz(stat, 0).to_i
-
-    return true if Gw::PropOtherRole.is_admin?(prop_id, @mygid) && prop_type == "Gw::PropOther"
-    return true if item.creator_uid == @myuid && stat.blank?
-    return true if item.creator_uid == @myuid && stat == 0
-    return false if !stat.blank? && stat > 0
-
-    if prop_type.blank?
-      uids = item.schedule_users.select{|x|x.class_id==1}.collect{|x| x.uid}
-      flg = !uids.index(@myuid).nil?
-    end
-
-    if flg
-      return true
-    else
-      return false unless item.creator_gid == @mygid
-    end
-
-    return false
-  end
-
 
 end

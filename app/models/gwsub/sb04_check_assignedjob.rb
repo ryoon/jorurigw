@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 class Gwsub::Sb04CheckAssignedjob < Gwsub::GwsubPref
   include System::Model::Base
   include Cms::Model::Base::Content
@@ -75,7 +76,7 @@ class Gwsub::Sb04CheckAssignedjob < Gwsub::GwsubPref
     import_csv = Array.new # インポートデータ
     error_csv  = Array.new # エラー発生データ
     error_row_cnt = 0      # エラー行数カウント
-    require 'fastercsv'
+    require 'csv'
 
     par_item = params[:item]
     if par_item.nil? || par_item[:nkf].nil? || par_item[:file].nil?
@@ -99,7 +100,7 @@ class Gwsub::Sb04CheckAssignedjob < Gwsub::GwsubPref
         file =  NKF::nkf(nkf_options,f)
         if file.blank?
         else
-          csv = FasterCSV.parse(file)
+          csv = CSV.parse(file)
 
           year_fiscal = Gw::YearFiscalJp.find_by_id(par_item[:fyed_id])
           csv.each_with_index do |row, i|
@@ -189,7 +190,7 @@ class Gwsub::Sb04CheckAssignedjob < Gwsub::GwsubPref
         item.tel          = row[5] unless row[5].blank?
         item.address      = row[6] unless row[6].blank?
         item.remarks      = row[7] unless row[7].blank?
-        item.save(false)
+        item.save(:validate=>false)
       end
     else  # エラーあり
       check[:result] = false
@@ -243,7 +244,7 @@ class Gwsub::Sb04CheckAssignedjob < Gwsub::GwsubPref
       fields.each do |field|
         eval("model.#{field} = nz(item.#{field}, nil)")
       end
-      model.save(false)
+      model.save(:validate=>false)
     end
   end
 end

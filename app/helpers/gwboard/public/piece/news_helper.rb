@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 module Gwboard::Public::Piece::NewsHelper
 
   def gwboard_news_indices_date

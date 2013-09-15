@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 module Gwboard::Controller::Message
 
   def ret_image_message

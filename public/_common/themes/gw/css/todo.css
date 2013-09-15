@@ -3,7 +3,7 @@
    _common/themes/gw/css/todo.css
 ========================================================= */
 
-/* ƒ~ƒjƒAƒCƒRƒ“İ’è
+/* ãƒŸãƒ‹ã‚¢ã‚¤ã‚³ãƒ³è¨­å®š
 --------------------------------------------------*/
 .todo {
   height: 1%;
@@ -11,7 +11,7 @@
   background-image: url(/_common/themes/gw/files/level_2/title_todo.gif);
 }
 
-/* ŒŸõƒtƒH[ƒ€
+/* æ¤œç´¢ãƒ•ã‚©ãƒ¼ãƒ 
 --------------------------------------------------*/
 .todo .pieceBody form.search {
   margin: 0px;
@@ -23,7 +23,7 @@
   padding-bottom: 5px;
 }
 
-/* ƒƒCƒ“ƒ{ƒbƒNƒX
+/* ãƒ¡ã‚¤ãƒ³ãƒœãƒƒã‚¯ã‚¹
 --------------------------------------------------*/
 .todo.show .pieceBodyBody,
 .todo.form .pieceBodyBody {
@@ -56,7 +56,7 @@ table.index th {
   margin: 0 auto 5px;
 }
 
-/* noticeƒƒbƒZ[ƒW
+/* noticeãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
 --------------------------------------------------*/
 #page-gw-todos .notice {
   padding: 10px;
@@ -65,7 +65,7 @@ table.index th {
   padding-left: 0;
 }
 
-/* İ’è‰æ–Ê
+/* è¨­å®šç”»é¢
 --------------------------------------------------*/
 .setting .titleLine {
   margin-top: 0;

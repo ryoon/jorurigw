@@ -1,7 +1,5 @@
-<% sel = [:setting, :year_fiscal_jp] %>
-<div class="mainMenu">
-<%= render :partial => 'layouts/admin/cms/navi/main', :locals => {:current => sel[0]} %>
-</div>
-<div class="contentMenu">
-<%= render :partial => "layouts/admin/cms/navi/#{sel[0]}", :locals => {:current => sel[1]} %>
+<%#*<p>Find me in app/views/gw/admin/year_fiscal_jps/_header.html.erb</p>%>
+
+<div class="editingBox">
+  <span class="btNew"><%= link_to '新規作成', "/gw/year_fiscal_jps/new" %></span>
 </div>

@@ -188,7 +188,7 @@ module Gwboard::Model::DbnameAlias
         end
       end
     end
-    Gwboard::CommonDb.establish_connection(cnn.spec)
+    Gwboard::CommonDb.establish_connection(cnn.spec.config)
     return item
 
   end
@@ -201,10 +201,10 @@ module Gwboard::Model::DbnameAlias
       return false
     end
 
-    @is_readable = true if System::Model::Role.get(1, Site.user.id , system_name, 'admin')
+    @is_readable = true if System::Model::Role.get(1, Core.user.id , system_name, 'admin')
     return @is_readable if @is_readable
 
-    @is_readable = true if System::Model::Role.get(2, Site.user_group.id , system_name, 'admin') unless @is_readable
+    @is_readable = true if System::Model::Role.get(2, Core.user_group.id , system_name, 'admin') unless @is_readable
     return @is_readable if @is_readable
 
     unless @is_readable
@@ -225,7 +225,7 @@ module Gwboard::Model::DbnameAlias
     unless @is_readable
       item = base_item.new
       item.and :user_id, 0
-      item.and :group_code, Site.user_group.code
+      item.and :group_code, Core.user_group.code
       item.and :title_id, params[:title_id]
       items = item.find(:all)
 
@@ -233,8 +233,8 @@ module Gwboard::Model::DbnameAlias
 
       unless @is_readable
         item = base_item.new
-        item.and :user_code, Site.user.code
-        item.and :group_code, Site.user_group.code
+        item.and :user_code, Core.user.code
+        item.and :group_code, Core.user_group.code
         item.and :title_id, params[:title_id]
         items = item.find(:all)
         @is_readable = true unless items.blank?
@@ -270,7 +270,7 @@ module Gwboard::Model::DbnameAlias
     end
 
     parent_group_code = ''
-    parent_group_code = Site.user_group.parent.code unless Site.user_group.parent.blank?
+    parent_group_code = Core.user_group.parent.code unless Core.user_group.parent.blank?
     unless @is_readable
       item = base_item.new
       item.and :role_code, 'r'
@@ -285,7 +285,7 @@ module Gwboard::Model::DbnameAlias
       item = base_item.new
       item.and :role_code, 'r'
       item.and :title_id, @title.id
-      item.and :group_code, Site.user_group.code
+      item.and :group_code, Core.user_group.code
       items = item.find(:all)
       @is_readable = true unless items.blank?
     end
@@ -294,7 +294,7 @@ module Gwboard::Model::DbnameAlias
       item = base_item.new
       item.and :role_code, 'r'
       item.and :title_id, @title.id
-      item.and :user_code, Site.user.code
+      item.and :user_code, Core.user.code
       items = item.find(:all)
 
       @is_readable = true unless items.blank?

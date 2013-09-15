@@ -3,7 +3,7 @@
    _common/themes/gw/css/portal_common.css
 ========================================================= */
 
-/* ƒ|[ƒ^ƒ‹ƒ^ƒu
+/* ãƒãƒ¼ã‚¿ãƒ«ã‚¿ãƒ–
 ----------------------------------------------------*/
 #docTab {
   margin-top: 10px;
@@ -33,6 +33,7 @@
   background-image: url(/_common/themes/gw/files/tab/tab-02_off.gif);
   background-color: #fff;
   text-align: center;
+  overflow: hidden;
 }
 * html #docTab .tabs a {
   margin-bottom: -3px;
@@ -60,7 +61,7 @@
   background-image: url(/_common/themes/gw/files/tab/tab-shadow.gif);
 }
 
-/* ƒXƒPƒWƒ…[ƒ‰ŠO˜g
+/* ã‚¹ã‚±ã‚¸ãƒ¥ãƒ¼ãƒ©å¤–æ 
 ----------------------------------------------------*/
 .schedulePiece .pieceBody {
   border-left: 1px solid #1E3B8C;
@@ -68,7 +69,7 @@
   border-bottom: 1px solid #1E3B8C;
 }
 
-/* Œf¦”ÂƒKƒWƒFƒbƒg
+/* æ²ç¤ºæ¿ã‚¬ã‚¸ã‚§ãƒƒãƒˆ
 ----------------------------------------------------*/
 .gadget td.bbsImportant {
   width: 10px;
@@ -108,7 +109,7 @@
   padding-left: 20px;
 }
 
-/* •À‚Ñ‘Ö‚¦ƒ{ƒ^ƒ“
+/* ä¸¦ã³æ›¿ãˆãƒœã‚¿ãƒ³
 ----------------------------------------------------*/
 table.index td.up {
   width: 30px;

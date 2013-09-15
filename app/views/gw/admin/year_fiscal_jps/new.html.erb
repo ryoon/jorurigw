@@ -1,4 +1,19 @@
-<br />
-<% form_for :item, :url => {:action => :create}, :html => {:method => :post, :multipart => true} do |f| %>
+<%#*<p>Find me in app/views/gw/admin/year_fiscal_jps/new.html.erb</p>%>
+
+<div class="piece YearFiscalJp">
+<%= render :partial => 'header_str' %>
+
+  <div class="pieceBody">
+
+<%= form_for :item, :url => "/gw/year_fiscal_jps?#{@qs}" , :html => {:method => :post} do |f| %>
+
+<%= f.error_messages %>
+
 <%= render :partial => 'form', :locals => {:f => f} %>
+
+<%= raw(submit_for(f, {:caption => '保存'}) ) %>
+
 <% end %>
+
+</div><!--pieceBody-->
+</div>

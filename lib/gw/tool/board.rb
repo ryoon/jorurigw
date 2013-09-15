@@ -1,3 +1,4 @@
+# encoding: utf-8
 class Gw::Tool::Board
 
   def self.valid_url?(url)

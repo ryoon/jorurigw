@@ -1,3 +1,4 @@
+# encoding: utf-8
 module System::Model::Base::Content
   def states
     {'public' => '公開', 'closed' => '非公開'}
@@ -5,19 +6,19 @@ module System::Model::Base::Content
 
   def readable
     join_creator
-    self.and "system_creators.group_id", Site.user_group.id
+    self.and "system_creators.group_id", Core.user_group.id
     return self
   end
 
   def editable
     join_creator
-    self.and "system_creators.group_id", Site.user_group.id
+    self.and "system_creators.group_id", Core.user_group.id
     return self
   end
 
   def deletable
     join_creator
-    self.and "system_creators.group_id", Site.user_group.id
+    self.and "system_creators.group_id", Core.user_group.id
     return self
   end
 

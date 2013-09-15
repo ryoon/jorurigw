@@ -1,15 +1,18 @@
+# -*- encoding: utf-8 -*-
 class Doclibrary::GroupFolder < Gwboard::CommonDb
   include System::Model::Base
   include System::Model::Base::Content
   include System::Model::Tree
   include Cms::Model::Base::Content
 
-  belongs_to :status, :foreign_key => :state, :class_name => 'System::Base::Status'
-  belongs_to :use_status, :foreign_key => :use_state, :class_name => 'System::Base::Status'
-
   acts_as_tree :order=>'sort_no'
 
   validates_presence_of :state, :name
+
+  def status_select
+    [['公開','public'], ['非公開','closed']]
+  end
+
 
   def status_name
     {'public' => '公開', 'closed' => '非公開'}
@@ -47,27 +50,27 @@ class Doclibrary::GroupFolder < Gwboard::CommonDb
   end
 
   def link_list_path
-    return "#{Site.current_node.public_uri}?title_id=#{self.title_id}&state=GROUP&grp=#{self.id}&gcd=#{self.code}"
+    return "#{self.item_home_path}group_folders?title_id=#{self.title_id}&state=GROUP&grp=#{self.id}&gcd=#{self.code}"
   end
 
   def item_path
-    return "#{Site.current_node.public_uri}?title_id=#{self.title_id}&state=GROUP&grp=#{self.parent_id}&gcd=#{self.code}"
+    return "#{self.item_home_path}group_folders?title_id=#{self.title_id}&state=GROUP&grp=#{self.parent_id}&gcd=#{self.code}"
   end
 
   def show_path
-    return "#{Site.current_node.public_uri}#{self.id}?title_id=#{self.title_id}&state=GROUP&grp=#{self.parent_id}&gcd=#{self.code}"
+    return "#{self.item_home_path}group_folders/#{self.id}?title_id=#{self.title_id}&state=GROUP&grp=#{self.parent_id}&gcd=#{self.code}"
   end
 
   def edit_path
-    return "#{Site.current_node.public_uri}#{self.id}/edit?title_id=#{self.title_id}&state=GROUP&grp=#{self.parent_id}&gcd=#{self.code}"
+    return "#{self.item_home_path}group_folders/#{self.id}/edit?title_id=#{self.title_id}&state=GROUP&grp=#{self.parent_id}&gcd=#{self.code}"
   end
 
   def delete_path
-    return "#{Site.current_node.public_uri}#{self.id}/delete?title_id=#{self.title_id}&state=GROUP&grp=#{self.parent_id}&gcd=#{self.code}"
+    return "#{self.item_home_path}group_folders/#{self.id}?title_id=#{self.title_id}&state=GROUP&grp=#{self.parent_id}&gcd=#{self.code}"
   end
 
   def update_path
-    return "#{Site.current_node.public_uri}#{self.id}/update?title_id=#{self.title_id}&state=GROUP&grp=#{self.parent_id}&gcd=#{self.code}"
+    return "#{self.item_home_path}group_folders/#{self.id}?title_id=#{self.title_id}&state=GROUP&grp=#{self.parent_id}&gcd=#{self.code}"
   end
 
 end

@@ -1,0 +1,32 @@
+<%=render(:partial => 'header')%>
+<div class="piece bbs">
+<div class="pieceHeader">
+<h2>掲示板</h2>
+<%=section_bbs_create_link%>
+<%if @is_admin %>
+<div class="btsHeadeRight">
+<span class="btManager"><%=link_to "管理者", gwbbs_makers_path%></span>
+</div>
+<%end%>
+</div>
+<div class="pieceBody">
+<table class="index">
+<tr class="items">
+<td class="bbstitle">掲示板</td>
+<td class="explanation">説明</td>
+<td class="manager">管理所属</td>
+<td class="update">更新日時</td>
+</tr>
+<% for item in @items %>
+ <tr class="<%= cycle 'article', 'article cycle' %>">
+ <td class="bbstitle"><%=link_to h(item.title), gwbbs_docs_path({:title_id=>item.id}) %></td>
+ <td class="explanation"><%=raw(item.caption) %></td>
+ <td class="manager"><%=gwbd_admin_name(item.admingrps_json,item.adms_json, item.dsp_admin_name)%></td>
+ <td class="update"><%=item.docslast_updated_at.to_datetime.strftime('%y-%m-%d %H:%M').to_s unless item.docslast_updated_at.blank? %></td>
+ </tr>
+<% end %>
+</table>
+<%=paginate @items %>
+</div>
+</div>
+

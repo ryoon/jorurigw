@@ -1,4 +1,4 @@
-class Gwmonitor::Admin::AjaxgroupsController < ApplicationController
+class Gwmonitor::Admin::AjaxgroupsController < Gw::Controller::Admin::Base
   include System::Controller::Scaffold
 
   def getajax

@@ -7,6 +7,7 @@
 ----------------------------------------------- */
 #content .circular {
   background-image: url(/_common/themes/gw/files/title/title_circulation.gif);
+  margin-top: 10px;
 }
 
 /* タイトル・本文フォーム
@@ -77,6 +78,9 @@ table.bbsUserformBody td {
   height: 1%;
   padding-top: 0px;
 }
+#contentBody .setting .pieceBody {
+  padding: 10px;
+}
 #page-gw-scheduleHelpConfigs #content .circular .pieceBody {
   padding-top: 5px;
 }
@@ -125,11 +129,11 @@ table.bbsUserformBody td {
 
 /* table show
 ------------------------------------------------*/
-table.show {
+.circular table.show {
   width: 98%;
   margin: 10px auto;
 }
-#table.show th {
+.circular table.show th {
   width: 110px;
 }
 
@@ -144,7 +148,11 @@ tabl.bbsExpirydate td.space {
 
 /* table bbsText (件名、記事入力テーブル)
 ------------------------------------------------*/
-table.bbsText th {
+#contentBody table.bbsText {
+  margin: 10px auto;
+  width: 98%;
+}
+#contentBody table.bbsText th {
   width: auto;
 }
 

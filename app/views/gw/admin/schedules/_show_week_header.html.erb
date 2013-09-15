@@ -1,0 +1,19 @@
+<tr class="scheduleTableHead dayHead">
+  <th nowrap="nowrap" class="scheduleUser">
+    <span class="nobr"><%= @title -%></span>
+  </th>
+  <% 7.times do |i| %>
+  <%
+  week_add_day = @calendar_first_day + i
+  class_str = create_month_class(week_add_day, @st_date, @holidays, params)
+  if @sp_mode == :schedule
+    day_link = %Q(/gw/schedules/#{(week_add_day).strftime('%Y%m%d')}#{@link_params})
+  else
+    day_link = %Q(/gw/schedule_props/#{(week_add_day).strftime('%Y%m%d')}?s_genre=#{@genre}&cls=#{@cls}#{params[:prop_id]})
+  end
+  %>
+  <th class="<%= class_str -%>"><span class="nobr">
+    <%= link_to(date_format(@format, week_add_day), day_link) -%>
+  </span></th>
+  <% end %>
+</tr>

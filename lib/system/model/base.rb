@@ -1,7 +1,8 @@
+# encoding: utf-8
 module System::Model::Base
 
   def self.included(mod)
-    mod.set_table_name mod.to_s.underscore.gsub('/', '_').downcase.pluralize
+    mod.table_name = mod.to_s.underscore.gsub('/', '_').downcase.pluralize
 
     mod.before_save :after_validation
   end
@@ -58,7 +59,13 @@ module System::Model::Base
       cb_extention[:order] = default
     end
   end
-
+  
+  def group_by(columns)
+    cb_extention[:group] = [] unless cb_extention[:group]
+    cb_extention[:group] << columns
+    cb_extention[:group] = cb_extention[:group].uniq
+  end
+  
   def page(page, limit = 30)
     if limit.to_s == '0'
       cb_extention.delete :page
@@ -76,6 +83,7 @@ module System::Model::Base
     options[:conditions] = cb_condition_where   unless options[:conditions]
     options[:joins]      = cb_extention[:joins] unless options[:joins]
     options[:order]      = cb_extention[:order] unless options[:order]
+    options[:group]      = cb_extention[:group] unless options[:group]
 
     ext = cb_extention
     return self.class.find(scope, options) unless ext[:page]

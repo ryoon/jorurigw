@@ -1,3 +1,4 @@
+# encoding: utf-8
 module System::Controller::Admin
   include System::Controller::Admin::Auth::Login
   include System::Controller::Admin::Log
@@ -11,9 +12,9 @@ module System::Controller::Admin
 
   def initialize_application_admin
     if authenticate
-      Site.user  = current_user
-      Site.user.password = Util::Crypt.decrypt(session[:user_password])
-      Site.user_group = current_user.groups[0]
+      Core.user  = current_user
+      Core.user.password = Util::Crypt.decrypt(session[:user_password])
+      Core.user_group = current_user.groups[0]
     end
 
     @id = params[:id]

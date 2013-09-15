@@ -1,3 +1,4 @@
+# encoding: utf-8
 class System::GroupHistory < ActiveRecord::Base
   include System::Model::Base
   include System::Model::Tree
@@ -13,9 +14,6 @@ class System::GroupHistory < ActiveRecord::Base
   validates_uniqueness_of :code, :scope => [:parent_id,:start_at]
   validates_each :end_at do |record, attr, value|
     record.errors.add attr, 'には、適用開始日より後の日付を入力してください'  if value.blank? ? false : (value <= record.start_at)
-  end
-  validates_each :code do |record, attr, value|
-    record.errors.add attr, "は、#{Site.code_length(record.level_no)}桁で入力してください" if value.blank? ? false : (value.length != Site.code_length(record.level_no))
   end
 
   def search(params)

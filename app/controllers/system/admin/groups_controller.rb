@@ -1,18 +1,33 @@
-class System::Admin::GroupsController < ApplicationController
+# encoding: utf-8
+class System::Admin::GroupsController < Gw::Controller::Admin::Base
   include System::Controller::Scaffold
+  layout "admin/template/admin"
 
   def initialize_scaffold
     @action = params[:action]
-    id      = params[:parent] == '0' ? 1 : params[:parent]
-    @parent = System::Group.new.find(id)
+    if params[:parent].blank? || params[:parent] == '0'
+      parent_id = 1
+    else
+      parent_id = params[:parent]
+    end
+    @parent = System::Group.find_by_id(parent_id)
+    return http_error(404) if @parent.blank?
+    Page.title = "ユーザー・グループ管理"
+    @role_admin      = System::User.is_admin?
+    return authentication_error(403) unless @role_admin == true
+  end
+  
+  def list
+    return authentication_error(403) unless @role_admin == true
+    Page.title = "ユーザー・グループ 全一覧画面"
+
+    @groups = System::Group.get_level2_groups
   end
 
   def index
     item = System::Group.new
     item.parent_id = @parent.id
-
     item.page  params[:page], params[:limit]
-
     order = "state DESC,sort_no,code"
     @items = item.find(:all,:order=>order)
     _index @items
@@ -20,7 +35,6 @@ class System::Admin::GroupsController < ApplicationController
 
   def show
     @item = System::Group.new.find(params[:id])
-
     _show @item
   end
 
@@ -37,7 +51,6 @@ class System::Admin::GroupsController < ApplicationController
     })
   end
   def create
-
     @item = System::Group.new(params[:item])
     @item.parent_id     = @parent.id
     @item.level_no      = @parent.level_no.to_i + 1
@@ -49,127 +62,41 @@ class System::Admin::GroupsController < ApplicationController
 
   def update
     @item = System::Group.new.find(params[:id])
-    if params[:item]['state'] == 'enabled'
-      params[:item]['end_at'] = nil
-    else
-      if params[:item]['end_at'].blank? or params[:item]['end_at'] == "0000-00-00 00:00:00"
-
-        params[:item]['end_at'] = Time.now.strftime("%Y-%m-%d 00:00:00")
-      else
-        if params[:item]['end_at'] < Time.now.strftime("%Y-%m-%d 00:00:00")
-          params[:item]['state'] = 'disabled'
-        end
-      end
-    end
     @item.attributes = params[:item]
     _update @item
   end
 
   def destroy
     @item = System::Group.new.find(params[:id])
+    # 所属するユーザーが存在する場合は不可
     ug_cond="group_id=#{@item.id}"
     user_count = System::UsersGroup.count(:all,:conditions=>ug_cond)
-    if user_count==0
+    # 下位に有効な所属が存在する場合は不可
+    g_cond="state='enabled' and parent_id=#{@item.id}"
+    group_count = System::Group.count(:all,:conditions=>g_cond)
+
+    if user_count == 0 and group_count == 0
       @item.state  = 'disabled'
       @item.end_at = Time.now.strftime("%Y-%m-%d 00:00:00")
-      _update @item
-
+      _update @item,{:success_redirect_uri=>url_for(:action=>'show'),:notice=>'無効にしました。'}
     else
-      flash[:notice] = flash[:notice]||'ユーザーが登録されているため、削除できません。'
-      redirect_to :action=>'index'
+      flash[:notice] = flash[:notice]||'ユーザーが所属しているか、下位に有効な所属があるときは、無効にできません。'
+      redirect_to :action=>'show'
     end
   end
-
+  
   def item_to_xml(item, options = {})
     options[:include] = [:status]
     xml = ''; xml << item.to_xml(options) do |n|
-      #n << item.relation.to_xml(:root => 'relations', :skip_instruct => true, :include => [:user]) if item.relation
     end
     return xml
   end
 
-  def csvput
+  def list
+    return authentication_error(403) unless @role_admin == true
+    Page.title = "ユーザー・グループ 全一覧画面"
 
-    return if params[:item].nil?
-    par_item = params[:item]
-    nkf_options = case par_item[:nkf]
-        when 'utf8'
-          '-w'
-        when 'sjis'
-          '-s'
-        end
-    case par_item[:csv]
-    when 'put'
-      filename = "system_groups_#{par_item[:nkf]}.csv"
-      g_order="level_no ASC , code ASC "
-      items = System::Group.find(:all,:order=>g_order)
-      if items.blank?
-      else
-        file = Gw::Script::Tool.ar_to_csv(items)
-        send_download "#{filename}", NKF::nkf(nkf_options,file)
-      end
-    else
-    end
+    @groups = System::Group.get_level2_groups
   end
-  def csvup
-    flash[:notice]=''
-    return if params[:item].nil?
-    par_item = params[:item]
-    case par_item[:csv]
-    when 'up'
-
-      if par_item.nil? || par_item[:nkf].nil? || par_item[:file].nil?
-        flash[:notice] = 'ファイル名を入力してください'
-      else
-        upload_data = par_item[:file]
-        f = upload_data.read
-        nkf_options = case par_item[:nkf]
-        when 'utf8'
-          '-w -W'
-        when 'sjis'
-          '-w -S'
-        end
-        file =  NKF::nkf(nkf_options,f)
-        if file.blank?
-        else
-          System::Group.truncate_table
-          s_to = Gw::Script::Tool.import_csv(file, "system_groups")
-        end
-
-        redirect_to system_groups_path
-      end
-    else
-    end
-  end
-
-  def csvadd
-    flash[:notice]=''
-    return if params[:item].nil?
-    par_item = params[:item]
-    case par_item[:csv]
-    when 'up'
-
-      if par_item.nil? || par_item[:nkf].nil? || par_item[:file].nil?
-        flash[:notice] = 'ファイル名を入力してください'
-      else
-        upload_data = par_item[:file]
-        f = upload_data.read
-        nkf_options = case par_item[:nkf]
-        when 'utf8'
-          '-w -W'
-        when 'sjis'
-          '-w -S'
-        end
-        file =  NKF::nkf(nkf_options,f)
-        if file.blank?
-        else
-
-          s_to = Gw::Script::Tool.import_csv(file, "system_groups")
-        end
-
-        redirect_to system_groups_path
-      end
-    else
-    end
-  end
+  
 end

@@ -1,0 +1,31 @@
+<%#*<p>Find me in app/views/gwsub/admin/sb01/sb01_trainings/show.html.erb</p>%>
+<%
+expired_path = "#{@public_uri}/#{@item.id}/expired"
+close_path   = "#{@public_uri}/#{@item.id}/closed"
+editor_role = Gwsub::Sb01Training.is_editor?(@item.group_code.slice(0,6), Site.user_group.code)
+docs_editor = editor_role || @u_role
+%>
+<div class="gwsub sb01">
+<div class="pieceHeader">
+<h2>研修申込・受付</h2>
+</div>
+<div class="pieceBanner">
+<%= render :partial => 'gwsub/admin/sb01/sb01_trainings/menu' %>
+</div>
+<div class="pieceBody">
+<%= raw(%Q(<div class="notice">#{flash[:notice]}</div>)) unless flash[:notice].blank? %>
+<div class="editingBox leftSide">
+<%if @item.state == '3'%>
+<span class="btReturnReceipt"><%= link_to '締切解除'    , url_for(close_path)   ,:confirm=>"この研修を受付中に戻します。よろしいですか？"    if docs_editor-%></span>
+<%else%>
+<span class="btClosed"><%= link_to '締切'        , url_for(close_path)   ,:confirm=>"この研修の受付を締め切ります。よろしいですか？"  if docs_editor-%></span>
+<%end%>
+<span class="btDestroy"><%= link_to_destroy @item.id %></span>
+<%#end%>
+</div>
+<br />
+<%= render :partial => 'gwsub/admin/sb01/sb01_training_plans/training_show' %>
+<%#= render :partial => 'gwsub/admin/sb01/sb01_training_plans/upload_index' %>
+<br />
+</div>
+</div>

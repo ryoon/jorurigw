@@ -1,7 +1,7 @@
 module Gwboard::Controller::Authorize
 
   def parent_group_code
-    item = System::Group.find_by_id(Site.user_group.parent_id) if Site.user_group.parent_id
+    item = System::Group.find_by_id(Core.user_group.parent_id) if Core.user_group.parent_id
     ret = item.code if item
     return ret
   end
@@ -11,7 +11,7 @@ module Gwboard::Controller::Authorize
     unless @is_editable
 
       get_writable_flag
-      @is_editable = true if item.section_code == Site.user_group.code if @is_writable
+      @is_editable = true if item.section_code == Core.user_group.code if @is_writable
     end
   end
 
@@ -53,7 +53,7 @@ module Gwboard::Controller::Authorize
   def authorized_person_only(item)
     _compare = false
     unless item.creator.nil?
-      _compare = true if Site.user.code == item.creater_id
+      _compare = true if Core.user.code == item.creater_id
     end
     return _compare
   end

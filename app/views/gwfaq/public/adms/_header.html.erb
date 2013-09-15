@@ -1,9 +1,0 @@
-<div class="menu bbs">
-  <a class="" href='<%="/gwfaq/adms/new?title_id=#{params[:title_id]}"%>'>新規記事</a>
-  <%=link_to "下書", gwbd_public_url_base + "&state=DRAFT" %>
-  <%=link_to "承認待ち", gwbd_public_url_base + "&state=RECOGNIZE" %>
-  <%=link_to "公開待ち", gwbd_public_url_base + "&state=PUBLISH" %>
-  <%=link_to "期限切れ", gwbd_public_url_base + "&state=VOID" %>
-  <%=link_to "全記事", gwbd_public_url_base + "&state=ALL" %>
-  <%=link_to "公開画面", @title.docs_path %>
-</div>

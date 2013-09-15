@@ -1,12 +1,15 @@
+# encoding: utf-8
 class Util::Sequencer
-  def self.next_id(name, version = 0)
+  def self.next_id(name, options = {})
+    name    = name.to_s
+    version = options[:version] || 0
 
-    lock_name = name.to_s + version.to_s
-    unless Util::FileLock.lock_by_name(lock_name)
-      raise "error: sequencer locked"
+    lock = "#{name}_#{version}"
+    unless Util::File::Lock.lock_by_name(lock)
+      raise "SequencerLockError"
     end
 
-    if seq = System::Sequence.versioned(version).find_by_name(name)
+    if seq = System::Sequence.versioned(version.to_s).find_by_name(name)
       seq.value += 1
       seq.save
     else
@@ -17,7 +20,12 @@ class Util::Sequencer
       seq.save
     end
 
-    Util::FileLock.unlock_by_name(lock_name)
+    Util::File::Lock.unlock_by_name(lock)
+
+    if options[:md5]
+      require 'digest/md5'
+      return Digest::MD5.new.update(seq.value.to_s)
+    end
     return seq.value
   end
 end

@@ -1,3 +1,4 @@
+# encoding: utf-8
 module Gw::Model::Todo
 
   def self.remind(uid = nil)

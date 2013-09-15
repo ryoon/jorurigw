@@ -1,0 +1,33 @@
+<div class="piece AdminMessage">
+<%= render :partial => 'header' %>
+
+<div class="pieceBody">
+<div class="editingBox">
+  <span class="btNew"><%= link_to '新規作成', "/system/role_name_privs/new#{@params_set}" %></span>
+  <span class="docLink"><%= link_to '管理者権限設定', "/system/roles" %></span>
+</div>
+<%= render :partial => 'search' %>
+
+<table class="index">
+  <tbody>
+    <tr>
+      <th style="width: 60px;"></th>
+      <th>機能名</th>
+      <th>権限名</th>
+    </tr>
+    <% for item in @items %>
+    <tr class="<%= cycle '', 'cycle' %>">
+      <td style="text-align: center;"><%= link_to '詳細', "/system/role_name_privs/#{item.id}#{@params_set}" %></td>
+      <td><%= item.role.display_name %></td>
+      <td><%= item.priv.display_name %></td>
+    </tr>
+    <% end %>
+  </tbody>
+</table>
+  
+<br/>
+<%= paginate @items %>
+<br/>
+
+</div>
+</div>

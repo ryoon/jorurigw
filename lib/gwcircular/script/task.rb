@@ -1,3 +1,4 @@
+# encoding: utf-8
 class Gwcircular::Script::Task
 
   def self.delete
@@ -45,7 +46,7 @@ class Gwcircular::Script::Task
 
   def self.destroy_record(limit)
     @title = Gwcircular::Control.find_by_id(1)
-    unless @title.blank?
+    if @title.present? && @title.limit_date == 'use'
       @img_path = "public/_attaches/#{@title.system_name}/"
       preparation_limit = Gwbbs::Script::Task.preparation_get_limit_date
       item = Gwcircular::Doc

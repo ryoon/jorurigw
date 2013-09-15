@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 class Gwbbs::Script::Annual
 
   def self.renew
@@ -228,7 +229,7 @@ class Gwbbs::Script::Annual
   def self.db_alias(item)
     cnn = item.establish_connection
     cnn.spec.config[:database] = @title.dbname.to_s
-    Gwboard::CommonDb.establish_connection(cnn.spec)
+    Gwboard::CommonDb.establish_connection(cnn.spec.config)
     return item
   end
 

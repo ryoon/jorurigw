@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 module Gwboard::Controller::Common
 
   def adminlib_sort_key
@@ -39,32 +40,32 @@ module Gwboard::Controller::Common
     case params[:state]
     when "DRAFT"
       str  = "#{table_name}.state = 'draft'"
-      str += " AND #{table_name}.section_code = '#{Site.user_group.code}'" unless @is_admin
+      str += " AND #{table_name}.section_code = '#{Core.user_group.code}'" unless @is_admin
     when "RECOGNIZE"
       str  = "#{table_name}.state = 'recognize'"
       if @is_recognize_readable
       else
-        str += " AND #{table_name}.section_code = '#{Site.user_group.code}'" unless @is_admin
+        str += " AND #{table_name}.section_code = '#{Core.user_group.code}'" unless @is_admin
       end
     when "PUBLISH"
       str  = "#{table_name}.state = 'recognized'"
-      str += " AND #{table_name}.section_code = '#{Site.user_group.code}'" unless @is_admin
+      str += " AND #{table_name}.section_code = '#{Core.user_group.code}'" unless @is_admin
     when "TODAY"
       str  =  "#{table_name}.state = 'public' AND #{table_name}.latest_updated_at >= '" + Date.today.strftime("%Y-%m-%d") + " 00:00:00'"
       str += " AND '#{Time.now.strftime('%Y-%m-%d %H:%M')}:00' BETWEEN #{table_name}.able_date AND #{table_name}.expiry_date"
     when "NEVER"
       str  = "#{table_name}.state = 'public' AND '#{Time.now.strftime('%Y-%m-%d %H:%M:%S')}' < #{table_name}.able_date"
-      str += " AND #{table_name}.section_code = '#{Site.user_group.code}'" unless @is_admin
+      str += " AND #{table_name}.section_code = '#{Core.user_group.code}'" unless @is_admin
     when "VOID"
       str  = "#{table_name}.state = 'public' AND #{table_name}.expiry_date < '#{Time.now.strftime('%Y-%m-%d %H:%M')}:00'"
-      str += " AND #{table_name}.section_code = '#{Site.user_group.code}'" unless @is_admin
+      str += " AND #{table_name}.section_code = '#{Core.user_group.code}'" unless @is_admin
     else
       str  =  "#{table_name}.state = 'public'"
       str += " AND '#{Time.now.strftime('%Y-%m-%d %H:%M')}:00' BETWEEN #{table_name}.able_date AND #{table_name}.expiry_date"
     end
 
     if @title.restrict_access
-      str += " AND #{table_name}.section_code = '#{Site.user_group.code}'"
+      str += " AND #{table_name}.section_code = '#{Core.user_group.code}'"
     end unless @is_admin
 
     unless params[:mm].blank?
@@ -111,13 +112,13 @@ module Gwboard::Controller::Common
     case params[:state].to_s
     when "DRAFT"
       str  = "gwfaq_docs.state = 'draft'"
-      str += " AND section_code = '#{Site.user_group.code}'" unless @is_admin
+      str += " AND section_code = '#{Core.user_group.code}'" unless @is_admin
     when "RECOGNIZE"
       str  = "gwfaq_docs.state = 'recognize'"
-      str += " AND section_code = '#{Site.user_group.code}'" unless @is_admin
+      str += " AND section_code = '#{Core.user_group.code}'" unless @is_admin
     when "PUBLISH"
       str  = "gwfaq_docs.state = 'recognized'"
-      str += " AND section_code = '#{Site.user_group.code}'" unless @is_admin
+      str += " AND section_code = '#{Core.user_group.code}'" unless @is_admin
     when "TODAY"
       str = "gwfaq_docs.state = 'public' AND gwfaq_docs.latest_updated_at >= '" + Date.today.strftime("%Y/%m/%d") + " 00:00:00'"
     else
@@ -130,7 +131,7 @@ module Gwboard::Controller::Common
     case params[:state]
     when "DRAFT"
       str = "state = 'draft'"
-      str += " AND (section_code = '#{Site.user_group.code}' or creater_id = '#{Site.user.code}')" unless @is_admin  #管理者なら全記事対象
+      str += " AND (section_code = '#{Core.user_group.code}' or creater_id = '#{Core.user.code}')" unless @is_admin  #管理者なら全記事対象
     when "RECOGNIZE"
       str = "state = 'recognize'"
     when "PUBLISH"
@@ -177,7 +178,7 @@ module Gwboard::Controller::Common
     params[:limit] = @title.default_limit.to_s if params[:limit].to_i < 1
     params[:limit] = @title.default_limit.to_s if 100 < params[:limit].to_i
 
-    unless Site.request_path.index("doclibrary")
+    unless Core.request_uri.index("doclibrary")
       @css = ["/_common/themes/gw/css/gwboard/#{@title.system_name}_standard.css", "/_common/themes/gw/css/doc_2column.css"]
     else
       @css = ["/_common/themes/gw/css/gwboard/#{@title.system_name}_standard.css", "/_common/themes/gw/css/doc_2column_dl.css"]
@@ -196,13 +197,13 @@ module Gwboard::Controller::Common
     s_kwd = s_kwd.gsub(/　/,'').strip unless s_kwd.blank?
     params[:kwd] = nil if s_kwd.blank?
 
-    unless Site.request_path.index("doclibrary")
+    unless Core.request_uri.index("doclibrary")
       unless params[:preview].blank?
         css_path = "/_attaches/css/preview/#{@title.system_name}/#{@title.id}.css"
       else
         css_path = "/_attaches/css/#{@title.system_name}/#{@title.id}.css"
       end
-      f_path = "#{RAILS_ROOT}/public/#{css_path}"
+      f_path = "#{Rails.root}/public/#{css_path}"
       if FileTest.exist?(f_path)
         @css = [css_path, "/_common/themes/gw/css/#{@title.system_name}_standard.css", "/_common/themes/gw/css/doc_2column.css"]
       else
@@ -238,13 +239,13 @@ module Gwboard::Controller::Common
 
     if mode == 'create'
       @item.createdate = Time.now.strftime("%Y-%m-%d %H:%M")
-      @item.creater_id = Site.user.code unless Site.user.code.blank?
-      @item.creater = Site.user.name unless Site.user.name.blank?
-      @item.createrdivision = Site.user_group.name unless Site.user_group.name.blank?
-      @item.createrdivision_id = Site.user_group.code unless Site.user_group.code.blank?
+      @item.creater_id = Core.user.code unless Core.user.code.blank?
+      @item.creater = Core.user.name unless Core.user.name.blank?
+      @item.createrdivision = Core.user_group.name unless Core.user_group.name.blank?
+      @item.createrdivision_id = Core.user_group.code unless Core.user_group.code.blank?
 
-      @item.editor_id = Site.user.code unless Site.user.code.blank?
-      @item.editordivision_id = Site.user_group.code unless Site.user_group.code.blank?
+      @item.editor_id = Core.user.code unless Core.user.code.blank?
+      @item.editordivision_id = Core.user_group.code unless Core.user_group.code.blank?
 
       @item.creater_admin = true if @is_admin
       @item.creater_admin = false unless @is_admin
@@ -252,11 +253,11 @@ module Gwboard::Controller::Common
       @item.editor_admin = false unless @is_admin     #0
     else
       @item.editdate = Time.now.strftime("%Y-%m-%d %H:%M")
-      @item.editor = Site.user.name unless Site.user.name.blank?
-      @item.editordivision = Site.user_group.name unless Site.user_group.name.blank?
+      @item.editor = Core.user.name unless Core.user.name.blank?
+      @item.editordivision = Core.user_group.name unless Core.user_group.name.blank?
 
-      @item.editor_id = Site.user.code unless Site.user.code.blank?
-      @item.editordivision_id = Site.user_group.code unless Site.user_group.code.blank?
+      @item.editor_id = Core.user.code unless Core.user.code.blank?
+      @item.editordivision_id = Core.user_group.code unless Core.user_group.code.blank?
       @item.editor_admin = true if @is_admin          #1
       @item.editor_admin = false unless @is_admin     #0
     end
@@ -272,10 +273,10 @@ module Gwboard::Controller::Common
       up_flg = true unless @is_admin
       if up_flg
         @item.createdate = Time.now.strftime("%Y-%m-%d %H:%M")
-        @item.creater_id = Site.user.code
-        @item.creater = Site.user.name
-        @item.createrdivision = Site.user_group.name
-        @item.createrdivision_id = Site.user_group.code
+        @item.creater_id = Core.user.code
+        @item.creater = Core.user.name
+        @item.createrdivision = Core.user_group.name
+        @item.createrdivision_id = Core.user_group.code
       end
     end
 
@@ -287,18 +288,18 @@ module Gwboard::Controller::Common
       up_flg = true unless @is_admin
       if up_flg
         @item.editdate = Time.now.strftime("%Y-%m-%d %H:%M")
-        @item.editor_id = Site.user.code unless Site.user.code.blank?
-        @item.editor = Site.user.name unless Site.user.name.blank?
-        @item.editordivision_id = Site.user_group.code unless Site.user_group.code.blank?
-        @item.editordivision = Site.user_group.name unless Site.user_group.name.blank?
+        @item.editor_id = Core.user.code unless Core.user.code.blank?
+        @item.editor = Core.user.name unless Core.user.name.blank?
+        @item.editordivision_id = Core.user_group.code unless Core.user_group.code.blank?
+        @item.editordivision = Core.user_group.name unless Core.user_group.name.blank?
       end
     end
   end
 
   def is_vender_user
     ret = false
-    ret = true if Site.user.code.length <= 3
-    ret = true if Site.user.code == 'gwbbs'
+    ret = true if Core.user.code.length <= 3
+    ret = true if Core.user.code == 'gwbbs'
     return ret
   end
 
@@ -309,14 +310,14 @@ module Gwboard::Controller::Common
     end
     @users_collection = []
     sql = Condition.new
-    sql.and "sql", "system_users_groups.group_id = #{Site.user_group.id}"
+    sql.and "sql", "system_users_groups.group_id = #{Core.user_group.id}"
     join = "INNER JOIN system_users_groups ON system_users.id = system_users_groups.user_id"
 
     item = System::User.new
     users = item.find(:all, :joins=>join, :order=> 'code', :conditions=>sql.where)
     users.each do |u|
-      next if u == Site.user && Site.user.ldap != 0
-      next unless @is_admin if u.id == Site.user.id
+      next if u == Core.user && Core.user.ldap != 0
+      next unless @is_admin if u.id == Core.user.id
       @users_collection << u
     end
 
@@ -346,8 +347,8 @@ module Gwboard::Controller::Common
     item = System::User.new
     users = item.find(:all, :joins=>join, :order=> 'code', :conditions=>sql.where)
     users.each do |u|
-      next if u == Site.user && Site.user.ldap != 0
-      next unless @is_admin if u.id == Site.user.id
+      next if u == Core.user && Core.user.ldap != 0
+      next unless @is_admin if u.id == Core.user.id
       @users_collection << u
     end
   end

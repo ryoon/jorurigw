@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 #######################################################################
 #
 #
@@ -32,7 +33,7 @@ class Gwfaq::Script::Task
         @items = doc_item.find(:all)
         for @item in @items
           destroy_dbfiles
-          destroy_image_files
+          #destroy_image_files
           destroy_atacched_files
           destroy_files
           @item.destroy
@@ -114,13 +115,43 @@ class Gwfaq::Script::Task
     Gwfaq::DbFile.remove_connection
   end
   #削除関連----------------------------------------------------------------------
-  
+
+  ##インデックス追加関連----------------------------------------------------------------------
+  def self.docs_add_index_script
+    # 必要なインデックスを追加する
+    dump "`質問管理（FAQ)` : インデックス追加開始：#{Time.now.strftime('%Y-%m-%d %H:%M:%S')}"
+    item = Gwfaq::Control.new
+    items = item.find(:all)
+
+    items.each do |item|
+      cnn = Gwfaq::Doc.establish_connection
+      cnn.spec.config[:database] = item.dbname.to_s
+      read = Gwfaq::Doc
+      read.establish_connection(cnn.spec.config)
+      unless read.blank?
+        begin
+          connect = read.connection()
+          truncate_query =  "ALTER TABLE `gwfaq_docs` ADD INDEX title_id(title_id);"
+          connect.execute(truncate_query)
+          truncate_query = "ALTER TABLE `gwfaq_docs` ADD INDEX state(state(30));"
+          connect.execute(truncate_query)
+          truncate_query = "ALTER TABLE `gwfaq_docs` ADD INDEX category1_id(category1_id);"
+          connect.execute(truncate_query)
+          dump "`#{item.dbname.to_s}`.`質問管理（FAQ)` : インデックス追加開始：#{Time.now.strftime('%Y-%m-%d %H:%M:%S')}"
+        rescue
+          dump "#{item.dbname.to_s}は既にindexを貼られていた、もしくはデータベースが存在していなかった、もしくはデータベース接続時にエラーが発生しました。：#{Time.now.strftime('%Y-%m-%d %H:%M:%S')}"
+        end
+      end
+    end
+    dump "`質問管理（FAQ)` : インデックス追加終了：#{Time.now.strftime('%Y-%m-%d %H:%M:%S')}"
+  end
+
   #gwfaq_controlsに設定されているdatabase接続先を参照する
   def self.db_alias(item)
     cnn = item.establish_connection
     #コントロールにdbnameが設定されているdbname名で接続する
     cnn.spec.config[:database] = @title.dbname.to_s
-    Gwboard::CommonDb.establish_connection(cnn.spec)
+    Gwboard::CommonDb.establish_connection(cnn.spec.config)
     return item
   end
 end

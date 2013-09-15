@@ -1,3 +1,4 @@
+# encoding: utf-8
 class System::CustomGroup < ActiveRecord::Base
   include System::Model::Base
   include System::Model::Tree
@@ -18,7 +19,7 @@ class System::CustomGroup < ActiveRecord::Base
       if mode == :create && Gw.is_admin_admin? != true
         temp = System::CustomGroup.find(:all, :conditions=>"owner_uid=#{Site.user.id}")
         if temp.size >= 5
-          self.errors.add :"カスタムグループは","５件までしか作成できません"
+          self.errors.add :base, "カスタムグループは5件までしか作成できません。"
         end
       end
 
@@ -26,7 +27,7 @@ class System::CustomGroup < ActiveRecord::Base
         params[:item][:sort_no] = 0
       elsif /^[0-9]+$/ =~ params[:item][:sort_no] && params[:item][:sort_no].to_i >= 0 && params[:item][:sort_no].to_i <= 9999
       else
-          self.errors.add :"並び順"
+          self.errors.add :sort_no, "は数値を入力してください。"
       end
 
       users = ::JsonParser.new.parse(params[:item]['schedule_users_json'])
@@ -35,7 +36,7 @@ class System::CustomGroup < ActiveRecord::Base
           params["sort_no_#{user[1]}"] = 0
         elsif /^[0-9]+$/ =~ params["sort_no_#{user[1]}"] && params["sort_no_#{user[1]}"].to_i >= 0 && params["sort_no_#{user[1]}"].to_i <= 9999
         else
-          self.errors.add :"関連ユーザーの並び順"
+          self.errors.add :base, "関連ユーザーの並び順 は数値を入力してください。"
           break
         end
       }
@@ -57,7 +58,7 @@ class System::CustomGroup < ActiveRecord::Base
 
       validation = nz(options[:validation], true)
 
-      if self.errors.size == 0 && self.editable? && self.save(validation)
+      if self.errors.size == 0 && self.editable? && self.save(:validate => validation)
         cgid = self.id
 
         admin_users = ::JsonParser.new.parse(params[:item]['schedule_admin_users_json'])
@@ -283,9 +284,7 @@ class System::CustomGroup < ActiveRecord::Base
     glist = System::CustomGroup.get_my_view( { :priv => :edit, :is_default => 1 } )
     glist.each {|x|
       x.user_custom_group.sort{|a,b| a.sort_no <=> b.sort_no }.each{|x|
-        if x.user.code != '000001_0' || ( x.user.code == '000001_0' && Gw::Schedule.is_schedule_pref_admin? )
-          selects.push [Gw.trim( x.user.display_name ),  x.user.id]
-        end
+        selects.push [Gw.trim( x.user.display_name ),  x.user.id]
       }
     }
     return selects
@@ -298,9 +297,7 @@ class System::CustomGroup < ActiveRecord::Base
     glist.each {|x|
       x.user_custom_group.sort{|a,b| a.sort_no <=> b.sort_no }.each{|x|
         if !x.user.blank? && x.user.state == 'enabled'
-          if x.user.code != '000001_0' || ( x.user.code == '000001_0' && Gw::Schedule.is_schedule_pref_admin? )
-            selects.push [Gw.trim( x.user.display_name ),  x.user.id]
-          end
+          selects.push [Gw.trim( x.user.display_name ),  x.user.id]
         end
       }
     }
@@ -308,8 +305,6 @@ class System::CustomGroup < ActiveRecord::Base
   end
 
   def self.create_new_custom_group(custom_group, group, customGroup_sort_no, mode)
-    order = " sort_no DESC "
-
     custom_group.name        = group.name
     custom_group.state       = 'enabled'
     custom_group.sort_no     = customGroup_sort_no
@@ -318,7 +313,7 @@ class System::CustomGroup < ActiveRecord::Base
     custom_group.updater_uid = Site.user.id
     custom_group.updater_gid = Site.user_group.id
     custom_group.name_en     = 'sectionSchedules'
-    custom_group.save(false)
+    custom_group.save(:validate => false)
 
     custom_group_id = custom_group.id
 
@@ -336,7 +331,7 @@ class System::CustomGroup < ActiveRecord::Base
     custom_group_admin.custom_group_id  = custom_group_id
     custom_group_admin.priv_name        = 'admin'
     custom_group_admin.class_id         = 2
-    custom_group_admin.save(false)
+    custom_group_admin.save(:validate => false)
 
     if !group.parent_id.blank? && !group.parent.blank?
       group.parent.children.each do |child|
@@ -345,21 +340,18 @@ class System::CustomGroup < ActiveRecord::Base
         custom_group_edit.custom_group_id  = custom_group_id
         custom_group_edit.priv_name        = 'edit'
         custom_group_edit.class_id         = 2
-        custom_group_edit.save(false)
+        custom_group_edit.save(:validate => false)
 
         custom_group_read = System::CustomGroupRole.new
         custom_group_read.group_id         = child.id
         custom_group_read.custom_group_id  = custom_group_id
         custom_group_read.priv_name        = 'read'
         custom_group_read.class_id         = 2
-        custom_group_read.save(false)
+        custom_group_read.save(:validate => false)
       end
     end
 
     custom_group_users = Array.new
-
-    zentyo_user = System::User.find(:first, :conditions=>"code = '000001_0'")
-    custom_group_users << zentyo_user
 
     bu_user = nil
     if group.parent_id > 0
@@ -400,10 +392,6 @@ class System::CustomGroup < ActiveRecord::Base
         users_custom_group.custom_group_id  = custom_group_id
 
         case custom_user.code
-        when '000001_0'
-
-          users_custom_group.title_en          = 'prefecture'
-          users_custom_group.icon             = 9
         when /^\w{3}_0/
 
           users_custom_group.title_en          = 'department'
@@ -413,15 +401,15 @@ class System::CustomGroup < ActiveRecord::Base
           users_custom_group.title_en          = 'section'
           users_custom_group.icon             = 7
         else
-          users_custom_group.title            = custom_user.offitial_position
+          users_custom_group.title            = custom_user.official_position
           users_custom_group.icon             = 1
         end
-        users_custom_group.save(false)
+        users_custom_group.save(:validate => false)
       end
     end
     return true
   end
-  
+
   def self.get_error_users(params)
     users = []
     _users = ::JsonParser.new.parse(params[:item]['schedule_users_json'])
@@ -429,5 +417,9 @@ class System::CustomGroup < ActiveRecord::Base
       users[i] = [nil, _user[1], _user[2], params["title_#{_user[1]}"], params["icon_#{_user[1]}"], params["sort_no_#{_user[1]}"]]
     }
     return users
+  end
+
+  def self.states
+    [['無効', 'disabled'], ['有効', 'enabled']]
   end
 end

@@ -1,0 +1,26 @@
+<div class="piece todo setting">
+
+  <%= render :partial => 'header_str' %>
+  <div class="pieceBody">
+    <div class="titleLine">
+      <span class="title">スケジュール表示設定</span>
+    </div>
+    <div class="pieceBodyBody">
+      <%=div_notice%>
+      <%@key = 'schedule'%>
+      <a name="<%=@key%>"></a>
+      <%=form_for :item, :url => "/gw/todo_settings/edit_#{@key}", :html => {:method=>:put, :multipart => true} do |f|%>
+      <table class="show">
+        <tr>
+          <th>スケジュール表示</th>
+          <td>ToDoの期限日を、スケジュール上に
+          <%=select_by_list(f, :todos_display_schedule, Gw.yaml_to_array_for_select('gw_todos_display_schedule', :for_select_by_list=>1),
+                {}, @item[:todos_display_schedule].to_i)%>
+          </td>
+        </tr>
+      </table>
+      <%=submit_for_update(f, :id=>"item_submit_#{@key}", :caption => '保存')%>
+      <%end%>
+    </div>
+  </div>
+</div>

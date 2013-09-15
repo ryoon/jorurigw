@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 class Gwsub::Sb04section < Gwsub::GwsubPref
   include System::Model::Base
   include Cms::Model::Base::Content

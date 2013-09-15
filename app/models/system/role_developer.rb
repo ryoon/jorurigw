@@ -1,3 +1,4 @@
+# encoding: utf-8
 class System::RoleDeveloper < ActiveRecord::Base
   include System::Model::Base
   include System::Model::Base::Config
@@ -94,7 +95,7 @@ class System::RoleDeveloper < ActiveRecord::Base
   end
 
   def class_id_no
-    [['すべて', 0], ['ユーザ', 1], ['グループ', 2]]
+    [['すべて', 0], ['ユーザー', 1], ['グループ', 2]]
   end
 
   def class_id_label

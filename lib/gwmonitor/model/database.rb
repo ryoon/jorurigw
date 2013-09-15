@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 module Gwmonitor::Model::Database
 
   def system_admin_flags

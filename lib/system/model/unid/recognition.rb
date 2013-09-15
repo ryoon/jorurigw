@@ -1,3 +1,4 @@
+# encoding: utf-8
 module System::Model::Unid::Recognition
   def self.included(mod)
     mod.has_one :recognition, :primary_key => 'unid', :foreign_key => 'unid', :class_name => 'System::Recognition',
@@ -19,7 +20,7 @@ module System::Model::Unid::Recognition
 
   def recognizable
     join_recognizers
-    self.and "system_recognizers.user_id", Site.user.id
+    self.and "system_recognizers.user_id", Core.user.id
     self.and "state", 'recognize'
     return self
   end

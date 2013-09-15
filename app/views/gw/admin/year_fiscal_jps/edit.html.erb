@@ -1,6 +1,19 @@
-<div class="showMenu">
-<%= link_to '詳細', gw_year_fiscal_jp_path(@item.id) %>
-</div>
-<% form_for :item, :url => {:action => :update}, :html => {:method => :put, :multipart => true} do |f| %>
+<%#*<p>Find me in app/views/gw/admin/year_fiscal_jps/edit.html.erb</p>%>
+
+<div class="piece YearFiscalJp">
+<%= render :partial => 'header_str' %>
+
+<div class="pieceBody">
+
+<%= form_for :item, :url => "/gw/year_fiscal_jps/#{@item.id}?#{@qs}", :html => {:method => :put} do |f| %>
+
+<%= f.error_messages %>
+
 <%= render :partial => 'form', :locals => {:f => f} %>
+
+<%= raw(submit_for(f, {:caption => '保存'}) ) %>
+
 <% end %>
+
+</div><!--pieceBody-->
+</div>

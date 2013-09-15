@@ -1,100 +1,111 @@
-class Gw::Admin::PrefDirectorsController < ApplicationController
+#encoding:utf-8
+class Gw::Admin::PrefDirectorsController < Gw::Controller::Admin::Base
   include System::Controller::Scaffold
+  layout "admin/template/pref"
+
+  def initialize_scaffold
+    Page.title = "所属幹部在庁表示"
+    @public_uri = '/gw/pref_directors'
+    return redirect_to(request.env['PATH_INFO']) if params[:reset]
+  end
 
   def index
-    @counts1 = ""
-    @counts2 = ""
-    counts2 = ""
+    init_params
 
-    case params[:init]
-    when  'clear_all'
-      @counts1 = initial_clear_all
-    when  'init_setup'
-      counts2  = init_datas
-      @counts2 = counts2.join(' / ')
-    end
+    item = Gw::PrefDirector.new #.readable
+    item.and 'sql', "deleted_at IS NULL"
+    item.order  params[:id], @sort_keys
+    @items = item.find(:all)
+
+    item = Gw::PrefDirector.new #.readable
+    dept    =  "parent_g_code"
+    g_order = "parent_g_order"
+    @item_links  = item.find(:all ,:conditions=>"deleted_at IS NULL",:group=>dept , :order=>g_order)
   end
 
-  def initial_clear_all
-      Gw::PrefDirector.truncate_table
-      return [Gw::PrefDirector.count(:all)]
+
+  def state_change
+    @item = Gw::PrefDirector.find_by_uid(params[:id])
+    old_state = params[:p_state]
+    if old_state == "on"
+      new_state = "off"
+    elsif  old_state == "off"
+      new_state = "on"
+    end
+    @item.state = new_state
+    @item.save
+    update_field = "state = '#{new_state}'"
+
+    sql_where = "id != #{@item.id} AND uid = #{params[:id]}"
+    Gw::PrefDirector.update_all(update_field,sql_where)
+
+    set_sql_where = "uid = #{params[:id]}"
+    Gw::PrefExecutive.update_all(update_field,set_sql_where)
+
+    location  = @public_uri
+    location += "##{params[:locate]}" unless params[:locate].blank?
+    return redirect_to(location)
   end
 
-  def init_datas
-    Gw::PrefDirector.truncate_table
+  def init_params
+    @role_developer  = Gw::PrefDirector.is_dev?
+    @role_admin      = Gw::PrefDirector.is_admin?
+    @u_role = @role_developer || @role_admin
 
-    counts=[]
+    @sort_keys = nz(params[:sort_keys], 'parent_g_order, u_order')
+    @css = %w(/_common/themes/gw/css/schedule.css)
 
-    cgu_cond =  "system_users.state='enabled' and system_groups.state='enabled' "
-    cgu_cond << "  and system_users_custom_groups.icon < 7  and system_custom_groups.id > 227 and system_custom_groups.id < 241 "
-    cgu_order = "system_groups.sort_no , system_users_custom_groups.sort_no"
-    cgu_joins = " left join system_users on system_users.id = system_users_custom_groups.user_id "
-    cgu_joins << " left join system_custom_groups on system_custom_groups.id = system_users_custom_groups.custom_group_id "
-    cgu_joins << " left join system_users_groups on system_users_groups.user_id = system_users_custom_groups.user_id "
-    cgu_joins << " left join system_groups on system_users_groups.group_id = system_groups.id "
-    cgu_users = System::UsersCustomGroup.find(:all ,:conditions=>cgu_cond , :order=>cgu_order ,:joins=>cgu_joins)
-    counts[0]=cgu_users.size
-    counts[1]=0
-    counts[2]=0
-    counts[3]=0
-    return counts if cgu_users.size==0
+    @sp_mode = :zaichou
 
-    cgu_users.each do |u|
-      user = System::User.find_by_id(u.user_id)
-      if user.blank?
-        counts[2]=counts[2]+1
-        next
-      end
-      ug_cond   = "user_id=#{user.id} and end_at is null"
-      ug_order  = "user_id, job_order"
-      users_group   = System::UsersGroup.find(:first , :conditions=>ug_cond , :order=>ug_order)
-      if users_group.blank?
-        counts[2]=counts[2]+1
-        next
-      end
-      group = System::Group.find_by_id(users_group.group_id)
-      if group.blank?
-        counts[2]=counts[2]+1
-        next
-      end
-      parent_group = System::Group.find_by_id(group.parent_id)
-      if parent_group.blank?
-        counts[2]=counts[2]+1
-        next
-      end
-      custom_group = System::CustomGroup.find_by_id(u.custom_group_id)
-      if custom_group.blank?
-        counts[2]=counts[2]+1
-        next
-      end
-      if user.offitial_position == '知事' or user.offitial_position == '副知事' or user.offitial_position == '政策監'
-        counts[3]=counts[3]+1
-        next
-      end
+    @users = Gw::Model::Schedule.get_users(params)
+    @user   = @users[0]
+    @uid    = @user.id if !@user.blank?
+    @uid = nz(params[:uid], Site.user.id) if @uid.blank?
+    @myuid = Site.user.id
+    @gid = nz(params[:gid], @user.groups[0].id) rescue Site.user_group.id
+    @mygid = Site.user_group.id
 
-      temp_title = group.name
-      temp_title = temp_title.to_s + user.offitial_position.to_s
-      director = Gw::PrefDirector.new
-      director.parent_gid     = parent_group.id
-      director.parent_g_code  = parent_group.code
-      director.parent_g_name  = parent_group.name
-      director.parent_g_order = parent_group.sort_no
-      director.gid            = group.id
-      director.g_code         = group.code
-      director.g_name         = group.name
-      director.g_order        = group.sort_no
-      director.uid            = user.id
-      director.u_code         = user.code
-      director.u_lname        = ''
-      director.u_lname        = user.offitial_position if u.sort_no==10
-      director.u_name         = user.name
-      director.u_order        = u.sort_no
-      director.title          = u.title
-      director.state          = 'off'
-      director.save(false)
-      counts[1]= counts[1] + 1
+    if params[:cgid].blank? && @gid != 'me'
+      x = System::CustomGroup.get_my_view( {:is_default=>1,:first=>1})
+      if !x.blank?
+        @cgid = x.id
+      end
+    else
+      @cgid = params[:cgid]
     end
-    return counts
+
+    @first_custom_group = System::CustomGroup.get_my_view( {:sort_prefix => Site.user.code,:first=>1})
+
+    @ucode = Site.user.code  # ユーザーコード
+    @gcode = Site.user_group.code  # グループコード
+
+    @state_user_or_group = params[:cgid].blank? ? ( params[:gid].blank? ? :user : :group ) : :custom_group
+
+    @group_selected = ( params[:cgid].blank? ? '' : 'custom_group_'+params[:cgid] )
+
+    a_qs = []
+    a_qs.push "uid=#{params[:uid]}" unless params[:uid].nil?
+    a_qs.push "gid=#{params[:gid]}" unless params[:gid].nil? && !params[:cgid].nil?
+    a_qs.push "cgid=#{params[:cgid]}" unless params[:cgid].nil? && !params[:gid].nil?
+    a_qs.push "todo=#{params[:todo]}" unless params[:todo].nil?
+    @schedule_move_qs = a_qs.join('&')
+
+    @is_gw_admin = Gw.is_admin_admin?
+    @is_pref_admin = Gw::Schedule.is_schedule_pref_admin?
+
+    @is_kauser = @kucode == @ucode ? true : false
+
+    unless params[:cgid].blank?
+      @custom_group = System::CustomGroup.find(:first, :conditions=>"id=#{params[:cgid]}")
+      if !@custom_group.blank?
+        Page.title = @custom_group.name
+      end
+    end
+
+    @up_schedules = nz(Gw::Model::UserProperty.get('schedules'.singularize), {})
+
+    @schedule_settings = Gw::Model::Schedule.get_settings 'schedules', {}
+
   end
 
 end

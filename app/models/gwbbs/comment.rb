@@ -11,7 +11,7 @@ class Gwbbs::Comment < Gwboard::CommonDb
   end
 
   def item_home_path
-    return '/gwbbs/comments/'
+    return '/_admin/gwbbs/comments/'
   end
 
   def edit_comment_path
@@ -23,11 +23,11 @@ class Gwbbs::Comment < Gwboard::CommonDb
   end
 
   def update_comment_path
-    return self.item_home_path + "#{self.id}/update?title_id=#{self.title_id}&p_id=#{self.parent_id}"
+    return self.item_home_path + "#{self.id}?title_id=#{self.title_id}&p_id=#{self.parent_id}"
   end
 
   def delete_comment_path
-    return self.item_home_path + "#{self.id}/delete?title_id=#{self.title_id}"
+    return self.item_home_path + "#{self.id}?title_id=#{self.title_id}"
   end
 
 end

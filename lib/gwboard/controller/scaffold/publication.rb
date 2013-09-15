@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 module Gwboard::Controller::Scaffold::Publication
   def publish(item)
     _publish(item)
@@ -20,7 +21,7 @@ protected
         location = item.item_path
 
         flash[:notice] = options[:notice] || '公開処理が完了しました'
-        system_log.add(:item => item, :action => 'publish')
+        #system_log.add(:item => item, :action => 'publish')
         format.html { redirect_to location }
         format.xml  { head :ok }
       else
@@ -39,7 +40,7 @@ protected
         location = item.item_path
 
         flash[:notice] = options[:notice] || '再構築処理が完了しました'
-        system_log.add(:item => item, :action => 'rebuild')
+        #system_log.add(:item => item, :action => 'rebuild')
         format.html { redirect_to location }
         format.xml  { head :ok }
       else
@@ -58,7 +59,7 @@ protected
         location = item.item_path
 
         flash[:notice] = options[:notice] || '非公開処理が完了しました'
-        system_log.add(:item => item, :action => 'close')
+        #system_log.add(:item => item, :action => 'close')
         format.html { redirect_to location }
         format.xml  { head :ok }
       else

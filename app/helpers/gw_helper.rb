@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 module GwHelper
 
   def newline_to_br(text)
@@ -40,7 +41,7 @@ module GwHelper
       opt_user_types += [ ["所属検索" , "all_group" ] ]
     end
 
-    g = Site.user.groups
+    g = Core.user.groups
     rep = opt_user_types.rassoc '_belong'
     rep[0] = g[0].name if !rep.blank?
 
@@ -76,7 +77,7 @@ module GwHelper
         :conditions=>"state='enabled' ",
         :order=>'sort_no, code, name').collect{|x| [x.name, "memo_group_#{x.id.to_s}"]}
       opt_user_types = enabled_group
-      options[:selected]="memo_group_#{Site.user_group.id.to_s}"
+      options[:selected]="memo_group_#{Core.user_group.id.to_s}"
       include_blank=nil
     when :form_schedule
       %w(prop leader).each do |y|
@@ -85,7 +86,7 @@ module GwHelper
       include_blank=nil
     when :form_schedule_child
       opt_user_types = Gwsub.grouplist4(nil, nil , true , nil, nil, {:return_pattern => 3})
-      options[:selected]="child_group_#{Site.user_group.id.to_s}"
+      options[:selected]="child_group_#{Core.user_group.id.to_s}"
       include_blank=nil
     else
       %w(_belong).each do |y|
@@ -96,7 +97,7 @@ module GwHelper
 
     opt_user_types = Gw.options_for_select(opt_user_types, options[:selected], :include_blank=>include_blank, :to_s=>1, :title=>:n1)
     opt = options.dup
-    opt.delete :select
+    opt.delete :selected
     ret = select_tag(id, opt_user_types, opt)
     return ret
   end
@@ -207,11 +208,12 @@ EOL
 
   def memos_tabbox_struct(send_cls, _qsa)
     qsa = _qsa.nil? ? [] : _qsa
-    qs_without_send_cls = Gw.qsa_to_qs(qsa.select{|x| x[0] != 's_send_cls'})
+    qs_without_send_cls = Gw.qsa_to_qs(qsa.select{|x| x[0] != 's_send_cls'},{:no_entity=>true})
     qs_without_send_cls = qs_without_send_cls.blank? ? '' : "&amp;#{qs_without_send_cls}"
     idx = 0
-    tab_captions = %w(受信 送信 ).collect{|x| idx+=1; %Q(<a href="/gw/memos?s_send_cls=#{idx}#{qs_without_send_cls}">#{x}</a>)}
-    tabbox_struct tab_captions, send_cls.to_i
+    tab_captions = %w(受信 送信 ).collect{|x| idx+=1; %Q(<a href="#{gw_memos_path}?s_send_cls=#{idx}#{qs_without_send_cls}">#{x}</a>)}
+    ret = tabbox_struct tab_captions, send_cls.to_i
+    return ret.html_safe
   end
 
   def schedule_settings

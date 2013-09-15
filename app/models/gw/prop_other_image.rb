@@ -1,6 +1,7 @@
+# encoding: utf-8
 class Gw::PropOtherImage < Gw::Database
   include System::Model::Base
-  include Cms::Model::Base::Content
+  include System::Model::Base::Content
 
   belongs_to :other, :foreign_key => :parent_id, :class_name => 'Gw::PropOther'
   def self.drop_create_table
@@ -18,7 +19,7 @@ class Gw::PropOtherImage < Gw::Database
       `created_at`    datetime default NULL,
       `updated_at`    datetime default NULL,
       PRIMARY KEY  (`id`)
-    ) ENGINE=MyISAM DEFAULT CHARSET=utf8;"
+    ) DEFAULT CHARSET=utf8;"
     _connect.execute(_create_query)
     return
   end

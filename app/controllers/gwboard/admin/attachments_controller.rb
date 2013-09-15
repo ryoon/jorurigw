@@ -1,7 +1,10 @@
-class Gwboard::Admin::AttachmentsController < ApplicationController
+# -*- encoding: utf-8 -*-
+class Gwboard::Admin::AttachmentsController < Gw::Controller::Admin::Base
   include System::Controller::Scaffold
   include Gwboard::Controller::SortKey
   include Gwboard::Model::DbnameAlias
+
+  #layout "admin/base"
 
   rescue_from ActionController::InvalidAuthenticityToken, :with => :invalidtoken
   #

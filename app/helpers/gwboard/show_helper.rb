@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 module Gwboard::ShowHelper
 
   def attach_use_old
@@ -15,13 +16,14 @@ module Gwboard::ShowHelper
     return ret unless array.count == 3
     return ret if array[2].blank?
     item = Gwbbs::Control.find_by_id(array[2])
+    return ret unless item
     ret += '<td class="libraryTitle">' + link_to(item.title, item.docs_path) + '</td>'
     ret += '<td class="explanation">' + item.caption + '</td>'
     ret += '<td class="manager">' + gwbd_admin_name(item.admingrps_json,item.adms_json, item.dsp_admin_name) + '</td>'
     str_date = ''
     str_date = item.docslast_updated_at.strftime('%y-%m-%d %H:%M') if item.docslast_updated_at
     ret += '<td class="update">' + str_date + '</td>'
-    return ret
+    return ret.html_safe
   end
 
   def banner_icon(icon)
@@ -53,11 +55,11 @@ module Gwboard::ShowHelper
   end
 
   def gwboard_new_item
-    return "#{Site.current_node.public_uri}new/"
+    return "/_admin/gwbbs/makers/new"
   end
 
   def admin_item_deletes_path
-    return '/gwbbs/itemdeletes'
+    return '/_admin/gwbbs/itemdeletes'
   end
 
   def admin_name(params_grps, params_adms)

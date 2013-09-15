@@ -1,3 +1,4 @@
+# encoding: utf-8
 class Gw::Script::Todo
   def self.delete
     puts "#{self}.delete"

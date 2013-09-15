@@ -1,8 +1,10 @@
-class Attaches::Admin::DigitallibraryController < ApplicationController
+# -*- encoding: utf-8 -*-
+class Attaches::Admin::DigitallibraryController < Gw::Controller::Admin::Base
   include System::Controller::Scaffold
   include Gwboard::Model::DbnameAlias
 
   def initialize_scaffold
+    skip_layout
 
     params[:system] = 'digitallibrary'
 

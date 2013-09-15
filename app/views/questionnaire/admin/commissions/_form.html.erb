@@ -57,7 +57,7 @@
     for (var i = 0; i < fr.options.length; i++)
       ary.push([fr[i].title, fr[i].value, fr[i].innerHTML]);
     var to = $('item_custom_groups_json');
-    to.value = ary.toJSON();
+    to.value = Object.toJSON(ary);
     fr.selectedIndex = -1; // fr の送信を抑止
     //reader_groups
     var fr = $('item_reader_groups_add_buf');
@@ -65,7 +65,7 @@
     for (var i = 0; i < fr.options.length; i++)
       ary.push([fr[i].title, fr[i].value, fr[i].innerHTML]);
     var to = $('item_reader_groups_json');
-    to.value = ary.toJSON();
+    to.value = Object.toJSON(ary);
     fr.selectedIndex = -1; // fr の送信を抑止
 
     //個人
@@ -75,7 +75,7 @@
     for (var i = 0; i < fr.options.length; i++)
       ary.push([fr[i].title, fr[i].value, fr[i].innerHTML]);
     var to = $('item_custom_readers_json');
-    to.value = ary.toJSON();
+    to.value = Object.toJSON(ary);
     fr.selectedIndex = -1; // fr の送信を抑止
     //readers
     var fr = $('item_readers_add_buf');
@@ -83,7 +83,7 @@
     for (var i = 0; i < fr.options.length; i++)
       ary.push([fr[i].title, fr[i].value, fr[i].innerHTML]);
     var to = $('item_readers_json');
-    to.value = ary.toJSON();
+    to.value = Object.toJSON(ary);
     fr.selectedIndex = -1; // fr の送信を抑止
 
     var st = $('item_state');

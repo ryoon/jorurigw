@@ -2,10 +2,10 @@
   box_width = 'width:300px;'  #管理者設定枠の幅
   concat hidden_field_tag('init[admingrps_json]', @item.admingrps_json)
   concat hidden_field_tag('init[adms_json]', @item.adms_json)
-  @item.editors_json = '[["", "", ""]]' if @item.editors_json.blank?
-  @item.readers_json = '[["", "", ""]]' if @item.readers_json.blank?
-  @item.editors_json = '[["", "", ""]]' if @item.editors_json == '[]'
-  @item.readers_json = '[["", "", ""]]' if @item.readers_json == '[]'
+  #@item.editors_json = '[["", "", ""]]' if @item.editors_json.blank?
+  #@item.readers_json = '[["", "", ""]]' if @item.readers_json.blank?
+  #@item.editors_json = '[["", "", ""]]' if @item.editors_json == '[]'
+  #@item.readers_json = '[["", "", ""]]' if @item.readers_json == '[]'
   concat hidden_field_tag('init[editors_json]', @item.editors_json)
   concat hidden_field_tag('init[readers_json]', @item.readers_json)
   admin_groups = Gwboard::Group.level2_top_blank
@@ -16,15 +16,15 @@
 <tr><th class="blueIndex">管理部門設定<%= required('<br />所属する全ての人が管理者になります') %></th><td>
 <table border="0"><tr>
 <td class="userChange">
-<%= select_tag('item[admingrps][gid]', options_for_select(admin_groups, Site.user_group.parent_id), :onchange=>'update_admingrp_cand();' ) %><br />
-<%= select_tag('item[admingrps][uid]', options_for_select(Gwboard::Group.level3(Site.user_group.parent_id)), :size=>5, :style => box_width, :ondblclick => 'add_admingrp()', :multiple => true) %>
+<%= select_tag('item[admingrps][gid]', options_for_select(admin_groups, Core.user_group.parent_id), :onchange=>'update_admingrp_cand();' ) %><br />
+<%= select_tag('item[admingrps][uid]', options_for_select(Gwboard::Group.level3(Core.user_group.parent_id)), :size=>5, :style => box_width, :ondblclick => 'add_admingrp()', :multiple => true) %>
 </td>
 <td>
 <%= button_to_function '追加 →', 'add_admingrp()' %><br /><br />
 <%= button_to_function '← 削除', 'del_admingrp()' %>
 </td>
 <td>
-<%= select_tag 'item[admingrps_add_buf]', [], :size=>6, :style => box_width, :ondblclick => 'del_admingrp()', :multiple => true %>
+<%= select_tag 'item[admingrps_add_buf]', '', :size=>6, :style => box_width, :ondblclick => 'del_admingrp()', :multiple => true %>
 <%= hidden_field_tag 'item[admingrps_json]', '' %>
 </td>
 </tr></table>
@@ -32,15 +32,15 @@
 <tr><th class="blueIndex">管理者設定<%= required('<br />指定された個人が管理者になります') %></th><td>
 <table border="0"><tr>
 <td class="userChange">
-<%= select_tag('item[adms][gid]', options_for_select(user_groups, Site.user_group.id ), :onchange=>'update_admin_cand();' ) %><br />
-<%= select_tag('item[adms][uid]', options_for_select(System::User.get_user_select(Site.user_group.id,:all, , {})), :size=>5, :style => box_width, :ondblclick => 'add_adms()', :multiple => true) %>
+<%= select_tag('item[adms][gid]', options_for_select(user_groups, Core.user_group.id ), :onchange=>'update_admin_cand();' ) %><br />
+<%= select_tag('item[adms][uid]', options_for_select(System::User.get_user_select(Core.user_group.id,:all, , {})), :size=>5, :style => box_width, :ondblclick => 'add_adms()', :multiple => true) %>
 </td>
 <td>
 <%= button_to_function '追加 →', 'add_adms()' %><br /><br />
 <%= button_to_function '← 削除', 'del_adms()' %>
 </td>
 <td>
-<%= select_tag 'item[adms_add_buf]', [], :size=>6, :style => box_width, :ondblclick => 'del_adms()', :multiple => true %>
+<%= select_tag 'item[adms_add_buf]', '', :size=>6, :style => box_width, :ondblclick => 'del_adms()', :multiple => true %>
 <%= hidden_field_tag 'item[adms_json]', '' %>
 </td>
 </tr></table>
@@ -51,15 +51,15 @@
 <tr><th class="blueIndex">編集権限設定<%= required('<br />自動的に閲覧権限も付与されます') %></th><td>
 <table border="0"><tr>
 <td class="userChange">
-<%= select_tag('item[editors][gid]', options_for_select(groups, Site.user_group.parent_id), :onchange=>'update_editor_cand();' ) %><br />
-<%= select_tag('item[editors][uid]', options_for_select(Gwboard::Group.level3(Site.user_group.parent_id)), :size=>5, :style => box_width, :ondblclick => 'add_editor()', :multiple => true) %>
+<%= select_tag('item[editors][gid]', options_for_select(groups, Core.user_group.parent_id), :onchange=>'update_editor_cand();' ) %><br />
+<%= select_tag('item[editors][uid]', options_for_select(Gwboard::Group.level3(Core.user_group.parent_id)), :size=>5, :style => box_width, :ondblclick => 'add_editor()', :multiple => true) %>
 </td>
 <td>
 <%= button_to_function '追加 →', 'add_editor()' %><br /><br />
 <%= button_to_function '← 削除', 'del_editor()' %>
 </td>
 <td>
-<%= select_tag 'item[editors_add_buf]', [], :size=>6, :style => box_width, :ondblclick => 'del_editor()', :multiple => true %>
+<%= select_tag 'item[editors_add_buf]', '', :size=>6, :style => box_width, :ondblclick => 'del_editor()', :multiple => true %>
 <%= hidden_field_tag 'item[editors_json]', '' %>
 </td>
 </tr></table>
@@ -78,7 +78,7 @@
 <%= button_to_function '← 削除', 'del_reader()' %>
 </td>
 <td>
-<%= select_tag 'item[readers_add_buf]', [], :size=>6, :style => box_width, :ondblclick => 'del_reader()', :multiple => true %>
+<%= select_tag 'item[readers_add_buf]', '', :size=>6, :style => box_width, :ondblclick => 'del_reader()', :multiple => true %>
 <%= hidden_field_tag 'item[readers_json]', '' %>
 </td>
 </tr></table>
@@ -138,7 +138,7 @@
     for (var i = 0; i < fr.options.length; i++)
       ary.push([fr[i].title, fr[i].value, fr[i].innerHTML]);
     var to = $('item_admingrps_json');
-    to.value = ary.toJSON();
+    to.value = Object.toJSON(ary);
     fr.selectedIndex = -1; // fr の送信を抑止
     //adms
     var fr = $('item_adms_add_buf');
@@ -146,7 +146,7 @@
     for (var i = 0; i < fr.options.length; i++)
       ary.push([fr[i].title, fr[i].value, fr[i].innerHTML]);
     var to = $('item_adms_json');
-    to.value = ary.toJSON();
+    to.value = Object.toJSON(ary);
     fr.selectedIndex = -1; // fr の送信を抑止
     //editors
     var fr = $('item_editors_add_buf');
@@ -154,7 +154,7 @@
     for (var i = 0; i < fr.options.length; i++)
       ary.push([fr[i].title, fr[i].value, fr[i].innerHTML]);
     var to = $('item_editors_json');
-    to.value = ary.toJSON();
+    to.value = Object.toJSON(ary);
     fr.selectedIndex = -1; // fr の送信を抑止
     //readers
     var fr = $('item_readers_add_buf');
@@ -162,7 +162,7 @@
     for (var i = 0; i < fr.options.length; i++)
       ary.push([fr[i].title, fr[i].value, fr[i].innerHTML]);
     var to = $('item_readers_json');
-    to.value = ary.toJSON();
+    to.value = Object.toJSON(ary);
     fr.selectedIndex = -1; // fr の送信を抑止
 
     $('itemForm').submit();

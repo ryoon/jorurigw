@@ -1,0 +1,145 @@
+<%
+@prop_master = @genre
+mid_url = [@genre_prefix,@genre].delete_if{|x| x.nil?}.join('_')
+
+qs = Gw.join(@image_upload_qsa, '&')
+qs = qs.blank? ? '' : "?#{qs}"
+
+cls = Gw.yaml_to_array_for_select("gw_prop_other_type_ids").rassoc(@item.type_id)
+reserved_state = Gw.yaml_to_array_for_select("gw_prop_other_reserved_states")
+-%>
+<div class="piece prop from">
+  <div class="pieceHeader">
+    <h2 class="pieceTitle">施設備品マスタ - <%= @item.name -%></h2>
+  </div><div class="pieceBody">
+    <div class="pieceBodyHeader">
+      <div class="btBox">
+        <div class="btEtc btHead currentHead">一般施設</div>
+        <% s_day = Time.now.strftime("%Y%m%d") -%>
+        <div class="btDayLink btIndex"><a href="/gw/schedule_props/<%= s_day -%>?s_genre=other&type_id=0&prop_id=<%= @item.id -%>">日表示</a></div>
+        <div class="btWeekLink btIndex"><a href="/gw/schedule_props/show_week?s_date=<%= s_day -%>&s_genre=other&type_id=0&prop_id=<%= @item.id -%>">週表示</a></div>
+        <div class="btMonthLink btIndex current"><a href="/gw/schedule_props/show_month?s_date=<%= s_day -%>&s_genre=other&type_id=0&prop_id=<%= @item.id -%>">月表示</a></div>
+      </div>
+    </div>
+    <div class="pieceBodyBody">
+      <table class="index">
+        <tbody>
+          <tr>
+            <th>設備名称</th>
+          </tr>
+          <tr>
+            <td><%= @item.name -%></td>
+          </tr>
+        </tbody>
+      </table>
+      <p>この設備に画像を添付します。</p>
+      <%= form_for :item, :url => "#{gw_prop_others_path}/#{params[:id]}/image_create#{qs}", :html => {:multipart => true, :id => 'itemForm'} do |f| -%>
+      <p>
+        <label for="item_upload">ファイル指定:</label>
+        <%= f.file_field :upload -%>
+      </p>
+      <p>
+        <label for="item_note">ファイル備考:</label>
+        <%= text_field_tag('item[note]', '', :size=>'60') -%>
+      </p>
+      <p>
+        <%= submit_tag 'アップロード' -%>
+        <%= div_notice -%>
+      </p>
+      <% end -%>
+      <hr />
+      <table class="index">
+        <colgroup class="action"></colgroup>
+        <colgroup class="path"></colgroup>
+        <colgroup class="orig_filename"></colgroup>
+        <colgroup class="note"></colgroup>
+        <colgroup class="content_type"></colgroup>
+        <colgroup class="_size"></colgroup>
+        <tbody>
+          <tr>
+            <th class="action"></th>
+            <th class="path">画像</th>
+            <th class="orig_filename">ファイル名</th>
+            <th class="note">備考</th>
+            <th class="content_type">ファイル種別</th>
+            <th class="_size">サイズ（幅x高さ）</th>
+          </tr>
+          <% @item.images.each do |image| -%>
+          <tr>
+            <td class="action">
+              <%= link_to '削除', "/#{@module}/#{mid_url}s/#{image.id}/image_destroy?cls=#{params[:cls]}", :confirm=>"削除してよろしいですか。" -%>
+            </td>
+            <td class="path">
+              <%= "#{image.path}" -%>
+            </td>
+            <td class="orig_filename">
+              <%= "#{image.orig_filename}" -%>
+            </td>
+            <td class="note">
+              <%= "#{image.note}" -%>
+            </td>
+            <td class="content_type">
+              <%= "#{image.content_type}" -%>
+            </td>
+            <td class="_size">
+              <%= "#{image._size}" -%>
+            </td>
+          </tr>
+          <% end -%>
+        </tbody>
+      </table>
+      <hr />
+      <table class="show">
+        <tbody>
+          <tr>
+            <th>予約</th>
+            <td><%= reserved_state[@item.reserved_state][0] -%></td>
+          </tr>
+          <tr>
+            <th>表示順</th>
+            <td><%= @item.sort_no -%></td>
+          </tr>
+          <tr>
+            <th>名称</th>
+            <td><%= @item.name -%></td>
+          </tr>
+          <tr>
+            <th>種別</th>
+            <td><%= cls[0] unless cls.blank? -%></td>
+          </tr>
+          <tr>
+            <th>備考</th>
+            <td><%= br(@item.comment) -%></td>
+          </tr>
+          <tr>
+            <th>作成日</th>
+            <td><%= @item.created_at.strftime('%Y-%m-%d %H:%M') if @item.created_at.present? -%></td>
+          </tr>
+          <tr>
+            <th>更新日</th>
+            <td><%= @item.updated_at.strftime('%Y-%m-%d %H:%M') if @item.updated_at.present? -%></td>
+          </tr>
+          <tr>
+            <th>管理区分</th>
+            <td>一般</td>
+          </tr>
+          <tr>
+            <th>施設管理組織</th>
+            <td><%= Gw.join([@item.admin(:show)], '<br />') -%></td>
+          </tr>
+          <tr>
+            <th>予約可能組織</th>
+            <td><%= Gw.join([@item.editor(:show)], '<br />') -%></td>
+          </tr>
+          <tr>
+            <th>照会可能組織</th>
+            <td><%= Gw.join([@item.reader(:show)], '<br />') -%></td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="btReturn">
+        <%= link_to('詳細へ戻る', "/#{@module}/#{mid_url}s/#{params[:id]}?cls=#{params[:cls]}") -%>
+      </div>
+    </div>
+  </div>
+</div>

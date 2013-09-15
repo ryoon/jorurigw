@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 class Gwsub::Sb04assignedjob < Gwsub::GwsubPref
   include System::Model::Base
   include Cms::Model::Base::Content
@@ -164,6 +165,13 @@ class Gwsub::Sb04assignedjob < Gwsub::GwsubPref
       msg << ['エラー' ,"コピー先の所属が、自所属もしくは主管課ではありません。コピー先は、自所属もしくは主管課を指定してください。"]
     end
 
+    items = self.find(:all, :conditions => ["fyear_id = ? and section_id = ?", par_item[:origin_fyear_id].to_i, par_item[:origin_section_id].to_i ],
+      :order => 'id')
+    if items.blank?
+      ret[:result]    = false
+      msg << ['エラー' ,"コピー元の所属に担当が登録されていません。コピー元を選びなおしてください。"]
+    end
+
     if ret[:result] == false
       ret[:msg] = msg 
       return ret
@@ -205,7 +213,7 @@ class Gwsub::Sb04assignedjob < Gwsub::GwsubPref
             eval("model.#{field} = nz(item.#{field}, nil)")
           end
         end
-        model.save(false)
+        model.save(:validate=>false)
       end
 
       Gwsub::Sb04YearCopyLog.create_log('assignedjob',

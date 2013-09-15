@@ -10,7 +10,7 @@ class Questionnaire::TemplateFieldOption < Gw::Database
     return true if @skip_validation
 
     required = Proc.new {|a| a.to_a.each {|n| errors.add_on_blank(n) if send(n).to_s == ''}}
-    required.call :state, :title
+    required.call [:state, :title]
 
     return true
   end

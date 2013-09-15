@@ -1,8 +1,11 @@
+# -*- encoding: utf-8 -*-
 class Gwcircular::CustomGroup < Gw::Database
   include System::Model::Base
   include System::Model::Base::Content
 
   validates_presence_of :name
+  validates_numericality_of :sort_no, :greater_than_or_equal_to => 0
+  
   after_validation :check_readers
 
   def check_readers

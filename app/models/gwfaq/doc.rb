@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 class Gwfaq::Doc < Gwboard::CommonDb
   include System::Model::Base
   include System::Model::Base::Content
@@ -5,7 +6,6 @@ class Gwfaq::Doc < Gwboard::CommonDb
   include Gwboard::Model::Recognition
   include Gwfaq::Model::Systemname
 
-  belongs_to :status,    :foreign_key => :state,        :class_name => 'System::Base::Status'
   belongs_to :content,   :foreign_key => :content_id,   :class_name => 'Cms::Content'
   belongs_to :control,   :foreign_key => :title_id,     :class_name => 'Gwfaq::Control'
 
@@ -147,7 +147,7 @@ class Gwfaq::Doc < Gwboard::CommonDb
     item = Gwboard::Synthesis.new
     item.and :title_id, self.title_id
     item.and :parent_id, self.id
-    item.and :system_name , self.system_name,
+    item.and :system_name, self.system_name
     item = item.find(:first)
     item.destroy if item
   end
@@ -161,31 +161,31 @@ class Gwfaq::Doc < Gwboard::CommonDb
   end
 
   def item_path
-    return "#{Site.current_node.public_uri.chop}?title_id=#{self.title_id}"
+    return "/gwfaq/docs?title_id=#{self.title_id}"
   end
 
   def show_path
-    return "#{Site.current_node.public_uri}#{self.id}/?title_id=#{self.title_id}"
+    return "/gwfaq/docs/#{self.id}/?title_id=#{self.title_id}"
   end
 
   def edit_path
-    return "#{Site.current_node.public_uri}#{self.id}/edit?title_id=#{self.title_id}"
+    return "/gwfaq/docs/#{self.id}/edit?title_id=#{self.title_id}"
   end
 
   def delete_path
-    return "#{Site.current_node.public_uri}#{self.id}/delete?title_id=#{self.title_id}"
+    return "/gwfaq/docs/#{self.id}?title_id=#{self.title_id}"
   end
 
   def update_path
-    return "#{Site.current_node.public_uri}#{self.id}/update?title_id=#{self.title_id}"
+    return "/gwfaq/docs/#{self.id}/update?title_id=#{self.title_id}"
   end
 
   def recognize_update_path
-    return "#{Site.current_node.public_uri}#{self.id}/recognize_update?title_id=#{self.title_id}"
+    return "/gwfaq/docs/#{self.id}/recognize_update?title_id=#{self.title_id}"
   end
 
   def publish_update_path
-    return "#{Site.current_node.public_uri}#{self.id}/publish_update?title_id=#{self.title_id}"
+    return "/gwfaq/docs/#{self.id}/publish_update?title_id=#{self.title_id}"
   end
 
   def portal_show_path
@@ -198,7 +198,7 @@ class Gwfaq::Doc < Gwboard::CommonDb
 
   def send_reminder
     self._recognizers.each do |k, v|
-      Gw.add_memo(v.to_s, "FAQ承認依頼[#{self.control.title}]", "<a href='#{self.show_path}'>記事承認依頼[#{self.title}]</a>")
+      Gw.add_memo(v.to_s, "FAQ承認依頼[#{self.control.title}]", "<a href='/gwfaq/docs/#{self.id}/?title_id=#{self.title_id}'>記事承認依頼[#{self.title}]</a>")
     end if self._recognizers if self.state == 'recognize'
   end
 
@@ -206,7 +206,7 @@ class Gwfaq::Doc < Gwboard::CommonDb
     if self.state=='public'
       item = Gwfaq::Control.find(self.title_id)
       item.docslast_updated_at = Time.now
-      item.save(false)
+      item.save(:validate=>false)
     end
   end
 

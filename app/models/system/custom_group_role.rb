@@ -1,8 +1,9 @@
+# encoding: utf-8
 class System::CustomGroupRole < ActiveRecord::Base
   include System::Model::Base
   include System::Model::Base::Config
 
-  set_primary_key 'rid'
+  self.primary_key = 'rid'
 
   belongs_to :custom_group,  :foreign_key => :custom_group_id,     :class_name => 'System::CustomGroup'
   belongs_to :group       ,  :foreign_key => :group_id       ,     :class_name => 'System::Group'

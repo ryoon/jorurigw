@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 class Gwsub::Sb01TrainingScheduleCondition < Gwsub::GwsubPref
   include System::Model::Base
   include Cms::Model::Base::Content
@@ -344,7 +345,7 @@ class Gwsub::Sb01TrainingScheduleCondition < Gwsub::GwsubPref
 #      `created_user`        text default NULL,
 #      `created_group`       text default NULL,
 #      PRIMARY KEY  (`id`)
-#    ) ENGINE=MyISAM DEFAULT CHARSET=utf8;"
+#    ) DEFAULT CHARSET=utf8;"
 #    connect.execute(create_query)
 #    return
 #  end

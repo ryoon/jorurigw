@@ -30,28 +30,29 @@ end
 
 user_groups = Gwboard::Group.level
 %>
-<table class="show">
+<table class="show" style="margin-top: 10px;">
 <tr>
-<th>承認者</th>
-<td>
-<table>
-<tr>
-<td style="width: 100px; text-align: left;">
-<%= select_tag('form[adms][gid]', options_for_select(user_groups, Site.user_group.id ), :onchange=>'update_admin_cand();' ) %>
-<br /><%= _recognize_list.call() %>
-</td>
-<td style="width: 20px; text-align: left;">
-<input type="button" name="mv1" value=" → " onclick="fnMoveSelect(this.form, 'recognize_list[]','recognize_select_list[]');" />
-<br /><br />
-<input type="button" name="mv2" value=" ← " onclick="fnMoveSelect(this.form, 'recognize_select_list[]','recognize_list[]');" />
-</td>
-<td style="width: 1000px; text-align: left;">
-<div class="<%= 'fieldWithErrors' if @item.errors.invalid?('承認者') %>">
-<br /><%= _select_list.call() %></div>
-</td>
-</tr>
-</table>
-</td>
+  <th>承認者</th>
+  <td>
+  <table>
+  <tr>
+    <td style="width: 100px; text-align: left;">
+      <%= select_tag('form[adms][gid]', options_for_select(user_groups, Core.user_group.id), :onchange => 'update_admin_cand();' ) %>
+      <br />
+      <%= raw(_recognize_list.call()) %>
+    </td>
+    <td style="width: 20px; text-align: left;">
+      <input type="button" name="mv1" value=" → " onclick="fnMoveSelect(this.form, 'recognize_list[]','recognize_select_list[]');" />
+      <br /><br />
+      <input type="button" name="mv2" value=" ← " onclick="fnMoveSelect(this.form, 'recognize_select_list[]','recognize_list[]');" />
+    </td>
+    <td style="width: 1000px; text-align: left;">
+      <div class="<%= 'fieldWithErrors' if @item.errors['承認者'] %>">
+      <br /><%= raw(_select_list.call()) %></div>
+    </td>
+  </tr>
+  </table>
+  </td>
 </tr>
 </table>
 <input type="hidden" id="_recognizers_1" name="<%= f.object_name.to_s + "[_recognizers][1]" %>" value="<%= str[0] %>" />

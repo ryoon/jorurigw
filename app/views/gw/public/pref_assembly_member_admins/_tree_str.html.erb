@@ -1,6 +1,0 @@
-<%= link_to '会派一覧' , "#{Site.current_node.public_uri}" %>
-<%if @g_cat != '0'%>
-　＞　<%= link_to "#{@items[0].g_name}" , "#{Site.current_node.public_uri}?g_cat=#{@items[0].g_order}" unless @items.blank?%>
-<%end%>
-<br />
-<br />

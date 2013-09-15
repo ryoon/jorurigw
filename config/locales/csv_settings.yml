@@ -39,6 +39,8 @@ system_users:
     name_en: name_en
     password: password
     email: email
+    official_position: official_position
+    assigned_job: assigned_job
     remember_token: remember_token
     remember_token_expires_at: remember_token_expires_at
     code: code
@@ -145,18 +147,18 @@ gw_pref_assembly_members:
 gw_pref_executive_csv:
   model: Gwsub::PrefExecutive
   fields:
-    県幹部表示順: u_order
-    Gw及び議会表示: is_other_view
-    県三役表示: is_governor_view
-    役職: title
+    並び順: u_order
     職員番号: u_code
     氏名: u_name
+    職名: title
+    Gwに表示: is_other_view
+    AIRに表示: is_governor_view
 gw_pref_directors_csv:
   model: Gwsub::PrefExecutive
   fields:
-    所属幹部表示順: u_order
-    役職: title
+    並び順: u_order
     職員番号: u_code
     氏名: u_name
-    Gwに表示: is_other_view
+    職名: title
     部局: parent_group
+    Gwに表示: is_other_view

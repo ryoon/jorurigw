@@ -1,17 +1,20 @@
+# -*- encoding: utf-8 -*-
 class Gwmonitor::CustomGroup < Gw::Database
   include System::Model::Base
   include System::Model::Base::Content
 
   validates_presence_of :name
+  validates_numericality_of :sort_no, :greater_than_or_equal_to => 0
+  
   after_validation :check_readers
 
   def check_readers
     if self.reader_groups_json.blank?
-      errors.add :reader_groups_json, "配信先を設定してください。"
+      errors.add :reader_groups_json, "を設定してください。"
     else
       objects = JsonParser.new.parse(self.reader_groups_json)
       if objects.count == 0
-        errors.add :reader_groups_json, "配信先を設定してください。"
+        errors.add :reader_groups_json, "を設定してください。"
       end
     end
   end
@@ -62,13 +65,7 @@ class Gwmonitor::CustomGroup < Gw::Database
     return selects
   end
 
-
-  def item_path
-    return "#{Site.current_node.public_uri.chop}"
-  end
-  #
-  def update_path
-    return "#{Site.current_node.public_uri}#{self.id}"
-  end
-
+#  def item_path
+#    return "/gwmonitor/custom_groups"
+#  end
 end

@@ -1,11 +1,13 @@
-<%# app/views/system/admin/users_groups/edit.html %>
-<% @action='edit' %>
-<% form_for :item, :url => {:action => :update}, :html => {:method => :put} do |f| %>
-
-<%= f.error_messages %>
-
-<%= render :partial => 'form', :locals => {:f => f} %>
-
-<%= submit_for_update f %>
-
-<% end %>
+<div class="piece AdminSetting AdminUsersGroups">
+<%= render :partial => 'header' %>
+  <div class="pieceBody">
+    <%= render :partial => '/system/admin/users/header_menu' %>
+    <%= render :partial => 'switching' %>
+    <%= render :partial => '/system/admin/groups/navi' %>
+    <%= form_for :item, :url => {:action => :update}, :html => {:method => :put} do |f| %>
+      <%= f.error_messages %>
+      <%= render :partial => 'form', :locals => {:f => f} %>
+      <%= submit_for_update f %>
+    <% end %>
+  </div>
+</div>

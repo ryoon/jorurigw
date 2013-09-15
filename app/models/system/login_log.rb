@@ -1,7 +1,9 @@
+# encoding: utf-8
 class System::LoginLog < ActiveRecord::Base
   include System::Model::Base
   include System::Model::Base::Config
-  include Cms::Model::Base::Content
+  #include Cms::Model::Base::Content
+  include System::Model::Base::Content
   belongs_to :user,       :foreign_key => :user_id,   :class_name => 'System::User'
 
   def self.put_log(user)

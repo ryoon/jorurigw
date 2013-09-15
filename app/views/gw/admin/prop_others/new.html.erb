@@ -1,0 +1,24 @@
+<%
+@prop_master = @genre
+
+@hedder2lnk = 2
+@hedder3lnk = 1
+%>
+<div class="piece prop form">
+  <div class="pieceHeader">
+    <%= render :partial => '/gw/admin/prop_others/piece_header' -%>
+  </div>
+  <div class="pieceBody">
+    <div class="pieceBodyHeader">
+      <%= render(:partial => '/gw/admin/schedules/schedule_bt_box', :locals=>{:d=>Date.today, :mode=>'month', :genre=>@genre}) -%>
+    </div>
+    <div class="pieceBodyBody">
+      <%= div_notice -%>
+      <%= form_for :item, :url => "#{@uri_base}?cls=#{@cls}", :html => {:multipart => true, :id => 'itemForm'} do |f| -%>
+        <%= f.error_messages -%>
+        <%= render :partial => '/gw/admin/prop_others/form', :locals => {:f => f} -%>
+        <%= raw(submit_for_create f, :js_submitter => 'my_submit()') -%>
+      <% end -%>
+    </div>
+  </div>
+</div>

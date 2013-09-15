@@ -1,23 +1,29 @@
 class Util::Http::Request
-  def send(uri)
+  def self.send(uri, options = {})
     require 'open-uri'
+    require "resolv-replace"
+    require 'timeout'
 
-    status  = nil
-    body    = ''
-
-    proxy = Site.proxy
-    if uri =~ /[a-z]+:\/\/#{Site.domain}/
-      proxy = false
-    end
-
+    limit    = options[:timeout] || 30
+    status   = nil
+    body     = ''
+    
+    settings = { :proxy => Core.proxy }
+    
     begin
-      open(uri, :proxy => proxy) do |f|
-        status = f.status[0].to_i
-        f.each_line {|line| body += line}
+      timeout(limit) do
+        open(uri, settings) do |f|
+          status = f.status[0].to_i
+          f.each_line {|line| body += line}
+        end
       end
+    rescue TimeoutError
+      status = 404
+      #TimeoutError
     rescue
       status = 404
     end
-    return {:status => status, :body => body}
+    
+    return Util::Http::Response.new({:status => status, :body => body})
   end
 end

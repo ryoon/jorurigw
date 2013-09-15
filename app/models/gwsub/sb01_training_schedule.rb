@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 class Gwsub::Sb01TrainingSchedule < Gwsub::GwsubPref
   include System::Model::Base
   include Cms::Model::Base::Content

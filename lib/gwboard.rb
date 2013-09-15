@@ -1,9 +1,8 @@
+#encoding:utf-8
 class Gwboard
 
-  def self.add_reminder_circular(uids, title, body, options={})
-    uids = uids.to_s.split(':') if !uids.is_a?(Array)
-    uids = uids.uniq
-    fr_u = System::User.find(:first, :conditions=>"id=#{uids}") rescue Site.user
+  def self.add_reminder_circular(uid, title, body, options={})
+    fr_u = System::User.find(:first, :conditions=>"id=#{uid}") rescue Site.user
     fr_u = Site.user if fr_u.blank?
     begin
       Gw::Database.transaction do

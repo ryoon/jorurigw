@@ -14,9 +14,7 @@
   height: 55px;
 }
 #headerBody .piece {
-  float: left;
   color: #fff;
-  vertical-align :bottom;
   white-space: nowrap;
 }
 #header h1 {
@@ -38,7 +36,11 @@
   outline: 0;
 }
 #headerBody .personal {
-  margin-top: 20px;
+  float: left;
+  width: 45%;
+  line-height: 55px;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .headerSearch {
   float: right;
@@ -65,11 +67,13 @@
 }
 .logout {
   float: right;
+  width: 52px;
   height: 55px;
   padding-right: 17px;
   background-image: url(/_common/themes/gw/files/header/header-right.gif);
   background-position: 52px 50%;
   color: #FFFFFF;
+  overflow: hidden;
 }
 .logout a:link {
     color: #FFFFFF;
@@ -81,8 +85,9 @@
   line-height: 55px;
 }
 .previousLogin {
+  float: right;
   line-height: 55px;
-  padding-right:5px;
+  padding-right:10px;
   color: #FFFFFF;
 }
 
@@ -161,7 +166,7 @@ span.menuDeco a.menuDecoPref {
 .gwsub .pieceHeader h2,
 .hss .pieceHeader h2 {
   float: left;
-  line-height: 1.8;
+  line-height: 29px;
   padding-left: 5px;
 }
 #content .pieceBody {
@@ -590,32 +595,178 @@ span.att a {
   padding-left: 0px;
   font-size: 12px;
 }
-.fieldWithErrors { 
+.field_with_errors { 
   display: inline-block;
   padding: 1px;
   border: 1px solid #f00;
 }
-*:first-child+html .fieldWithErrors {
+*:first-child+html .field_with_errors {
   display: inline;
 }
-*html .fieldWithErrors {
+*html .field_with_errors {
   display: inline;
 }
 
 /* 機能ボタン
 -----------------------------------------------------*/
-
+.editingBox {
+  display: inline-block;
+  clear: both;
+  width: 700px;
+  height: 15px;
+  margin: 0 auto 5px;
+  padding: 10px 0 10px 0;
+}
+.editingBox a {
+  overflow: hidden;
+  float: left;
+  width: 70px;
+  height: 0px;
+  margin-right: 10px;
+  padding-top: 15px;
+}
+.editingBox .showLink a,
+.editingBox .docLink a {
+  width: auto;
+  height: 15px;
+  margin-left: 15px;
+  margin-right: 0;
+  padding-top: 0px;
+}
+.editingBox .btQuote a {
+  background-image: url(/_common/themes/gw/files/ic_act_quote.gif);
+}
+.editingBox .btAppEdit a {
+  width: 85px;
+  background-image: url("/_common/themes/gw/files/ic_act_approve-edit.gif");
+}
+.editingBox .btDestroy a {
+  background-image: url(/_common/themes/gw/files/ic_act_destroy.gif);
+}
+.editingBox .btDestroyRepeat a {
+  width: 89px;
+  background-image: url(/_common/themes/gw/files/ic_act_destroy_repeat.gif);
+}
+.editingBox .btEdit a {
+  background-image: url(/_common/themes/gw/files/ic_act_edit.gif);
+}
+.editingBox .btEditRepeat a {
+  width: 89px;
+  background-image: url(/_common/themes/gw/files/ic_act_edit_repeat.gif);
+}
+.editingBox .btFinish a {
+  background-image: url(/_common/themes/gw/files/ic_act_finish.gif);
+}
+.editingBox .btUnfinish a {
+  background-image: url(/_common/themes/gw/files/ic_act_unfinish.gif);
+}
+.editingBox .btRead a {
+  background-image: url(/_common/themes/gw/files/ic_act_read.gif);
+}
+.editingBox .btUnread a {
+  background-image: url(/_common/themes/gw/files/ic_act_unread.gif);
+}
+.editingBox .btRecognize a {
+  background-image: url(/_common/themes/gw/files/ic_act_approve.gif);
+}
+.editingBox .btPublish a {
+  background-image: url(/_common/themes/gw/files/ic_act_open.gif);
+}
+.editingBox .btRevocationRecognize a {
+  background-image: url(/_common/themes/gw/files/ic_act_noapprove.gif);
+}
+.editingBox .btRevocationPublish a {
+  background-image: url(/_common/themes/gw/files/ic_act_noopen.gif);
+}
+.editingBox .btConfirm a {
+  width: 92px;
+  background-image: url("/_common/themes/gw/files/ic_act_pointcheck.gif");
+}
+.editingBox .btUnconfirm a {
+  width: 82px;
+  background-image: url("/_common/themes/gw/files/ic_act_nopointcheck.gif");
+}
+.editingBox .btAllset a {
+  width: 69px;
+  background-image: url("/_common/themes/gw/files/ic_act_all-edit.gif");
+}
+.editingBox .btNewDocs a {
+  background-image: url("/_common/themes/gw/files/ic_act_addarticle_one.gif");
+}
+.editingBox .btOpenDocs a {
+  background-image: url("/_common/themes/gw/files/ic_act_articleopen.gif");
+}
+.editingBox .btProp a {
+  background-image: url("/_common/themes/gw/files/ic_act_application_one.gif");
+}
+.editingBox .btPropCancel a {
+  background-image: url("/_common/themes/gw/files/ic_act_noreport.gif");
+}
+.editingBox .btStartReceipt a {
+  background-image: url("/_common/themes/gw/files/ic_act_receipt_one.gif");
+}
+.editingBox .btPrepare a {
+  width: 90px;
+  background-image: url("/_common/themes/gw/files/ic_act_noreceipt_one.gif");
+}
+.editingBox .btClosed a {
+  background-image: url("/_common/themes/gw/files/ic_act_deadline_one.gif");
+}
+.editingBox .btReturnReceipt a {
+  background-image: url("/_common/themes/gw/files/ic_act_nodeadline_one.gif");
+}
+.editingBox .btEnd a {
+  width: 80px;
+  background-image: url("/_common/themes/gw/files/ic_act_theend_one.gif");
+}
+.editingBox .btAddPlan a {
+  width: 90px;
+  background-image: url("/_common/themes/gw/files/ic_act_addscheduled_one.gif");
+}
+.editingBox .btNewHolyday a {
+  background-image: url(/_common/themes/gw/files/ic_act_holiday.gif);
+}
+.editingBox .btOutputCsv a {
+  width: 71px;
+  background-image: url("/_common/themes/gw/files/ic_act_csv.gif");
+}
+.editingBox .btTransmit a {
+  width: 90px;
+  background-image: url("/_common/themes/gw/files/ic_act_circulation.gif");
+}
+.editingBox .btNewFile a {
+  width: 85px;
+  background-image: url(/_common/themes/gw/files/doclibrary/ic_act_fileadd.gif);
+}
+.editingBox .btNewFolder a {
+  width: 85px;
+  background-image: url(/_common/themes/gw/files/doclibrary/ic_act_folderadd.gif);
+}
+.editingBox .btEditFolder a {
+  width: 85px;
+  background-image: url(/_common/themes/gw/files/doclibrary/ic_act_folderedit.gif);
+}
+.editingBox .btNewDoc a {
+  width: 70px;
+  background-image: url(/_common/themes/gw/files/doclibrary/ic_act_documentadd.gif);
+}
+.editingBox .btDouki a {
+  width: 70px;
+  background-image: url(/_common/themes/gw/files/doclibrary/ic_act_assign-synchro.gif);
+}
+.editingBox .btReproduce a {
+  background-image: url(/_common/themes/gw/files/ic_act_copy.gif);
+}
+.editingBox .btAppReproduce a {
+  width: 85px;
+  background-image: url(/_common/themes/gw/files/ic_act_approve-copy.gif);
+}
 .btAllApp a {
   background-image: url(/_common/themes/gw/files/schedule/ic_act_lumpapprove.gif);
   width: 85px;
 }
 .btAttach a {
   background-image: url(/_common/themes/gw/files/ic_act_attach.gif);
-}
-.editingBox .btNewPage a {
-  display: inline-block;
-  width: 85px;
-  background-image: url("/_common/themes/gw/files/ic_act_pageadd.gif");
 }
 
 /* 機能ボタン右サイドテキストリンク
@@ -760,6 +911,7 @@ a:hover.ext {
   color: #999;
 }
 .pagination a,
+.pagination em,
 .pagination span.disabled,
 .pagination span.current {
   display: inline-block;
@@ -775,8 +927,10 @@ a:hover.ext {
 .pagination span.disabled {
   color: #888;
 }
+.pagination em.current,
 .pagination span.current {
   background-color: #EEE;
+  font-style: normal;
   font-weight: bold;
   color: #000;
 }
@@ -892,12 +1046,14 @@ table.show td textarea.mceEditor {
 .bbsUserformBody ol,
 .docsInnerBox .show ol,
 .bbsUserformBody ol,
+.docformBody ol,
 .answerText ol {
   margin-left: 20px;
 }
 .bbsUserformBody ul,
 .docsInnerBox .show ul,
 .bbsUserformBody ul,
+.docformBody ul,
 .answerText ul {
   margin-left: 20px;
   list-style-type: disc;
@@ -1095,94 +1251,4 @@ span.translation_missing {
   color: #000;
   font-size: 100%;
   font-weight: bold;
-}
-
-/* index's table 
-------------------------------------- */
-.pieceBody table.index {
-  width: 100%;
-  margin: 10px 0px 0px 0px;
-  border-left: 2px solid #FFFFFF;
-  border-right: 2px solid #FFFFFF;
-}
-table.index th {
-  padding: 6px 7px;
-  border: 1px solid #ccc;
-  background-color: #E3EFFF;
-  color: #000;
-  font-weight: lighter;
-  text-align: left;
-}
-table.index td {
-  padding: 6px 7px;
-  border: 1px solid #ccc;
-}
-table.index .action {
-/*  border-right: 1px solid #ccc;  */
-}
-table.index .st_at {
-  border-right: 1px solid #ccc;
-}
-table.index ._name {
-  border-right: 1px solid #ccc;
-}
-table.index ._participant_nums_inner {
-  border-right: 1px solid #ccc;
-}
-table.index ._participant_nums_outer {
-  border-right: 1px solid #ccc;
-}
-table.index ._owner {
-  border-right: 1px solid #ccc;
-}
-table.index ._subscriber {
-  border-right: 1px solid #ccc;
-}
-table.index ._prop_stat {
-  border-right: 1px solid #ccc;
-}
-table.index td.integer {
-  text-align: right;
-}
-table.index td.decimal {
-  text-align: right;
-}
-table.index td.float {
-  text-align: right;
-}
-table.index tr.cycle td {
-  background-color: #F7FBFF;
-}
-table.index img.thumbnail {
-  width: 49px;
-  height: 44px;
-}
-table.index colgroup.action {
-  white-space: nowrap;
-}
-table.index a.image {
-  display: block;
-  overflow: hidden;
-  width: 16px;
-  height: 20px;
-  text-indent: -9999px;
-  text-align: left;
-}
-table.index a.image.show {
-  background-image: url(/_common/themes/gw/files/scaffold/show.gif);
-}
-table.index a.image.edit {
-  background-image: url(/_common/themes/gw/files/scaffold/edit.gif);
-}
-table.index a.image.destroy {
-  background-image: url(/_common/themes/gw/files/scaffold/destroy.gif);
-}
-table.index a.image.quote {
-  background-image: url(/_common/themes/gw/files/scaffold/quote.gif);
-}
-table.index a.image.finish {
-  background-image: url(/_common/themes/gw/files/scaffold/finish.gif);
-}
-table.index a.image.unfinish {
-  background-image: url(/_common/themes/gw/files/scaffold/unfinish.gif);
 }

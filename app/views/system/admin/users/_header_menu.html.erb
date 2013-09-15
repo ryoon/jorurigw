@@ -1,0 +1,19 @@
+<%
+if params[:controller] == "system/admin/users"
+  current_no = 1
+  if params[:action].index("csv").present?
+    current_no = 3
+  end
+elsif params[:controller] == "system/admin/groups" || params[:controller] == "system/admin/users_groups"
+  current_no = 2
+else
+  current_no = 0
+end
+%>
+<div class="menu">
+<a href="<%= system_users_path -%>"><span class="<%= (current_no == 1) ? "current_menu" : '' -%>">ユーザー管理</span></a>
+<% if @role_admin == true %>
+<a href="<%= system_groups_path(0) -%>"><span class="<%= (current_no == 2) ? "current_menu" : '' -%>">グループ管理</span></a>
+<a href="<%= csvget_system_users_path -%>"><span class="<%= (current_no == 3) ? "current_menu" : '' -%>">CSV管理</span></a>
+<% end %>
+</div>

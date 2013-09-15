@@ -6,8 +6,8 @@
 <tr><th>編集権限設定</th><td>
 <table border="0"><tr>
 <td class="userChange">
-<%= select_tag('item[editors][gid]', options_for_select(groups, Site.user_group.parent_id), :onchange=>'update_editor_cand();' ) %><br />
-<%= select_tag('item[editors][uid]', options_for_select(Gwboard::Group.level3(Site.user_group.parent_id)), :size=>5, :style => 'width:200px;', :ondblclick => 'add_editor()', :multiple => true) %>
+<%= select_tag('item[editors][gid]', options_for_select(groups, Core.user_group.parent_id), :onchange=>'update_editor_cand();' ) %><br />
+<%= select_tag('item[editors][uid]', options_for_select(Gwboard::Group.level3(Core.user_group.parent_id)), :size=>5, :style => 'width:200px;', :ondblclick => 'add_editor()', :multiple => true) %>
 </td>
 <td>
 <%= button_to_function '追加 →', 'add_editor()' %><br /><br />
@@ -64,7 +64,7 @@
     for (var i = 0; i < fr.options.length; i++)
       ary.push([fr[i].title, fr[i].value, fr[i].innerHTML]);
     var to = $('item_editors_json');
-    to.value = ary.toJSON();
+    to.value = Object.toJSON(ary);
     fr.selectedIndex = -1; // fr の送信を抑止
     $('itemForm').submit();
   }

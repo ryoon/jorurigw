@@ -1,8 +1,3 @@
-<%# app/views/system/admin/roles/_header.html.erb %>
-<% sel = [:setting, :role] %>
-<div class="mainMenu">
-<%= render :partial => 'layouts/admin/cms/navi/main', :locals => {:current => sel[0]} %>
-</div>
-<div class="contentMenu">
-<%= render :partial => "layouts/admin/cms/navi/#{sel[0]}", :locals => {:current => sel[1]} %>
+<div class="pieceHeader">
+<h2>管理者権限設定</h2>
 </div>

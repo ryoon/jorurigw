@@ -1,0 +1,97 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+<%= render :partial => 'layouts/admin/gw/header_tag' %>
+<script src="/_common/js/yui/build/animation/animation-min.js" type="text/javascript"></script>
+<script src="/_common/js/popup_calendar/popup_calendar.js" type="text/javascript"></script>
+<script src="/_common/js/yui/build/calendar/calendar.js" type="text/javascript"></script>
+<script src="/_common/js/dateformat.js" type="text/javascript"></script>
+
+<link rel="stylesheet" type="text/css" href="/layout/portal/style.css" />
+</head>
+<body <%= Page.body_id %>>
+<div id="container">
+
+<%= render :partial => 'layouts/admin/gw/piece_header' %>
+
+<!--ここからバナー-->
+<div id="banner">
+<div id="bannerBody">
+<%= render_component :controller => 'gw/admin/piece/header_menus', :action => 'index', :piece_param => '61' %>
+</div>
+</div>
+<!--ここまでバナー-->
+
+<!--ここからナビ-->
+<div id="navi">
+<div id="naviBody">
+<%= render_component :controller => 'gw/admin/piece/admin_messages', :action => 'index' %>
+<%= render_component :controller => 'gw/admin/piece/tabs', :action => 'index', :piece_param => '1' %>
+</div>
+</div>
+<!--ここまでナビ-->
+
+<!--ここからナビ2-->
+<div id="navi2">
+<div id="navi2Body">
+<%= render_component :controller => 'gw/admin/piece/schedules', :action => 'index', :params => {:s_date => params[:s_date]} %>
+</div>
+</div>
+<!--ここまでナビ2-->
+
+<!--ここからメインコンテンツ-->
+<div id="main">
+<div id="wrapper">
+<!--ここからコンテンツ-->
+<div id="content">
+<div id="contentContainer">
+<div id="contentBody">
+<%= render_component :controller => 'gw/admin/piece/reminder', :action => 'index' %>
+<%= render_component :controller => 'gwboard/admin/piece/syntheses', :action => 'index' %>
+<%= render_component :controller => 'gwboard/admin/piece/news', :action => 'index', :piece_param => 'gwbbs_1_10' %>
+</div>
+</div>
+</div>
+<!--ここまでコンテンツ-->
+<!--ここから左サイド-->
+<div id="menu">
+<div id="menuContainer">
+<div id="menuHeader"></div>
+<div id="menuBody">
+<%#= render_component :controller => 'gw/admin/piece/portal_left_adds', :action => 'index' %>
+<%= render_component :controller => 'gw/admin/piece/link_pieces', :action => 'index', :piece_param => '2' %>
+</div>
+<div id="menuFooter"></div>
+</div>
+</div>
+<!--ここまで左サイド-->
+</div>
+<!--ここから右サイド-->
+<div id="links">
+<div id="linksContainer">
+<div id="linksHeader"></div>
+<div id="linksBody">右サイド</div>
+<div id="linksFooter"></div>
+</div>
+</div>
+<!--ここまで右サイド-->
+</div>
+<!--ここまでメインコンテンツ-->
+
+<!--ここからフッター-->
+<div id="footer">
+<div id="footerContainer">
+<div id="footerHeader">
+<%#= render_component :controller => 'gw/admin/piece/portal_bottom_adds', :action => 'index' %>
+</div>
+<div id="footerBody">
+<%= render :partial => 'layouts/admin/gw/footer' %>
+</div>
+<div id="footerFooter"></div>
+</div>
+</div>
+<!--ここまでフッター-->
+
+</div>
+</body>
+</html>

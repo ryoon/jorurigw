@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 class Digitallibrary::File < Gwboard::CommonDb
   include System::Model::Base
   include System::Model::Base::Content
@@ -6,10 +7,13 @@ class Digitallibrary::File < Gwboard::CommonDb
   include Gwboard::Model::AttachFile
   include Gwboard::Model::AttachesFile
 
-  belongs_to :status, :foreign_key => :state,    :class_name => 'System::Base::Status'
   belongs_to :parent, :foreign_key => :parent_id, :class_name => 'Doclibrary::Doc'
 
   validates_presence_of :filename, :message => "ファイルが指定されていません。"
+
+  before_create :before_create
+  after_create :after_create
+  after_destroy :after_destroy
 
   def search(params)
     params.each do |n, v|
@@ -24,19 +28,19 @@ class Digitallibrary::File < Gwboard::CommonDb
   end
 
   def edit_memo_path(title,item)
-    return "#{Site.current_node.public_uri}#{self.parent_id}/edit_file_memo/#{self.id}?title_id=#{self.title_id}"
+    return "/digitallibrary/docs/#{self.parent_id}/edit_file_memo/#{self.id}?title_id=#{self.title_id}"
   end
 
   def item_path
-    return "#{Site.current_node.public_uri.chop}?title_id=#{self.title_id}&p_id=#{self.parent_id}"
+    return "/digitallibrary/docs?title_id=#{self.title_id}&p_id=#{self.parent_id}"
   end
 
   def delete_path
-    return "#{Site.current_node.public_uri}#{self.id}/delete?title_id=#{self.title_id}&p_id=#{self.parent_id}"
+    return "/digitallibrary/docs/#{self.id}/delete?title_id=#{self.title_id}&p_id=#{self.parent_id}"
   end
 
   def item_doc_path(title,item)
-    return "#{Site.current_node.public_uri}#{self.parent_id}?title_id=#{self.title_id}"
+    return "/digitallibrary/docs/#{self.parent_id}?title_id=#{self.title_id}"
   end
 
 end

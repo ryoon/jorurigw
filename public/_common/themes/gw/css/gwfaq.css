@@ -1,16 +1,17 @@
 @charset "UTF-8";
 /* =========================================================
-   Œf¦”ÂƒJƒXƒ^ƒ}ƒCƒY—pcssİ’è
+   æ²ç¤ºæ¿ã‚«ã‚¹ã‚¿ãƒã‚¤ã‚ºç”¨cssè¨­å®š
    _common/themes/gw/css/gwfaq.css
 ========================================================= */
 
-/* ƒ~ƒjƒAƒCƒRƒ“İ’è
+/* ãƒŸãƒ‹ã‚¢ã‚¤ã‚³ãƒ³è¨­å®š
 -------------------------------------------------*/
 .gwfaq {
   background-image: url(/_common/themes/gw/files/title/title_qa-admin.gif);
+  margin-top: 10px;
 }
 
-/* ®F‘å˜g
+/* ç´ºè‰²å¤§æ 
 ------------------------------------------*/
 .gwfaq .pieceBody {
   padding: 10px;
@@ -38,7 +39,7 @@ table.index td.update {
   border: none;
 }
 
-/* ƒ^ƒuü‚è
+/* ã‚¿ãƒ–å‘¨ã‚Š
 ------------------------------------------*/
 #contentBody .tabBox {
   height: auto;
@@ -51,12 +52,12 @@ table.index td.update {
   border-bottom: 1px solid #E3EFFF;
 }
 
-/* ‹@”\ƒ{ƒ^ƒ“
+/* æ©Ÿèƒ½ãƒœã‚¿ãƒ³
 ------------------------------------------*/
-.editingBox {
+.gwfaq .editingBox {
   width:100%;
 }
-.contentMenu {
+.gwfaq .contentMenu {
   margin-bottom: 10px;
 }
 

@@ -1,3 +1,4 @@
+# encoding: utf-8
 class Gw::YearFiscalJp < Gw::Database
   include System::Model::Base
   include Cms::Model::Base::Content
@@ -6,18 +7,21 @@ class Gw::YearFiscalJp < Gw::Database
   validates_uniqueness_of :fyear ,:unless=>Proc.new{|item| item.fyear.blank?}
   validates_numericality_of :fyear ,:unless=>Proc.new{|item| item.fyear.blank?}
   validates_length_of :fyear, :is => 4 ,:unless=>Proc.new{|item| item.fyear.blank?}
-
-  before_save :set_f
-
+  
+  after_validation :set_f
+  
   def set_f
-
-    start_at_temp= self.fyear.to_s + '-04-01 00:00:00'
-    end_at_temp= (self.fyear.to_i+1).to_s + '-03-31 23:59:59'
-    marks = Gw::YearMarkJp.convert_ytoj(start_at_temp,'4')
-
+    start_at_temp = "#{self.fyear.to_i}-04-01 00:00:00"
+    end_at_temp = "#{self.fyear.to_i+1}-03-31 23:59:59"
+    marks = Gw::YearMarkJp.convert_ytoj(start_at_temp, '4')
+    unless marks
+      errors.add(:fyear, "に対応する年号が設定されていません。")
+      return false
+    end
+    
     self.start_at = start_at_temp
     self.end_at   = end_at_temp
-
+    
     self.markjp = marks[1]
     self.namejp = marks[2]
     str_fiscal = '年度'
@@ -56,18 +60,21 @@ class Gw::YearFiscalJp < Gw::Database
   end
 
   def self.date_check(fyear_start_at)
-    require 'parsedate'
+    pd=[]
+		x = nil
     begin
-      pd = ParseDate.parsedate("#{fyear_start_at}",true)
-    rescue
-      raise TypeError, "cannot recognize datetime format(#{fyear_start_at})"
+      if fyear_start_at.is_a?(Date) || fyear_start_at.is_a?(Time)
+				x = fyear_start_at
+      elsif fyear_start_at.is_a?(String)
+        x = Date.parse(fyear_start_at, true)
+			else
+				raise TypeError, "cannot recognize datetime format(#{fyear_start_at})"
+      end
     end
-    if pd[1].to_s.length == 1
-      pd[1] = sprintf("%02d",pd[1])
-    end
-    if pd[2].to_s.length == 1
-      pd[2] = sprintf("%02d",pd[2])
-    end
+
+    pd[0] = sprintf("%4d", x.year)
+    pd[1] = sprintf("%02d", x.mon)
+    pd[2] = sprintf("%02d", x.mday)
     return pd
   end
 
@@ -273,7 +280,7 @@ class Gw::YearFiscalJp < Gw::Database
       `created_user`  text     default NULL,
       `created_group` text     default NULL,
       PRIMARY KEY  (`id`)
-    ) ENGINE=MyISAM DEFAULT CHARSET=utf8;"
+    ) DEFAULT CHARSET=utf8;"
     _connect.execute(_create_query)
     return
   end

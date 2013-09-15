@@ -1,3 +1,4 @@
+# encoding: utf-8
 module System::Model::Unid::Publication
   def self.included(mod)
     mod.belongs_to :publisher, :foreign_key => 'unid', :class_name => 'System::Publisher',
@@ -10,7 +11,7 @@ module System::Model::Unid::Publication
   end
 
   def public_path
-    Site.public_path + public_uri
+    Core.public_path + public_uri
   end
 
   def public_uri
@@ -22,7 +23,7 @@ module System::Model::Unid::Publication
   end
 
   def publish_uri
-    Site.uri(:protocol => true) + '_publish' + public_uri
+    Core.uri(:protocol => true) + '_publish' + public_uri
   end
 
   def publishable

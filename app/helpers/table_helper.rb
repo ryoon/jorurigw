@@ -1,3 +1,4 @@
+# encoding: utf-8
 module TableHelper
 # usage: 1) 標準
 #   table_to_index2 @items

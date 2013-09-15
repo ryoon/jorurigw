@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 class Doclibrary::Doc < Gwboard::CommonDb
   include System::Model::Base
   include System::Model::Base::Content
@@ -5,7 +6,6 @@ class Doclibrary::Doc < Gwboard::CommonDb
   include Gwboard::Model::Recognition
   include Doclibrary::Model::Systemname
 
-  belongs_to :status,    :foreign_key => :state,        :class_name => 'System::Base::Status'
   belongs_to :content,   :foreign_key => :content_id,   :class_name => 'Cms::Content'
   belongs_to :control,   :foreign_key => :title_id,     :class_name => 'Doclibrary::Control'
 
@@ -156,7 +156,7 @@ class Doclibrary::Doc < Gwboard::CommonDb
     else
       state = params[:state]
     end
-    base_path = "#{Site.current_node.public_uri.chop}?title_id=#{self.title_id}&state=#{state}"
+    base_path = "/doclibrary/docs?title_id=#{self.title_id}&state=#{state}"
     if state=='GROUP'
       ret = base_path+"&grp=#{params[:grp]}&gcd=#{params[:gcd]}"
     else
@@ -171,7 +171,7 @@ class Doclibrary::Doc < Gwboard::CommonDb
     else
       state = params[:state]
     end
-    base_path = "#{Site.current_node.public_uri}#{self.id}?title_id=#{self.title_id}&state=#{state}"
+    base_path = "/doclibrary/docs/#{self.id}?title_id=#{self.title_id}&state=#{state}"
     if state=='GROUP'
       ret = base_path+"&grp=#{params[:grp]}&gcd=#{params[:gcd]}"
     else
@@ -186,9 +186,9 @@ class Doclibrary::Doc < Gwboard::CommonDb
     else
       state = params[:state]
     end
-    ret = "#{Site.current_node.public_uri}#{self.id}/?title_id=#{self.title_id}&gcd=#{self.section_code}" if state == 'GROUP'
-    ret = "#{Site.current_node.public_uri}#{self.id}/?title_id=#{self.title_id}&cat=#{self.category1_id}&gcd=#{self.section_code}" if state == 'DATE'
-    ret = "#{Site.current_node.public_uri}#{self.id}/?title_id=#{self.title_id}&cat=#{self.category1_id}" unless state == 'GROUP' unless state == 'DATE'
+    ret = "/doclibrary/docs/#{self.id}/?title_id=#{self.title_id}&gcd=#{self.section_code}" if state == 'GROUP'
+    ret = "/doclibrary/docs/#{self.id}/?title_id=#{self.title_id}&cat=#{self.category1_id}&gcd=#{self.section_code}" if state == 'DATE'
+    ret = "/doclibrary/docs/#{self.id}/?title_id=#{self.title_id}&cat=#{self.category1_id}" unless state == 'GROUP' unless state == 'DATE'
     return ret
   end
 
@@ -198,7 +198,7 @@ class Doclibrary::Doc < Gwboard::CommonDb
     else
       state = params[:state]
     end
-    base_path = "#{Site.current_node.public_uri}#{self.id}/edit?title_id=#{self.title_id}&state=#{state}"
+    base_path = "/doclibrary/docs/#{self.id}/edit?title_id=#{self.title_id}&state=#{state}"
     if state=='GROUP'
       ret = base_path+"&grp=#{params[:grp]}&gcd=#{params[:gcd]}"
     else
@@ -213,7 +213,7 @@ class Doclibrary::Doc < Gwboard::CommonDb
     else
       state = params[:state]
     end
-    base_path = "#{Site.current_node.public_uri}#{self.id}/delete?title_id=#{self.title_id}&state=#{state}"
+    base_path = "/doclibrary/docs/#{self.id}/delete?title_id=#{self.title_id}&state=#{state}"
     if state=='GROUP'
       ret = base_path+"&grp=#{params[:grp]}&gcd=#{params[:gcd]}"
     else
@@ -228,7 +228,7 @@ class Doclibrary::Doc < Gwboard::CommonDb
     else
       state = params[:state]
     end
-    base_path = "#{Site.current_node.public_uri}#{self.id}/update?title_id=#{self.title_id}&state=#{state}"
+    base_path = "/doclibrary/docs/#{self.id}/update?title_id=#{self.title_id}&state=#{state}"
     if state=='GROUP'
       ret = base_path+"&grp=#{params[:grp]}&gcd=#{params[:gcd]}"
     else
@@ -242,15 +242,15 @@ class Doclibrary::Doc < Gwboard::CommonDb
   end
 
   def recognize_update_path
-    return "#{Site.current_node.public_uri}#{self.id}/recognize_update?title_id=#{self.title_id}"
+    return "/doclibrary/docs/#{self.id}/recognize_update?title_id=#{self.title_id}"
   end
 
   def publish_update_path
-    return "#{Site.current_node.public_uri}#{self.id}/publish_update?title_id=#{self.title_id}"
+    return "/doclibrary/docs/#{self.id}/publish_update?title_id=#{self.title_id}"
   end
 
   def clone_path
-    return "#{Site.current_node.public_uri}#{self.id}/clone/?title_id=#{self.title_id}"
+    return "/doclibrary/docs/#{self.id}/clone/?title_id=#{self.title_id}"
   end
 
   def adms_clone_path
@@ -271,7 +271,7 @@ class Doclibrary::Doc < Gwboard::CommonDb
     if self.state=='public'
       item = Doclibrary::Control.find(self.title_id)
       item.docslast_updated_at = Time.now
-      item.save(false)
+      item.save(:validate=>false)
       unless self.category1_id.blank? == 0
         sql = "UPDATE doclibrary_folders SET updated_at = '#{Time.now.strftime('%Y-%m-%d %H:%M:%S')}' WHERE id = '#{self.category1_id}'"
         self.connection.execute(sql)
@@ -396,7 +396,7 @@ class Doclibrary::Doc < Gwboard::CommonDb
   def send_reminder
     self._recognizers.each do |k, v|
       unless v.blank?
-        Gw.add_memo(v.to_s, "#{self.control.title}「#{self.title}」についての承認依頼が届きました。", "次のボタンから記事を確認し,承認作業を行ってください。<br /></a><a href='#{self.show_path}&state=RECOGNIZE'><img src='/_common/themes/gw/files/bt_approvalconfirm.gif' alt='承認処理へ'></a>",{:is_system => 1})
+        Gw.add_memo(v.to_s, "#{self.control.title}「#{self.title}」についての承認依頼が届きました。", "次のボタンから記事を確認し,承認作業を行ってください。<br /><a href='/doclibrary/docs/#{self.id}?title_id=#{self.title_id}&state=RECOGNIZE'><img src='/_common/themes/gw/files/bt_approvalconfirm.gif' alt='承認処理へ' /></a>",{:is_system => 1})
       end
     end if self._recognizers if self.state == 'recognize'
   end

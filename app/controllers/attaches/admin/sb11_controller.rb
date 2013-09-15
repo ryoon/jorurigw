@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 class Attaches::Admin::Sb11Controller < ApplicationController
   include System::Controller::Scaffold
 

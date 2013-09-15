@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 class Gwboard::Admin::AttachesController < ApplicationController
 
   include System::Controller::Scaffold
@@ -128,7 +129,8 @@ class Gwboard::Admin::AttachesController < ApplicationController
     @file = file.find_by_id(params[:id])
     @file.memo  = params[:file]['memo']
     @file.save
-
+    gwboard_file_close
+    
     ret = ''
     ret += "&state=#{params[:state]}" unless params[:state].blank?
     ret += "&cat=#{params[:cat]}" unless params[:cat].blank?
@@ -138,29 +140,25 @@ class Gwboard::Admin::AttachesController < ApplicationController
     ret += "&page=#{params[:page]}" unless params[:page].blank?
     ret += "&limit=#{params[:limit]}" unless params[:limit].blank?
     ret += "&kwd=#{params[:kwd]}" unless params[:kwd].blank?
-
-    if params[:system].to_s == 'doclibrary'
+    
+    case params[:system].to_s
+    when 'doclibrary'
       if @title.form_name == 'form002'
         parent  = Doclibrary::Doc.find(:first,:conditions=>"id=#{params[:parent_id]}")
-        parent_show_path  = "/doclibrary/docs/#{parent.id}?system=#{params[:system]}&title_id=#{params[:title_id]}"+ret
+        parent_show_path  = "/doclibrary/docs/#{parent.id}?system=#{params[:system]}&title_id=#{params[:title_id]}#{ret}"
       else
-        parent_show_path  = "/doclibrary/docs/#{@file.parent_id}?system=#{params[:system]}&title_id=#{params[:title_id]}"+ret
+        parent_show_path  = "/doclibrary/docs/#{@file.parent_id}?system=#{params[:system]}&title_id=#{params[:title_id]}#{ret}"
       end
-      redirect_to parent_show_path
-      return
+    when 'digitallibrary'
+      parent_show_path  = "/digitallibrary/docs/#{@file.parent_id}?system=#{params[:system]}&title_id=#{params[:title_id]}#{ret}"
+    when 'gwbbs'
+      parent_show_path  = "/gwbbs/docs/#{@file.parent_id}?title_id=#{params[:title_id]}#{ret}"
+    else
+      parent_show_path = gwboard_attaches_path(params[:parent_id]) + "?system=#{params[:system]}&title_id=#{params[:title_id]}"
     end
-    if params[:system].to_s == 'digitallibrary'
-      parent_show_path  = "/digitallibrary/docs/#{@file.parent_id}?system=#{params[:system]}&title_id=#{params[:title_id]}"+ret
-      redirect_to parent_show_path
-      return
-    end
-    if params[:system].to_s == 'gwbbs'
-      parent_show_path  = "/gwbbs/docs/#{@file.parent_id}?title_id=#{params[:title_id]}"+ret
-      redirect_to parent_show_path
-      return
-    end
-    gwboard_file_close
-    redirect_to gwboard_attaches_path(params[:parent_id]) + "?system=#{params[:system]}&title_id=#{params[:title_id]}"
+    
+    flash[:notice] = "備考を更新しました。"
+    return redirect_to parent_show_path
   end
 
   protected

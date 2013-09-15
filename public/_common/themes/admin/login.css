@@ -173,5 +173,15 @@ div#login {
 
 }
 
+.fields span.head{
+  display: inline-block;
+  width: 75px;
+}
+.fields{
+  text-align: left;
+  color: #000000;
+  margin: 0 0 0 100px;
+  width: 350px;
+}
 
 

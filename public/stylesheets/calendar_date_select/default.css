@@ -11,7 +11,6 @@ iframe.ie6_blocker {
   z-index: 999;
 }
 
-
 .calendar_date_select thead th {
   font-weight:bold;
   background-color: #aaa;
@@ -79,15 +78,13 @@ iframe.ie6_blocker {
 .calendar_date_select .cds_header select.month {
   width:90px;
 }
-*html .calendar_date_select .cds_header select.month {
-  width:80px;
-}
+
 .calendar_date_select .cds_header select.year {
   width:61px;
 }
 .calendar_date_select .cds_buttons a {
   color: white;
-  font-size: 11px;
+  font-size: 9px;
 }
 
 .calendar_date_select td {

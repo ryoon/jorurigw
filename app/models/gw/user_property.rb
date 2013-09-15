@@ -1,6 +1,10 @@
+# -*- encoding: utf-8 -*-
 class Gw::UserProperty < Gw::Database
+  #establish_connection :dev_jgw_gw rescue nil
   include System::Model::Base
-
+  
+  scope :gwmonitor_help_links, :conditions => {:class_id => 3, :name => 'gwmonitor', :type_name => 'help_link'}
+  
   def is_email_mobile?
     return false if self.options.blank? || self.name != 'mobile'
 
@@ -22,5 +26,12 @@ class Gw::UserProperty < Gw::Database
       todos_display = true if todo_settings[:todos_display_schedule].to_s == '1'
     end
     return todos_display
+  end
+  
+  def self.load_gwmonitor_help_links
+    help = self.gwmonitor_help_links.find(:first)
+    
+    helps = JsonParser.new.parse(help.options) rescue Array.new(3, [''])
+    helps.map{|help| help[0].to_s}
   end
 end

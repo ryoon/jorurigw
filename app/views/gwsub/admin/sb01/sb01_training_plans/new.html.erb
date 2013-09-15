@@ -1,0 +1,19 @@
+<%#*<p>Find me in app/views/gwsub/admin/sb01/sb01_training_plans/new.html.erb</p> -%>
+<%
+@action = "create"
+@create_path = "/gwsub/sb01/sb01_training_plans/"
+-%>
+<div class="gwsub sb01">
+<div class="pieceHeader">
+<h2>研修申込・受付</h2>
+</div>
+<div class="pieceBanner">
+<%= render :partial => 'gwsub/admin/sb01/sb01_training_plans/menu' %>
+</div>
+<div class="pieceBody">
+<%= raw(%Q(<div class="notice">#{flash[:notice]}</div>)) unless flash[:notice].blank? %>
+<%= form_for :item, :url => @create_path ,:action=>:create ,:method=>:post , :html => {:multipart => true, :class=>"leftSide"} do |f| %>
+<%= render :partial => 'form_new', :locals => {:f => f} %>
+<% end  %>
+</div>
+</div>

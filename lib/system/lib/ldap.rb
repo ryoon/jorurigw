@@ -1,3 +1,4 @@
+# encoding: utf-8
 require 'ldap'
 require 'ldap/ldif'
 require 'nkf'

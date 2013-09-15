@@ -1,20 +1,10 @@
-<h5>グループウェアQ&A 記事管理</h5>
-<table class="index">
-  <tr>
-    <th style="width: 60px; text-align: right;" nowrap="nowrap">管理番号</th>
-    <th nowrap="nowrap">タイトル</th>
-    <th style="width: 60px; text-align: center;">質問管理</th>
-    <th style="width: 60px; text-align: center;">ステータス</th>
-  </tr>
+<%= render :partial => 'header' %>
+<%= gwqa_form_indices %>
 
-  <% for item in @items %>
-  <tr <%= cycle '', 'class="cycle"' %>>
-    <td style="text-align: right;" nowrap="nowrap"><%=h item.id %></td>
-    <td style="text-align: left;" nowrap="nowrap"><%=h item.title %></td>
-    <td style="text-align: left;" nowrap="nowrap"><%= link_to '質問管理', gwqa_questions_path(item.id) %></td>
-    <td style="text-align: center;"><%= item.status.name %></td>
-  </tr>
-  <% end %>
-</table>
-<br />
+<%= render :partial => 'limit_change' %>
+
 <%= paginate @items %>
+
+<div class="btReturn">
+　　　　<%= link_to "Q&A一覧へ戻る", "/gwqa/" %>
+</div>

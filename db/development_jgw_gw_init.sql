@@ -65,9 +65,7 @@ INSERT INTO `gwbbs_controls` (`id`, `unid`, `content_id`, `state`, `created_at`,
 -- テーブルのデータをダンプしています `gwbbs_itemdeletes`
 --
 
-INSERT INTO `gwbbs_itemdeletes` (`id`, `unid`, `content_id`, `created_at`, `updated_at`, `admin_code`, `title_id`, `board_title`, `board_state`, `board_view_hide`, `board_sort_no`, `public_doc_count`, `void_doc_count`, `dbname`, `limit_date`, `board_limit_date`) VALUES
-(1, NULL, 0, '2012-05-21 13:05:41', '2012-05-21 13:05:41', 'admin', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '24.months', NULL);
-
+INSERT INTO `gwbbs_itemdeletes` VALUES (1, NULL, 0, '2012-05-21 13:05:41', '2012-05-21 13:05:41', 'admin', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '24.months', NULL);
 --
 -- テーブルのデータをダンプしています `gwbbs_roles`
 --
@@ -147,9 +145,7 @@ INSERT INTO `gwcircular_controls` (`id`, `unid`, `content_id`, `state`, `created
 -- テーブルのデータをダンプしています `gwcircular_itemdeletes`
 --
 
-INSERT INTO `gwcircular_itemdeletes` (`id`, `unid`, `content_id`, `created_at`, `updated_at`, `admin_code`, `title_id`, `board_title`, `board_state`, `board_view_hide`, `board_sort_no`, `public_doc_count`, `void_doc_count`, `dbname`, `limit_date`, `board_limit_date`) VALUES
-(1, NULL, 0, '2012-05-21 13:07:14', '2012-05-21 13:07:19', 'admin', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '24.months', NULL);
-
+INSERT INTO `gwcircular_itemdeletes` VALUES (1, NULL, 0, '2012-05-21 13:07:14', '2012-05-21 13:07:19', 'admin', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '24.months', NULL);
 --
 -- テーブルのデータをダンプしています `gwcircular_roles`
 --
@@ -219,8 +215,7 @@ INSERT INTO `gwmonitor_forms` (`id`, `unid`, `state`, `created_at`, `updated_at`
 -- テーブルのデータをダンプしています `gwmonitor_itemdeletes`
 --
 
-INSERT INTO `gwmonitor_itemdeletes` (`id`, `unid`, `content_id`, `created_at`, `updated_at`, `admin_code`, `title_id`, `board_title`, `board_state`, `board_view_hide`, `board_sort_no`, `public_doc_count`, `void_doc_count`, `dbname`, `limit_date`, `board_limit_date`) VALUES
-(1, NULL, 0, '2012-05-21 13:07:49', '2012-05-21 13:07:54', 'admin', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '24.months', NULL);
+INSERT INTO `gwmonitor_itemdeletes` VALUES (1, NULL, 0, '2012-05-21 13:07:49', '2012-05-21 13:07:54', 'admin', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '24.months', NULL);
 
 --
 -- テーブルのデータをダンプしています `gwqa_adms`
@@ -279,54 +274,54 @@ INSERT INTO `gw_admin_check_extensions` (`id`, `state`, `sort_no`, `extension`, 
 --
 
 INSERT INTO `gw_edit_link_pieces` (`id`, `uid`, `class_created`, `published`, `state`, `level_no`, `parent_id`, `name`, `sort_no`, `tab_keys`, `display_auth_priv`, `role_name_id`, `display_auth`, `block_icon_id`, `block_css_id`, `link_url`, `remark`, `icon_path`, `link_div_class`, `class_external`, `ssoid`, `class_sso`, `field_account`, `field_pass`, `css_id`, `deleted_at`, `deleted_user`, `deleted_group`, `updated_at`, `updated_user`, `updated_group`, `created_at`, `created_user`, `created_group`) VALUES
-(1, NULL, 1, 'opened', 'enabled', 1, 0, 'TOP', 10, 0, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, 1, NULL, NULL, 0, NULL, 'admin', '秘書広報課', '2010-10-22 17:21:35', 'admin', '秘書広報課', '2010-10-22 17:21:35', 'admin', '秘書広報課'),
-(2, NULL, 1, 'opened', 'enabled', 2, 1, 'ポータル左　リンクピース', 10, 10, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, 1, NULL, NULL, 0, NULL, 'admin', '秘書広報課', '2010-11-10 21:18:27', 'admin', '秘書広報課', '2010-10-22 17:32:27', 'admin', '秘書広報課'),
-(15, NULL, 1, 'opened', 'enabled', 3, 2, '掲示板', 70, 0, 1, NULL, NULL, 4, 9, '/gwbbs', NULL, '', NULL, 1, NULL, 1, '', '', 0, NULL, 'admin', '秘書広報課', '2011-05-12 23:00:43', 'admin', '秘書広報課', '2010-10-22 18:10:17', 'admin', '秘書広報課'),
-(19, NULL, 1, 'opened', 'enabled', 3, 2, '施設予約', 80, 0, 1, NULL, '', 5, 9, '/gw/schedule_props/show_week?s_genre=other&cls=other&type_id=200', NULL, '', NULL, 1, NULL, 1, '', '', 0, NULL, 'admin', '秘書広報課', '2011-05-12 23:00:38', 'admin', '秘書広報課', '2010-10-22 18:11:41', 'admin', '秘書広報課'),
-(24, NULL, 1, 'opened', 'enabled', 3, 2, '質問管理', 90, 0, 1, NULL, NULL, 6, 9, '/gwfaq', NULL, '', NULL, 1, NULL, 1, '', '', 0, NULL, 'admin', '秘書広報課', '2011-05-12 23:00:32', 'admin', '秘書広報課', '2010-10-22 18:15:45', 'admin', '秘書広報課'),
-(28, NULL, 1, 'opened', 'enabled', 3, 2, 'リンク', 100, 0, 1, NULL, '', 7, 9, '', NULL, '', NULL, 1, NULL, 1, '', '', 0, NULL, 'admin', '秘書広報課', '2011-05-12 23:00:28', 'admin', '秘書広報課', '2010-10-22 18:17:14', 'admin', '秘書広報課'),
-(61, NULL, 1, 'opened', 'enabled', 2, 1, 'ポータルヘッダ　アイコンメニュー', 30, 30, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, 1, NULL, NULL, 0, NULL, 'admin', '秘書広報課', '2010-11-10 21:19:29', 'admin', '秘書広報課', '2010-10-27 16:01:12', 'admin', '秘書広報課'),
-(62, NULL, 1, 'opened', 'enabled', 3, 61, 'ポータル', 10, 0, 1, NULL, NULL, NULL, NULL, '/', NULL, '', NULL, 1, NULL, 1, '', '', 0, NULL, 'admin', '秘書広報課', '2010-10-27 16:06:49', 'admin', '秘書広報課', '2010-10-27 16:06:49', 'admin', '秘書広報課'),
-(63, NULL, 1, 'opened', 'enabled', 4, 62, 'ポータル', 10, 0, 1, NULL, NULL, NULL, NULL, '/', NULL, '/_common/themes/gw/files/menu/ic_home.gif', NULL, 1, NULL, 1, '', '', 0, NULL, 'admin', '秘書広報課', '2010-10-27 16:07:28', 'admin', '秘書広報課', '2010-10-27 16:07:28', 'admin', '秘書広報課'),
-(64, NULL, 1, 'opened', 'enabled', 3, 61, 'メール', 20, 0, 1, NULL, '', NULL, 12, 'demo.webmail.joruri.org', NULL, '', NULL, 2, NULL, 2, 'account', 'password', 0, NULL, 'admin', '秘書広報課', '2011-05-22 21:39:21', 'admin', '秘書広報課', '2010-10-27 16:08:19', 'admin', '秘書広報課'),
-(65, NULL, 1, 'opened', 'enabled', 4, 64, 'メール', 10, 0, 1, NULL, '', NULL, NULL, 'demo.webmail.joruri.org', NULL, '/_common/themes/gw/files/menu/ic_mailer.gif', NULL, 2, NULL, 2, 'account', 'password', 0, NULL, 'admin', '秘書広報課', '2011-03-30 16:52:28', 'admin', '秘書広報課', '2010-10-27 16:09:08', 'admin', '秘書広報課'),
-(66, NULL, 1, 'opened', 'enabled', 3, 61, 'スケジュール', 40, 0, 1, NULL, '', NULL, 13, '/gw/schedules/show_month', NULL, '', NULL, 1, NULL, 1, '', '', 0, NULL, 'admin', '秘書広報課', '2011-03-04 15:44:37', 'admin', '秘書広報課', '2010-10-27 16:10:08', 'admin', '秘書広報課'),
-(67, NULL, 1, 'opened', 'enabled', 4, 66, 'スケジュール', 10, 0, 1, NULL, NULL, NULL, NULL, '/gw/schedules/show_month', NULL, '/_common/themes/gw/files/menu/ic_schedule.gif', NULL, 1, NULL, 1, '', '', 0, NULL, 'admin', '秘書広報課', '2010-10-27 16:11:33', 'admin', '秘書広報課', '2010-10-27 16:11:33', 'admin', '秘書広報課'),
-(68, NULL, 1, 'opened', 'enabled', 4, 66, '新規作成', 20, 0, 1, NULL, NULL, NULL, 16, '/gw/schedules/new', NULL, '/_common/themes/gw/files/schedule/ic_add.gif', NULL, 1, NULL, 1, '', '', 0, NULL, 'admin', '秘書広報課', '2010-10-27 16:12:41', 'admin', '秘書広報課', '2010-10-27 16:12:41', 'admin', '秘書広報課'),
-(69, NULL, 1, 'opened', 'enabled', 3, 61, 'ToDo', 50, 0, 1, NULL, '', NULL, 14, '/gw/todos', NULL, '', NULL, 1, NULL, 1, '', '', 0, NULL, 'admin', '秘書広報課', '2011-04-11 22:27:23', 'admin', '秘書広報課', '2010-10-27 16:13:30', 'admin', '秘書広報課'),
-(70, NULL, 1, 'opened', 'enabled', 4, 69, 'ToDo', 10, 0, 1, NULL, NULL, NULL, NULL, '/gw/todos', NULL, '/_common/themes/gw/files/menu/ic_todo.gif', NULL, 1, NULL, 1, '', '', 0, NULL, 'admin', '秘書広報課', '2010-10-27 16:14:05', 'admin', '秘書広報課', '2010-10-27 16:14:05', 'admin', '秘書広報課'),
-(71, NULL, 1, 'opened', 'enabled', 4, 69, '新規作成', 20, 0, 1, NULL, NULL, NULL, 16, '/gw/todos/new', NULL, '/_common/themes/gw/files/schedule/ic_add.gif', NULL, 1, NULL, 1, '', '', 0, NULL, 'admin', '秘書広報課', '2010-10-27 16:14:40', 'admin', '秘書広報課', '2010-10-27 16:14:40', 'admin', '秘書広報課'),
-(72, NULL, 1, 'opened', 'enabled', 3, 61, '連絡メモ', 60, 0, 1, NULL, NULL, NULL, 15, '/gw/memos', NULL, '', NULL, 1, NULL, 1, '', '', 0, NULL, 'admin', '秘書広報課', '2010-11-19 17:16:20', 'admin', '秘書広報課', '2010-10-27 16:15:20', 'admin', '秘書広報課'),
-(73, NULL, 1, 'opened', 'enabled', 4, 72, '連絡メモ', 10, 0, 1, NULL, NULL, NULL, NULL, '/gw/memos', NULL, '/_common/themes/gw/files/menu/ic_memo.gif', NULL, 1, NULL, 1, '', '', 0, NULL, 'admin', '秘書広報課', '2010-10-27 16:15:44', 'admin', '秘書広報課', '2010-10-27 16:15:44', 'admin', '秘書広報課'),
-(74, NULL, 1, 'opened', 'enabled', 4, 72, '新規作成', 20, 0, 1, NULL, NULL, NULL, 16, '/gw/memos/new', NULL, '/_common/themes/gw/files/schedule/ic_add.gif', NULL, 1, NULL, 1, '', '', 0, NULL, 'admin', '秘書広報課', '2010-10-27 16:16:09', 'admin', '秘書広報課', '2010-10-27 16:16:09', 'admin', '秘書広報課'),
-(77, NULL, 1, 'opened', 'enabled', 3, 61, '掲示板', 90, 0, 1, NULL, '', NULL, NULL, '/gwbbs', NULL, '', NULL, 1, NULL, 1, '', '', 0, NULL, 'admin', '秘書広報課', '2011-01-26 19:49:40', 'admin', '秘書広報課', '2010-10-27 16:18:43', 'admin', '秘書広報課'),
-(78, NULL, 1, 'opened', 'enabled', 4, 77, '掲示板', 10, 0, 1, NULL, NULL, NULL, NULL, '/gwbbs', NULL, '/_common/themes/gw/files/menu/ic_board.gif', NULL, 1, NULL, 1, '', '', 0, NULL, 'admin', '秘書広報課', '2010-10-27 16:19:05', 'admin', '秘書広報課', '2010-10-27 16:19:05', 'admin', '秘書広報課'),
-(79, NULL, 1, 'opened', 'enabled', 3, 61, '質問管理', 100, 0, 1, NULL, NULL, NULL, NULL, '/gwfaq', NULL, '', NULL, 1, NULL, 1, '', '', 0, NULL, 'admin', '秘書広報課', '2011-01-26 19:49:52', 'admin', '秘書広報課', '2010-10-27 16:19:32', 'admin', '秘書広報課'),
-(80, NULL, 1, 'opened', 'enabled', 4, 79, '質問管理', 10, 0, 1, NULL, NULL, NULL, NULL, '/gwfaq', NULL, '/_common/themes/gw/files/menu/ic_qa-admin.gif', NULL, 1, NULL, 1, '', '', 0, NULL, 'admin', '秘書広報課', '2010-10-27 16:19:59', 'admin', '秘書広報課', '2010-10-27 16:19:59', 'admin', '秘書広報課'),
-(81, NULL, 1, 'opened', 'enabled', 3, 61, '書庫', 110, 0, 1, NULL, NULL, NULL, NULL, '/doclibrary', NULL, '', NULL, 1, NULL, 1, '', '', 0, NULL, 'admin', '秘書広報課', '2011-01-26 19:49:52', 'admin', '秘書広報課', '2010-10-27 16:20:29', 'admin', '秘書広報課'),
-(82, NULL, 1, 'opened', 'enabled', 4, 81, '書庫', 10, 0, 1, NULL, NULL, NULL, NULL, '/doclibrary', NULL, '/_common/themes/gw/files/menu/ic_library.gif', NULL, 1, NULL, 1, '', '', 0, NULL, 'admin', '秘書広報課', '2010-10-27 16:20:53', 'admin', '秘書広報課', '2010-10-27 16:20:53', 'admin', '秘書広報課'),
-(83, NULL, 1, 'opened', 'enabled', 3, 61, '電子図書', 120, 0, 1, NULL, '', NULL, NULL, '/digitallibrary', NULL, '/digitallibrary', NULL, 1, NULL, 1, '', '', 0, NULL, 'admin', '秘書広報課', '2011-01-26 19:48:25', 'admin', '秘書広報課', '2010-10-27 16:21:18', 'admin', '秘書広報課'),
-(84, NULL, 1, 'opened', 'enabled', 4, 83, '電子図書', 10, 0, 1, NULL, NULL, NULL, NULL, '/digitallibrary', NULL, '/_common/themes/gw/files/menu/ic_electronic-book.gif', NULL, 1, NULL, 1, '', '', 0, NULL, 'admin', '秘書広報課', '2010-10-27 16:21:51', 'admin', '秘書広報課', '2010-10-27 16:21:51', 'admin', '秘書広報課'),
-(85, NULL, 1, 'opened', 'enabled', 3, 61, '設定', 130, 0, 0, 21, '', NULL, NULL, '/gw/config_settings', NULL, '', NULL, 1, NULL, 1, '', '', 0, NULL, 'admin', '秘書広報課', '2011-02-02 15:34:36', 'admin', '秘書広報課', '2010-10-27 16:23:22', 'admin', '秘書広報課'),
-(86, NULL, 1, 'opened', 'enabled', 4, 85, '設定', 10, 0, 1, NULL, '', NULL, NULL, '/gw/config_settings', NULL, '/_common/themes/gw/files/menu/ic_system.gif', NULL, 1, NULL, 1, '', '', 0, NULL, 'admin', '秘書広報課', '2011-02-02 15:34:50', 'admin', '秘書広報課', '2010-10-27 16:23:57', 'admin', '秘書広報課'),
-(87, NULL, 1, 'opened', 'enabled', 3, 61, 'DECO Drive', 140, 0, 1, NULL, '', NULL, 18, 'http://drive.deco-project.org/', NULL, '', NULL, 2, NULL, 1, '', '', 0, NULL, 'admin', '秘書広報課', '2011-05-13 13:45:19', 'admin', '秘書広報課', '2010-10-27 16:25:09', 'admin', '秘書広報課'),
-(88, NULL, 1, 'opened', 'enabled', 4, 87, 'DECO Drive', 10, 0, 1, NULL, '', NULL, NULL, 'http://drive.deco-project.org/', NULL, '/_common/themes/gw/files/menu/ic_deco.gif', NULL, 2, NULL, 1, '', '', 0, NULL, 'admin', '秘書広報課', '2011-05-13 13:44:33', 'admin', '秘書広報課', '2010-10-27 16:26:26', 'admin', '秘書広報課'),
-(89, NULL, 1, 'opened', 'enabled', 3, 61, '回覧板', 70, 0, 1, NULL, '', 4, 15, '/gwcircular', NULL, '', NULL, 1, NULL, 1, '', '', 0, NULL, 'admin', '秘書広報課', '2010-11-19 17:22:53', 'admin', '秘書広報課', '2010-11-05 10:04:32', 'admin', '秘書広報課'),
-(90, NULL, 1, 'opened', 'enabled', 4, 89, '回覧板', 10, 0, 1, NULL, '', NULL, NULL, '/gwcircular', NULL, '/_common/themes/gw/files/menu/ic_circulation.gif', NULL, 1, NULL, 1, '', '', 0, NULL, 'admin', '秘書広報課', '2010-11-09 11:54:32', 'admin', '秘書広報課', '2010-11-09 11:53:00', 'admin', '秘書広報課'),
-(91, NULL, 1, 'opened', 'enabled', 4, 89, '新規作成', 20, 0, NULL, NULL, '', NULL, 16, '/gwcircular/new', NULL, '/_common/themes/gw/files/schedule/ic_add.gif', NULL, 1, NULL, 1, '', '', 0, NULL, 'admin', '秘書広報課', '2010-11-19 17:13:59', 'admin', '秘書広報課', '2010-11-19 17:13:59', 'admin', '秘書広報課'),
-(773, NULL, 1, 'opened', 'enabled', 3, 2, '照会・回答', 60, 0, NULL, NULL, '', 17, 9, '/gwmonitor', NULL, '', NULL, 1, NULL, 1, '', '', 0, NULL, 'admin', '秘書広報課', '2011-05-12 23:00:47', 'admin', '秘書広報課', '2010-12-27 13:35:55', 'admin', '秘書広報課'),
-(1215, NULL, 1, 'opened', 'enabled', 3, 61, '照会・回答', 80, 0, NULL, NULL, '', 17, 15, '/gwmonitor', NULL, '/_common/themes/gw/files/menu/ic_dennshisyoukai.gif', NULL, 1, NULL, 1, '', '', 0, NULL, 'admin', '秘書広報課', '2011-02-02 15:43:14', 'admin', '秘書広報課', '2011-01-26 19:46:55', 'admin', '秘書広報課'),
-(1216, NULL, 1, 'opened', 'enabled', 4, 1215, '照会・回答システム', 10, 0, NULL, NULL, '', 17, NULL, '/gwmonitor', NULL, '/_common/themes/gw/files/menu/ic_dennshisyoukai.gif', NULL, 1, NULL, 1, '', '', 0, NULL, 'admin', '秘書広報課', '2011-01-26 20:05:50', 'admin', '秘書広報課', '2011-01-26 19:52:52', 'admin', '秘書広報課'),
-(1217, NULL, 1, 'opened', 'enabled', 4, 1215, '新規作成', 20, 0, NULL, NULL, '', NULL, 16, '/gwmonitor/builders/new', NULL, '/_common/themes/gw/files/schedule/ic_add.gif', NULL, 1, NULL, 1, '', '', 0, NULL, 'admin', '秘書広報課', '2011-01-26 20:14:10', 'admin', '秘書広報課', '2011-01-26 20:08:04', 'admin', '秘書広報課'),
-(1481, NULL, 1, 'opened', 'enabled', 3, 2, '総務事務システム', 30, 0, NULL, NULL, '', 1, 8, '#', NULL, '', NULL, 1, NULL, 1, '', '', 0, NULL, 'admin', '秘書広報課', '2011-05-13 14:15:51', 'admin', '秘書広報課', '2011-05-12 22:45:48', 'admin', '秘書広報課'),
-(1485, NULL, 1, 'opened', 'enabled', 3, 2, '電子決裁・文書管理', 50, 0, NULL, NULL, '', 2, 9, '#', NULL, '', NULL, 1, NULL, 1, '', '', 0, NULL, 'admin', '秘書広報課', '2011-05-13 14:16:11', 'admin', '秘書広報課', '2011-05-12 23:00:16', 'admin', '秘書広報課'),
-(1496, NULL, 1, 'opened', 'enabled', 4, 773, '照会・回答システム', 10, 0, NULL, NULL, '', 17, 9, '/gwmonitor', NULL, '', NULL, 1, NULL, 1, '', '', 0, NULL, NULL, NULL, '2011-05-23 21:30:46', NULL, NULL, '2011-05-23 21:30:46', 'システム管理者', '秘書広報課'),
-(1497, NULL, 1, 'opened', 'enabled', 4, 773, 'アンケート集計システム', 20, 0, NULL, NULL, '', NULL, NULL, '/enquete/', NULL, '', NULL, 1, NULL, 1, '', '', 0, NULL, NULL, NULL, '2011-05-23 21:31:26', NULL, NULL, '2011-05-23 21:31:26', 'システム管理者', '秘書広報課'),
-(1498, NULL, 1, 'opened', 'enabled', 4, 15, '全庁掲示板', 10, 0, NULL, NULL, '', NULL, NULL, '/gwbbs/docs?title_id=1&limit=10', NULL, '', NULL, 1, NULL, 1, '', '', 0, NULL, NULL, NULL, '2011-05-23 21:34:40', NULL, NULL, '2011-05-23 21:34:40', 'システム管理者', '秘書広報課'),
-(1499, NULL, 1, 'opened', 'enabled', 4, 19, '公用車予約', 10, 0, NULL, NULL, '', NULL, NULL, '/gw/schedule_props/show_week?s_genre=other&cls=other&type_id=100', NULL, '', NULL, 1, NULL, 1, '', '', 0, NULL, NULL, NULL, '2011-05-23 21:36:58', NULL, NULL, '2011-05-23 21:36:58', 'システム管理者', '秘書広報課'),
-(1500, NULL, 1, 'opened', 'enabled', 4, 19, '会議室予約', 20, 0, NULL, NULL, '', NULL, NULL, '/gw/schedule_props/show_week?s_genre=other&cls=other&type_id=200', NULL, '', NULL, 1, NULL, 1, '', '', 0, NULL, NULL, NULL, '2011-05-23 21:37:19', NULL, NULL, '2011-05-23 21:37:19', 'システム管理者', '秘書広報課'),
-(1501, NULL, 1, 'opened', 'enabled', 4, 19, '一般備品', 30, 0, NULL, NULL, '', NULL, NULL, '/gw/schedule_props/show_week?s_genre=other&cls=other&type_id=300', NULL, '', NULL, 1, NULL, 1, '', '', 0, NULL, NULL, NULL, '2011-05-23 21:37:41', NULL, NULL, '2011-05-23 21:37:41', 'システム管理者', '秘書広報課'),
-(1502, NULL, 1, 'opened', 'enabled', 4, 28, 'Joruri公式サイト', 10, 0, NULL, NULL, '', NULL, NULL, 'http://joruri.org/', NULL, '', NULL, 2, NULL, 1, '', '', 0, NULL, NULL, NULL, '2011-05-23 21:40:59', NULL, NULL, '2011-05-23 21:40:59', 'システム管理者', '秘書広報課'),
+(1,NULL,1,'opened','enabled',1,0,'TOP',10,0,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL,1,NULL,NULL,0,NULL,'admin','秘書広報課','2010-10-22 17:21:35','admin','秘書広報課','2010-10-22 17:21:35','admin','秘書広報課'),
+(2,NULL,1,'opened','enabled',2,1,'ポータル左　リンクピース',10,10,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL,1,NULL,NULL,0,NULL,'admin','秘書広報課','2010-11-10 21:18:27','admin','秘書広報課','2010-10-22 17:32:27','admin','秘書広報課'),
+(15,NULL,1,'opened','enabled',3,2,'掲示板',70,0,1,NULL,NULL,4,9,'/gwbbs',NULL,'',NULL,1,NULL,1,'','',0,NULL,'admin','秘書広報課','2011-05-12 23:00:43','admin','秘書広報課','2010-10-22 18:10:17','admin','秘書広報課'),
+(19,NULL,1,'opened','enabled',3,2,'施設予約',80,0,1,NULL,'',5,9,'/gw/schedule_props/show_week?s_genre=other&cls=other&type_id=200',NULL,'',NULL,1,NULL,1,'','',0,NULL,'admin','秘書広報課','2011-05-12 23:00:38','admin','秘書広報課','2010-10-22 18:11:41','admin','秘書広報課'),
+(24,NULL,1,'opened','enabled',3,2,'質問管理',90,0,1,NULL,NULL,6,9,'/gwfaq',NULL,'',NULL,1,NULL,1,'','',0,NULL,'admin','秘書広報課','2011-05-12 23:00:32','admin','秘書広報課','2010-10-22 18:15:45','admin','秘書広報課'),
+(28,NULL,1,'opened','enabled',3,2,'リンク',100,0,1,NULL,'',7,9,'',NULL,'',NULL,1,NULL,1,'','',0,NULL,'admin','秘書広報課','2011-05-12 23:00:28','admin','秘書広報課','2010-10-22 18:17:14','admin','秘書広報課'),
+(61,NULL,1,'opened','enabled',2,1,'ポータルヘッダ　アイコンメニュー',30,30,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL,1,NULL,NULL,0,NULL,'admin','秘書広報課','2010-11-10 21:19:29','admin','秘書広報課','2010-10-27 16:01:12','admin','秘書広報課'),
+(62,NULL,1,'opened','enabled',3,61,'ポータル',10,0,1,NULL,NULL,NULL,NULL,'/',NULL,'',NULL,1,NULL,1,'','',0,NULL,'admin','秘書広報課','2010-10-27 16:06:49','admin','秘書広報課','2010-10-27 16:06:49','admin','秘書広報課'),
+(63,NULL,1,'opened','enabled',4,62,'ポータル',10,0,1,NULL,NULL,NULL,NULL,'/',NULL,'/_common/themes/gw/files/menu/ic_home.gif',NULL,1,NULL,1,'','',0,NULL,'admin','秘書広報課','2010-10-27 16:07:28','admin','秘書広報課','2010-10-27 16:07:28','admin','秘書広報課'),
+(64,NULL,1,'opened','enabled',3,61,'メール',20,0,1,NULL,'',NULL,12,'demo.webmail.joruri.org',NULL,'',NULL,2,NULL,2,'account','password',0,NULL,'admin','秘書広報課','2011-05-22 21:39:21','admin','秘書広報課','2010-10-27 16:08:19','admin','秘書広報課'),
+(65,NULL,1,'opened','enabled',4,64,'メール',10,0,1,NULL,'',NULL,NULL,'demo.webmail.joruri.org',NULL,'/_common/themes/gw/files/menu/ic_mailer.gif',NULL,2,NULL,2,'account','password',0,NULL,'admin','秘書広報課','2011-03-30 16:52:28','admin','秘書広報課','2010-10-27 16:09:08','admin','秘書広報課'),
+(66,NULL,1,'opened','enabled',3,61,'スケジュール',40,0,1,NULL,'',NULL,13,'/gw/schedules/show_month',NULL,'',NULL,1,NULL,1,'','',0,NULL,'admin','秘書広報課','2011-03-04 15:44:37','admin','秘書広報課','2010-10-27 16:10:08','admin','秘書広報課'),
+(67,NULL,1,'opened','enabled',4,66,'スケジュール',10,0,1,NULL,NULL,NULL,NULL,'/gw/schedules/show_month',NULL,'/_common/themes/gw/files/menu/ic_schedule.gif',NULL,1,NULL,1,'','',0,NULL,'admin','秘書広報課','2010-10-27 16:11:33','admin','秘書広報課','2010-10-27 16:11:33','admin','秘書広報課'),
+(68,NULL,1,'opened','enabled',4,66,'新規作成',20,0,1,NULL,NULL,NULL,16,'/gw/schedules/new',NULL,'/_common/themes/gw/files/schedule/ic_add.gif',NULL,1,NULL,1,'','',0,NULL,'admin','秘書広報課','2010-10-27 16:12:41','admin','秘書広報課','2010-10-27 16:12:41','admin','秘書広報課'),
+(69,NULL,1,'opened','enabled',3,61,'ToDo',50,0,1,NULL,'',NULL,14,'/gw/todos',NULL,'',NULL,1,NULL,1,'','',0,NULL,'admin','秘書広報課','2011-04-11 22:27:23','admin','秘書広報課','2010-10-27 16:13:30','admin','秘書広報課'),
+(70,NULL,1,'opened','enabled',4,69,'ToDo',10,0,1,NULL,NULL,NULL,NULL,'/gw/todos',NULL,'/_common/themes/gw/files/menu/ic_todo.gif',NULL,1,NULL,1,'','',0,NULL,'admin','秘書広報課','2010-10-27 16:14:05','admin','秘書広報課','2010-10-27 16:14:05','admin','秘書広報課'),
+(71,NULL,1,'opened','enabled',4,69,'新規作成',20,0,1,NULL,NULL,NULL,16,'/gw/todos/new',NULL,'/_common/themes/gw/files/schedule/ic_add.gif',NULL,1,NULL,1,'','',0,NULL,'admin','秘書広報課','2010-10-27 16:14:40','admin','秘書広報課','2010-10-27 16:14:40','admin','秘書広報課'),
+(72,NULL,1,'opened','enabled',3,61,'連絡メモ',60,0,1,NULL,NULL,NULL,15,'/gw/memos',NULL,'',NULL,1,NULL,1,'','',0,NULL,'admin','秘書広報課','2010-11-19 17:16:20','admin','秘書広報課','2010-10-27 16:15:20','admin','秘書広報課'),
+(73,NULL,1,'opened','enabled',4,72,'連絡メモ',10,0,1,NULL,NULL,NULL,NULL,'/gw/memos',NULL,'/_common/themes/gw/files/menu/ic_memo.gif',NULL,1,NULL,1,'','',0,NULL,'admin','秘書広報課','2010-10-27 16:15:44','admin','秘書広報課','2010-10-27 16:15:44','admin','秘書広報課'),
+(74,NULL,1,'opened','enabled',4,72,'新規作成',20,0,1,NULL,NULL,NULL,16,'/gw/memos/new',NULL,'/_common/themes/gw/files/schedule/ic_add.gif',NULL,1,NULL,1,'','',0,NULL,'admin','秘書広報課','2010-10-27 16:16:09','admin','秘書広報課','2010-10-27 16:16:09','admin','秘書広報課'),
+(77,NULL,1,'opened','enabled',3,61,'掲示板',90,0,1,NULL,'',NULL,NULL,'/gwbbs',NULL,'',NULL,1,NULL,1,'','',0,NULL,'admin','秘書広報課','2011-01-26 19:49:40','admin','秘書広報課','2010-10-27 16:18:43','admin','秘書広報課'),
+(78,NULL,1,'opened','enabled',4,77,'掲示板',10,0,1,NULL,NULL,NULL,NULL,'/gwbbs',NULL,'/_common/themes/gw/files/menu/ic_board.gif',NULL,1,NULL,1,'','',0,NULL,'admin','秘書広報課','2010-10-27 16:19:05','admin','秘書広報課','2010-10-27 16:19:05','admin','秘書広報課'),
+(79,NULL,1,'opened','enabled',3,61,'質問管理',100,0,1,NULL,NULL,NULL,NULL,'/gwfaq',NULL,'',NULL,1,NULL,1,'','',0,NULL,'admin','秘書広報課','2011-01-26 19:49:52','admin','秘書広報課','2010-10-27 16:19:32','admin','秘書広報課'),
+(80,NULL,1,'opened','enabled',4,79,'質問管理',10,0,1,NULL,NULL,NULL,NULL,'/gwfaq',NULL,'/_common/themes/gw/files/menu/ic_qa-admin.gif',NULL,1,NULL,1,'','',0,NULL,'admin','秘書広報課','2010-10-27 16:19:59','admin','秘書広報課','2010-10-27 16:19:59','admin','秘書広報課'),
+(81,NULL,1,'opened','enabled',3,61,'書庫',110,0,1,NULL,NULL,NULL,NULL,'/doclibrary',NULL,'',NULL,1,NULL,1,'','',0,NULL,'admin','秘書広報課','2011-01-26 19:49:52','admin','秘書広報課','2010-10-27 16:20:29','admin','秘書広報課'),
+(82,NULL,1,'opened','enabled',4,81,'書庫',10,0,1,NULL,NULL,NULL,NULL,'/doclibrary',NULL,'/_common/themes/gw/files/menu/ic_library.gif',NULL,1,NULL,1,'','',0,NULL,'admin','秘書広報課','2010-10-27 16:20:53','admin','秘書広報課','2010-10-27 16:20:53','admin','秘書広報課'),
+(83,NULL,1,'opened','enabled',3,61,'電子図書',120,0,1,NULL,'',NULL,NULL,'/digitallibrary',NULL,'/digitallibrary',NULL,1,NULL,1,'','',0,NULL,'admin','秘書広報課','2011-01-26 19:48:25','admin','秘書広報課','2010-10-27 16:21:18','admin','秘書広報課'),
+(84,NULL,1,'opened','enabled',4,83,'電子図書',10,0,1,NULL,NULL,NULL,NULL,'/digitallibrary',NULL,'/_common/themes/gw/files/menu/ic_electronic-book.gif',NULL,1,NULL,1,'','',0,NULL,'admin','秘書広報課','2010-10-27 16:21:51','admin','秘書広報課','2010-10-27 16:21:51','admin','秘書広報課'),
+(85,NULL,1,'opened','enabled',3,61,'設定',130,0,0,21,'',NULL,NULL,'/gw/config_settings',NULL,'',NULL,1,NULL,1,'','',0,NULL,'admin','秘書広報課','2011-02-02 15:34:36','admin','秘書広報課','2010-10-27 16:23:22','admin','秘書広報課'),
+(86,NULL,1,'opened','enabled',4,85,'設定',10,0,1,NULL,'',NULL,NULL,'/gw/config_settings',NULL,'/_common/themes/gw/files/menu/ic_system.gif',NULL,1,NULL,1,'','',0,NULL,'admin','秘書広報課','2011-02-02 15:34:50','admin','秘書広報課','2010-10-27 16:23:57','admin','秘書広報課'),
+(87,NULL,1,'opened','enabled',3,61,'DECO Drive',140,0,1,NULL,'',NULL,18,'http://drive.deco-project.org/',NULL,'',NULL,2,NULL,1,'','',0,NULL,'admin','秘書広報課','2011-05-13 13:45:19','admin','秘書広報課','2010-10-27 16:25:09','admin','秘書広報課'),
+(88,NULL,1,'opened','enabled',4,87,'DECO Drive',10,0,1,NULL,'',NULL,NULL,'http://drive.deco-project.org/',NULL,'/_common/themes/gw/files/menu/ic_deco.gif',NULL,2,NULL,1,'','',0,NULL,'admin','秘書広報課','2011-05-13 13:44:33','admin','秘書広報課','2010-10-27 16:26:26','admin','秘書広報課'),
+(89,NULL,1,'opened','enabled',3,61,'回覧板',70,0,1,NULL,'',NULL,15,'/gwcircular',NULL,'',NULL,1,NULL,1,'','',0,NULL,'admin','秘書広報課','2010-11-19 17:22:53','admin','秘書広報課','2010-11-05 10:04:32','admin','秘書広報課'),
+(90,NULL,1,'opened','enabled',4,89,'回覧板',10,0,1,NULL,'',NULL,NULL,'/gwcircular',NULL,'/_common/themes/gw/files/menu/ic_circulation.gif',NULL,1,NULL,1,'','',0,NULL,'admin','秘書広報課','2010-11-09 11:54:32','admin','秘書広報課','2010-11-09 11:53:00','admin','秘書広報課'),
+(91,NULL,1,'opened','enabled',4,89,'新規作成',20,0,NULL,NULL,'',NULL,16,'/gwcircular/new',NULL,'/_common/themes/gw/files/schedule/ic_add.gif',NULL,1,NULL,1,'','',0,NULL,'admin','秘書広報課','2010-11-19 17:13:59','admin','秘書広報課','2010-11-19 17:13:59','admin','秘書広報課'),
+(773,NULL,1,'opened','enabled',3,2,'照会・回答',60,0,NULL,NULL,'',17,9,'/gwmonitor',NULL,'',NULL,1,NULL,1,'','',0,NULL,'admin','秘書広報課','2011-05-12 23:00:47','admin','秘書広報課','2010-12-27 13:35:55','admin','秘書広報課'),
+(1215,NULL,1,'opened','enabled',3,61,'照会・回答',80,0,NULL,NULL,'',NULL,15,'/gwmonitor',NULL,NULL,NULL,1,NULL,1,'','',0,NULL,'admin','秘書広報課','2011-02-02 15:43:14','admin','秘書広報課','2011-01-26 19:46:55','admin','秘書広報課'),
+(1216,NULL,1,'opened','enabled',4,1215,'照会・回答システム',10,0,NULL,NULL,'',17,NULL,'/gwmonitor',NULL,'/_common/themes/gw/files/menu/ic_dennshisyoukai.gif',NULL,1,NULL,1,'','',0,NULL,'admin','秘書広報課','2011-01-26 20:05:50','admin','秘書広報課','2011-01-26 19:52:52','admin','秘書広報課'),
+(1217,NULL,1,'opened','enabled',4,1215,'新規作成',20,0,NULL,NULL,'',NULL,16,'/gwmonitor/builders/new',NULL,'/_common/themes/gw/files/schedule/ic_add.gif',NULL,1,NULL,1,'','',0,NULL,'admin','秘書広報課','2011-01-26 20:14:10','admin','秘書広報課','2011-01-26 20:08:04','admin','秘書広報課'),
+(1481,NULL,1,'opened','enabled',3,2,'総務事務システム',30,0,NULL,NULL,'',1,8,'#',NULL,'',NULL,1,NULL,1,'','',0,NULL,'admin','秘書広報課','2011-05-13 14:15:51','admin','秘書広報課','2011-05-12 22:45:48','admin','秘書広報課'),
+(1485,NULL,1,'opened','enabled',3,2,'電子決裁・文書管理',50,0,NULL,NULL,'',2,9,'#',NULL,'',NULL,1,NULL,1,'','',0,NULL,'admin','秘書広報課','2011-05-13 14:16:11','admin','秘書広報課','2011-05-12 23:00:16','admin','秘書広報課'),
+(1496,NULL,1,'opened','enabled',4,773,'照会・回答システム',10,0,NULL,NULL,'',17,9,'/gwmonitor',NULL,'',NULL,1,NULL,1,'','',0,NULL,NULL,NULL,'2011-05-23 21:30:46',NULL,NULL,'2011-05-23 21:30:46','システム管理者','秘書広報課'),
+(1497,NULL,1,'opened','enabled',4,773,'アンケート集計システム',20,0,NULL,NULL,'',NULL,NULL,'/enquete/',NULL,'',NULL,1,NULL,1,'','',0,NULL,NULL,NULL,'2011-05-23 21:31:26',NULL,NULL,'2011-05-23 21:31:26','システム管理者','秘書広報課'),
+(1498,NULL,1,'opened','enabled',4,15,'全庁掲示板',10,0,NULL,NULL,'',NULL,NULL,'/gwbbs/docs?title_id=1&limit=10',NULL,'',NULL,1,NULL,1,'','',0,NULL,NULL,NULL,'2011-05-23 21:34:40',NULL,NULL,'2011-05-23 21:34:40','システム管理者','秘書広報課'),
+(1499,NULL,1,'opened','enabled',4,19,'公用車予約',10,0,NULL,NULL,'',NULL,NULL,'/gw/schedule_props/show_week?s_genre=other&cls=other&type_id=100',NULL,'',NULL,1,NULL,1,'','',0,NULL,NULL,NULL,'2011-05-23 21:36:58',NULL,NULL,'2011-05-23 21:36:58','システム管理者','秘書広報課'),
+(1500,NULL,1,'opened','enabled',4,19,'会議室予約',20,0,NULL,NULL,'',NULL,NULL,'/gw/schedule_props/show_week?s_genre=other&cls=other&type_id=200',NULL,'',NULL,1,NULL,1,'','',0,NULL,NULL,NULL,'2011-05-23 21:37:19',NULL,NULL,'2011-05-23 21:37:19','システム管理者','秘書広報課'),
+(1501,NULL,1,'opened','enabled',4,19,'一般備品',30,0,NULL,NULL,'',NULL,NULL,'/gw/schedule_props/show_week?s_genre=other&cls=other&type_id=300',NULL,'',NULL,1,NULL,1,'','',0,NULL,NULL,NULL,'2011-05-23 21:37:41',NULL,NULL,'2011-05-23 21:37:41','システム管理者','秘書広報課'),
+(1502,NULL,1,'opened','enabled',4,28,'Joruri公式サイト',10,0,NULL,NULL,'',NULL,NULL,'http://joruri.org/',NULL,'',NULL,2,NULL,1,'','',0,NULL,NULL,NULL,'2011-05-23 21:40:59',NULL,NULL,'2011-05-23 21:40:59','システム管理者','秘書広報課'),
 (1503, NULL, 1, 'opened', 'enabled', 4, 773, '研修等申込・受付システム', 30, 0, NULL, NULL, '', NULL, NULL, '/gwsub/sb01/sb01_training_entries', NULL, '', NULL, 1, NULL, 1, '', '', 0, NULL, NULL, NULL, '2012-05-11 14:04:47', NULL, NULL, '2012-05-11 14:04:47', 'システム管理者', '秘書広報課'),
 (1504, NULL, 1, 'opened', 'enabled', 3, 2, '職員名簿', 70, 0, NULL, NULL, '', 3, 9, '', NULL, '', NULL, 1, NULL, 1, '', '', 0, NULL, NULL, NULL, '2012-05-16 11:37:03', 'システム管理者', '秘書広報課', '2012-05-16 11:36:39', 'システム管理者', '秘書広報課'),
 (1505, NULL, 1, 'opened', 'enabled', 4, 1504, '電子職員録', 10, 0, NULL, NULL, '', NULL, NULL, '/gwsub/sb04/01/sb04stafflistview', NULL, '', NULL, 1, NULL, 1, '', '', 0, NULL, NULL, NULL, '2012-05-16 11:38:19', NULL, NULL, '2012-05-16 11:38:19', 'システム管理者', '秘書広報課'),
@@ -508,6 +503,11 @@ INSERT INTO `gw_memo_mobiles` (`id`, `domain`, `created_at`, `updated_at`) VALUE
 -- テーブルのデータをダンプしています `gw_prop_others`
 --
 
+INSERT INTO `gw_user_properties` (`class_id`, `uid`, `name`, `type_name`, `options`, `created_at`, `updated_at`) VALUES
+( 3, '0', 'enquete', 'help_link', '[[""], [""], [""], [""], [""], [""], [""]]', CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP());
+
+INSERT INTO `gw_user_properties` (`class_id`, `uid`, `name`, `type_name`, `options`, `created_at`, `updated_at`) VALUES
+( 3, '0', 'gwmonitor', 'help_link', '[[""], [""]]', CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP());
 
 --
 -- テーブルのデータをダンプしています `gw_prop_other_images`
@@ -569,11 +569,6 @@ INSERT INTO `gw_prop_other_limits` (`id`, `sort_no`, `state`, `gid`, `limit`, `c
 
 --
 -- テーブルのデータをダンプしています `gw_schedule_repeats`
---
-
-
---
--- テーブルのデータをダンプしています `gw_schedule_todos`
 --
 
 

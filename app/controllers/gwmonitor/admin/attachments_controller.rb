@@ -1,10 +1,12 @@
-class Gwmonitor::Admin::AttachmentsController < ApplicationController
+# -*- encoding: utf-8 -*-
+class Gwmonitor::Admin::AttachmentsController < Gw::Controller::Admin::Base
   include System::Controller::Scaffold
 
   rescue_from ActionController::InvalidAuthenticityToken, :with => :invalidtoken
 
-  def initialize_scaffold
+  def pre_dispatch
     self.class.layout 'admin/gwboard_base'
+    @parent_id = params[:gwmonitor_id]
     @title = Gwmonitor::Control.find_by_id(params[:title_id])
     return http_error(404) unless @title
   end
@@ -12,7 +14,7 @@ class Gwmonitor::Admin::AttachmentsController < ApplicationController
   def index
     item = Gwmonitor::File.new
     item.and :title_id, @title.id
-    item.and :parent_id, params[:parent_id]
+    item.and :parent_id, @parent_id
     item.order  'id'
     @items = item.find(:all)
   end
@@ -50,7 +52,7 @@ class Gwmonitor::Admin::AttachmentsController < ApplicationController
       end
     end
 
-    redirect_to "#{gwmonitor_attachments_path(params[:parent_id])}?title_id=#{@title.id}"
+    redirect_to "#{gwmonitor_attachments_path(@parent_id)}?title_id=#{@title.id}"
   end
 
   def create_file
@@ -62,7 +64,7 @@ class Gwmonitor::Admin::AttachmentsController < ApplicationController
         :size => @uploaded[:upload].size,
         :memo => @uploaded[:memo],
         :title_id => params[:title_id],
-        :parent_id => params[:parent_id],
+        :parent_id => @parent_id,
         :content_id => @title.upload_system,
         :db_file_id => 0
       })

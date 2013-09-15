@@ -1,4 +1,4 @@
-
+# -*- encoding: utf-8 -*-
 #以下、module Cms::Model::Base::Fileから
 #ファイルサイズの計算等を流用している
 module Gwsub::Model::AttachFile
@@ -43,9 +43,9 @@ module Gwsub::Model::AttachFile
     return {:width => dst_w.ceil, :height => dst_h.ceil}
   end
 
-  def graphic_size
+  def graphic_size(no_br=false)
     str = ''
-    str = "<br />（#{self.width.to_s} x #{self.height.to_s}）" if self.is_image
+    str = ((no_br ? "" : "<br/>").concat("（#{self.width.to_s} x #{self.height.to_s}）")) if self.is_image
     return str
   end
   #

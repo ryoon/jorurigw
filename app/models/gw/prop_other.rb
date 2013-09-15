@@ -1,11 +1,20 @@
+# encoding: utf-8
 class Gw::PropOther < Gw::Database
   include System::Model::Base
-  include Cms::Model::Base::Content
+  include System::Model::Base::Content
+
   validates_presence_of :name, :type_id
   has_many :schedule_props, :class_name => 'Gw::ScheduleProp', :as => :prop
   has_many :schedules, :through => :schedule_props
   has_many :images, :primary_key => 'id', :foreign_key => 'parent_id', :class_name => 'Gw::PropOtherImage', :order=>"gw_prop_other_images.id"
   has_many :prop_other_roles, :foreign_key => :prop_id, :class_name => 'Gw::PropOtherRole', :order=>"gw_prop_other_roles.id"
+
+  after_save :delete_cache_admin_first
+  before_destroy :delete_cache_admin_first
+
+  def delete_cache_admin_first
+    Rails.cache.delete(admin_first_id_cache_key)
+  end
 
   def self.get_select
     _conditions = ""
@@ -94,19 +103,32 @@ class Gw::PropOther < Gw::Database
     end
     return admin.uniq
   end
+  
+  def admin_first_id_cache_key
+    return "admin_first_id_#{self.id}"
+  end
+  
+  def get_admin_first_id(parent_groups = Gw::PropOther.get_parent_groups)
+    if self.gid.present?
+      return self.gid
+    else
+      Cache.load(admin_first_id_cache_key) { admin_first_id(parent_groups) }
+    end
+  end
 
   def admin_first_id(parent_groups = Gw::PropOther.get_parent_groups)
     groups = Array.new
     gids = self.admin_gids
     if gids.length > 1
-      groups = System::GroupHistory.new.find(:all, :conditions => ["id in (?)", gids], :order=>"level_no,  sort_no , code, start_at DESC, end_at IS Null ,end_at DESC")
+      groups = System::GroupHistory.find(:all, :conditions => ["id in (?)", gids], 
+        :order=>"level_no,  sort_no , code, start_at DESC, end_at IS Null ,end_at DESC")
     elsif gids.length == 1
       return gids[0]
     end
     parent_groups.each do |parent_group|
       groups.each do |group|
         g = System::GroupHistory.find_by_id(group.id)
-        if !g.blank?
+        if g.present?
           if g.id == parent_group.id
             return g.id
           elsif g.parent_id == parent_group.id
@@ -189,20 +211,10 @@ class Gw::PropOther < Gw::Database
   end
 
   def is_admin_or_editor_or_reader?(gid = Site.user_group.id)
-    admin = self.prop_other_roles.is_admin?(self.id)
-    read = self.prop_other_roles.is_read?(self.id)
-    edit = self.prop_other_roles.is_edit?(self.id)
-    if admin || read || edit
-      return true
-    else
-      return false
-    end
-  end
+    item = Gw::PropOtherRole.find(:all, :select => "id",
+      :conditions=>"prop_id = #{self.id} and gid in (#{gid}, #{Site.user_group.parent_id}, 0)" )
 
-  def is_editor_or_reader?(gid = Site.user_group.id)
-    read = self.prop_other_roles.is_read?(self.id)
-    edit = self.prop_other_roles.is_edit?(self.id)
-    if read || edit
+    if item.length > 0
       return true
     else
       return false
@@ -392,4 +404,15 @@ class Gw::PropOther < Gw::Database
 
   end
 
+  def get_type_class
+    case self.type_id
+    when 200
+      class_s = "room"
+    when 100
+      class_s = "car"
+    else
+      class_s = "other"
+    end
+    return class_s
+  end
 end

@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 class Gwmonitor::Control < Gw::Database
   include System::Model::Base
   include System::Model::Base::Content
@@ -51,11 +52,11 @@ class Gwmonitor::Control < Gw::Database
       str = sprintf("%08d",file.id)
       str = "#{str[0..3]}/#{str[4..7]}"
       parent_name = Util::CheckDigit.check(format('%07d', file.parent_id))
-      file_name = "/#{sprintf('%06d',file.title_id)}/#{parent_name}/#{str}/#{URI.encode(file.filename)}"
+      file_name = "/#{sprintf('%06d',file.title_id)}/#{parent_name}/#{str}/#{CGI.escapeHTML((URI.encode(file.filename)))}"
       file_cnt += 1
       atch_cnt += 1 if self.caption.index(file_name)
     end
-
+    
     if file_cnt != atch_cnt
       errors.add :state, "記事本文に添付されていないファイルが #{file_cnt - atch_cnt} ファイルあります。"
       self.state = 'draft' unless self._commission_state == 'public'
@@ -166,67 +167,67 @@ class Gwmonitor::Control < Gw::Database
   end
 
   def show_path
-    return "/#{self.system_name}/builders/#{self.id}"
+    return "/gwmonitor/builders/#{self.id}"
   end
 
   def edit_path
-    return "/#{self.system_name}/builders/#{self.id}/edit"
+    return "/gwmonitor/builders/#{self.id}/edit"
   end
 
   def update_path
-    return "/#{self.system_name}/builders/#{self.id}"
+    return "/gwmonitor/builders/#{self.id}"
   end
 
   def delete_path
-    return "/#{self.system_name}/builders/#{self.id}"
+    return "/gwmonitor/builders/#{self.id}"
   end
 
   def closed_path
-    return "/#{self.system_name}/builders/#{self.id}/closed"
+    return "/gwmonitor/builders/#{self.id}/closed"
   end
 
   def reopen_path
-    return "/#{self.system_name}/builders/#{self.id}/reopen"
+    return "/gwmonitor/builders/#{self.id}/reopen"
   end
 
   def monitor_path
-    return "/#{self.system_name}"
+    return "/gwmonitor"
   end
 
   def builder_path
-    return "/#{self.system_name}/builders"
+    return "/gwmonitor/builders"
   end
 
   def response_path
-    return "/#{self.system_name}/#{self.id}/docs/"
+    return "/gwmonitor/#{self.id}/docs/"
   end
 
   def new_doc_path
-    return "/#{self.system_name}/#{self.id}/docs/new"
+    return "/gwmonitor/#{self.id}/docs/new"
   end
 
   def result_path
-    return "/#{self.system_name}/#{self.id}/results"
+    return "/gwmonitor/#{self.id}/results"
   end
 
   def csv_export_path
-    return "/#{self.system_name}/#{self.id}/csv_exports"
+    return "/gwmonitor/#{self.id}/csv_exports"
   end
 
   def file_export_path
-    return "/#{self.system_name}/#{self.id}/file_exports"
+    return "/gwmonitor/#{self.id}/file_exports"
   end
 
   def csv_export_path
-    return "/#{self.system_name}/#{self.id}/csv_exports"
+    return "/gwmonitor/#{self.id}/csv_exports"
   end
 
   def csv_export_file_path
-    return "/#{self.system_name}/#{self.id}/csv_exports/export_csv"
+    return "/gwmonitor/#{self.id}/csv_exports/export_csv"
   end
 
   def gwmonitor_form_name
-    return 'gwmonitor/public/user_forms/' + self.form_name + '/'
+    return 'gwmonitor/admin/user_forms/' + self.form_name + '/'
   end
 
   def set_section_name

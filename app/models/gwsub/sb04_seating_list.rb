@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 class Gwsub::Sb04SeatingList < Gwsub::GwsubPref
   include System::Model::Base
   include Cms::Model::Base::Content
@@ -83,16 +84,20 @@ class Gwsub::Sb04SeatingList < Gwsub::GwsubPref
     return false if title_id.blank?
     return false if doc_id.blank?
 
-    bbs_board_exist = Gwbbs::Control.count(:all,:conditions=>"id=#{title_id}")
+    title_id.flatten!
+    doc_id.flatten!
+    title_id = title_id[0]
+    doc_id = doc_id[0]
+    bbs_board = Gwbbs::Control.find_by_id(title_id)
     # 掲示板がみつからなければurl不正
-    return false if bbs_board_exist==0
-    bbs_board = Gwbbs::Control.find(:all,:conditions=>"id=#{title_id}")
+    return false if bbs_board.blank?
 
     cnn = Gwbbs::Doc.establish_connection
-    cnn.spec.config[:database] = bbs_board[0].dbname.to_s
-    bbs_doc1 = Gwboard::CommonDb.establish_connection(cnn.spec)
+    cnn.spec.config[:database] = bbs_board.dbname.to_s
+    bbs_doc1 = Gwboard::CommonDb.establish_connection(cnn.spec.config)
     bbs_doc1 = Gwbbs::Doc.new
-    bbs_doc_exist = bbs_doc1.count(:all,:conditions=>"id=#{doc_id} and state='public'")
+    bbs_doc = bbs_doc1.find(:all,:conditions=>"id=#{doc_id} and state='public'")
+    bbs_doc_exist = bbs_doc.count
     # 公開記事がみつからなければ、リンクきれ
     return false if bbs_doc_exist==0
     # 期限切れは、見せないので、リンクを切る
@@ -107,6 +112,14 @@ class Gwsub::Sb04SeatingList < Gwsub::GwsubPref
       return false
     end
     return true
+  end
+  
+  def self.db_alias(item)
+    cnn = item.establish_connection
+
+    cnn.spec.config[:database] = @title.dbname.to_s
+    Gwboard::CommonDb.establish_connection(cnn.spec)
+    return item
   end
 
   def self.drop_create_table
@@ -127,7 +140,7 @@ class Gwsub::Sb04SeatingList < Gwsub::GwsubPref
       `created_user`        text default NULL,
       `created_group`       text default NULL,
       PRIMARY KEY  (`id`)
-    ) ENGINE=MyISAM DEFAULT CHARSET=utf8;"
+    ) DEFAULT CHARSET=utf8;"
     _connect.execute(_create_query)
     return
   end

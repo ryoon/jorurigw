@@ -1,3 +1,4 @@
+# encoding: utf-8
 class Util::Date::Calendar
   attr_accessor :year_uri
   attr_accessor :month_uri
@@ -17,6 +18,10 @@ class Util::Date::Calendar
     @cy = cy = year || Time.now.year
     @cm = cm = month || Time.now.month
     cd = 1
+    unless Date::valid_date?(@cy, @cm, cd)
+      @errors = "date out of range"
+      return false
+    end
     
     ed = end_day(@cy, @cm)
     
@@ -66,9 +71,13 @@ class Util::Date::Calendar
     end
   end
   
+  def errors
+    @errors
+  end
+  
   def end_day(year, month)
     day = [0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][month]
-    day += 1 if Date.new(year).leap? && month == 2
+    day += 1 if Date.new(year).leap? && month.to_i == 2
     day
   end
   
@@ -82,6 +91,10 @@ class Util::Date::Calendar
   
   def month
     @cm
+  end
+  
+  def month_name
+    Time.local(2000, month, 1, 0, 0, 0).strftime('%B')
   end
   
   def prev_month
@@ -112,6 +125,19 @@ class Util::Date::Calendar
     @day_uri.gsub(':year', day[:year].to_s).gsub(':month', sprintf('%02d', day[:month])).gsub(':day', sprintf('%02d', day[:day]))
   end
   
+  def day_link=(dates)
+    
+    @days.each do |day|
+      next unless Date::valid_date?(day[:year], day[:month], day[:day])
+      d = Date::new(day[:year], day[:month], day[:day])
+      if dates.index(d)
+        day[:link] = true
+      else
+        day[:link] = false
+      end
+    end
+  end
+  
   def to_html
     html = '<div class="calendar">' + "\n"
     
@@ -124,7 +150,7 @@ class Util::Date::Calendar
     html += '<div class="days">' + "\n"
     @days.each do |d|
       html += '<div class="week">' + "\n" if d[:wday] == 0
-      if @day_uri
+      if @day_uri && d[:link] != false
         html += '<a class="' + d[:class] + '" href="' + day_uri(d) + '">' + d[:day].to_s + '</a>' + "\n"
       else
         html += '<span class="' + d[:class] + '">' + d[:day].to_s + '</span>' + "\n"

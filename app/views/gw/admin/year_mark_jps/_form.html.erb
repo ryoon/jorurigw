@@ -1,18 +1,17 @@
+<%#*<p>Find me in app/views/gw/admin/year_mark_jp/form.html.erb</p>%>
+
 <%= f.error_messages %>
-<br /><%= required_head  %>
+<br /><%= raw(required_head)  %>
 <table class="show">
-<tr><th><%= required %>年号</th>
+<tr><th>年号<%= raw(required) %></th>
 <td><%= f.text_field :name ,:size=>30 %></td></tr>
-<tr><th><%= required %>記号</th>
+<tr><th>記号<%= raw(required) %></th>
 <td><%= f.text_field :mark ,:size=>30 %></td></tr>
 <tr>
-<th><%= required %>開始日（西暦）</th>
-<td><%= f.text_field :start_at %>
+<th>開始日（西暦）<%= raw(required) %></th>
+<td><%= f.text_field :start_at ,:value=>Gw.date_str(@item.start_at) %>
 <button type="button" id="start_at_bt" onclick="showCalendar('start_at_bt','<%= "#{f.object_name}_start_at" %>')" class="show_cal_bt"></button>
 </td>
 </tr>
 </table>
-<br />
-<%= f.submit '保存' %>
-<br />
-<%= gw_js_include_full %>
+<%= raw(gw_js_include_full) %>

@@ -1,10 +1,13 @@
-class System::Admin::CustomGroupsController < ApplicationController
+# encoding: utf-8
+class System::Admin::CustomGroupsController < Gw::Controller::Admin::Base
   include System::Controller::Scaffold
+  layout "admin/template/admin"
 
   def initialize_scaffold
     @action = params[:action]
     id      = params[:parent] == '0' ? 1 : params[:parent]
     @parent = System::CustomGroup.new.find(:first,:conditions=>{:id=>id})
+    Page.title = "カスタムグループ設定"
   end
 
   def init_params
@@ -26,7 +29,7 @@ class System::Admin::CustomGroupsController < ApplicationController
                   " ) AND system_custom_group_roles.priv_name = 'admin' " +
               ") "
     end
-    if !params[:keyword].blank? && params[:reset].blank?
+    if params[:keyword].present? && params[:reset].blank?
       @keyword = params[:keyword]
       cond += " AND " if !cond.blank?
       cond += " name like '%#{@keyword}%' "
@@ -187,12 +190,14 @@ class System::Admin::CustomGroupsController < ApplicationController
   end
 
   def sort_update
+    init_params
+    
     @item = System::CustomGroup.new
     unless params[:item].blank?
       params[:item].each{|key,value|
         if /^[0-9]+$/ =~ value
         else
-          @item.errors.add :"並び順"
+          @item.errors.add :sort_no, "は数値を入力してください。"
           break
         end
       }

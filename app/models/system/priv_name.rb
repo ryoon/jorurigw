@@ -1,3 +1,4 @@
+# encoding: utf-8
 class System::PrivName < ActiveRecord::Base
   include System::Model::Base
   include System::Model::Base::Config
@@ -15,4 +16,12 @@ class System::PrivName < ActiveRecord::Base
     state_no.each {|a| return a[0] if a[1] == state }
     return nil
   end
+
+  def editable?
+    return true
+  end
+  def deletable?
+    return true
+  end
+
 end

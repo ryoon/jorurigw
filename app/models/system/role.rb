@@ -1,8 +1,11 @@
+# encoding: utf-8
 #require 'digest/sha1'
 class System::Role < ActiveRecord::Base
   include System::Model::Base
   include System::Model::Base::Config
   include Cms::Model::Base::Content
+  include System::Model::Base::Content
+
   validates_presence_of     :idx, :class_id, :priv
   validates_presence_of     :role_name_id
   validates_presence_of     :priv_user_id
@@ -92,7 +95,7 @@ class System::Role < ActiveRecord::Base
   end
 
   def class_id_no
-    [['すべて', 0], ['ユーザ', 1], ['グループ', 2]]
+    [['すべて', 0], ['ユーザー', 1], ['グループ', 2]]
   end
 
   def class_id_label
@@ -119,4 +122,21 @@ class System::Role < ActiveRecord::Base
       end
     return label
   end
+
+  def editable?
+      return true
+  end
+
+  def deletable?
+    if self.table_name.to_s == "_admin"
+      # GW管理画面の管理者（システム管理者）が１名の場合は削除不可
+      c_priv = "table_name='_admin' and priv_name='admin'"
+      count = System::Role.count(:all , :conditions=>c_priv)
+      return false if count.to_i < 2
+      return true
+    else
+      return true
+    end
+  end
+
 end

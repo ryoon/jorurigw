@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 class Gwsub::Sb04EditableDate < Gwsub::GwsubPref
   include System::Model::Base
   include Cms::Model::Base::Content
@@ -12,7 +13,7 @@ class Gwsub::Sb04EditableDate < Gwsub::GwsubPref
 
   validates_uniqueness_of :fyear_id  ,:message=>'は、登録済です。'
 #  validates_each :published_at,:start_at,:end_at do |record, attr, value|
-  validates_each :start_at,:end_at do |record, attr, value|
+  validates_each :start_at,:end_at,:headline_at do |record, attr, value|
     record.errors.add attr, 'は、指定年度内の日付ではありません。' if !value.to_s.blank? and (Gw.date_str(value) < Gw.date_str(record.fy_rel.start_at) or Gw.date_str(value) > Gw.date_str(record.fy_rel.end_at))
   end
 #  validates_each :start_at,:end_at do |record, attr, value|
@@ -50,7 +51,7 @@ class Gwsub::Sb04EditableDate < Gwsub::GwsubPref
 
       case n
       when 's_keyword'
-        search_keyword v,:fyear_markjp,:published_at,:start_at,:end_at
+        search_keyword v,:fyear_markjp,:headline_at,:start_at,:end_at
       when 'fyed_id'
         search_id v,:fyear_id if v.to_i != 0
       end
@@ -76,7 +77,7 @@ class Gwsub::Sb04EditableDate < Gwsub::GwsubPref
       `created_user`        text default NULL,
       `created_group`       text default NULL,
       PRIMARY KEY  (`id`)
-    ) ENGINE=MyISAM DEFAULT CHARSET=utf8;"
+    ) DEFAULT CHARSET=utf8;"
     connect.execute(create_query)
     return
   end

@@ -1,9 +1,0 @@
-<div class="bbsUserform">
-<table class="bbsUserformBody">
-<tr><td class="docTitle"><span><%=@item.title%></span></td></tr>
-<tr><td><%=convert_for_mobile_body(@item.body,params[:_jgw_session])%></td></tr>
-<%= %Q(<tr><td>#{simple_format(@item.note)}</td></tr>) unless @item.note.blank?%>
-</table>
-</div>
-
-

@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 module Gwbbs::Controller::Scaffold
   def self.included(mod)
     mod.before_filter :initialize_scaffold
@@ -34,7 +35,7 @@ protected
     respond_to do |format|
       if item.creatable? && item.save
         options[:after_process].call if options[:after_process]
-        system_log.add(:item => item, :action => 'create')
+        #system_log.add(:item => item, :action => 'create')
 
         location = item.item_path
         status = params[:_created_status] || :created
@@ -68,7 +69,7 @@ protected
 
   def send_recognition_mail(item)
     mail_fr = 'admin@192.168.0.2'
-    subject = '【' + Site.title + '】 承認依頼'
+    subject = '【' + Core.title + '】 承認依頼'
     message = '下記URLから承認処理をお願いします。' + "\n\n" +
       url_for(:action => :show)
 

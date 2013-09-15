@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 class Gwbbs::Doc < Gwboard::CommonDb
   include System::Model::Base
   include System::Model::Base::Content
@@ -5,8 +6,6 @@ class Gwbbs::Doc < Gwboard::CommonDb
   include Gwboard::Model::Recognition
   include Gwbbs::Model::Systemname
 
-  belongs_to :status,    :foreign_key => :state,        :class_name => 'System::Base::Status'
-  belongs_to :content,   :foreign_key => :content_id,   :class_name => 'Cms::Content'
   belongs_to :control,   :foreign_key => :title_id,     :class_name => 'Gwbbs::Control'
   has_many   :comment,   :foreign_key => :parent_id,    :class_name => 'Gwbbs::Comment'
 
@@ -203,6 +202,13 @@ class Gwbbs::Doc < Gwboard::CommonDb
     {'0' => '重要必読', '1' => '普通'}
   end
 
+  def importance_states_select
+    return [
+      ['重要必読', 0] ,
+      ['普通', 1]
+    ]
+  end
+
   def one_line_states
     return [
       ['使用しない', 0] ,
@@ -238,11 +244,15 @@ class Gwbbs::Doc < Gwboard::CommonDb
     else
       _name = File.join(name[0..0], name[0..1], name[0..2], name)
     end
-    Site.public_path + content.public_uri + _name + '/index.html'
+    Core.public_path + content_public_uri + _name + '/index.html'
   end
 
   def public_uri
-    content.public_uri + name + '/'
+    content_public_uri + name + '/'
+  end
+
+  def content_public_uri
+    ""
   end
 
   def check_digit
@@ -341,7 +351,7 @@ class Gwbbs::Doc < Gwboard::CommonDb
     item = Gwboard::Synthesis.new
     item.and :title_id, self.title_id
     item.and :parent_id, self.id
-    item.and :system_name , self.system_name,
+    item.and :system_name, self.system_name
     item = item.find(:first)
     item.destroy if item
   end
@@ -363,15 +373,15 @@ class Gwbbs::Doc < Gwboard::CommonDb
   end
 
   def item_path
-    return "#{Site.current_node.public_uri.chop}?title_id=#{self.title_id}"
+    return "/gwbbs/docs?title_id=#{self.title_id}"
   end
 
   def show_path
-    return "#{Site.current_node.public_uri}#{self.id}/?title_id=#{self.title_id}"
+    return "/gwbbs/docs/#{self.id}/?title_id=#{self.title_id}"
   end
 
   def edit_path
-    return "#{Site.current_node.public_uri}#{self.id}/edit/?title_id=#{self.title_id}"
+    return "/gwbbs/docs/#{self.id}/edit/?title_id=#{self.title_id}"
   end
 
   def adms_edit_path
@@ -379,15 +389,15 @@ class Gwbbs::Doc < Gwboard::CommonDb
   end
 
   def recognize_update_path
-    return "#{Site.current_node.public_uri}#{self.id}/recognize_update?title_id=#{self.title_id}"
+    return "/gwbbs/docs/#{self.id}/recognize_update?title_id=#{self.title_id}"
   end
 
   def publish_update_path
-    return "#{Site.current_node.public_uri}#{self.id}/publish_update?title_id=#{self.title_id}"
+    return "/gwbbs/docs/#{self.id}/publish_update?title_id=#{self.title_id}"
   end
 
   def clone_path
-    return "#{Site.current_node.public_uri}#{self.id}/clone/?title_id=#{self.title_id}"
+    return "/gwbbs/docs/#{self.id}/clone/?title_id=#{self.title_id}"
   end
   #
   def adms_clone_path
@@ -395,11 +405,12 @@ class Gwbbs::Doc < Gwboard::CommonDb
   end
 
   def delete_path
-    return "#{Site.current_node.public_uri}#{self.id}/delete?title_id=#{self.title_id}"
+    return "/gwbbs/docs/#{self.id}/delete?title_id=#{self.title_id}"
   end
 
   def update_path
-    return "#{Site.current_node.public_uri}#{self.id}/update?title_id=#{self.title_id}"
+    #return "/_admin/gwbbs/docs/#{self.id}/update?title_id=#{self.title_id}"
+    return "/gwbbs/docs/#{self.id}?title_id=#{self.title_id}"
   end
 
   def portal_show_path
@@ -414,7 +425,7 @@ class Gwbbs::Doc < Gwboard::CommonDb
     rails_env = ENV['RAILS_ENV']
     ret = 'localhost'
     begin
-      site = YAML.load_file('config/site.yml')
+      site = YAML.load_file('config/core.yml')
       ret = site[rails_env]['domain']
     rescue
     end
@@ -425,7 +436,7 @@ class Gwbbs::Doc < Gwboard::CommonDb
     return if self._no_validation
     self._recognizers.each do |k, v|
       unless v.blank?
-        Gw.add_memo(v.to_s, "#{self.control.title}「#{self.title}」についての承認依頼が届きました。", "次のボタンから記事を確認し,承認作業を行ってください。<br /></a><a href='#{self.show_path}&state=RECOGNIZE'><img src='/_common/themes/gw/files/bt_approvalconfirm.gif' alt='承認処理へ'></a>",{:is_system => 1})
+        Gw.add_memo(v.to_s, "#{self.control.title}「#{self.title}」についての承認依頼が届きました。", "次のボタンから記事を確認し,承認作業を行ってください。<br /><a href='#{self.show_path}&state=RECOGNIZE'><img src='/_common/themes/gw/files/bt_approvalconfirm.gif' alt='承認処理へ' /></a>",{:is_system => 1})
       end
     end if self._recognizers if self.state == 'recognize'
   end
@@ -440,7 +451,7 @@ class Gwbbs::Doc < Gwboard::CommonDb
     item = Gwbbs::Control.find(self.title_id)
     item.doc_body_size_currently  = total_size
     item.docslast_updated_at = Time.now if self.state=='public'   #記事の最終更新日時設定
-    item.save(false)
+    item.save(:validate=>false)
   end
 
   #記事削除時に記事本文のサイズを集計

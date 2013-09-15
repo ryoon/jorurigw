@@ -1,0 +1,28 @@
+<div class="bbsDocList circular">
+<%= render :partial => 'piece_header', :locals => {:hide_new_action => true} %>
+<%= render :partial => 'piece_banner' %>
+
+<div class="pieceBody">
+
+<%= render :partial => 'header' %>
+<%= form_for :item, :url => "#{gwcircular_menus_path}/#{@item.id}", :html => {:method => :put, :multipart => true, :id => 'itemForm'} do |f| %>
+
+<%= f.error_messages %>
+<div class="formTitle new">新規作成</div>
+<%= render :partial => 'form', :locals => {:f => f} %>
+
+<div class="submitters">
+<div align="center">
+<table>
+<tr>
+  <td><%= raw(submit_for_update(f, :js_submitter => "my_submit('public')", :caption => '配信', :id => 'item_submit')) %></td>
+  <td><%= raw(submit_for_update(f, :js_submitter => "my_submit('draft')", :caption => '下書き', :id => 'item_submit_draft')) %></td>
+</tr>
+</table>
+</div>
+</div>
+
+<% end %>
+
+</div><!--pieceBody-->
+</div><!--bbsDocList circular-->

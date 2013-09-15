@@ -1,5 +1,9 @@
-module Gw::Model::Memo
+# encoding: utf-8
+require 'gwlib'
+include GwLib
 
+module Gw::Model::Memo
+  
   def self.remind(uid = nil)
     item = Gw::Memo.new
     d = Date.today
@@ -73,12 +77,12 @@ module Gw::Model::Memo
 
   def self.recv_cond(_uid=nil,options=nil)
     if options.blank?
-      uid = nz(_uid, Site.user.id)
+      uid = nz(_uid, Core.user.id)
     else
       if options.has_key?(:p)
         uid = _uid
       else
-        uid = nz(_uid, Site.user.id)
+        uid = nz(_uid, Core.user.id)
       end
     end
     "(gw_memo_users.class_id = 1 and gw_memo_users.uid = #{uid})"

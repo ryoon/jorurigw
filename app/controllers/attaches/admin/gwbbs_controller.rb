@@ -1,9 +1,10 @@
-class Attaches::Admin::GwbbsController < ApplicationController
+# -*- encoding: utf-8 -*-
+class Attaches::Admin::GwbbsController < Gw::Controller::Admin::Base
   include System::Controller::Scaffold
   include Gwboard::Model::DbnameAlias
 
   def initialize_scaffold
-
+    skip_layout
     params[:system] = 'gwbbs'
 
     item = gwboard_control

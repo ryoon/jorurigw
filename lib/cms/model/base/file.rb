@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 module Cms::Model::Base::File
   def self.included(mod)
     mod.before_validation_on_create :validate_upload

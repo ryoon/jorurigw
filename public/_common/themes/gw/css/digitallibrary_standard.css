@@ -6,7 +6,7 @@
 
 /* 検索ボックス
 ----------------------------------------------- */
-form.search {
+.DLDocList .search {
   display: inline-block;
   width: auto;
   margin: 0;

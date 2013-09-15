@@ -273,7 +273,7 @@ class Doclibrary::Script::Annual
     cnn = item.establish_connection
 
     cnn.spec.config[:database] = @title.dbname.to_s
-    Gwboard::CommonDb.establish_connection(cnn.spec)
+    Gwboard::CommonDb.establish_connection(cnn.spec.config)
     return item
   end
 

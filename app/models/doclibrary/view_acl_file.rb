@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 class Doclibrary::ViewAclFile < Gwboard::CommonDb
   include System::Model::Base
   include System::Model::Base::Content
@@ -6,7 +7,8 @@ class Doclibrary::ViewAclFile < Gwboard::CommonDb
   include Gwboard::Model::AttachFile
   include Gwboard::Model::AttachesFile
 
-  belongs_to :status, :foreign_key => :state,    :class_name => 'System::Base::Status'
+  self.primary_key = :id
+
   belongs_to :parent, :foreign_key => :parent_id, :class_name => 'Doclibrary::Doc'
 
   def get_keywords_condition(words, *columns)
@@ -29,16 +31,16 @@ class Doclibrary::ViewAclFile < Gwboard::CommonDb
     else
       state = params[:state]
     end
-    ret = "#{Site.current_node.public_uri}#{self.parent_id}?title_id=#{self.title_id}&cat=#{self.parent.category1_id}" unless state == 'GROUP'
-    ret = "#{Site.current_node.public_uri}#{self.parent_id}/?title_id=#{self.title_id}&gcd=#{self.parent.section_code}" if state == 'GROUP'
+    ret = "/doclibrary/docs/#{self.parent_id}?title_id=#{self.title_id}&cat=#{self.parent.category1_id}" unless state == 'GROUP'
+    ret = "/doclibrary/docs/#{self.parent_id}/?title_id=#{self.title_id}&gcd=#{self.parent.section_code}" if state == 'GROUP'
     return ret
   end
 
   def item_doc_path(title,item)
     if title.form_name=='form002'
-      return "#{Site.current_node.public_uri}#{item.id}?title_id=#{self.title_id}&cat=#{self.parent.category1_id}"
+      return "/doclibrary/docs/#{item.id}?title_id=#{self.title_id}&cat=#{self.parent.category1_id}"
     else
-      return "#{Site.current_node.public_uri}#{self.parent_id}?title_id=#{self.title_id}&cat=#{self.parent.category1_id}"
+      return "/doclibrary/docs/#{self.parent_id}?title_id=#{self.title_id}&cat=#{self.parent.category1_id}"
     end
   end
 

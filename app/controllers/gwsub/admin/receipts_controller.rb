@@ -2,6 +2,7 @@
 # 個別業務(gwsub)：広報依頼(sb05)：メルマガ：イベント情報
 #  添付画像一覧
 ################################################################################
+
 class Gwsub::Admin::ReceiptsController < ApplicationController
   include System::Controller::Scaffold
 

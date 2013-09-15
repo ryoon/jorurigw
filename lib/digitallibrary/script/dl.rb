@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 #######################################################################
 #添付ファイルのリンクをコントローラ経由のダウンロード形式へ変更する
 #Filesテーブルから画像以外のレコードを抽出
@@ -59,7 +60,7 @@ class Digitallibrary::Script::Dl
     cnn = item.establish_connection
     #コントロールにdbnameが設定されているdbname名で接続する
     cnn.spec.config[:database] = @title.dbname.to_s
-    Gwboard::CommonDb.establish_connection(cnn.spec)
+    Gwboard::CommonDb.establish_connection(cnn.spec.config)
     return item
   end
 end

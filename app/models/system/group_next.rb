@@ -1,3 +1,4 @@
+# encoding: utf-8
 class System::GroupNext < ActiveRecord::Base
   include System::Model::Base
   include System::Model::Tree

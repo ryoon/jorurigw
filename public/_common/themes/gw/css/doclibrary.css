@@ -3,13 +3,14 @@
    _common/themes/gw/css/doclibrary.css
 ========================================================= */
 
-/* ƒ~ƒjƒAƒCƒRƒ“İ’è
+/* ãƒŸãƒ‹ã‚¢ã‚¤ã‚³ãƒ³è¨­å®š
 ------------------------------------------*/
 .docLibrary {
   background-image: url(/_common/themes/gw/files/title/title_library.gif);
+  margin-top: 10px;
 }
 
-/* ®F‘å˜g
+/* ç´ºè‰²å¤§æ 
 ------------------------------------------*/
 .docLibrary .pieceBody {
   padding: 10px;
@@ -27,7 +28,7 @@ table.index td.libraryTitle {
   width: 22%;
 }
 
-/* ƒ^ƒuü‚è
+/* ã‚¿ãƒ–å‘¨ã‚Š
 -----------------------------------------*/
 #contentBody td.tab {
   width: 140px;
@@ -40,11 +41,11 @@ table.index td.libraryTitle {
   border: none;
 }
 
-/* ‹@”\ƒ{ƒ^ƒ“
+/* æ©Ÿèƒ½ãƒœã‚¿ãƒ³
 -----------------------------------------*/
-.editingBox {
+.docLibrary .editingBox {
   width: 100%;
 }
-.contentMenu {
+.docLibrary .contentMenu {
   margin-bottom: 10px;
 }

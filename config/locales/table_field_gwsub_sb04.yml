@@ -47,8 +47,8 @@ gwsub_sb04_seating_list_bbs:
   created_group: x
 gwsub_sb04_seating_lists:
   id: x
-  fyear_id: dbraw:年度:gw/gw_year_fiscal_jps:markjp:id
-  fyear_markjp: x
+  fyear_id: x
+  fyear_markjp: 年度
   title: タイトル
   bbs_url: 座席表掲示板URL
   remarks: 備考
@@ -294,9 +294,10 @@ gwsub_sb04stafflists_index:
   created_user: x
   created_group: x
 gwsub_sb04stafflists_show:
-  _cols: fyear_id:staff_no:multi_section_flg:name:kana:section_code:section_name:assignedjobs_name:divide_duties_order:official_title_name:categories_name:extension:assignedjobs_tel:assignedjobs_address:divide_duties:remarks:personal_state:display_state
+  _cols: fyear_markjp:staff_no:multi_section_flg:name:kana:section_code:section_name:assignedjobs_name:divide_duties_order:official_title_name:categories_name:extension:assignedjobs_tel:assignedjobs_address:divide_duties:remarks:personal_state:display_state
   id: x
-  fyear_id: dbraw:年度:gw/gw_year_fiscal_jps:markjp:id
+  fyear_id: x
+  fyear_markjp: 年度
   staff_no: 職員番号
   multi_section_flg: r:兼務:gwsub_sb04stafflists_multi_sections_flg
   name: 氏名（変換後）

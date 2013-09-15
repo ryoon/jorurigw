@@ -1,0 +1,27 @@
+<%
+  options={:table_name=>"gw_admin_messages",:action=>"show"}
+  options['field_td_criteria']={
+    'body'=>Proc.new{|item| item.body }
+  }
+%>
+
+<div class="piece AdminMessage">
+<%= render :partial => 'header_str' %>
+
+<div class="pieceBody">
+
+<div class="editingBox">
+ <span class="btEdit"><%=link_to('編集', "/gw/admin_messages/#{@item.id}/edit?#{@qs}")%></span>
+ <span class="btDestroy"><%=  link_to '削除', "/gw/admin_messages/#{@item.id}?#{@qs}", :confirm => '削除をすると元に戻せません。削除しますか', :method => :delete %></span>
+ <span class=""><%=  link_to '管理者設定へ >>', "/gw/admin_settings" %></span>
+</div>
+
+<%= raw(table_to_show2 @item, options) %>
+
+<!--戻るボタン-->
+<div class="btReturn">
+  <%=link_to 'メッセージ一覧へ戻る', "/gw/admin_messages?#{@qs}"  %>
+</div>
+
+</div>
+</div><!--piece admin_messages-->

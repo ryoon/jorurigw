@@ -1,12 +1,17 @@
+# -*- encoding: utf-8 -*-
 class Doclibrary::Control < Gw::Database
   include System::Model::Base
   include System::Model::Base::Content
   include Gwboard::Model::ControlCommon
   include Gwboard::Model::AttachFile
   include Doclibrary::Model::Systemname
+  include System::Model::Base::Status
 
-  belongs_to :status, :foreign_key => :state, :class_name => 'System::Base::Status'
+  has_many :adm, :foreign_key => :title_id, :class_name => 'Doclibrary::Adm', :dependent => :destroy
+  has_many :role, :foreign_key => :title_id, :class_name => 'Doclibrary::Role', :dependent => :destroy
+
   validates_presence_of :state, :title, :category1_name
+  validates_presence_of :upload_graphic_file_size_capacity,:upload_document_file_size_capacity, :upload_graphic_file_size_max,:upload_document_file_size_max
   after_validation :validate_params
   after_create :create_doclib_system_database
   after_save :save_admingrps, :save_editors, :save_readers, :save_readers_add, :save_sueditors, :save_sureaders
@@ -14,13 +19,12 @@ class Doclibrary::Control < Gw::Database
   attr_accessor :_editing_group
 
   def doclib_form_name
-    return 'doclibrary/public/user_forms/' + self.form_name + '/'
+    return 'doclibrary/admin/user_forms/' + self.form_name + '/'
   end
 
   def use_form_name()
     return [
-      ['一般書庫', 'form001'],
-      ['議案検索DB', 'form002']
+      ['一般書庫', 'form001']
     ]
   end
 
@@ -230,13 +234,16 @@ class Doclibrary::Control < Gw::Database
     create_table_categories
     create_table_folders
     create_table_group_folders
-    group_folders_add_index
+    group_folders_add_index # index追加
     create_table_docs
+    docs_add_index # index追加
     create_table_db_files
     create_table_files
-    cretae_table_images
+    #cretae_table_images
     create_table_recognizers
     create_table_folder_acls
+    folder_add_index # index追加
+    folder_acls_add_index # index追加
     create_view_acl_docs
     create_view_acl_files
     create_view_acl_folders
@@ -296,7 +303,7 @@ class Doclibrary::Control < Gw::Database
     strsql += "`editor_id` varchar(20) default NULL,"
     strsql += "`editor` text,"
     strsql += "PRIMARY KEY  (`id`)"
-    strsql += ") ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;"
+    strsql += ")   DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;"
     return connection.execute(strsql)
   end
 
@@ -321,7 +328,7 @@ class Doclibrary::Control < Gw::Database
     strsql += "`reader_groups_json` text,"
     strsql += "`docs_last_updated_at` datetime default NULL,"
     strsql += "PRIMARY KEY  (`id`)"
-    strsql += ") ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;"
+    strsql += ")   DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;"
     return connection.execute(strsql)
   end
 
@@ -349,12 +356,41 @@ class Doclibrary::Control < Gw::Database
     strsql += "`reader_groups_json` text,"
     strsql += "`docs_last_updated_at` datetime default NULL,"
     strsql += "PRIMARY KEY  (`id`)"
-    strsql += ") ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;"
+    strsql += ")  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;"
     return connection.execute(strsql)
   end
 
   def group_folders_add_index
     strsql = "ALTER TABLE `#{self.dbname}`.`doclibrary_group_folders` ADD INDEX ( `code` )"
+    return connection.execute(strsql)
+  end
+
+  def docs_add_index
+    strsql = "ALTER TABLE `#{self.dbname}`.`doclibrary_docs` ADD INDEX title_id(state(50),title_id,category1_id);"
+    connection.execute(strsql)
+    strsql = "ALTER TABLE `#{self.dbname}`.`doclibrary_docs` ADD INDEX category1_id(category1_id);"
+    connection.execute(strsql)
+    strsql = "ALTER TABLE `#{self.dbname}`.`doclibrary_docs` ADD INDEX title_id2(title_id);"
+    return connection.execute(strsql)
+  end
+
+  def folder_add_index
+    strsql = "ALTER TABLE `#{self.dbname}`.`doclibrary_folders` ADD INDEX title_id(title_id);"
+    connection.execute(strsql)
+    strsql = "ALTER TABLE `#{self.dbname}`.`doclibrary_folders` ADD INDEX parent_id(parent_id);"
+    connection.execute(strsql)
+    strsql = "ALTER TABLE `#{self.dbname}`.`doclibrary_folders` ADD INDEX sort_no(sort_no);"
+    return connection.execute(strsql)
+  end
+
+  def folder_acls_add_index
+    strsql = "ALTER TABLE `#{self.dbname}`.`doclibrary_folder_acls` ADD INDEX title_id(title_id);"
+    connection.execute(strsql)
+    strsql = "ALTER TABLE `#{self.dbname}`.`doclibrary_folder_acls` ADD INDEX folder_id(folder_id);"
+    connection.execute(strsql)
+    strsql = "ALTER TABLE `#{self.dbname}`.`doclibrary_folder_acls` ADD INDEX acl_section_code(acl_section_code);"
+    connection.execute(strsql)
+    strsql = "ALTER TABLE `#{self.dbname}`.`doclibrary_folder_acls` ADD INDEX acl_user_code(acl_user_code);"
     return connection.execute(strsql)
   end
 
@@ -420,7 +456,7 @@ class Doclibrary::Control < Gw::Database
     strsql += "`notes_002` text,"
     strsql += "`notes_003` text,"
     strsql += "PRIMARY KEY  (`id`)"
-    strsql += ") ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;"
+    strsql += ")   DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;"
     return connection.execute(strsql)
   end
 
@@ -431,7 +467,7 @@ class Doclibrary::Control < Gw::Database
     strsql += "`parent_id` int(11) default NULL,"
     strsql += "`data` longblob,"
     strsql += "PRIMARY KEY  (`id`)"
-    strsql += ") ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;"
+    strsql += ")   DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;"
     return connection.execute(strsql)
   end
 
@@ -456,7 +492,7 @@ class Doclibrary::Control < Gw::Database
     strsql += "`height` int(11) default NULL,"
     strsql += "`db_file_id` int(11) default NULL,"
     strsql += "PRIMARY KEY  (`id`)"
-    strsql += ") ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;"
+    strsql += ")   DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;"
     return connection.execute(strsql)
   end
 
@@ -482,7 +518,7 @@ class Doclibrary::Control < Gw::Database
     strsql += "`height` int(11) default NULL,"
     strsql += "`db_file_id` int(11) default NULL,"
     strsql += "PRIMARY KEY  (`id`)"
-    strsql += ") ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;"
+    strsql += ")   DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;"
     return connection.execute(strsql)
   end
 
@@ -499,7 +535,7 @@ class Doclibrary::Control < Gw::Database
     strsql += "`name` text,"
     strsql += "`recognized_at` datetime default NULL,"
     strsql += "PRIMARY KEY  (`id`)"
-    strsql += ") ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;"
+    strsql += ")  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;"
     return connection.execute(strsql)
   end
 
@@ -520,7 +556,7 @@ class Doclibrary::Control < Gw::Database
     strsql += "`acl_user_code` varchar(255) default NULL,"
     strsql += "`acl_user_name` text,"
     strsql += "PRIMARY KEY  (`id`)"
-    strsql += ") ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;"
+    strsql += ") DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;"
     return connection.execute(strsql)
   end
 
@@ -552,7 +588,7 @@ class Doclibrary::Control < Gw::Database
     cnn = Doclibrary::Folder.establish_connection
     cnn.spec.config[:database] = self.dbname
     folder_item = Doclibrary::Folder
-    folder_item.establish_connection(cnn.spec)
+    folder_item.establish_connection(cnn.spec.config)
     item = folder_item.new
     item.and :title_id, self.id
     item.and :level_no, 1
@@ -582,7 +618,7 @@ class Doclibrary::Control < Gw::Database
     cnn = Doclibrary::Folder.establish_connection
     cnn.spec.config[:database] = self.dbname
     item = Doclibrary::FolderAcl
-    item.establish_connection(cnn.spec)
+    item.establish_connection(cnn.spec.config)
     item = item.new
     item.acl_flag = 0
     item.title_id = self.id
@@ -591,27 +627,27 @@ class Doclibrary::Control < Gw::Database
   end
 
   def menu_item_path
-    return "#{Site.current_node.public_uri.chop}?title_id=#{self.id}"
+    "/doclibrary/doc?title_id=#{self.id}"
   end
 
   def group_folders_path
-    return self.item_home_path + "group_folders?title_id=#{self.id}"
+    "/doclibrary/" + "group_folders?title_id=#{self.id}"
   end
 
   def categorys_path
-    return self.item_home_path + "categories?title_id=#{self.id}"
+    "/doclibrary/" + "categories?title_id=#{self.id}"
   end
 
   def new_uploads_path
-    return self.item_home_path + "docs/new?title_id=#{self.id}"
+    "/doclibrary/" + "docs/new?title_id=#{self.id}"
   end
 
   def docs_path
-    return self.item_home_path + "docs?title_id=#{self.id}"
+    "/doclibrary/" + "docs?title_id=#{self.id}"
   end
 
   def adm_docs_path
-    return self.item_home_path + "adms?title_id=#{self.id}"
+    "/doclibrary/" + "adms?title_id=#{self.id}"
   end
 
   def date_index_display_states

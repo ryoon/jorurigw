@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 class Gwbbs::Script::Task
 
   def self.delete
@@ -100,7 +101,7 @@ class Gwbbs::Script::Task
       @items = doc_item.find(:all)
       for @item in @items
         destroy_comments
-        destroy_image_files
+        #destroy_image_files
         destroy_atacched_files
         destroy_files
         @item.destroy
@@ -112,7 +113,7 @@ class Gwbbs::Script::Task
       del_count = 0
       for @item in @items
         destroy_comments
-        destroy_image_files
+        #destroy_image_files
         destroy_atacched_files
         destroy_files
         @item.destroy
@@ -167,7 +168,7 @@ class Gwbbs::Script::Task
   def self.db_alias(item)
     cnn = item.establish_connection
     cnn.spec.config[:database] = @title.dbname.to_s
-    Gwboard::CommonDb.establish_connection(cnn.spec)
+    Gwboard::CommonDb.establish_connection(cnn.spec.config)
     return item
   end
 
@@ -196,7 +197,7 @@ class Gwbbs::Script::Task
         @items = doc_item.find(:all)
         for @item in @items
           destroy_files
-          destroy_image_files
+          #destroy_image_files
           preparation_destroy_atacched_files
           @item.destroy
           del_count += 1

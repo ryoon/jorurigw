@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 class Gwcircular::File < Gw::Database
   include System::Model::Base
   include System::Model::Base::Content
@@ -6,9 +7,12 @@ class Gwcircular::File < Gw::Database
   include Gwboard::Model::AttachesFile
   include Gwcircular::Model::Systemname
 
-  belongs_to :status, :foreign_key => :state,     :class_name => 'System::Base::Status'
+#  belongs_to :status, :foreign_key => :state,     :class_name => 'Sys::Base::Status'
   belongs_to :parent, :foreign_key => :parent_id, :class_name => 'Gwbbs::Doc'
 
+  before_create :before_create
+  after_create :after_create
+  after_destroy :after_destroy
   validates_presence_of :filename, :message => "ファイルが指定されていません。"
 
   def search(params)

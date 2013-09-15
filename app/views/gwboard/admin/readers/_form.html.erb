@@ -64,7 +64,7 @@
     for (var i = 0; i < fr.options.length; i++)
       ary.push([fr[i].title, fr[i].value, fr[i].innerHTML]);
     var to = $('item_readers_json');
-    to.value = ary.toJSON();
+    to.value = Object.toJSON(ary);
     fr.selectedIndex = -1; // fr の送信を抑止
     $('itemForm').submit();
   }

@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 #######################################################################
 #
 #
@@ -33,7 +34,7 @@ class Gwqa::Script::Task
         @items = doc_item.find(:all)
         for @item in @items
           destroy_dbfiles
-          destroy_image_files
+          #destroy_image_files
           destroy_atacched_files
           destroy_files
           @item.destroy
@@ -104,13 +105,13 @@ class Gwqa::Script::Task
   end
   #削除関連----------------------------------------------------------------------
 
-  
+
   #gwqa_controlsに設定されているdatabase接続先を参照する
   def self.db_alias(item)
     cnn = item.establish_connection
     #コントロールにdbnameが設定されているdbname名で接続する
     cnn.spec.config[:database] = @title.dbname.to_s
-    Gwboard::CommonDb.establish_connection(cnn.spec)
+    Gwboard::CommonDb.establish_connection(cnn.spec.config)
     return item
   end
 end

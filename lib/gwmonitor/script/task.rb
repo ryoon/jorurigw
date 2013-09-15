@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 class Gwmonitor::Script::Task
 
   def self.renew_reminder
@@ -75,7 +76,7 @@ class Gwmonitor::Script::Task
 
     self.destroy_record(limit)
 
-    f_path = "#{RAILS_ROOT}/tmp/gwmonitor/"
+    f_path = "#{Rails.root}/tmp/gwmonitor/"
     self.tmp_folder_workfile_delete(f_path)
 
     dump "#{self}, 回答システム記事削除(処理終了)"

@@ -1,6 +1,7 @@
+# encoding: utf-8
 class Gw::Holiday < Gw::Database
   include System::Model::Base
-  include Cms::Model::Base::Content
+  include System::Model::Base::Content
 
   validates_presence_of :st_at, :title
 
@@ -13,16 +14,23 @@ class Gw::Holiday < Gw::Database
   def self.find_by_range_cache(d1,d2)
     c_key = "Gw::Holiday.find_by_range_" + d1.to_s + "_" + d2.to_s
     begin
-        value = CACHE.get c_key
-        if value.nil?
-          value = self.find_by_range(d1,d2)
-          CACHE.set c_key, value, 60
-        else
-        end
+      value = Rails.cache.read(c_key)
+      if value.nil?
+        value = self.find_by_range(d1,d2)
+        Rails.cache.write(c_key, value, :expires_in => 60)
+      else
+      end
     rescue
-          value = self.find_by_range(d1,d2)
+      value = self.find_by_range(d1,d2)
     end
     return value
   end
 
+  def creatable?
+    return true
+  end
+
+  def editable?
+    return true
+  end
 end

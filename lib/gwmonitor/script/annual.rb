@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 class Gwmonitor::Script::Annual
 
   def self.renew

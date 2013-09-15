@@ -1,8 +1,0 @@
-<%if params[:piece_param].blank?%>
-<div class="contentBanner"><%=@title.banner.to_s %></div>
-<%else%>
-<div class="pieceBanner">
-<h3><%=@title.title.to_s %></h3>
-<%=render(:partial => '/digitallibrary/public/docs/header_help')%>
-</div>
-<%end%>

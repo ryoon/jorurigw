@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 class Gwboard::Admin::ImagesController < ApplicationController
 
   include System::Controller::Scaffold

@@ -1,6 +1,7 @@
+# encoding: utf-8
 class Gw::AdminMessage < Gw::Database
   include System::Model::Base
-  include Cms::Model::Base::Content
+  include System::Model::Base::Content
 
   validates_presence_of :state,:sort_no,:body
   validates_numericality_of :sort_no

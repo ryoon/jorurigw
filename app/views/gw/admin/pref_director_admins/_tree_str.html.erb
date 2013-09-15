@@ -1,0 +1,6 @@
+<%= link_to '所属一覧' , "#{@public_uri}/" %>
+<%if @g_cat != '0'%>
+　＞　<%= link_to "#{@items[0].parent_g_name}" , "#{@public_uri}/?g_cat=#{@items[0].parent_g_order}" unless @items.blank?%>
+<%end%>
+<br />
+<br />

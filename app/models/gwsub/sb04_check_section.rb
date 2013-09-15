@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 class Gwsub::Sb04CheckSection < Gwsub::GwsubPref
   include System::Model::Base
   include Cms::Model::Base::Content
@@ -89,7 +90,7 @@ class Gwsub::Sb04CheckSection < Gwsub::GwsubPref
     import_csv = Array.new # インポートデータ
     error_csv  = Array.new # エラー発生データ
     error_row_cnt = 0      # エラー行数カウント
-    require 'fastercsv'
+    require 'csv'
 
     par_item = params[:item]
     if par_item.nil? || par_item[:nkf].nil? || par_item[:file].nil?
@@ -113,7 +114,7 @@ class Gwsub::Sb04CheckSection < Gwsub::GwsubPref
         file =  NKF::nkf(nkf_options,f)
         if file.blank?
         else
-          csv = FasterCSV.parse(file)
+          csv = CSV.parse(file)
 
           year_fiscal = Gw::YearFiscalJp.find_by_id(par_item[:fyed_id])
           csv.each_with_index do |row, i|
@@ -195,7 +196,7 @@ class Gwsub::Sb04CheckSection < Gwsub::GwsubPref
         item.name         = row[2]
         item.remarks      = row[3]
         item.ldap_code    = row[4]
-        item.save(false)
+        item.save(:validate=>false)
       end
 
     else  # エラーあり
@@ -282,7 +283,7 @@ class Gwsub::Sb04CheckSection < Gwsub::GwsubPref
       fields.each do |field|
         eval("model.#{field} = nz(item.#{field}, nil)")
       end
-      model.save(false)
+      model.save(:validate=>false)
     end
   end
 end

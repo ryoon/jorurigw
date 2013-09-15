@@ -1,8 +1,0 @@
-<div class="piece">
-<h1><%= link_to "Ｊｏｒｕｒｉ Ｇｗ", '/' %></h1>
-</div>
-
-<% if Site.user %>
-<%= %Q(<span class="department">#{Site.user_group.name}</span>) unless Site.user_group.nil? %>
-<span class="name"><%=h Site.user.display_name %></span>
-<% end %>

@@ -1,5 +1,6 @@
+# encoding: utf-8
 class Gw::Script::Tool
-  require 'fastercsv'
+  require 'csv'
   require 'pp'
   require 'yaml'
 
@@ -7,7 +8,7 @@ class Gw::Script::Tool
     dbs = []
     Gw::Schedule.connection.execute(%Q(show databases like '#{prefix}_jgw_%';)).each{|x| dbs.push x[0]}
     env = Hash[*'dev:development:pre:production:devpro:development_debug'.split(':').to_a]
-    env_s = nz(env[prefix],prefix)
+    env_s = Gw.nz(env[prefix],prefix)
     dbconfig = ActiveRecord::Base.configurations[env_s]
     dbs.each do |db|
       fn = "_wrk/#{db.sub(/^#{prefix}_/, '')}.sql"
@@ -20,7 +21,7 @@ class Gw::Script::Tool
     Gw::Schedule.connection.execute(%Q(show databases like '#{prefix}_jgw_%';)).each{|x| dbs.push x[0]}
     fns = Dir["_wrk/jgw_*.sql"]
     env = Hash[*'dev:development:pre:production:devpro:development_debug'.split(':').to_a]
-    env_s = nz(env[prefix],prefix)
+    env_s = Gw.nz(env[prefix],prefix)
     dbconfig = ActiveRecord::Base.configurations[env_s]
     mysql_core_s = "mysql -u #{dbconfig['username']} --password=#{dbconfig['password']}"
     fns.sort.each do |fn|
@@ -58,7 +59,7 @@ class Gw::Script::Tool
     hash_raw = YAML.load_file('config/locales/csv_settings.yml')
     if csv_setting_name
       csv = []
-      FasterCSV.parse(input_csv) do |row|
+      CSV.parse(input_csv) do |row|
         csv.push row
       end
       setting = hash_raw[csv_setting_name]
@@ -81,7 +82,7 @@ class Gw::Script::Tool
           idx = csv_titles.index(y)
           eval "model_n.#{fields[y]} = x[idx]"
         end
-        if model_n.save(validation)
+        if model_n.save(:validate => validation)
           ln_t += 1
         else
           ln_f += 1
@@ -125,7 +126,7 @@ class Gw::Script::Tool
     options = HashWithIndifferentAccess.new(_options)
     return [] if a_ar.nil? || a_ar == []
     trans_hash_raw = Gw.load_yaml_files
-    action = nz(options[:action], 'csvput')
+    action = Gw.nz(options[:action], 'csvput')
     unless options['table_name'].nil?
       hash_name = options['table_name']
     else
@@ -161,7 +162,7 @@ class Gw::Script::Tool
       end
       ret.push ret_1
     end
-    csv_string = FasterCSV.generate(:force_quotes => opt_quotes) do |csv|
+    csv_string = CSV.generate(:force_quotes => opt_quotes) do |csv|
       ret.each do |x|
         csv << x
       end
@@ -181,7 +182,7 @@ class Gw::Script::Tool
     a_ary.each do |r|
       ret.push r
     end
-    csv_string = FasterCSV.generate(:force_quotes => opt_quotes) do |csv|
+    csv_string = CSV.generate(:force_quotes => opt_quotes) do |csv|
       ret.each do |x|
         csv << x
       end
@@ -339,7 +340,7 @@ class Gw::Script::Tool
       hx.each do |hxx|
         retx = []
         h_keys.each do |key|
-          retx.push nz(hxx[key],'')
+          retx.push Gw.nz(hxx[key],'')
         end
         ret.push retx
       end
@@ -349,7 +350,7 @@ class Gw::Script::Tool
       raise TypeError, "不明な型です(#{hx.class})"
     end
 
-    csv_string = FasterCSV.generate(:force_quotes => true) do |csv|
+    csv_string = CSV.generate(:force_quotes => true) do |csv|
       ret.each do |x|
         csv << x
       end
@@ -370,7 +371,7 @@ class Gw::Script::Tool
       ret.push h_keys.sort
       retx = []
       h_keys.each do |key|
-        retx.push nz(hx[key],'')
+        retx.push Gw.nz(hx[key],'')
       end
       ret.push retx
     when hx.is_a?(Array)
@@ -386,7 +387,7 @@ class Gw::Script::Tool
       hx.each do |hxx|
         retx = []
         h_keys.each do |key|
-          retx.push nz(hxx[key],'')
+          retx.push Gw.nz(hxx[key],'')
         end
         ret.push retx
       end
@@ -394,7 +395,7 @@ class Gw::Script::Tool
       raise TypeError, "不明な型です(#{hx.class})"
     end
 
-    csv_string = FasterCSV.generate(:force_quotes => true) do |csv|
+    csv_string = CSV.generate(:force_quotes => true) do |csv|
       ret.each do |x|
         csv << x
       end

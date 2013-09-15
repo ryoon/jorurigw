@@ -3,13 +3,14 @@
    _common/themes/gw/css/digitallibrary.css
 ========================================================= */
 
-/* ƒ~ƒjƒAƒCƒRƒ“İ’è
+/* ãƒŸãƒ‹ã‚¢ã‚¤ã‚³ãƒ³è¨­å®š
 ------------------------------------------*/
 .digitalLibrary {
   background-image: url(/_common/themes/gw/files/title/title_electronic-book.gif);
+  margin-top: 10px;
 }
 
-/* ®F‘å˜g
+/* ç´ºè‰²å¤§æ 
 ------------------------------------------*/
 #content .digitalLibrary .pieceBody {
   padding: 10px 10px 10px;
@@ -33,7 +34,7 @@ table.index td.update {
   border: none;
 }
 
-/* table cabinets(ŠÇ—Òƒy[ƒW@ˆê——ƒe[ƒuƒ‹)
+/* table cabinets(ç®¡ç†è€…ãƒšãƒ¼ã‚¸ã€€ä¸€è¦§ãƒ†ãƒ¼ãƒ–ãƒ«)
 ------------------------------------------*/
 .digitalLibrary table.cabinets {
   table-layout: fixed;
@@ -45,7 +46,7 @@ table.show {
   width: 100%;
 }
 
-/* ƒ^ƒuü‚è
+/* ã‚¿ãƒ–å‘¨ã‚Š
 -----------------------------------------*/
 #contentBody td.tab {
   width: 160px;
@@ -54,14 +55,14 @@ table.show {
   border-bottom: 1px solid #E3EFFF;
 }
 
-/* ‹@”\ƒ{ƒ^ƒ“
+/* æ©Ÿèƒ½ãƒœã‚¿ãƒ³
 -----------------------------------------*/
-.editingBox {
+.digitalLibrary .editingBox {
   width:100%;
 }
-.editingBox a {
+.digitalLibrary .editingBox a {
   margin-left: 0;
 }
-.contentMenu {
+.digitalLibrary .contentMenu {
   margin-bottom: 10px;
 }

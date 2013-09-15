@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 class Gw::PrefExecutive < Gw::Database
   include System::Model::Base
   include Cms::Model::Base::Content
@@ -21,7 +22,7 @@ class Gw::PrefExecutive < Gw::Database
           params["sort_no_#{user[1]}_#{num}"] = 0
         elsif /^[0-9]+$/ =~ params["sort_no_#{user[1]}_#{num}"] && params["sort_no_#{user[1]}_#{num}"].to_i >= 0 && params["sort_no_#{user[1]}_#{num}"].to_i <= 9999
         else
-          self.errors.add :"関連ユーザーの並び順"
+          self.errors.add :"関連ユーザーの並び順", "を確認してください。"
           break
         end
       }
@@ -33,7 +34,7 @@ class Gw::PrefExecutive < Gw::Database
           num = user[0]
         end
         if params["title_#{user[1]}_#{num}"].blank?
-          self.errors.add :"関連ユーザーの役職"
+          self.errors.add :"関連ユーザーの役職", "を入力してください。"
           break
         end
       }
@@ -104,7 +105,7 @@ class Gw::PrefExecutive < Gw::Database
           old_user.state         = "deleted"
           old_user.deleted_user   = Site.user.name
           old_user.deleted_group = Site.user_group.name
-          old_user.save(false)
+          old_user.save
         end
       }
       users.each_with_index{|user, y|

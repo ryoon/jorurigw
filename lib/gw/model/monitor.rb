@@ -1,3 +1,4 @@
+# encoding: utf-8
 module Gw::Model::Monitor
 
   def self.remind(uid = Site.user.id)

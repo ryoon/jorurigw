@@ -1,26 +1,59 @@
+# encoding: utf-8
+require 'date'
 class System::Group < ActiveRecord::Base
   include System::Model::Base
-  include System::Model::Tree
   include System::Model::Base::Config
+  include System::Model::Tree
+  include System::Model::Base::Content
 
   belongs_to :status,     :foreign_key => :state,     :class_name => 'System::Base::Status'
   belongs_to :parent,     :foreign_key => :parent_id, :class_name => 'System::Group'
-  has_many    :children ,  :foreign_key => :parent_id, :class_name => 'System::Group'
-  has_many   :user_group, :foreign_key => :group_id,  :class_name => 'System::UsersGroup'
+  has_many :children ,  :foreign_key => :parent_id, :class_name => 'System::Group'
+  has_many :enabled_children  , :foreign_key => :parent_id, :class_name => 'System::Group',
+    :conditions => {:state => 'enabled'}, :order => :sort_no
+  has_many :user_group, :foreign_key => :group_id,  :class_name => 'System::UsersGroup'
   has_and_belongs_to_many :users, :class_name => 'System::User',
     :join_table => 'system_users_groups', :order => 'job_order,system_users.name_en'
 
-  validates_presence_of :state,:code,:name,:start_at
-  validates_uniqueness_of :code ,:scope => [:parent_id]
+  validates_presence_of :state, :code, :name, :start_at
+  validates_uniqueness_of :code, :scope => [:parent_id]
+  validates_numericality_of :sort_no
 
+  validates_each :state do |record, attr, value|
+    if value.present?
+      record.errors.add attr, 'は、上位所属が「無効」のため、「有効」に変更できません。' if !record.parent.blank? && record.parent.state == "disabled" && record.state == "enabled"
+    end
+  end
   validates_each :end_at do |record, attr, value|
-    record.errors.add attr, 'には、適用開始日より後の日付を入力してください'  if value.blank? ? false : (value <= record.start_at)
-  end
-  validates_each :code do |record, attr, value|
-    record.errors.add attr, "は、#{Site.code_length(record.level_no)}桁で入力してください" if value.blank? ? false : (value.length != Site.code_length(record.level_no))
+    if value.present?
+      record.errors.add attr, 'は、状態が「有効」の場合、空欄としてください。' if record.state == "enabled"
+      record.errors.add attr, 'には、適用開始日より後の日付を入力してください。' if Time.local(value.year, value.month, value.day, 0, 0, 0) < Time.local(record.start_at.year, record.start_at.month, record.start_at.day, 0, 0, 0)
+      record.errors.add attr, 'には、本日以前の日付を入力してください。'  if Time.local(value.year, value.month, value.day, 0, 0, 0) > Time.local(Time.now.year, Time.now.month, Time.now.day, 0, 0, 0)
+    end
   end
 
-  require 'date'
+  validates_each :start_at do |record, attr, value|
+    if value.present?
+      record.errors.add attr, 'には、本日以前の日付を入力してください。'  if Time.local(value.year, value.month, value.day, 0, 0, 0) > Time.local(Time.now.year, Time.now.month, Time.now.day, 0, 0, 0)
+    end
+  end
+
+  after_save :save_group_history, :clear_cache
+  before_destroy :clear_cache
+
+  def clear_cache
+    Rails.cache.clear
+  end
+
+  def save_group_history
+    group_history = System::GroupHistory.find_by_id(self.id)
+    if group_history.blank?
+      group_history = System::GroupHistory.new
+      group_history.id = self.id
+    end
+    group_history.attributes = self.attributes.delete_if{|k,v| k == 'id'}
+    group_history.save
+  end
 
   def ou_name
     code.to_s + name
@@ -44,21 +77,15 @@ class System::Group < ActiveRecord::Base
     end
     return false
   end
-
-  def self.group_states(state)
-    yaml = 'config/locales/table_field.yml'
-    hx = Gw::NameValue.get('yaml', yaml, 'system_states')
-    return hx.to_a.assoc(state)[1]
-  end
-
-  def self.show_status(state)
-    states = Gw.yaml_to_array_for_select 'system_states'
-    show_state = []
-    states.each do |value,key|
-      show_state << [key,value]
+  
+  def self.level_show(level_no)
+    if level_no == 1
+      return "root"
+    elsif level_no == 2
+      return "部局"
+    elsif level_no == 3
+      return "所属"
     end
-    show = show_state.assoc(state)
-    return show[1]
   end
 
   def self.get_gid(u_id = Site.user.id , day=nil)
@@ -81,6 +108,14 @@ class System::Group < ActiveRecord::Base
       end
       return nil
     end
+  end
+
+  def self.get_level2_groups
+    group = System::Group.new
+    cond  = "level_no = 2"
+    order = "code, sort_no, id"
+    groups = group.find(:all, :order=>order, :conditions=>cond)
+    return groups
   end
 
   def self.get_groups(user = Site.user)
@@ -192,12 +227,6 @@ class System::Group < ActiveRecord::Base
     return _groups
   end
 
-  def job_order_s
-    yaml = 'config/locales/table_field.yml'
-    hx = Gw::NameValue.get('yaml', yaml, 'system_groups_job_order')
-    hx[job_order.to_i]
-  end
-
   def self.ldap_show(ldap)
     ldap_state = []
     ldaps = Gw.yaml_to_array_for_select 'system_users_ldaps'
@@ -226,5 +255,27 @@ class System::Group < ActiveRecord::Base
     selects += groups_select.map{|group| [ Gw.trim(group.ou_name), prefix+group.id.to_s]}
     return selects
   end
-
+  
+  def csvget_data
+    csv = Array.new
+    csv << System::UsersGroup.state_show(self.state)
+    csv << "group"
+    csv << System::Group.level_show(self.level_no)
+    csv << self.parent.code
+    csv << self.code
+    csv << System::UsersGroup.ldap_show(self.ldap)
+    csv << ""
+    csv << self.name
+    csv << self.name_en
+    csv << ""
+    csv << ""
+    csv << ""
+    csv << ""
+    csv << self.email
+    csv << ""
+    csv << ""
+    csv << Gw.date_str(self.start_at)
+    csv << Gw.date_str(self.end_at)
+    return csv
+  end
 end

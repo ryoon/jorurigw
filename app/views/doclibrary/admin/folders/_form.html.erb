@@ -1,0 +1,19 @@
+<table class="show">
+<tr>
+<th>公開</th>
+<td>
+  <%= f.radio_buttons :state, @item.status_select, :class => 'state' %>
+  <%=required("「非公開」に変更すると、下位フォルダも合わせて非公開となります。")%>
+</td>
+</tr>
+<tr>
+<th>並び順</th>
+<td><%= f.text_field :sort_no, :class => 'num sort_no' %></td>
+</tr>
+<tr>
+<th>フォルダ名称 <%= required %></th>
+<td><%= f.text_field :name, :class => 'string name', :style => 'width: 200px;' %></td>
+</tr>
+</table>
+<%= render :partial => 'doclibrary/admin/doc_adms/form', :locals=>{:f => f} %>
+<%= render :partial => 'doclibrary/admin/docs/hidden_form', :locals=>{:f => f} %>

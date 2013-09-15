@@ -1,3 +1,4 @@
+#encoding:utf-8
 class Gw::Admin::TestController < ApplicationController
   include System::Controller::Scaffold
 
@@ -96,6 +97,7 @@ class Gw::Admin::TestController < ApplicationController
   def download
     mode = nz(session[:senddownload][:mode], '')
     filename = nz(session[:senddownload][:filename], '')
+
     case mode
     when 'file'
       tmp_filename = session[:senddownload][:tmp_filename]

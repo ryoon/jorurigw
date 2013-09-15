@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 class Gwboard::Admin::AjaxgroupsController < ApplicationController
   include System::Controller::Scaffold
 

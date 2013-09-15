@@ -1,0 +1,57 @@
+<%# app/views/gw/admin/memos/_form.html.erb %>
+<%
+# hidden parameters
+suffixes_raw = Gw.yaml_to_array_for_select('gw_memos_categories')
+suffixes = Gw.options_for_select(suffixes_raw, nil)
+%>
+
+<% if params[:action] == 'new' then %>
+  <%= raw(%Q(<div class="formTitle new">新規作成</div>)) %>
+<% elsif params[:action] == 'quote' then%>
+  <%= raw(%Q(<div class="formTitle quote">引用作成</div>)) %>
+<% else %>
+  <%= raw(%Q(<div class="formTitle edit">編集</div>)) %>
+<% end %>
+
+<span class="required">※は必須項目です。</span>
+<table class="show">
+<tr><th>時刻<span class="required">※</span></th><td>
+  <%= f.calendar_date_select :ed_at, :time => true, :popup => "force", :value => safe{@item.ed_at.strftime("%Y-%m-%d %H:%M")} %>
+  </td>
+  </tr>
+  <tr>
+    <th>所属/担当/社名</th>
+    <td><%= f.text_field :fr_group, :style=>"width:30em;" %> の</td>
+  </tr>
+  <tr>
+    <th>担当者</th>
+    <td><%= f.text_field :fr_user, :style=>"width: 30em; ime-mode: active;" %> 様から</td>
+  </tr>
+  <tr>
+    <th>伝言<span class="required">※</span></th>
+    <td>
+      <%= f.text_area :title, :rows => 5 ,:style => "width: 30em; ime-mode: active;" %>
+      <br/>
+      <%= select_tag('_category', suffixes, :size => suffixes_raw.length, :ondblclick => 'select_category()') %>
+    </td>
+  </tr>
+  <tr>
+    <th>備考</th>
+    <td>
+      <%= f.text_area :body, :rows => 5 ,:style => "width: 30em; ime-mode: active;" %>
+    </td>
+  </tr>
+</table>
+
+<%= render :partial => 'form_participant', :locals => {:f => f} %>
+
+<script type="text/javascript">
+//<![CDATA[
+  var select_category = function() {
+    var fr = $('_category');
+    var idxs = select_options_selected_indexes(fr);
+    var to = $('item_title');
+    to.value = fr[idxs].innerHTML;
+  }
+//]]>
+</script>

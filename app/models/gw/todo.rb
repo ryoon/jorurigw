@@ -1,23 +1,44 @@
+# -*- encoding: utf-8 -*-
 class Gw::Todo < Gw::Database
+  #establish_connection :dev_jgw_gw rescue nil
   include System::Model::Base
-  include Cms::Model::Base::Content
+  include System::Model::Base::Content
+
   validates_presence_of :title
-  gw_validates_datetime :ed_at, :allow_blank=>1
+  #gw_validates_datetime :ed_at, :allow_blank=>1
 
-  validate_on_create :validate_count
-
-  def validate_count
-    self.errors.add 'ToDo', 'は２００件以上登録することができません。' if self.class.get_count >= 200
+  validate :validate_count, :validate_ed_at
+  def creatable?
+    true
   end
 
-  def self.get_count(uid = Site.user.id)
+  def editable?
+    uid == Core.user.id
+  end
+
+  def deletable?
+    uid == Core.user.id
+  end
+
+  def validate_count
+    errors.add_to_base 'ToDoは２００件以上登録することができません。' if self.class.get_count >= 200 && self.new_record?
+  end
+
+  def validate_ed_at
+    if !ed_at.blank? &&  !st_at.blank?
+      errors.add :ed_at, 'は開始時間より後に設定してください。' if st_at >= ed_at
+    end
+  end
+
+  def self.get_count(uid = Core.user.id)
     todos = Gw::Todo.find(:all, :conditions=>"uid=#{uid}")
     return todos.size
   end
 
   def self.cond(uid = nil)
-    return "" if uid.nil? && (Site.user.nil? || Site.user.id.nil?)
-    uid = Site.user.id if uid.nil?
+    user = Core.user
+    return "class_id = 2 and uid IS NULL" if uid.blank? && user.blank?
+    uid = user.id if uid.nil?
     return "class_id = 1 and uid = #{uid}"
   end
 
@@ -32,12 +53,12 @@ class Gw::Todo < Gw::Database
   def self.finished_show(finished)
     return "未完了" if finished.blank?
     item = [[0, '未完了'],[1, '完了']]
-    show_str = item.assoc(nz(finished, 0))
+    finish_val = finished || 0
+    show_str = item.assoc(finish_val)
     if show_str.blank?
       return nil
     else
       return show_str[1]
     end
   end
-
 end

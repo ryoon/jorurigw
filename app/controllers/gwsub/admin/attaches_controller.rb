@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 ################################################################################
 #掲示板系板　ファイル添付選択処理
 # gwboard_doc
@@ -9,13 +10,14 @@
 # の画像添付に流用
 ################################################################################
 
-class Gwsub::Admin::AttachesController < ApplicationController
+class Gwsub::Admin::AttachesController < Gw::Controller::Admin::Base
   include System::Controller::Scaffold
 
   rescue_from ActionController::InvalidAuthenticityToken, :with => :invalidtoken
   #
-  def initialize_scaffold
+  def pre_dispatch
     self.class.layout 'admin/gwsub_base'
+    params[:parent_id] = params[:gwsub_id]
   end
 
   #現在の利用状態のメッセージを生成している
@@ -71,7 +73,7 @@ class Gwsub::Admin::AttachesController < ApplicationController
   #
   def create
     @uploaded = params[:item]
-    unless @uploaded[:upload].blank?
+    unless (@uploaded.nil? || @uploaded[:upload].blank?)
       @max_size = 3
       if @max_size.megabytes < @uploaded[:upload].size
         if @uploaded[:upload].size != 0
@@ -93,7 +95,7 @@ class Gwsub::Admin::AttachesController < ApplicationController
       end
     end
 
-    redirect_to gwsub_attaches_path(params[:parent_id])+ "?system=#{params[:system]}&menu_type=#{params[:menu_type]}"
+    redirect_to "/_admin/gwsub/#{params[:parent_id]}/attaches?system=#{params[:system]}&menu_type=#{params[:menu_type]}"
   end
 
   def create_file(system)
@@ -116,7 +118,8 @@ class Gwsub::Admin::AttachesController < ApplicationController
         @item.db_file_id = 0  #0固定でDB格納との切り分けする予定
         @item._upload_file(@uploaded[:upload])
         @item.save
-
+        @item.after_create
+        
         if @item.content_type =~ /image/
           begin
             require 'RMagick'

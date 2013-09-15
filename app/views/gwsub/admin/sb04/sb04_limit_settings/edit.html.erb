@@ -1,0 +1,23 @@
+<div class="gwsub sb04">
+<%= render :partial => 'gwsub/admin/sb04/sb04_piece_header' %>
+<div class="pieceBanner">
+  <%= render :partial => 'gwsub/admin/sb04/sb04_subfunction_select_menu' %>
+  <%= render :partial => 'menu' %>
+  <%= render :partial => 'display_name' -%>
+    <div class="showMenu">
+      <%= link_to '詳細' , "#{@public_uri}/#{@item.id}" %>
+    </div>
+</div>
+  
+<div class="pieceBody">
+  <div class="pieceBodyBody">
+    <%= div_notice -%>
+    <%= form_for :item, :url => "#{@public_uri}/#{@item.id}" ,:action=>:update, :html => {:id => "itemForm", :method => :put, :multipart => true} do |f| %>
+    <%= f.error_messages %>
+    <%= render :partial => 'form', :locals => {:f => f} %>
+    <% end %>
+  </div>
+
+</div>
+
+</div>

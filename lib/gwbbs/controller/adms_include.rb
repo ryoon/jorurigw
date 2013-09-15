@@ -18,14 +18,14 @@ module Gwbbs::Controller::AdmsInclude
     c1.and "sql", "state != 'public'"
     c1.and "sql", "state != 'preparation'"
     c1.and :title_id, params[:title_id]
-    c1.and :editor_id, Site.user.code
+    c1.and :editor_id, Core.user.code
 
     c2 = Condition.new
     c1.and "sql", "state != 'public'"
     c2.and "sql", "state != 'preparation'"
     c2.and :title_id, params[:title_id]
     c2.and :editor_admin, 0
-    c2.and :editordivision_id, Site.user_group.code
+    c2.and :editordivision_id, Core.user_group.code
 
     c3 = Condition.new
     c3.and "sql", "state = 'public'"
@@ -46,13 +46,13 @@ module Gwbbs::Controller::AdmsInclude
     c1 = Condition.new
     c1.and "sql", gwbbs_select_status(params)
     c1.and :title_id, params[:title_id]
-    c1.and :editor_id, Site.user.code
+    c1.and :editor_id, Core.user.code
 
     c2 = Condition.new
     c2.and "sql", gwbbs_select_status(params)
     c2.and :title_id, params[:title_id]
     c2.and :editor_admin, 0
-    c2.and :editordivision_id, Site.user_group.code
+    c2.and :editordivision_id, Core.user_group.code
 
     item = gwbbs_db_alias(Gwbbs::Doc)
     item = item.new
@@ -88,7 +88,7 @@ module Gwbbs::Controller::AdmsInclude
   def recognize_index
     sql = Condition.new
     sql.and "sql", "gwbbs_recognizers.recognized_at Is Null"
-    sql.and "sql", "gwbbs_recognizers.code = '#{Site.user.code}'"
+    sql.and "sql", "gwbbs_recognizers.code = '#{Core.user.code}'"
     sql.and "sql", "gwbbs_docs.state = 'recognize'"
 
     join = "INNER JOIN gwbbs_recognizers ON gwbbs_docs.id = gwbbs_recognizers.parent_id AND gwbbs_docs.title_id = gwbbs_recognizers.title_id"

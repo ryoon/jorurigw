@@ -1,6 +1,7 @@
+# encoding:utf-8
 class Gw::MemoMobile < Gw::Database
   include System::Model::Base
-  include Cms::Model::Base::Content
+  include System::Model::Base::Content
 
   def self.is_email_mobile?(email = nil)
     return false if email.blank? || !email.include?("@")

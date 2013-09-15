@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 class Cms::Lib::Content::Doc::Base < Cms::Lib::Base
   include Cms::Lib::Content
   include Cms::Lib::Content::Doc::Recognizer

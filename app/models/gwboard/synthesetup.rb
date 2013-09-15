@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 class Gwboard::Synthesetup < Gw::Database
   include System::Model::Base
   include System::Model::Base::Content
@@ -12,7 +13,8 @@ class Gwboard::Synthesetup < Gw::Database
   end
 
   def update_path
-    return "#{Site.current_node.public_uri}#{self.id}/update"
+#    return "#{Core.current_node.public_uri}#{self.id}/update"
+    return "/gwbbs/synthesetup/#{self.id}"
   end
 
   def limit_line

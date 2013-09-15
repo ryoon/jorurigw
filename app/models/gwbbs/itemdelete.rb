@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 class Gwbbs::Itemdelete < Gw::Database
   include System::Model::Base
   include System::Model::Base::Content

@@ -3,13 +3,13 @@
    _common/themes/gw/css/doc_2column_dl.css
 ========================================================= */
 
-/* ‘S‘Ì‘å˜g
+/* å…¨ä½“å¤§æ 
 ---------------------------------------------*/
 #content {
   border-right: 1px solid #1E3B8C;
 }
 
-/* ‘ŒÉ–¼ƒ‰ƒCƒ“
+/* æ›¸åº«åãƒ©ã‚¤ãƒ³
 ---------------------------------------------*/
 .pieceBanner {
   clear: both;
@@ -21,7 +21,7 @@
   font-size: 150%;
 }
 
-/* ƒJƒ‰ƒ€ŠÖŒWİ’è
+/* ã‚«ãƒ©ãƒ é–¢ä¿‚è¨­å®š
 ---------------------------------------------*/
 #contentBody .pieceBody {
   overflow: hidden;
@@ -50,7 +50,7 @@ table.docFolder {
   margin-bottom: 10px;
 }
 
-/* table docformTitle(ˆê——ƒe[ƒuƒ‹)
+/* table docformTitle(ä¸€è¦§ãƒ†ãƒ¼ãƒ–ãƒ«)
 ----------------------------------------------------*/
 table.docformTitle {
   width: 100%;
@@ -60,7 +60,7 @@ table.docformTitle {
   margin-bottom: 10px;
 }
 
-/* ƒTƒCƒhƒƒjƒ…[@ƒJƒ‰ƒ€İ’è
+/* ã‚µã‚¤ãƒ‰ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã€€ã‚«ãƒ©ãƒ è¨­å®š
 ----------------------------------------------------*/
 #contentBody .sideMenu {
   float: left;
@@ -77,12 +77,11 @@ table.docformTitle {
   padding-bottom: 20px;
 }
 
-/* ƒTƒCƒhƒƒjƒ…[@ŒŸõƒ{ƒbƒNƒX
+/* ã‚µã‚¤ãƒ‰ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã€€æ¤œç´¢ãƒœãƒƒã‚¯ã‚¹
 ----------------------------------------------------*/
 #content .pieceBody h4.iconSideKey {
   margin-left: 5px;
   padding-left: 25px;
-  background-color: #E3EFFF;
   background-image: url(/_common/themes/gw/files/icon/ic_search-article.gif);
   background-repeat: no-repeat;
 }
@@ -104,14 +103,14 @@ table.docformTitle {
   font-size: 80%;
 }
 
-/* ƒTƒCƒhƒƒjƒ…[@ƒcƒŠ[
+/* ã‚µã‚¤ãƒ‰ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã€€ãƒ„ãƒªãƒ¼
 ----------------------------------------------------*/
 *html #contentBody .sideMenu ul li {
   zoom: 100%;
 }
 *:first-child+html .sideMenu ul li {
   zoom: 100%;
-} 
+}
 #contentBody .sideMenu  li.current a {
   padding-left: 1px;
   padding-right: 3px;
@@ -210,8 +209,8 @@ li.open {
   background-image:url(/_common/themes/gw/files/digitallibrary/file_02.gif)
 }
 
-/* table bbsImage(“ü—Íƒy[ƒW@‰æ‘œ“\•t—“)
-   table bbsFile(“ü—Íƒy[ƒW@“Y•tƒtƒ@ƒCƒ‹—“)
+/* table bbsImage(å…¥åŠ›ãƒšãƒ¼ã‚¸ã€€ç”»åƒè²¼ä»˜æ¬„)
+   table bbsFile(å…¥åŠ›ãƒšãƒ¼ã‚¸ã€€æ·»ä»˜ãƒ•ã‚¡ã‚¤ãƒ«æ¬„)
 -----------------------------------------------------------*/
 table.bbsImage,
 table.bbsFile {
@@ -230,7 +229,7 @@ table.bbsFile td {
   border-left: 1px solid #CCCCCC;
 }
 
-/* table bbsImage(“ü—Íƒy[ƒW@‰æ‘œ“\•t—“)
+/* table bbsImage(å…¥åŠ›ãƒšãƒ¼ã‚¸ã€€ç”»åƒè²¼ä»˜æ¬„)
 -----------------------------------------------------------*/
 table.bbsImage {
   border-top: none;
@@ -241,7 +240,7 @@ table#image_form {
   border-top: 1px solid #CCCCCC;
 }
 
-/* table bbsFile(“ü—Íƒy[ƒW@“Y•tƒtƒ@ƒCƒ‹—“)
+/* table bbsFile(å…¥åŠ›ãƒšãƒ¼ã‚¸ã€€æ·»ä»˜ãƒ•ã‚¡ã‚¤ãƒ«æ¬„)
 -----------------------------------------------------------*/
 table.bbsFile {
   margin-top: 20px;
@@ -255,7 +254,7 @@ table#attach_form {
   border-top: 1px solid #CCCCCC;
 }
 
-/* “Y•tƒtƒ@ƒCƒ‹ƒŠƒXƒg
+/* æ·»ä»˜ãƒ•ã‚¡ã‚¤ãƒ«ãƒªã‚¹ãƒˆ
 -----------------------------------------------------------*/
 table.gwboardAttachlist td.attachIcon a.iconFile {
   display: inline-block;
@@ -263,7 +262,7 @@ table.gwboardAttachlist td.attachIcon a.iconFile {
   width: 24px;
 }
 
-/* “ü—Íƒy[ƒW@submitƒ{ƒ^ƒ“
+/* å…¥åŠ›ãƒšãƒ¼ã‚¸ã€€submitãƒœã‚¿ãƒ³
 -----------------------------------------------------------*/
 .right .submitters {
   text-align: center;
@@ -272,7 +271,7 @@ table.gwboardAttachlist td.attachIcon a.iconFile {
   margin-bottom: 50px;
 }
 
-/* ˆê——‚Ö–ß‚éƒ{ƒ^ƒ“
+/* ä¸€è¦§ã¸æˆ»ã‚‹ãƒœã‚¿ãƒ³
 ---------------------------------------------------*/
 .btReturn {
   clear: none;

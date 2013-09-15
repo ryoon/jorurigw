@@ -22,7 +22,7 @@ module Gwboard::Controller::SortKey
     case params[:state]
     when "DRAFT"
       str = "state = 'draft'" if @is_admin
-      str = "state = 'draft' AND editor_id = '#{Site.user.code}' OR state = 'draft' AND editordivision_id = '#{Site.user_group.code}' AND editor_admin = 0" unless @is_admin
+      str = "state = 'draft' AND editor_id = '#{Core.user.code}' OR state = 'draft' AND editordivision_id = '#{Core.user_group.code}' AND editor_admin = 0" unless @is_admin
     when "RECOGNIZE"
       str = "state = 'recognize'"
     when "PUBLISH"

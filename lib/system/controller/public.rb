@@ -1,3 +1,4 @@
+# encoding: utf-8
 module System::Controller::Public
   include System::Controller::Public::Auth::Login
   include System::Controller::Public::Log
@@ -10,8 +11,8 @@ module System::Controller::Public
 
   def initialize_application_public
     if authenticate
-        Site.user  = current_user
-        Site.user_group = current_user.groups[0]
+        Core.user  = current_user
+        Core.user_group = current_user.groups[0]
       self.class.class_eval { include Gw::Controller::Public }
     end
 
@@ -27,17 +28,17 @@ module System::Controller::Public
     return false if request.env['PATH_INFO'] =~ /login/
     return respond_to do |format|
       format.html {
-        Site.format = 'html'
+        Core.format = 'html'
         redirect_url = "/login?url=#{CGI.escape(request.env['REQUEST_URI'])}"
         redirect_to(redirect_url)
       }
       format.xml  {
-        Site.format = 'xml'
+        Core.format = 'xml'
         error 'This is a secure page.'
       }
       format.rss  {
         redirect_to('/error_auth.xml')
-        Site.format = 'rss'
+        Core.format = 'rss'
         return false
       }
     end

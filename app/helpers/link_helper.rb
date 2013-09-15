@@ -1,4 +1,117 @@
+# encoding: utf-8
 module LinkHelper
+  def action_menu(type, link = nil, options = {})
+    action = params[:action]
+    
+    if action =~ /index/
+      return '' if [:index, :show, :edit, :destroy].index(type)
+    elsif action =~ /(show|destroy)/
+      return '' unless [:index, :edit, :destroy].index(type)
+    elsif action =~ /(new|create)/
+      return '' unless [:index].index(type)
+    elsif action =~ /(edit|update)/
+      return '' unless [:index, :show].index(type)
+    end
+    
+    if type == :destroy
+      options[:confirm] = '削除してよろしいですか？'
+      options[:method]  = :delete
+      #options[:remote]  = true
+    end
+    
+    if link.class == String
+      return link_to(type, link, options)
+    elsif link.class == Array
+      return link_to(link[0], link[1], options)
+    else
+      return link_to(type, url_for(:action => type), options)
+    end
+  end
+  
+  def link_to(*params)
+    labels = {
+      :up        => '上へ',
+      :index     => '一覧',
+      :list      => '一覧',
+      :show      => '詳細',
+      :new       => '新規作成',
+      :edit      => '編集',
+      :delete    => '削除',
+      :destroy   => '削除',
+      :open      => '公開',
+      :close     => '非公開',
+      :enabale   => '有効化',
+      :disable   => '無効化',
+      :recognize => '承認',
+      :publish   => '公開',
+      :close     => '非公開'
+    }
+    params[0] = labels[params[0]] if labels.key?(params[0])
+    
+    options = params[2]
+
+    if options && options[:method] == :delete
+      options[:method] = nil
+      
+      onclick = "var f = document.createElement('form');" \
+        "f.style.display = 'none';" \
+        "this.parentNode.appendChild(f);" \
+        "f.method = 'POST';" \
+        "f.action = this.href;" \
+        "var m = document.createElement('input');" \
+        "m.setAttribute('type', 'hidden');" \
+        "m.setAttribute('name', '_method');" \
+        "m.setAttribute('value', 'delete');" \
+        "f.appendChild(m);" \
+        "var s = document.createElement('input');" \
+        "s.setAttribute('type', 'hidden');" \
+        "s.setAttribute('name', 'authenticity_token');" \
+        "s.setAttribute('value', '#{form_authenticity_token}');" \
+        "f.appendChild(s);" \
+        "f.submit();"
+
+      if options[:confirm]
+        onclick = "if (confirm('#{options[:confirm]}')) {#{onclick}};"
+        options[:confirm] = nil
+      end
+      options[:onclick] = onclick + "return false;"
+    end
+
+    super(*params)
+  end
+  
+  ## E-mail to entity
+  def email_to(addr, text = nil)
+    return '' if addr.blank?
+    text ||= addr
+    addr.gsub!(/@/, '&#64;')
+    addr.gsub!(/a/, '&#97;')
+    text.gsub!(/@/, '&#64;')
+    text.gsub!(/a/, '&#97;')
+    mail_to(text, addr)
+  end
+  
+  ## Tel
+  def tel_to(tel, text = nil)
+    text ||= tel
+    return tel if tel.to_s !~ /^([\(]?)([0-9]+)([-\(\)]?)([0-9]+)([-\)]?)([0-9]+$)/
+    link_to text, "tel:#{tel}"
+  end
+
+  #memos
+  def sort_link_memo(sort_keys, path_index, field_name, other_query_string='')
+    other_query_string = nz(other_query_string, '')
+    ret = sort_keys == "#{field_name}%20asc" ? '▲' : link_to_with_external_check('▲', path_index + "?sort_keys=" + "#{field_name}%20asc" + (other_query_string=='' ? '' : '&amp;' + other_query_string ))
+    ret += ' '
+    ret += sort_keys == "#{field_name}%20desc" ? '▼' : link_to_with_external_check('▼', path_index + "?sort_keys=" + "#{field_name}%20desc" + (other_query_string=='' ? '' : '&amp;' + other_query_string ))
+    return ret
+  end
+
+  def link_to_with_external_check(caption, uri, options={})
+    options_wrk = options.dup
+    options_wrk['class'] = 'ext' if link_external?(uri)
+    return link_to(caption, uri, options_wrk)
+  end
 
   def link_external?(uri)
     require 'uri'
@@ -15,41 +128,6 @@ module LinkHelper
     else
       return true
     end
-  end
-
-  def link_internal?(uri)
-    return !link_external?(uri)
-  end
-
-  def link_to_internal(caption, uri, options={})
-    return link_to(caption, uri, options)
-  end
-
-  def link_to_external(caption, uri, options={})
-    options_wrk = options.dup
-    options_wrk['class'] = 'ext'
-    return link_to(caption, uri, options_wrk)
-  end
-
-  def link_to_with_external_check(caption, uri, options={})
-    options_wrk = options.dup
-    options_wrk['class'] = 'ext' if link_external?(uri)
-    return link_to(caption, uri, options_wrk)
-  end
-
-  alias link_to_wec link_to_with_external_check
-
-  def link_to_extention_piece(piece)
-    mod  = (piece.content ? piece.content.module : 'cms').camelize
-    ctr  = piece.controller.camelize
-    path = nil
-    begin
-      helper = eval("#{mod}::Piece::#{ctr}Helper")
-      path = extention_piece_path(piece)
-    rescue
-      return ''
-    end
-    link_to '拡張設定', path
   end
 
   def link_to_list(item, caption = '展開', options={})
@@ -104,62 +182,8 @@ module LinkHelper
     link_to_with_external_check caption, uri, opt
   end
 
-  def link_to_preview(item)
-    link_to_with_external_check '表示', item.preview_uri, :target => '_blank'
-  end
-
-  def link_to_recognize(item)
-    link_to_with_external_check '承認', url_for(:action => :show, :id => item, :do => :recognize), :confirm => '承認してよろしいですか？'
-  end
-
-  def link_to_publish(item)
-    link_to_with_external_check '公開', url_for(:action => :show, :id => item, :do => :publish), :confirm => '公開してよろしいですか？'
-  end
-
-  def link_to_rebuild(item)
-    link_to_with_external_check '再構築', url_for(:action => :show, :id => item, :do => :rebuild), :confirm => '再構築してよろしいですか？'
-  end
-
-  def link_to_close(item)
-    link_to_with_external_check '非公開', url_for(:action => :show, :id => item, :do => :close), :confirm => '公開を終了してよろしいですか？'
-  end
-
-  def link_to_status(item)
-    link_to_with_external_check item.status.name, url_for(:action => :show, :id => item)
-  end
-
-  def link_to_index(caption = nil, url = nil, options={})
-    opt = options.dup
-    caption = nz(caption, '一覧へ戻る')
-    url = url_for(url.nil? ? chop_with(Site.current_node.public_uri, '/') : url)
-    url = "#{url}?#{opt[:qs]}" if !opt[:qs].blank?
-    opt.delete :qs
-    case Site.mode
-    when 'admin'
-      raise 'link_to_index not supposed on admin mode.'
-    when 'public'
-      link_to_with_external_check caption, url, opt
-    end
-  end
-
-  def link_to_new(caption = '新規作成')
-    case Site.mode
-    when 'admin'
-      raise 'link_to_new not supposed on admin mode.'
-    when 'public'
-      link_to_with_external_check caption, url_for("#{Site.current_node.public_uri}new")
-    end
-  end
-
-  def chop_with(str, suffix)
-    return Gw.chop_with(str, suffix)
-  end
-
-  def link_to_content(content_name, link_function_name, caption = '一覧', accesskey = nil)
-    rec = Cms::Content.find(:first, :select => 'id', :conditions => ["name = ?", content_name])
-    ret = link_to_with_external_check caption, eval(link_function_name + '(rec ? rec[:id] : nil)'), :accesskey=>accesskey
-    ret = "<div class='notice'>contents #{content_name} not found.</div>" if rec.nil?
-    return ret
+  def link_to_id(action, id, caption, base_uri)
+      link_to_with_external_check caption, url_for("#{base_uri}#{id}/#{action}")
   end
 
   def sort_link(title, sort_keys, path_index, field_name, other_query_string='')
@@ -167,33 +191,10 @@ module LinkHelper
     ret = sort_keys == "#{field_name}%20asc" ? '▲' : link_to_with_external_check('▲', path_index + "?sort_keys=" + "#{field_name}%20asc" + (other_query_string=='' ? '' : '&amp;' + other_query_string ))
     ret += ' '
     ret += sort_keys == "#{field_name}%20desc" ? '▼' : link_to_with_external_check('▼', path_index + "?sort_keys=" + "#{field_name}%20desc" + (other_query_string=='' ? '' : '&amp;' + other_query_string ))
-    ret += "<br />"
+#    ret += "<br />"
+    ret += ' '
     ret += title
     return ret
   end
 
-  def link_to_do(action, caption)
-    case Site.mode
-    when 'admin'
-      raise 'link_to_do not supposed on admin mode.'
-    when 'public'
-      link_to_with_external_check caption, url_for("#{Site.current_node.public_uri}#{action}")
-    end
-  end
-
-  def link_to_id(action, id, caption, base_uri=nil)
-    case Site.mode
-    when 'admin'
-      raise 'link_to_id not supposed on admin mode.'
-    when 'public'
-      link_to_with_external_check caption, url_for("#{base_uri.nil? ? Site.current_node.public_uri : base_uri}#{id}/#{action}")
-    end
-  end
-
-  def link_to_uc(caption, uri=nil, options={})
-    options_wrk = options.dup
-    options_wrk[:class] = Gw.join([options_wrk[:class], :mock], ' ')
-    alt_uri = Gw.alternate_uri(uri, options)
-    link_to caption, alt_uri, options_wrk
-  end
 end

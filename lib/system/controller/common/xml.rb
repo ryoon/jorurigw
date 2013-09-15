@@ -1,3 +1,4 @@
+# encoding: utf-8
 module System::Controller::Common::Xml
   def to_xml(items, options = {})
     options = {:root => 'items'}.merge(options)

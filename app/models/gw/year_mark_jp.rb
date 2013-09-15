@@ -1,3 +1,4 @@
+# encoding: utf-8
 class Gw::YearMarkJp < Gw::Database
   include System::Model::Base
   include Cms::Model::Base::Content
@@ -68,20 +69,41 @@ class Gw::YearMarkJp < Gw::Database
     return item
   end
   def self.date_check(fyear_start_at)
-    # 入力チェック
-    require 'parsedate'
+#pp fyear_start_at,fyear_start_at.class
+    pd=[]
     begin
-      pd = ParseDate.parsedate("#{fyear_start_at}",true)
+      if fyear_start_at.is_a?(Date)
+        pd[0] = sprintf("%4d", fyear_start_at.year)
+        pd[1] = sprintf("%02d", fyear_start_at.mon)
+        pd[2] = sprintf("%02d", fyear_start_at.mday)
+      else
+        if fyear_start_at.is_a?(Time)
+          pd[0] = sprintf("%4d", fyear_start_at.year)
+          pd[1] = sprintf("%02d", fyear_start_at.mon)
+          pd[2] = sprintf("%02d", fyear_start_at.mday)
+        else
+          if fyear_start_at.is_a?(String)
+            # yyyy-mm-dd HH:MM:SS を分割
+            pd0 = fyear_start_at.split(' ')
+            pd = pd0[0].split('-')
+#pp pd0,pd
+            return [0,0,0,0,0,0] if pd.size < 3
+  #          pd = Date.parse("#{fyear_start_at}",true)
+            pd[0] = sprintf("%4d", pd[0])
+            if pd[1].to_s.length == 1
+              pd[1] = sprintf("%02d",pd[1])
+            end
+            if pd[2].to_s.length == 1
+              pd[2] = sprintf("%02d",pd[2])
+            end
+          end
+        end
+      end
     rescue
       raise TypeError, "cannot recognize datetime format(#{fyear_start_at})"
     end
-    if pd[1].to_s.length == 1
-      pd[1] = sprintf("%02d",pd[1])
-    end
-    if pd[2].to_s.length == 1
-      pd[2] = sprintf("%02d",pd[2])
-    end
     return pd
+
   end
 
   def self.convert_ytoj(start_at,pattern = nil,skip = '0')
@@ -93,8 +115,10 @@ class Gw::YearMarkJp < Gw::Database
 #    pp ['mark',start_at,pattern]
     start_ymd = self.date_check(start_at)
     base = self.get_record(start_at)
+    return nil unless base
     base_ymd = self.date_check(base.start_at)
-
+#pp ['base',base]
+#pp ['base_ymd',base_ymd]
     if skip == '0'
       # １－３月は、年から１を引き、西暦年度とする
       case start_ymd[1]
@@ -116,9 +140,9 @@ class Gw::YearMarkJp < Gw::Database
     end
 
     fyear_jp = '元' if fyear_jp == 1
-
     start_markjp = base.mark + fyear_jp.to_s
     start_namejp = base.name + fyear_jp.to_s
+#pp [start_year,start_markjp,start_namejp]
     case pattern
     when '1'
       return [start_year,'0','0']
@@ -161,7 +185,7 @@ class Gw::YearMarkJp < Gw::Database
       `created_user`  text     default NULL,
       `created_group` text     default NULL,
       PRIMARY KEY  (`id`)
-    ) ENGINE=MyISAM DEFAULT CHARSET=utf8;"
+    ) DEFAULT CHARSET=utf8;"
     _connect.execute(_create_query)
     return
   end
@@ -171,4 +195,13 @@ class Gw::YearMarkJp < Gw::Database
     connect.execute(truncate_query)
   end
 
+  def creatable?
+    return true
+  end
+  def editable?
+    return true
+  end
+  def deletable?
+    return true
+  end
 end

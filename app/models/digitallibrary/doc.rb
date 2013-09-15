@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 class Digitallibrary::Doc < Gwboard::CommonDb
   include System::Model::Base
   include System::Model::Base::Content
@@ -5,11 +6,10 @@ class Digitallibrary::Doc < Gwboard::CommonDb
   include Cms::Model::Base::Content
   include Gwboard::Model::Recognition
   include Digitallibrary::Model::Systemname
+  include System::Model::Base::Status
 
   acts_as_tree :order=>'display_order, sort_no'
 
-  belongs_to :status, :foreign_key => :state, :class_name => 'System::Base::Status'
-  belongs_to :visible_status, :foreign_key => :state, :class_name => 'System::Base::Status'
   belongs_to :content,:foreign_key => :content_id,:class_name => 'Cms::Content'
   belongs_to :control,:foreign_key => :title_id, :class_name => 'Digitallibrary::Control'
 
@@ -41,7 +41,7 @@ class Digitallibrary::Doc < Gwboard::CommonDb
 
   def parent_change_check
     unless self.parent_id  == self.chg_parent_id
-      errors.add :seq_no, "階層が変更になる時は、先頭・最後尾のいずれかを選択してください" unless self.seq_no == -1 unless self.seq_no == 999999999
+      errors.add :seq_no, "階層が変更になる時は、先頭・最後尾のいずれかを選択してください" unless self.seq_no == -1 unless self.seq_no == 999999999.0
     end unless self.state == 'preparation'
   end
 
@@ -154,7 +154,7 @@ class Digitallibrary::Doc < Gwboard::CommonDb
     item = Gwboard::Synthesis.new
     item.and :title_id, self.title_id
     item.and :parent_id, self.id
-    item.and :system_name , self.system_name,
+    item.and :system_name, self.system_name
     item = item.find(:first)
     item.destroy if item
   end
@@ -244,14 +244,20 @@ class Digitallibrary::Doc < Gwboard::CommonDb
     if self.state=='public'
       item = Digitallibrary::Control.find(self.title_id)
       item.docslast_updated_at = Time.now
-      item.save(false)
+      item.save(:validate=>false)
     end
   end
 
   def send_reminder
+    show_doc_path = "/digitallibrary/docs/#{self.id}?title_id=#{self.title_id}"
+    if self.parent_id.blank?
+      show_doc_path += "&cat=#{self.id.to_s}"
+    else
+      show_doc_path += "&cat=#{self.parent_id.to_s}"
+    end
     self._recognizers.each do |k, v|
       unless v.blank?
-        Gw.add_memo(v.to_s, "#{self.control.title}「#{self.title}」についての承認依頼が届きました。", "次のボタンから記事を確認し,承認作業を行ってください。<br /></a><a href='#{self.show_path}&state=RECOGNIZE'><img src='/_common/themes/gw/files/bt_approvalconfirm.gif' alt='承認処理へ'></a>",{:is_system => 1})
+        Gw.add_memo(v.to_s, "#{self.control.title}「#{self.title}」についての承認依頼が届きました。", "次のボタンから記事を確認し,承認作業を行ってください。<br /><a href='#{show_doc_path}&state=RECOGNIZE'><img src='/_common/themes/gw/files/bt_approvalconfirm.gif' alt='承認処理へ' /></a>",{:is_system => 1})
       end
     end if self._recognizers if self.state == 'recognize'
   end

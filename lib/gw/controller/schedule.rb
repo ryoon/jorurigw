@@ -1,3 +1,4 @@
+# encoding: utf-8
 module Gw::Controller::Schedule
 
   def self.convert_ical(schedules, options={})

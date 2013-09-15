@@ -1,6 +1,6 @@
+# encoding: utf-8
 class Gw::MonitorReminder < Gw::Database
   include System::Model::Base
-  include Cms::Model::Base::Content
+  include System::Model::Base::Content
 
 end
-

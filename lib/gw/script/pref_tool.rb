@@ -1,5 +1,6 @@
+# encoding: utf-8
 class Gw::Script::PrefTool
-  require 'fastercsv'
+  require 'csv'
   require 'pp'
   require 'yaml'
 
@@ -8,7 +9,7 @@ class Gw::Script::PrefTool
     hash_raw = YAML.load_file('config/locales/csv_settings.yml')
     if csv_setting_name
       csv = []
-      FasterCSV.parse(input_csv) do |row|
+      CSV.parse(input_csv) do |row|
         csv.push row
       end
       setting = hash_raw[csv_setting_name]
@@ -118,7 +119,7 @@ class Gw::Script::PrefTool
         old_user.state         = "deleted"
         old_user.deleted_user  = Site.user.name
         old_user.deleted_group = Site.user_group.name
-        old_user.save(false)
+        old_user.save
       end
     }
     users.each_with_index{|user, y|
@@ -181,7 +182,7 @@ class Gw::Script::PrefTool
     old_users = Gw::PrefDirector.find(:all, :conditions=>["parent_g_code = ? AND state != 'deleted' AND deleted_at IS NULL",g_cat])
 
     temp = System::Group.find(:first,:conditions=>["end_at IS NULL and code = ?",g_cat])
-    return if temp.blank?
+    return [ret_no_user,ret_no_group_user] if temp.blank?
     old_users.each_with_index{|old_user, x|
       use = 0
       users.each_with_index{|user, y|
@@ -240,7 +241,7 @@ class Gw::Script::PrefTool
         old_user.state         = "deleted"
         old_user.deleted_user  = Site.user.name
         old_user.deleted_group = Site.user_group.name
-        old_user.save(false)
+        old_user.save
       end
     }
     users.each_with_index{|user, y|
@@ -363,7 +364,7 @@ class Gw::Script::PrefTool
         old_user.state         = "deleted"
         old_user.deleted_user  = Site.user.name
         old_user.deleted_group = Site.user_group.name
-        old_user.save(false)
+        old_user.save
       end
     }
     users.each_with_index{|user, y|
@@ -422,6 +423,4 @@ class Gw::Script::PrefTool
     }
     return [ret_no_user,ret_no_group_user]
   end
-
-
 end

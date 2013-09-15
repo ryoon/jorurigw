@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 #######################################################################
 #
 #
@@ -33,7 +34,7 @@ class Doclibrary::Script::Task
         @items = doc_item.find(:all)
         for @item in @items
           destroy_dbfiles
-          destroy_image_files
+         #destroy_image_files
           destroy_atacched_files
           destroy_files
           @item.destroy
@@ -90,7 +91,7 @@ class Doclibrary::Script::Task
   #添付ファイルレコード削除
   def self.destroy_atacched_files
     item = db_alias(Doclibrary::File)
-    
+
     files = item.find(:all, :order=> 'id', :conditions=>sql_where)
     files.each do |file|
       file.destroy
@@ -105,13 +106,84 @@ class Doclibrary::Script::Task
   end
   #削除関連----------------------------------------------------------------------
 
-  
+
+  #インデックス関連----------------------------------------------------------------------
+  def self.docs_add_index_script
+    # 必要なインデックスを追加する
+    dump "`書庫` : インデックス追加開始：#{Time.now.strftime('%Y-%m-%d %H:%M:%S')}"
+    item = Doclibrary::Control.new
+    items = item.find(:all)
+
+    items.each do |item|
+      cnn = Doclibrary::Doc.establish_connection
+      cnn.spec.config[:database] = item.dbname.to_s
+      read = Doclibrary::Doc
+      read.establish_connection(cnn.spec.config)
+      unless read.blank?
+        begin
+          connect = read.connection()
+          truncate_query = "ALTER TABLE `doclibrary_docs` ADD INDEX title_id(state(50),title_id,category1_id);"
+          connect.execute(truncate_query)
+          dump "`#{item.dbname.to_s}`.`書庫` : インデックス追加開始：#{Time.now.strftime('%Y-%m-%d %H:%M:%S')}"
+        rescue
+          dump "#{item.dbname.to_s}は既にindexを貼られていた、もしくはデータベースが存在していなかった、もしくはデータベース接続時にエラーが発生しました。：#{Time.now.strftime('%Y-%m-%d %H:%M:%S')}"
+        end
+      end
+    end
+    dump "`書庫` : インデックス追加終了：#{Time.now.strftime('%Y-%m-%d %H:%M:%S')}"
+  end
+
+  # /opt/ruby-enterprise-1.8.7-2010.02/bin/ruby /var/share/mie_gw_dev/script/runner -e development 'Doclibrary::Script::Task.folder_add_index_script'
+  def self.folder_add_index_script
+    # 必要なインデックスを追加する
+    dump "`書庫` : folder_index_追加開始：#{Time.now.strftime('%Y-%m-%d %H:%M:%S')}"
+    item = Doclibrary::Control.new
+    items = item.find(:all)
+
+    items.each do |item|
+      cnn = Doclibrary::Doc.establish_connection
+      cnn.spec.config[:database] = item.dbname.to_s
+      read = Doclibrary::Doc
+      read.establish_connection(cnn.spec.config)
+      unless read.blank?
+        begin
+          connect = read.connection()
+
+          truncate_query = "ALTER TABLE `doclibrary_folder_acls` ADD INDEX title_id(title_id);"
+          connect.execute(truncate_query)
+          truncate_query = "ALTER TABLE `doclibrary_folder_acls` ADD INDEX folder_id(folder_id);"
+          connect.execute(truncate_query)
+          truncate_query = "ALTER TABLE `doclibrary_folder_acls` ADD INDEX acl_section_code(acl_section_code);"
+          connect.execute(truncate_query)
+          truncate_query = "ALTER TABLE `doclibrary_folder_acls` ADD INDEX acl_user_code(acl_user_code);"
+          connect.execute(truncate_query)
+
+          truncate_query = "ALTER TABLE `doclibrary_folders` ADD INDEX title_id(title_id);"
+          connect.execute(truncate_query)
+          truncate_query = "ALTER TABLE `doclibrary_folders` ADD INDEX parent_id(parent_id);"
+          connect.execute(truncate_query)
+          truncate_query = "ALTER TABLE `doclibrary_folders` ADD INDEX sort_no(sort_no);"
+          connect.execute(truncate_query)
+
+          truncate_query = "ALTER TABLE `doclibrary_docs` ADD INDEX category1_id(category1_id);"
+          connect.execute(truncate_query)
+          truncate_query = "ALTER TABLE `doclibrary_docs` ADD INDEX title_id2(title_id);"
+          connect.execute(truncate_query)
+          dump "`#{item.dbname.to_s}`.`書庫` : folder_index_追加開始：#{Time.now.strftime('%Y-%m-%d %H:%M:%S')}"
+        rescue
+          dump "#{item.dbname.to_s}は既にindexを貼られていたか、データベースが存在していなかった、データベース接続時にエラーが発生するなどの理由でindexは作成できませんでした。確認をお願いします。：#{Time.now.strftime('%Y-%m-%d %H:%M:%S')}"
+        end
+      end
+    end
+    dump "`書庫` : folder_index_追加終了：#{Time.now.strftime('%Y-%m-%d %H:%M:%S')}"
+  end
+
   #doclibrary_controlsに設定されているdatabase接続先を参照する
   def self.db_alias(item)
     cnn = item.establish_connection
     #コントロールにdbnameが設定されているdbname名で接続する
     cnn.spec.config[:database] = @title.dbname.to_s
-    Gwboard::CommonDb.establish_connection(cnn.spec)
+    Gwboard::CommonDb.establish_connection(cnn.spec.config)
     return item
   end
 end

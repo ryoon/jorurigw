@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 class Gwcircular::Control < Gw::Database
   include System::Model::Base
   include System::Model::Base::Content
@@ -5,9 +6,9 @@ class Gwcircular::Control < Gw::Database
   include Gwboard::Model::AttachFile
   include Gwcircular::Model::Systemname
 
-  belongs_to :status, :foreign_key => :state, :class_name => 'System::Base::Status'
-  validates_presence_of :state,:recognize,:title,:sort_no
-  validates_presence_of :upload_graphic_file_size_capacity,:upload_graphic_file_size_max,:upload_document_file_size_max
+#  belongs_to :status, :foreign_key => :state, :class_name => 'Sys::Base::Status'
+  validates_presence_of :state, :recognize, :title, :sort_no, :commission_limit
+  validates_presence_of :upload_graphic_file_size_capacity, :upload_graphic_file_size_max, :upload_document_file_size_max
   after_validation :validate_params
   before_save :set_icon_and_wallpaper_path
   after_save :save_admingrps, :save_editors, :save_readers, :save_readers_add, :save_sueditors, :save_sureaders , :board_css_create
@@ -206,6 +207,10 @@ class Gwcircular::Control < Gw::Database
     errors.add :doc_body_size_capacity, "は数値で1以上を入力してください。" if self.doc_body_size_capacity == 0
   end
 
+  def item_home_path
+    return "/gwcircular/"
+  end
+  
   def menus_path
     return self.item_home_path
   end
@@ -239,15 +244,15 @@ class Gwcircular::Control < Gw::Database
   end
 
   def original_css_file
-    return "#{RAILS_ROOT}/public/_common/themes/gw/css/option.css"
+    return "#{Rails.root}/public/_common/themes/gw/css/option.css"
   end
 
   def board_css_file_path
-    return "#{RAILS_ROOT}/public/_attaches/css/#{self.system_name}"
+    return "#{Rails.root}/public/_attaches/css/#{self.system_name}"
   end
 
   def board_css_preview_path
-    return "#{RAILS_ROOT}/public/_attaches/css/preview/#{self.system_name}"
+    return "#{Rails.root}/public/_attaches/css/preview/#{self.system_name}"
   end
 
   def board_css_create

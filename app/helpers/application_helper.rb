@@ -1,12 +1,14 @@
+# encoding: utf-8
 module ApplicationHelper
-
+  ## nl2br
   def br(str)
-    str.to_s.gsub(/\r\n|\r|\n/, '<br />')
+    str.gsub(/\r\n|\r|\n/, '<br />').html_safe
   end
 
+  ## nl2br and escape
   def hbr(str)
-    str = html_escape(str.to_s)
-    str.gsub(/\r\n|\r|\n/, '<br />')
+    str = html_escape(str)
+    str.gsub(/\r\n|\r|\n/, '<br />').html_safe
   end
 
   def ass(alt = nil, &block)
@@ -18,46 +20,99 @@ module ApplicationHelper
     end
   end
 
-  def convert_for_mobile_body(body,sid=nil)
-    ret = Gw::Controller::Mobile.convert_for_mobile_body(body, sid)
-    return ret
+  ## wrap long string
+  def text_wrap(text, col = 80, char = " ")
+    #text.gsub(/(.{1,#{col}})( +|$\n?)|(.{1,#{col}})/, "\\1\\3#{char}")
+    #text.gsub(/(.{1,#{col}})( +|$\n?)|(.{1,#{col}})/, "\\1\\2\\3#{char}")
+    #text.gsub(/(.{#{col}})( +|$\n?)|(.{#{col}})/, "\\1\\2\\3#{char}")
+    text = text.gsub("\r\n", "\n")
+    text.gsub(/(.{#{col}})(( *$\n?)| +)|(.{#{col}})/) do |match|
+      if $3
+        "#{$1}#{$2}"
+      else
+        "#{$1}#{$2}#{$4}#{char}"
+      end
+    end
   end
 
-  def email_to(addr, text = nil)
-    text = addr unless text
-    addr.gsub!(/@/, '&#64;')
-    addr.gsub!(/a/, '&#97;')
-    text.gsub!(/@/, '&#64;')
-    text.gsub!(/a/, '&#97;')
-    mail_to(text, addr)
+  ## safe calling
+  def safe(alt = nil, &block)
+    begin
+      yield
+    rescue NoMethodError => e
+      # nil判定を追加
+      #if e.respond_to? :args and (e.args.nil? or (!e.args.blank? and e.args.first.nil?))
+        alt
+      #else
+        # 原因がnilクラスへのアクセスでない場合は例外スロー
+      #  raise
+      #end
+    end
   end
 
+  ## paginates
   def paginate(items, options = {})
     return '' unless items
-    default_options = {
-      :params     => p,
-      :prev_label => '<span class="prev">前のページ</span>',
-      :next_label => '<span class="next">次のページ</span>',
-      :separator  => '<span class="separator"> | </span' + "\n" + '>',
-      :renderer   => Cms::Lib::Pagination
+    defaults = {
+      :params         => p,
+      :previous_label => '前のページ',
+      :next_label     => '次のページ',
+      :link_separator => '<span class="separator"> | </span' + "\n" + '>'
     }
-    will_paginate items, default_options.merge!(options)
+    if request.mobile? && !request.smart_phone?
+      defaults[:page_links]     = false
+      defaults[:previous_label] = '&lt;&lt;*前へ'
+      defaults[:next_label]     = '次へ#&gt;&gt;'
+    end
+    links = will_paginate(items, defaults.merge!(options))
+    return links if links.blank?
+    if Core.request_uri != Core.internal_uri
+      links.gsub!(/href="#{URI.encode(Core.internal_uri)}/) do |m|
+        m.gsub(/^(href=").*/, '\1' + URI.encode(Core.request_uri))
+      end
+    end
+    if request.mobile? && !request.smart_phone?
+      links.gsub!(/<a [^>]*?rel="prev( |")/) {|m| m.gsub(/<a /, '<a accesskey="*" ')}
+      links.gsub!(/<a [^>]*?rel="next( |")/) {|m| m.gsub(/<a /, '<a accesskey="#" ')}
+    end
+    links
   end
 
-  def show_notice
-    return %Q(<div class="notice">#{flash[:notice]}</div>) if flash[:notice]
+###  ## Emoji
+###  def emoji(name)
+###    require 'jpmobile'
+###    return Cms::Lib::Mobile::Emoji.convert(name, request.mobile)
+###  end
+###
+###  ## Furigana
+###  def ruby(str, ruby = nil)
+###    ruby = Page.ruby unless ruby
+###    return ruby == true ? Cms::Lib::Navi::Ruby.convert(str) : str
+###  end
+
+  ## Number format
+  def number_format(num)
+    number_to_currency(num, :unit => '', :precision => 0)
   end
 
-  def ruby(str, ruby = nil)
-    ruby = Site.ruby unless ruby
-    return ruby == true ? Util::Html::Ruby.convert(str) : str
+  #show tag if condition is true.
+  def show_tag_if(tag, cond, options = {}, &block)
+    unless cond
+      options[:style] ||= ''
+      options[:style] += 'display:none;'
+    end
+
+    content_tag(tag, options, &block)
   end
 
-  def ja_name(name, object = nil)
-    label = I18n.t name, :scope => [:activerecord, :attributes, object.class.to_s.underscore]
-    return label =~ /^translation missing:/ ? name.to_s.humanize : label
+  def div_notice(str=nil)
+    str = flash[:notice] || str
+    Gw.div_notice(str)
   end
 
+  def show_notice(str="表示する項目はありません。")
+    div_notice(str)
+  end
 
   def hbf_struct(prefix, options={})
     header, body, footer = options[:header], options[:body], options[:footer]
@@ -153,53 +208,12 @@ EOL
     @content_for_form
   end
 
-  def concept_content_link(item, contents=nil)
-    ret = ''
-    if !item.nil? && ((item.is_a?(Cms::Content) && item.title == '知事への提言投稿') ||
-        (item.is_a?(Cms::Concept) && item.name == '知事への提言') ||
-        (item.is_a?(Cms::Concept) && item.name == 'ようこそ知事室へ'))
-      ret += link_to('知事への提言', governor_opinion_posts_path)
-      ret += '<br />'
-    else
-      if contents.nil?
-        ret += concept_content_link_core(item)
-      else
-        contents.each do |c|
-          ret += concept_content_link_core(c)
-          ret += '<br />'
-        end
-      end
-    end
-    return ret
-  end
-
-  def concept_content_link_core(c)
-    begin
-      link_to(h(c.title), eval(c.admin_path_name))
-    rescue
-      h(c.title)
-    end
-  end
-
   def required_head
     Gw.required_head
   end
-
   def required(str='※')
     Gw.required(str)
   end
 
-  def nobr(str)
-    Gw.nobr(str)
-  end
-
-  def div_notice(str=nil)
-    str = nz(str, flash[:notice])
-    Gw.div_notice(str)
-  end
-
-  def set_focus_to_id(id)
-    javascript_tag("$('#{id}').focus()");
-  end
 
 end

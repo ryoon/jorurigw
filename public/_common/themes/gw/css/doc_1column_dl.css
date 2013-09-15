@@ -3,13 +3,13 @@
    _common/themes/gw/css/doc_1column_dl.css
 ========================================================= */
 
-/* ®FŠO˜g
+/* ç´ºè‰²å¤–æ 
 ------------------------------------------*/
 #content {
   border-right: 1px solid #1E3B8C;
 }
 
-/* }‘–¼—“
+/* å›³æ›¸åæ¬„
 ------------------------------------------*/
 #contentBody .pieceBanner {
   background-color: #FFFCF0;
@@ -19,14 +19,14 @@
   padding: 10px;
 }
 
-/* ‰EƒJƒ‰ƒ€@‘å˜g
+/* å³ã‚«ãƒ©ãƒ ã€€å¤§æ 
 ------------------------------------------*/
 .DLDocList .pieceBody .outer {
   margin-left: 0;
 }
 
-/* table bbsImage(“ü—Íƒy[ƒW@‰æ‘œ“\•t—“)
-   table bbsFile(“ü—Íƒy[ƒW@“Y•tƒtƒ@ƒCƒ‹—“)
+/* table bbsImage(å…¥åŠ›ãƒšãƒ¼ã‚¸ã€€ç”»åƒè²¼ä»˜æ¬„)
+   table bbsFile(å…¥åŠ›ãƒšãƒ¼ã‚¸ã€€æ·»ä»˜ãƒ•ã‚¡ã‚¤ãƒ«æ¬„)
 -----------------------------------------------------------*/
 table.bbsImage,
 table.bbsFile {
@@ -46,24 +46,24 @@ table.bbsFile td {
   border-left: 1px solid #CCCCCC;
 }
 
-/* table bbsImage(“ü—Íƒy[ƒW@‰æ‘œ“\•t—“)
+/* table bbsImage(å…¥åŠ›ãƒšãƒ¼ã‚¸ã€€ç”»åƒè²¼ä»˜æ¬„)
 -----------------------------------------------------------*/
 table.bbsImage {
   border-top: none;
 }
-table#image_form { /*ŠJ‚¢‚½ó‘Ô*/
+table#image_form { /*é–‹ã„ãŸçŠ¶æ…‹*/
   margin-top: -2px;
   margin-bottom: 0;
   border-top: 1px solid #CCCCCC;
 }
 
-/* table bbsFile(“ü—Íƒy[ƒW@“Y•tƒtƒ@ƒCƒ‹—“)
+/* table bbsFile(å…¥åŠ›ãƒšãƒ¼ã‚¸ã€€æ·»ä»˜ãƒ•ã‚¡ã‚¤ãƒ«æ¬„)
 -----------------------------------------------------------*/
 table.bbsFile {
   margin-top: 10px;
   margin-bottom: 10px;
 }
-table#attach_form { /*ŠJ‚¢‚½ó‘Ô*/
+table#attach_form { /*é–‹ã„ãŸçŠ¶æ…‹*/
   margin-top: 0;
   margin-bottom: 0;
   border-top: 1px solid #CCCCCC;

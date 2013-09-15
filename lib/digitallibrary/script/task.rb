@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 #######################################################################
 #
 #
@@ -33,7 +34,7 @@ class Digitallibrary::Script::Task
         @items = doc_item.find(:all)
         for @item in @items
           destroy_dbfiles
-          destroy_image_files
+          #destroy_image_files
           destroy_atacched_files
           destroy_files
           @item.destroy
@@ -104,12 +105,44 @@ class Digitallibrary::Script::Task
   end
   #削除関連----------------------------------------------------------------------
 
+  ##インデックス追加関連----------------------------------------------------------------------
+  def self.docs_add_index_script
+    # 必要なインデックスを追加する
+    dump "`電子図書` : インデックス追加開始：#{Time.now.strftime('%Y-%m-%d %H:%M:%S')}"
+    item = Digitallibrary::Control.new
+    items = item.find(:all)
+
+    items.each do |item|
+      cnn = Digitallibrary::Doc.establish_connection
+      cnn.spec.config[:database] = item.dbname.to_s
+      read = Digitallibrary::Doc
+      read.establish_connection(cnn.spec.config)
+      unless read.blank?
+        begin
+          connect = read.connection()
+          truncate_query =  "ALTER TABLE `digitallibrary_docs` ADD INDEX parent_id(parent_id);"
+          connect.execute(truncate_query)
+          truncate_query = "ALTER TABLE `digitallibrary_docs` ADD INDEX display_order(display_order,sort_no);"
+          connect.execute(truncate_query)
+          truncate_query = "ALTER TABLE `digitallibrary_docs` ADD INDEX level_no(level_no, display_order, sort_no, id);"
+          connect.execute(truncate_query)
+          truncate_query = "ALTER TABLE `digitallibrary_docs` ADD INDEX state(state(30));"
+          connect.execute(truncate_query)
+          dump "`#{item.dbname.to_s}`.`電子図書` : インデックス追加開始：#{Time.now.strftime('%Y-%m-%d %H:%M:%S')}"
+        rescue
+          dump "#{item.dbname.to_s}は既にindexを貼られていた、もしくはデータベースが存在していなかった、もしくはデータベース接続時にエラーが発生しました。：#{Time.now.strftime('%Y-%m-%d %H:%M:%S')}"
+        end
+      end
+    end
+    dump "`電子図書` : インデックス追加終了：#{Time.now.strftime('%Y-%m-%d %H:%M:%S')}"
+  end
+
   #digitallibrary_controlsに設定されているdatabase接続先を参照する
   def self.db_alias(item)
     cnn = item.establish_connection
     #コントロールにdbnameが設定されているdbname名で接続する
     cnn.spec.config[:database] = @title.dbname.to_s
-    Gwboard::CommonDb.establish_connection(cnn.spec)
+    Gwboard::CommonDb.establish_connection(cnn.spec.config)
     return item
   end
 end

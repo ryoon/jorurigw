@@ -1,11 +1,15 @@
+# -*- encoding: utf-8 -*-
 class Gwbbs::Control < Gw::Database
   include System::Model::Base
   include System::Model::Base::Content
   include Gwboard::Model::ControlCommon
   include Gwboard::Model::AttachFile
   include Gwbbs::Model::Systemname
-
-  belongs_to :status, :foreign_key => :state, :class_name => 'System::Base::Status'
+  include System::Model::Base::Status
+  
+  has_many :adm, :foreign_key => :title_id, :class_name => 'Gwbbs::Adm', :dependent => :destroy
+  has_many :role, :foreign_key => :title_id, :class_name => 'Gwbbs::Role', :dependent => :destroy
+  
   validates_presence_of :state,:recognize,:title,:sort_no,:categoey_view_line,:monthly_view_line,:default_published
   validates_presence_of :upload_graphic_file_size_capacity,:upload_graphic_file_size_max,:upload_document_file_size_max
   after_validation :validate_params
@@ -185,7 +189,7 @@ class Gwbbs::Control < Gw::Database
   end
 
   def gwbbs_form_name
-    return 'gwbbs/public/user_forms/' + self.form_name + '/'
+    return 'gwbbs/admin/user_forms/' + self.form_name + '/'
   end
 
   def use_form_name()
@@ -247,7 +251,7 @@ class Gwbbs::Control < Gw::Database
     create_table_docs
     create_table_db_files
     create_table_files
-    cretae_table_images
+    #cretae_table_images
     create_table_recognizers
   end
 
@@ -284,7 +288,7 @@ class Gwbbs::Control < Gw::Database
     strsql += "`level_no` int(11) default NULL,"
     strsql += "`name` text,"
     strsql += "PRIMARY KEY  (`id`)"
-    strsql += ") ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;"
+    strsql += ")  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;"
     return connection.execute(strsql)
   end
 
@@ -331,7 +335,7 @@ class Gwbbs::Control < Gw::Database
     strsql += "`inpfld_001` text,"
     strsql += "`inpfld_002` text,"
     strsql += "PRIMARY KEY  (`id`)"
-    strsql += ") ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;"
+    strsql += ")  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;"
     return connection.execute(strsql)
   end
 
@@ -410,7 +414,7 @@ class Gwbbs::Control < Gw::Database
     strsql += "`inpfld_024` text,"
     strsql += "`inpfld_025` text,"
     strsql += "PRIMARY KEY  (`id`)"
-    strsql += ") ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;"
+    strsql += ")  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;"
     return connection.execute(strsql)
   end
 
@@ -421,7 +425,7 @@ class Gwbbs::Control < Gw::Database
     strsql += "`parent_id` int(11) default NULL,"
     strsql += "`data` longblob,"
     strsql += "PRIMARY KEY  (`id`)"
-    strsql += ") ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;"
+    strsql += ")  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;"
     return connection.execute(strsql)
   end
 
@@ -446,7 +450,7 @@ class Gwbbs::Control < Gw::Database
     strsql += "`height` int(11) default NULL,"
     strsql += "`db_file_id` int(11) default NULL,"
     strsql += "PRIMARY KEY  (`id`)"
-    strsql += ") ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;"
+    strsql += ")  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;"
     return connection.execute(strsql)
   end
 
@@ -472,7 +476,7 @@ class Gwbbs::Control < Gw::Database
     strsql += "`height` int(11) default NULL,"
     strsql += "`db_file_id` int(11) default NULL,"
     strsql += "PRIMARY KEY  (`id`)"
-    strsql += ") ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;"
+    strsql += ")  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;"
     return connection.execute(strsql)
   end
 
@@ -489,7 +493,7 @@ class Gwbbs::Control < Gw::Database
     strsql += "`name` text,"
     strsql += "`recognized_at` datetime default NULL,"
     strsql += "PRIMARY KEY  (`id`)"
-    strsql += ") ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;"
+    strsql += ") DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;"
     return connection.execute(strsql)
   end
 
@@ -518,7 +522,7 @@ class Gwbbs::Control < Gw::Database
   end
 
   def void_destroy_path
-    return "#{Site.current_node.public_uri}destroy_void_documents?title_id=#{self.id}"
+    return "#{Core.current_node.public_uri}destroy_void_documents?title_id=#{self.id}"
   end
 
   def set_icon_and_wallpaper_path

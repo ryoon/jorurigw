@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 class Gwsub::Sb04CheckOfficialtitle < Gwsub::GwsubPref
   include System::Model::Base
   include Cms::Model::Base::Content
@@ -55,7 +56,7 @@ class Gwsub::Sb04CheckOfficialtitle < Gwsub::GwsubPref
     import_csv = Array.new # インポートデータ
     error_csv  = Array.new # エラー発生データ
     error_row_cnt = 0      # エラー行数カウント
-    require 'fastercsv'
+    require 'csv'
 
     par_item = params[:item]
 #      raise ArgumentError, '入力指定が異常です。' if par_item.nil? || par_item[:nkf].nil? || par_item[par_item[:nkf]].nil?
@@ -80,7 +81,7 @@ class Gwsub::Sb04CheckOfficialtitle < Gwsub::GwsubPref
         file =  NKF::nkf(nkf_options,f)
         if file.blank?
         else
-          csv = FasterCSV.parse(file)
+          csv = CSV.parse(file)
 
           year_fiscal = Gw::YearFiscalJp.find_by_id(par_item[:fyed_id])
           csv.each_with_index do |row, i|
@@ -191,15 +192,6 @@ class Gwsub::Sb04CheckOfficialtitle < Gwsub::GwsubPref
     connect.execute(truncate_query)
   end
 
-  def import_table
-    model = Gwsub::Sb04officialtitle.new
-    self.class.columns.each do |column|
-      eval("model.#{column.name} = nz(self.#{column.name}, null)")
-      model.class.before_save.clear # コールバックをフックして無効化する。
-      model.save(false)
-    end
-  end
-
   def self.import_table(fyear_id = nil)
     Gwsub::Sb04officialtitle.destroy_all(:fyear_id=>fyear_id)
     fields = Array.new
@@ -215,7 +207,7 @@ class Gwsub::Sb04CheckOfficialtitle < Gwsub::GwsubPref
       fields.each do |field|
         eval("model.#{field} = nz(item.#{field}, nil)")
       end
-      model.save(false)
+      model.save(:validate=>false)
     end
   end
 end

@@ -1,5 +1,13 @@
+# -*- encoding: utf-8 -*-
 class Gw
-  $KCODE = "UTF8"
+  
+  def self.nz(value, valueifnull='')
+    value.blank? ? valueifnull : value
+  end
+
+  def self.version
+    "2.0.0"
+  end
 
   def self.br(str)
     str.to_s.gsub(/\r\n|\r|\n/, '<br />')
@@ -10,7 +18,11 @@ class Gw
   end
 
   def self.required(str='※')
-    %Q( <span class="required">#{str}</span>)
+    %Q( <span class="required">#{str}</span>).html_safe
+  end
+  
+  def self.user_groups_error
+    %Q(<span style="color: red;">** 所属未登録 **</span>).html_safe
   end
 
   def self.nobr(str)
@@ -27,7 +39,7 @@ class Gw
   def self.div_notice(str, options={})
     class_s = nz(options[:class], 'notice')
     id_s = options[:id].blank? ? '' : " id='#{options[:id]}'"
-    %Q(<div#{id_s} class="#{class_s}">#{str}</div>)
+    %Q(<div#{id_s} class="#{class_s}">#{str}</div>).html_safe
   end
 
   def self.add_info(cls, title)
@@ -38,8 +50,8 @@ class Gw
   def self.add_memo(uids, title, body, options={})
     uids = uids.to_s.split(':') if !uids.is_a?(Array)
     uids = uids.uniq
-    fr_u = options[:fr_user].blank? ? Site.user : System::User.find(:first, :conditions=>"id=#{options[:fr_user]}") rescue Site.user
-    fr_u = Site.user if fr_u.blank?
+    fr_u = options[:fr_user].blank? ? Core.user : System::User.find(:first, :conditions=>"id=#{options[:fr_user]}") rescue Core.user
+    fr_u = Core.user if fr_u.blank?
     begin
       Gw::Database.transaction do
         memo = {
@@ -77,7 +89,7 @@ class Gw
   end
 
   def self.send_mail(mail_fr, mail_to, subject, message)
-    System::Controller::Mail::Smtp.deliver_default(mail_fr, mail_to, subject, message)
+    System::Controller::Mail::Smtp.default_mail(mail_fr, mail_to, subject, message).deliver
   end
 
   def self.error_div(errors)
@@ -240,8 +252,7 @@ class Gw
     return [weekdays, holidays]
   end
 
-  require 'jcode'
-  $KCODE ='UTF-8'
+  #require 'jcode'
   def self.left(str, length)
     return str if length >= str.jlength
     str_wrk = str.split(//)
@@ -311,6 +322,20 @@ class Gw
   def self.hanzen(s)
     s.nil? ? '' : s.tr("A-Z0-9","Ａ-Ｚ０-９")
   end
+  
+  def self.half_width_characters?(string)
+    # 半角英数字、および半角アンダーバーのチェック
+    if string =~  /^[0-9A-Za-z\_]+$/
+      return true
+    else
+      false
+    end
+  end
+  
+  def self.get_uniq_data(a = [])
+    # 重複したデータを配列として返す
+    return a.uniq.select{|i| a.index(i) != a.rindex(i)}
+  end
 
   def self.is_valid_email_address?(v)
     # logic: based.on ValidatesEmailFormatOf
@@ -343,8 +368,26 @@ class Gw
     return 1
   end
 
+  def self.is_simplicity_valid_email_address?(email)
+    begin
+      domain, local = email.reverse.split('@', 2)
+    rescue
+      return false
+    end
+    if domain.blank?
+      return false
+    end
+    if local.blank?
+      return false
+    end
+    unless (domain.length <= 255 and local.length <= 64)
+      return false
+    end
+    return true
+  end
+
   def self.get_temp_filename(params)
-    File.join(RAILS_ROOT, 'tmp', "#{params[:controller].gsub('/', '_')}_#{params[:action]}_#{Site.user.id}_#{Time.now.strftime("%Y%m%d%H%M")}")
+    File.join(RAILS_ROOT, 'tmp', "#{params[:controller].gsub('/', '_')}_#{params[:action]}_#{Core.user.id}_#{Time.now.strftime("%Y%m%d%H%M")}")
   end
 
   def self.float?(s)
@@ -372,10 +415,11 @@ class Gw
     raise "fail at convert string to int"
   end
 
-  def self.a_to_qs(qs_a)
+  def self.a_to_qs(qs_a, options={})
     return '' if qs_a.nil?
     return "?#{qs_a}" if qs_a.is_a?(String)
-    qs_s = qs_a.join('&amp;')
+    delim = options[:no_entity].blank? ? '&amp;' : '&'
+    qs_s = qs_a.join(delim)
     qs_s = "?#{qs_s}" if !qs_s.blank?
   end
 
@@ -402,7 +446,7 @@ class Gw
     keys.delete_if{|x| nz(params[x],'')==''}.collect{|x| [x, params[x]]}
   end
 
-  def self.is_deco_cloud?(gid=Site.user_group.id)
+  def self.is_deco_cloud?(gid=Core.user_group.id)
     group = System::Group.find_by_id(gid)
     return false if group.blank?
     p_group = System::Group.find_by_id(group.parent_id)
@@ -410,7 +454,7 @@ class Gw
     return true
   end
 
-  def self.is_deco_pref?(gid=Site.user_group.id)
+  def self.is_deco_pref?(gid=Core.user_group.id)
     group = System::Group.find_by_id(gid)
     return false if group.blank?
     p_group = System::Group.find_by_id(group.parent_id)
@@ -419,12 +463,12 @@ class Gw
   end
 
   def self.is_dev?(options={})
-    uid = nz(options[:uid],Site.user.id)
+    uid = nz(options[:uid],Core.user.id)
     System::Model::Role.get(1, uid ,'gwsub', 'developer')
   end
 
   def self.is_editor?(options={})
-    uid = nz(options[:uid],Site.user.id)
+    uid = nz(options[:uid],Core.user.id)
     editor_users        = System::Model::Role.get(1, uid ,'system_users','editor')
     editor_tabs         = System::Model::Role.get(1, uid ,'edit_tab', 'editor')
     editor_rss          = System::Model::Role.get(1, uid ,'rss_reader', 'admin')
@@ -435,19 +479,20 @@ class Gw
   end
 
   def self.is_admin_admin?(options={})
-    uid = nz(options[:uid],Site.user.id)
-    System::Model::Role.get(1,uid,'_admin','admin')
+    uid = nz(options[:uid],Core.user.id)
+    ret = System::Model::Role.get(1,uid,'_admin','admin')
+    return ret
   end
 
   def self.is_admin_or_editor?(options={})
-    uid = nz(options[:uid],Site.user.id)
+    uid = nz(options[:uid],Core.user.id)
     editor = Gw.is_editor?(options)
     admin = Gw.is_admin_admin?(options)
     admin_role = editor || admin
     return admin_role
   end
 
-  require 'parsedate'
+  #require 'parsedate'
   def self.get_parsed_date(datestr)
     case datestr.class.to_s
     when 'Time'
@@ -455,22 +500,13 @@ class Gw
     when 'Date'
       return date_to_time(datestr)
     when 'String'
-      w1 = ParseDate::parsedate(datestr)
-      case
-      when !w1[0].nil? && !w1[1].nil? && !w1[2].nil? && !w1[3].nil? && !w1[4].nil?
-        n = Time.now
-        w1[5] = 0 if w1[5].nil?
-        raise ArgumentError, '存在しない日付です' if Date::exist?(*w1[0,3]).nil?
-        return Time.local(*w1)
-      when !w1[0].nil? && !w1[1].nil? && !w1[2].nil? && w1[3].nil? && w1[4].nil? && w1[5].nil?
-        raise ArgumentError, '存在しない日付です' if Date::exist?(*w1[0,3]).nil?
-        return Time.local(*w1[0,3])
-      when w1[0].nil? && w1[1].nil? && w1[2].nil? && !w1[3].nil? && !w1[4].nil?
-        n = Time.now
-        w1[5] = 0 if w1[5].nil?
-        return Time.local(n.year, n.month, n.day, *w1[3,3])
+      begin
+        w1 = DateTime.parse(datestr)
+      rescue # 日付が異常、もしくは日付が存在しない場合
+        raise ArgumentError, '存在しない日付です'
+        return false
       else
-        raise ArgumentError, '異常な入力です'
+        return w1
       end
     end
   end
@@ -555,10 +591,10 @@ class Gw
   end
 
   def self.order_last_null(fld, options={})
-    order = nz(options[:order], 'asc')
+    order = options[:order] || 'asc'
     order.downcase!
     order = %w(asc desc).index(order).nil? ? 'asc' : order
-    mode = nz(options[:mode], 2)
+    mode = options[:mode] || 2
     case mode
     when 1
       return "coalesce(#{fld}, '2036-12-31') #{order}"
@@ -578,7 +614,7 @@ class Gw
 
   def self.is_valid_date_str?(datestr)
     return false if datestr.nil?
-    dx = ParseDate::parsedate(datestr)
+    dx = Date.new(datestr)
     return false if dx[0].nil? || dx[1].nil? || dx[2].nil?
     Date.valid_date?(dx[0], dx[1], dx[2])
   end
@@ -638,7 +674,7 @@ class Gw
 
   def self.dateand_core(date_s)
     return nil if trim(date_s).nil?
-    w = ParseDate::parsedate(date_s.gsub('-', '/'))
+    w = Date.new(date_s.gsub('-', '/'))
     td = Date.today
     ty = td.year
     tm = td.month
@@ -691,7 +727,7 @@ class Gw
 
   def self.ym_to_time(d, options={})
     return nil if d.blank?
-    d_a = ParseDate.parsedate(d)
+    d_a = Date.new(d)
     day = options[:day].blank? ? 1 : options[:day]
     d_a.blank? || d_a[0].blank? || d_a[1].blank? ? nil :
       day > 0 ? Time.local(d_a[0], d_a[1], day) : Time.local(d_a[0], d_a[1]).end_of_month
@@ -719,10 +755,13 @@ class Gw
     when 'Date', 'Time', 'DateTime'
       return _dt.to_time
     when 'String'
-      dt = ParseDate.parsedate(_dt)
-      dt_now_s_a = ParseDate.parsedate(Time.now.to_s)
-      (0..2).each{|i| dt[i] = dt_now_s_a[i] if dt[i].blank?}
-      return Time.local(*dt[0..-3])
+      begin
+        dt = DateTime.parse(_dt)
+      rescue # 日付が異常、もしくは日付が存在しない場合
+        raise TypeError, "日付が異常、もしくは日付が存在しません"
+      else
+        return dt
+      end
     else
       raise TypeError, "未知の型です(#{_dt.class})"
     end
@@ -735,7 +774,6 @@ class Gw
   end
 
   def self.mkdir_for_file(path)
-    $KCODE = "UTF8"
     mode_file = !path.ends_with?('/')
     px = path.split(/\//)
     dir_name = px[0, px.length - (mode_file ? 1 : 0)].join(File::Separator)
@@ -755,10 +793,10 @@ class Gw
   def self.load_yaml_files_cache(glob = nil)
     c_key = "Gw.load_yaml_files_" + glob.to_s
     begin
-        value = CACHE.get c_key
+        value = Rails.cache.read(c_key)
         if value.blank?
           value = self.load_yaml_files(glob)
-          CACHE.set c_key, value, 3600
+          Rails.cache.write(c_key, value, :expires_in => 3600)
         else
         end
     rescue
@@ -769,7 +807,7 @@ class Gw
 
   def self.load_yaml_files(glob = nil)
     ret = {}
-    glob = "#{RAILS_ROOT}/config/locales/table_field*.yml" if glob.nil?
+    glob = "#{Rails.root}/config/locales/table_field*.yml" if glob.nil?
     Dir[glob].each do |dir|
       ret.merge! YAML.load_file(dir)
     end
@@ -821,21 +859,14 @@ class Gw
     if !options[:loose].blank?
       return false if options[:loose].blank? && (/^\d{4}[\-\/]\d{1,2}[\-\/]\d{1,2}( +\d{1,2}\:\d{1,2}(:\d{1,2})?)?$/ !~ v)
     else
-      w1 = ParseDate::parsedate(v)
-      flg_date_exist = (w1[0].nil? || w1[1].nil? || w1[2].nil?) ? false : Date.exist?(w1[0], w1[1], w1[2]).nil?
-      flg_time_range = (!w1[3].nil? && w1[3] > 23) || (!w1[4].nil? && w1[4] > 59)
-      case
-      when !w1[0].nil? && !w1[1].nil? && !w1[2].nil? && !w1[3].nil? && !w1[4].nil?
-        return false if flg_date_exist || flg_time_range
-      when !w1[0].nil? && !w1[1].nil? && !w1[2].nil? && w1[3].nil? && w1[4].nil? && w1[5].nil?
-        return false if flg_date_exist
-      when w1[0].nil? && w1[1].nil? && w1[2].nil? && !w1[3].nil? && !w1[4].nil?
-        return false if flg_time_range
-      else
+      begin
+        w1 = DateTime.parse(v)
+      rescue # 日付が異常、もしくは日付が存在しない場合
         return false
+      else
+        return true
       end
     end
-    return true
   end
 
   def self.yaml_to_array_for_select(relation_name, options={})
@@ -934,23 +965,23 @@ class Gw
       end
       options << %(<option value="#{html_escape(value.to_s)}"#{selected_attribute}#{title}>#{html_escape(text.to_s)}</option>)
     end
-    options_for_select.join("\n")
+    options_for_select.join("\n").html_safe
   end
 
   def self.is_ar_array?(x)
     return true if x.is_a? WillPaginate::Collection
-    x.is_a?(Array) && x.length > 0 && x.last.is_a?(ActiveRecord::Base)
+    return true if x.is_a?(Array) && x.length > 0 && x.last.is_a?(ActiveRecord::Base)
+
+    # for Rails3 convert
+    return true if x.is_a?(ActiveRecord::Relation) && x.length > 0 && x.last.is_a?(ActiveRecord::Base)
+
+    return false
   end
 
   def self.nza(*a)
     raise TypeError if !a.is_a?(Array)
     a.each{|x| return x if !x.blank?}
     return nil
-  end
-
-  def self.user_display_name(uid, uname)
-    u = Gw::Model::Schedule.get_user(uid)
-    "#{uname} (#{u.code})"
   end
 
   def self.limit_select

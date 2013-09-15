@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 module Gwboard::Controller::Scaffold
   def self.included(mod)
     mod.before_filter :initialize_scaffold
@@ -34,8 +35,9 @@ protected
     respond_to do |format|
       if item.creatable? && item.save
         options[:after_process].call if options[:after_process]
-        system_log.add(:item => item, :action => 'create')
-        location = item.item_path
+        #system_log.add(:item => item, :action => 'create')
+        location = options[:success_redirect_uri] ||= url_for(:action => :index)
+        #location = item.item_path
         location = item.adm_show_path if options[:success_redirect_uri] == 'makers_show'
         status = params[:_created_status] || :created
         flash[:notice] = options[:notice] || '登録処理が完了しました'
@@ -52,8 +54,8 @@ protected
     respond_to do |format|
       if item.creatable? && item.save
         options[:after_process].call if options[:after_process]
-        system_log.add(:item => item, :action => 'create')
-        location = item.item_path
+        #system_log.add(:item => item, :action => 'create')
+        location = options[:success_redirect_uri] ||= url_for(:action => :index)
         item.set_category_folder_root if options[:system_name] == 'digitallibrary'
         status = params[:_created_status] || :created
         flash[:notice] = options[:notice] || '登録処理が完了しました'
@@ -70,7 +72,7 @@ protected
     respond_to do |format|
       if item.creatable? && item.save
         options[:after_process].call if options[:after_process]
-        system_log.add(:item => item, :action => 'create')
+        #system_log.add(:item => item, :action => 'create')
         location = s_location
         status = params[:_created_status] || :created
         flash[:notice] = options[:notice] || '登録処理が完了しました'
@@ -87,7 +89,7 @@ protected
     respond_to do |format|
       if item.creatable? && item.save
         options[:after_process].call if options[:after_process]
-        system_log.add(:item => item, :action => 'create')
+        #system_log.add(:item => item, :action => 'create')
 
         if item.state == 'recognized'
           location = item.gwqa_preview_path
@@ -110,10 +112,9 @@ protected
     respond_to do |format|
       if item.editable? && item.save
         options[:after_process].call if options[:after_process]
-        system_log.add(:item => item, :action => 'update')
+        #system_log.add(:item => item, :action => 'update')
         flash[:notice] = options[:notice] || '更新処理が完了しました'
-        location = item.item_path
-        location = options[:success_redirect_uri] unless options[:success_redirect_uri].blank?
+        location = options[:success_redirect_uri] ||= url_for(:action => :index)
         format.html { redirect_to location }
         format.xml  { head :ok }
       else
@@ -128,9 +129,10 @@ protected
       if item.editable? && item.save
         options[:after_process].call if options[:after_process]
         item.set_category_folder_root
-        system_log.add(:item => item, :action => 'update')
+        #system_log.add(:item => item, :action => 'update')
         flash[:notice] = options[:notice] || '更新処理が完了しました'
-        format.html { redirect_to item.item_path }
+        location = options[:success_redirect_uri] ||= url_for(:action => :index)
+        format.html { redirect_to location }
         format.xml  { head :ok }
       else
         format.html { render :action => :edit }
@@ -144,7 +146,7 @@ protected
       if item.editable? && item.save
         options[:after_process].call if options[:after_process]
         item.send_reminder unless options[:digitallibrary].blank?
-        system_log.add(:item => item, :action => 'update')
+        #system_log.add(:item => item, :action => 'update')
         flash[:notice] = options[:notice] || '更新処理が完了しました'
         format.html { redirect_to s_location }
         format.xml  { head :ok }
@@ -162,7 +164,7 @@ protected
         destroy_recognizers(recog_item)
         save_recognizers(item, recog_item) if is_possible_recognize(item)
         item.send_reminder unless options[:digitallibrary].blank?
-        system_log.add(:item => item, :action => 'update')
+        #system_log.add(:item => item, :action => 'update')
         flash[:notice] = options[:notice] || '更新処理が完了しました'
         format.html { redirect_to s_location }
         format.xml  { head :ok }
@@ -226,10 +228,11 @@ protected
     respond_to do |format|
       if item.deletable? && item.destroy
         options[:after_process].call if options[:after_process]
-        system_log.add(:item => item, :action => 'destroy')
+        #system_log.add(:item => item, :action => 'destroy')
 
         flash[:notice] = options[:notice] || '削除処理が完了しました'
-        format.html { redirect_to item.item_path }
+        location = options[:success_redirect_uri] ||= url_for(:action => :index)
+        format.html { redirect_to location}
         format.xml  { head :ok }
       else
         flash[:notice] = '削除できません'
@@ -243,7 +246,7 @@ protected
     respond_to do |format|
       if item.deletable? && item.destroy
         options[:after_process].call if options[:after_process]
-        system_log.add(:item => item, :action => 'destroy')
+        #system_log.add(:item => item, :action => 'destroy')
 
         flash[:notice] = options[:notice] || '削除処理が完了しました'
         format.html { redirect_to s_location }

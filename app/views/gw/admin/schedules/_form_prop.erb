@@ -1,0 +1,104 @@
+<%
+owner_u = if params[:item].present? && params[:item][:owner_uid].present?
+  {:id=>params[:item][:owner_uid], :displayname=>params[:item][:owner_udisplayname]}
+elsif !@item.owner_uid.blank?  and params[:action] != 'quote'
+  owner_user = Gw::Model::Schedule.get_user(@item.owner_uid)
+  if owner_user.blank?
+    if @item.schedule_prop.blank? || @item.schedule_prop.is_kanzai? >= 3
+      {:id=>Site.user.id, :displayname=>Site.user.display_name}
+    else
+      {:id=>'', :displayname=>''}
+    end
+  else
+    {:id=>@item.owner_uid, :displayname=>owner_user.display_name}
+  end
+else
+  {:id=>Site.user.id, :displayname=>Site.user.display_name}
+end
+
+opt_prop_types = Gw::ScheduleProp.prop_types << ["すべて", 0]
+ucls = ''
+prop_id = ''
+prop_name = ''
+prop_gname = ''
+prop_gid = ''
+prop_gcode = ''
+if params[:prop_id].present? && params[:s_genre].present?
+  genre = params[:s_genre]
+  prop = Gw::PropOther.find_by_id(params[:prop_id])
+  if prop.delete_state == 0 && prop.reserved_state == 1
+    ucls = genre
+    prop_id = params[:prop_id]
+    prop_name = prop.name
+    prop_gname = !prop.gname.blank? ? prop.gname : ""
+    prop_gid = !prop.gid.blank? ? prop.gid : Site.user_group.id
+    group = System::Group.find(prop_gid)
+    prop_gcode = group.code
+  end
+end
+
+_params = params.dup
+if params[:s_genre].blank?
+    _params[:s_genre]='other:other'
+elsif params[:s_genre] == 'other'
+  _params[:s_genre]='other:other'
+end
+
+params[:st_at] = @d_load_st
+params[:ed_at] = @d_load_ed
+_defalut_props = Gw::ScheduleProp.getajax _params
+defalut_props = _defalut_props.collect{|x| [x[2], x[1]]}
+%>
+<%=  hidden_field_tag('init[schedule_props_json]',
+  (params[:item] && params[:item][:schedule_props_json] ? params[:item][:schedule_props_json] : nz(@props_json) )) %>
+
+<%= hidden_field_tag('init[prop_cls]', ucls) %>
+<%= hidden_field_tag('init[prop_id]', prop_id) %>
+<%= hidden_field_tag('init[prop_name]', prop_name) %>
+<%= hidden_field_tag('init[prop_gname]', prop_gname) %>
+<%= hidden_field_tag('init[prop_gcode]', prop_gcode) %>
+
+<table class="show" id="owner_table">
+  <tr>
+    <th></th>
+    <td>
+<%= hidden_field_tag 'item[owner_uid]', owner_u[:id] %>
+<%= button_to_function '予約担当者に設定 →', 'set_owner()' %>
+<%= text_field_tag 'item[owner_udisplayname]', owner_u[:displayname], :readonly=>true %>
+    </td>
+  </tr>
+</table>
+
+<table class="show" id="prop_items_table">
+  <tr>
+    <th><span>設備予約</span></th>
+    <td>
+      <table border="0">
+        <tr>
+          <td>
+<%= select_tag("item[schedule_props][prop_type_id]", options_for_select(opt_prop_types, 100), :onchange=>'update_prop_cand();') %>
+            <br />
+<%= select_tag("item[schedule_props][prop_id]", Gw.options_for_select(defalut_props, nil, :title=>genre), :size=>10, :style => 'width:280px;', :ondblclick => 'add_prop()', :multiple => true) if !genre.blank? %>
+<%= select_tag("item[schedule_props][prop_id]", Gw.options_for_select(defalut_props, nil, :title=>'other'), :size=>10, :style => 'width:280px;', :ondblclick => 'add_prop()', :multiple => true) if genre.blank? %>
+          </td>
+          <td>
+<%= button_to_function '追加 →', 'add_prop()' %>
+            <br /><br />
+<%= button_to_function '← 削除', 'del_prop()' %>
+          </td>
+          <td>
+<%= select_tag("item[schedule_props_add_buf]", '', :size=>10, :style => 'width:280px;', :ondblclick => 'del_prop()', :multiple => true) %>
+<%= hidden_field_tag 'item[schedule_props_json]', '' -%>
+          </td>
+        </tr>
+      </table>
+<%= raw(Gw.div_notice '', :id=>'notice_ajax_prop') -%>
+    </td>
+  </tr>
+  <tr>
+    <th>連絡先電話番号</th>
+    <td>
+      <%= f.text_field(:inquire_to, :class =>"IMEoff", :style => 'width:17em;') -%>
+    </td>
+  </tr>
+</table>

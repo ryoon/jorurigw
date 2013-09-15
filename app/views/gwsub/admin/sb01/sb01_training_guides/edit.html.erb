@@ -1,0 +1,21 @@
+<div class="gwsub sb01">
+<div class="pieceHeader">
+<h2>研修申込・受付</h2>
+</div>
+<div class="pieceBanner">
+<%= render :partial => 'gwsub/admin/sb01/sb01_training_guides/menu' %>
+</div>
+<div class="pieceBody">
+
+<%= raw(%Q(<div class="notice">#{flash[:notice]}</div>)) unless flash[:notice].blank? %>
+<br/>
+<% @edit_path = "#{@public_uri}/#{@item.id}" %>
+<% @action = "edit" %>
+<%= form_for :item, :url => @edit_path ,:action=>:update, :html => {:method => :put, :multipart => true, :class=>"leftSide"} do |f| %>
+  <%= render :partial => 'form', :locals => {:f => f} %>
+<% end %>
+<div class="btReturn">
+  <%= link_to_show @item.id %>
+</div>
+</div>
+</div>

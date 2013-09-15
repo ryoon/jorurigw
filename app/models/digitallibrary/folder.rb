@@ -1,8 +1,10 @@
+# -*- encoding: utf-8 -*-
 class Digitallibrary::Folder < Digitallibrary::Doc
   include Cms::Model::Base::Content
   include Digitallibrary::Model::Systemname
+  include System::Model::Base::Status
 
-  belongs_to :status, :foreign_key => :state, :class_name => 'System::Base::Status'
+
 
   acts_as_tree :order=>'display_order, sort_no'
 
@@ -17,8 +19,12 @@ class Digitallibrary::Folder < Digitallibrary::Doc
 
   def parent_change_check
     unless self.parent_id  == self.chg_parent_id
-      errors.add :seq_no, "階層が変更になる時は、先頭・最後尾のいずれかを選択してください" unless self.seq_no == -1 unless self.seq_no == 999999999
+      errors.add :seq_no, "階層が変更になる時は、先頭・最後尾のいずれかを選択してください" unless self.seq_no == -1 unless self.seq_no == 999999999.0
     end unless self.state == 'preparation'
+  end
+
+  def status_select
+    [['公開','public'], ['非公開','closed']]
   end
 
   def status_name

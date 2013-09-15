@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 class Gwfaq::File < Gwboard::CommonDb
   include System::Model::Base
   include System::Model::Base::Content
@@ -6,6 +7,10 @@ class Gwfaq::File < Gwboard::CommonDb
   include Gwboard::Model::AttachesFile
 
   validates_presence_of :filename, :message => "ファイルが指定されていません。"
+  before_create :before_create
+  after_create :after_create
+  after_destroy :after_destroy
+
 
   def item_path
     return "#{Site.current_node.public_uri.chop}?title_id=#{self.title_id}&p_id=#{self.parent_id}"

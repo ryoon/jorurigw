@@ -1,0 +1,62 @@
+<% _path = '/_attachs/gwcircular/'%>
+<%
+  if @item.blank?
+    mce_base_url = ''
+  else
+    mce_base_url = _path + sprintf("%06d", @item.title_id) + '/' + @item.name + "/" unless @item.name.blank?
+  end
+%>
+<%= tool_tiny_mce(mce_base_url, {:leftbar_mode=>true}) %>
+<%= raw(gw_js_include_full) %>
+<%= raw(%Q(<div class="notice">#{flash[:notice]}</div>)) unless flash[:notice].blank? %>
+<table class="show bbsText">
+  <tr>
+    <th>回覧件名<%= raw(required('※')) %> ( 記事件名は140文字以内で入力してください )</th>
+  </tr>
+  <tr>
+    <td><%= f.text_area :title, :cols => '140', :rows=>"1", :style => 'width:100%; height:45px'%></td>
+  </tr>
+  <tr>
+    <th>回覧記事</th>
+  </tr>
+  <tr>
+    <td class="mceEditor"><%= f.text_area :body, :class => 'mceEditor', :style => 'width:100%' %></td>
+  </tr>
+</table>
+
+<%= gwcircular_attachments_form(f, @item)%>
+
+<%= hidden_field_tag("item[state]", @item.state, :id=>"item_state") %>
+
+<table class="show">
+  <tr>
+    <th>回覧期限日時<%= raw(required('※')) %></th>
+    <td>
+      <%= f.calendar_date_select :expiry_date, :value => safe{@item.expiry_date.strftime("%Y-%m-%d %H:%M")}, :time => true, :popup => "force" %>
+    </td>
+  </tr>
+</table>
+
+<table class="show">
+  <tr><th>既読にする形式</th>
+  <td><%= f.select :confirmation, @item.confirmation_name , :class => 'confirmation'%></td></tr>
+</table>
+
+<%= render(:partial => '/gwcircular/admin/commissions/form')%>
+
+<%= hidden_field_tag(:cond, params[:cond]) unless params[:cond].blank? %>
+
+<script type="text/javascript">
+//<![CDATA[
+  function chageDisp(obj,changeObjId) {
+    var display = document.getElementById(changeObjId).style.display;
+    if (display == '') {
+      obj.innerHTML = '開く▼';
+    } else if (display == 'none') {
+      obj.innerHTML = '閉じる▲';
+    }
+    Element.toggle($(changeObjId));
+  }
+//]]>
+</script>
+

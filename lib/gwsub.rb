@@ -1,3 +1,4 @@
+# encoding: utf-8
 class Gwsub
 
   def self.modelize(table_name)
@@ -600,7 +601,12 @@ class Gwsub
 
     # 年度指定が無ければ、今日を含む年度
     if fyear_id.to_i==0
-      fyear_target_id = Gw::YearFiscalJp.get_record(Time.now).id
+      fyear_target = Gw::YearFiscalJp.get_record(Time.now)
+      if fyear_target.blank?
+        fyear_target_id = Gw::YearFiscalJp.find(:first, :order=>"fyear DESC , start_at DESC").id
+      else
+        fyear_target_id = fyear_target.id
+      end
     else
       fyear_target_id = fyear_id
     end
@@ -630,36 +636,20 @@ class Gwsub
       state_cond = "state='enabled' and "
     end
 
-    if options[:checkup]
-      group_cond    = "#{state_cond} level_no=2 and code NOT IN ('500' , '600', '999', 'Y00', 'Z00', 'Z01')"
-    elsif options[:kouann]
-      group_cond    = "("
-      group_cond   << "( #{state_cond} level_no=2 and code NOT IN ('999', 'Y00', 'Z00', 'Z01') ) or "
-      group_cond   << "( level_no=2 and code='600' )"
-      group_cond   << ")"
-    else
-      group_cond    = "#{state_cond} level_no=2 and code NOT IN ('600', '999', 'Y00', 'Z00', 'Z01')"
-    end
     # 親指定があれば、level2は指定のid
-    group_cond    << " and id=#{parent_id}"  unless parent_id.to_i==0
+    group_cond = "#{state_cond} level_no=2"
+
+    group_cond += " and id=#{parent_id}"  unless parent_id.to_i==0
     if options.has_key?(:fyear) and options[:fyear] == true
       # 開始日・終了日を指定年度の日時で判定
       group_cond    << " and start_at <= '#{current_time.strftime("%Y-%m-%d 00:00:00")}'"
-      if options[:kouann]
-        group_cond    << " and (end_at IS Null or end_at = '0000-00-00 00:00:00' or end_at > '#{start_at_fyear.strftime("%Y-%m-%d 23:59:59")}' or code = '600') "
-      else
-        group_cond    << " and (end_at IS Null or end_at = '0000-00-00 00:00:00' or end_at > '#{start_at_fyear.strftime("%Y-%m-%d 23:59:59")}' ) "
-      end
+      group_cond    << " and (end_at IS Null or end_at = '0000-00-00 00:00:00' or end_at > '#{start_at_fyear.strftime("%Y-%m-%d 23:59:59")}' ) "
     else
       # 開始日・終了日を現在日時で判定
       # 開始日が過去日時
       group_cond    << " and start_at <= '#{current_time.strftime("%Y-%m-%d 00:00:00")}'"
       # 終了日が将来日時
-      if options[:kouann]
-        group_cond    << " and (end_at IS Null or end_at = '0000-00-00 00:00:00' or end_at > '#{current_time.strftime("%Y-%m-%d 23:59:59")}' or code = '600') "
-      else
-        group_cond    << " and (end_at IS Null or end_at = '0000-00-00 00:00:00' or end_at > '#{current_time.strftime("%Y-%m-%d 23:59:59")}' ) "
-      end
+      group_cond    << " and (end_at IS Null or end_at = '0000-00-00 00:00:00' or end_at > '#{current_time.strftime("%Y-%m-%d 23:59:59")}' ) "
     end
 
     group_order   = "code , sort_no , start_at DESC, end_at IS Null ,end_at DESC"
@@ -682,7 +672,6 @@ class Gwsub
       end
     end
     # level_no = 2 で繰返し
-    l3_code_len = Site.code_length(3)
     for group in group_parents
 
       if options[:through_state]
@@ -692,24 +681,17 @@ class Gwsub
       end
 
       if options.has_key?(:fyear) and options[:fyear] == true
-         # 開始日・終了日を指定年度の日時で判定
-         # ID指定有
-         if options.has_key?(:show_ids)
+        # 開始日・終了日を指定年度の日時で判定
+        # ID指定有
+        if options.has_key?(:show_ids)
           child_cond   << " and (start_at <= '#{current_time.strftime("%Y-%m-%d 00:00:00")}' or id IN (#{options[:show_ids]}) )"
-         else
+        else
           child_cond   << " and start_at <= '#{current_time.strftime("%Y-%m-%d 00:00:00")}'"
-         end
-        unless group.code == '600'
-          child_cond    << " and (end_at IS Null or end_at = '0000-00-00 00:00:00' or end_at > '#{start_at_fyear.strftime("%Y-%m-%d 23:59:59")}' ) "
         end
       else
         # 開始日・終了日を現在日時で判定
         # 開始日が過去日時
         child_cond    << " and start_at <= '#{current_time.strftime("%Y-%m-%d 00:00:00")}'"
-        # 終了日が将来日時
-        unless group.code == '600'
-          child_cond    << " and (end_at IS Null or end_at = '0000-00-00 00:00:00' or end_at > '#{current_time.strftime("%Y-%m-%d 23:59:59")}' ) "
-        end
       end
       child_order   = "code , sort_no , start_at DESC, end_at IS Null ,end_at DESC"
       children = System::Group.find(:all,:conditions=>child_cond,:order=>child_order)
@@ -728,9 +710,9 @@ class Gwsub
           if options.has_key?(:code) and options[:code] == 'none'
             group_select << ["　　 - #{child.name}" , child.id]
           else
-            group_select << ["　　 - (#{child.code.to_s.rjust(l3_code_len.to_i,'0')})#{child.name}", child.id] if options[:return_pattern].blank? || options[:return_pattern] == 0
-            group_select << ["　　 - (#{child.code.to_s.rjust(l3_code_len.to_i,'0')})#{child.name}", child.id, child] if options[:return_pattern] == 1
-            group_select << ["　　 - (#{child.code.to_s.rjust(l3_code_len.to_i,'0')})#{child.name}", child.id] if options[:return_pattern] == 2
+            group_select << ["　　 - (#{child.code})#{child.name}", child.id] if options[:return_pattern].blank? || options[:return_pattern] == 0
+            group_select << ["　　 - (#{child.code})#{child.name}", child.id, child] if options[:return_pattern] == 1
+            group_select << ["　　 - (#{child.code})#{child.name}", child.id] if options[:return_pattern] == 2
             group_select << [child.name, "child_group_#{child.id}"] if options[:return_pattern] == 3 # スケジューラー登録画面での所属検索用
             group_select << [child.name, "#{child.id}"] if options[:return_pattern] == 4 # スケジューラー登録画面での所属検索用
           end

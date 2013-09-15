@@ -1,14 +1,14 @@
+# -*- encoding: utf-8 -*-
 
 module Gwboard::Model::ControlCommon
   include Gwboard::Model::AttachFile
 
   def sidelist_style
     str = ''
-    if self.wallpaper.to_s == ''
-      str = 'style="background-color: ' + self.left_index_bg_color.to_s + ';"'
-    else
-      str = 'style="background-image: url(' + self.wallpaper.to_s + '); background-color: ' + self.left_index_bg_color.to_s + ';"'
-    end
+    styles = []
+    styles << %Q[background-image:url(#{self.wallpaper});] if self.wallpaper.present?
+    styles << %Q[background-color:#{self.left_index_bg_color};] if self.left_index_bg_color.present?
+    str = %Q[style="#{styles.join()}"] if styles.size != 0
     return str
   end
 
@@ -34,6 +34,27 @@ module Gwboard::Model::ControlCommon
 
   def recognize_states
     {'0' => '不要', '1' => '必須', '2' => '任意'}
+  end
+
+  def state_list
+    [["公開","public"], ["非公開","closed"]]
+  end
+
+
+  def recognize_states_list
+    [["不要","0"],["必須","1"],["任意","2"]]
+  end
+
+  def use_daily_states_list
+    [["使用する","0"],["使用しない","1"]]
+  end
+
+  def use_states_list
+    [["使用しない","0"],["使用する","1"]]
+  end
+
+  def display_states_list
+    [["表示する",0], ["表示しない",1]]
   end
 
   def default_limit_line
@@ -147,36 +168,36 @@ module Gwboard::Model::ControlCommon
   end
 
   def item_path
-    return "#{Site.current_node.public_uri}"
+    return "#{Core.current_node.public_uri}"
   end
 
   def new_doc_path
     if self.system_name == 'gwqa'
-      return "#{Site.current_node.public_uri}new?title_id=#{self.id}&p_id=Q"
+      return "#{Core.current_node.public_uri}new?title_id=#{self.id}&p_id=Q"
     end
-    return "#{Site.current_node.public_uri}new?title_id=#{self.id}"
+    return "#{Core.current_node.public_uri}new?title_id=#{self.id}"
   end
 
   def new_portal_doc_path
-    ret = "/#{self.system_name}/docs/new?title_id=#{self.id}"
+    ret = "/_admin/#{self.system_name}/docs/new?title_id=#{self.id}"
     ret = "#{ret}&p_id=Q" if self.system_name == 'gwqa'
     return ret
   end
 
   def show_path
-    return "#{Site.current_node.public_uri}#{self.id}/"
+    return "#{Core.current_node.public_uri}#{self.id}/"
   end
 
   def edit_path
-    return "#{Site.current_node.public_uri}#{self.id}/edit"
+    return "#{Core.current_node.public_uri}#{self.id}/edit"
   end
 
   def delete_path
-    return "#{Site.current_node.public_uri}#{self.id}/delete"
+    return "#{Core.current_node.public_uri}#{self.id}/delete"
   end
 
   def update_path
-    return "#{Site.current_node.public_uri}#{self.id}/update"
+    return "#{Core.current_node.public_uri}#{self.id}/update"
   end
 
 end

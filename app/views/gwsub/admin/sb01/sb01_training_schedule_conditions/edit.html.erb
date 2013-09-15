@@ -1,0 +1,24 @@
+<%#*<p>Find me in app/views/gwsub/admin/sb01/sb01_training_schedule_conditions/edit.html.erb</p>%>
+<%
+@edit_path = "#{@public_uri}/#{@item.id}?t_id=#{@item.training_id}"
+@action = "edit"
+-%>
+<div class="gwsub sb01">
+<div class="pieceHeader">
+<h2>研修申込・受付</h2>
+</div>
+<div class="pieceBanner">
+<%= render :partial => 'gwsub/admin/sb01/sb01_training_plans/menu' %>
+</div>
+<div class="pieceBody">
+<%= render :partial => 'gwsub/admin/sb01/sb01_training_schedule_conditions/form_training_show' %>
+<%= raw(%Q(<div class="notice">#{flash[:notice]}</div>)) unless flash[:notice].blank? %>
+<br/>
+<%= form_for :item, :url => @edit_path ,:action=>:update, :html => {:method => :put, :multipart => true, :class=>'leftSide'} do |f| %>
+  <%= render :partial => 'form_edit', :locals => {:f => f} %>
+<% end %>
+  </div>
+<div class="btReturn">
+  <%= link_to '戻る', url_for("/gwsub/sb01/sb01_training_schedule_conditions/#{@item.id}?t_id=#{@item1.id}") %>
+</div>
+</div>

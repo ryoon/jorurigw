@@ -1,21 +1,41 @@
+# encoding: utf-8
 class Gw::Schedule < Gw::Database
   include System::Model::Base
-  include Cms::Model::Base::Content
+  include System::Model::Base::Content
+
   validates_presence_of :title, :is_public
-  gw_validates_datetime :st_at
-  gw_validates_datetime :ed_at
   validates_each :st_at do |record, attr, value|
     d_st = Gw.get_parsed_date(record.st_at)
     d_ed = Gw.get_parsed_date(record.ed_at)
     record.errors.add attr, 'と終了日時の前後関係が異常です。' if d_st > d_ed
   end
   has_many :schedule_props, :foreign_key => :schedule_id, :class_name => 'Gw::ScheduleProp', :dependent=>:destroy
-  has_one :schedule_prop, :foreign_key => :schedule_id, :class_name => 'Gw::ScheduleProp', :dependent=>:destroy # 現在のところ、施設テーブルはスケジュールテーブルと1対1
   has_many :schedule_users, :foreign_key => :schedule_id, :class_name => 'Gw::ScheduleUser', :dependent=>:destroy
   belongs_to :repeat, :foreign_key => :schedule_repeat_id, :class_name => 'Gw::ScheduleRepeat'
-  belongs_to :parent, :foreign_key => :schedule_parent_id, :class_name => 'Gw::Schedule'
-  has_many :child, :foreign_key => :schedule_parent_id, :class_name => 'Gw::Schedule'
   has_many :public_roles, :foreign_key => :schedule_id, :class_name => 'Gw::SchedulePublicRole', :dependent=>:destroy
+
+  def self.params_set(params)
+    _params = Array.new
+    [:uid, :gid, :cgid, :s_date, :ref, :prop_id].each do |col|
+      if params.key?(col)
+        _params << "#{col}=#{params[col]}"
+      end
+    end
+    ret = ""
+    if _params.length > 0
+      ret = Gw.join(_params, '&')
+      ret = '?' + ret
+    end
+    return ret
+  end
+  
+  def self.get_ref(params)
+    if params[:ref] == "prop"
+      :prop
+    else
+      :schedule
+    end
+  end
 
   def self.joined_self(options={})
     op = options.dup
@@ -27,8 +47,6 @@ class Gw::Schedule < Gw::Database
 
   def self.save_with_rels(item, par_item, mode, prop, delete_props = Array.new, options = {})
 
-    repeat_mode = nz(options[:repeat_mode], 1).to_i
-
     di = par_item.dup
     di.delete :public_groups
     _public_groups = JsonParser.new.parse(par_item[:public_groups_json])
@@ -38,7 +56,6 @@ class Gw::Schedule < Gw::Database
     _users = JsonParser.new.parse(par_item[:schedule_users_json])
     di.delete :schedule_users_json
 
-    kind_id = par_item[:form_kind_id]
     di.delete :form_kind_id
 
     di = di.merge ret_updator
@@ -90,6 +107,7 @@ class Gw::Schedule < Gw::Database
       di.delete :created_at
     end
 
+    _props = JsonParser.new.parse(par_item[:schedule_props_json])
     di.delete :schedule_props
     di.delete :schedule_props_json
     di.delete :allday_radio_id
@@ -109,25 +127,9 @@ class Gw::Schedule < Gw::Database
         return false if !item.update_attributes(di)
         Gw::ScheduleUser.destroy_all("schedule_id=#{item.id}")
         Gw::ScheduleProp.destroy_all("schedule_id=#{item.id}")
+        Gw::SchedulePublicRole.destroy_all("schedule_id=#{item.id}")
       else
         return false if !item.update_attributes(di)
-      end
-
-      if !prop.blank?
-        if par_item[:schedule_parent_id].blank?
-          di[:schedule_parent_id] = item.id
-          item.update_attributes(di)
-        end
-
-        item_sub = Gw::ScheduleProp.new()
-        item_sub.schedule_id = item.id
-        item_sub.st_at = item.st_at
-        item_sub.ed_at = item.ed_at
-
-        item_sub.prop_type = "Gw::Prop#{prop[0].capitalize}"
-        item_sub.prop_id = prop[1]
-
-        return false if !item_sub.save
       end
 
       _users.each do |user|
@@ -137,17 +139,22 @@ class Gw::Schedule < Gw::Database
         item_sub.ed_at = item.ed_at
         item_sub.class_id = user[0].to_i
         item_sub.uid = user[1]
-        return false if !item_sub.save
+        return false unless item_sub.save
       end
-
-      Gw::SchedulePublicRole.destroy_all("schedule_id=#{item.id}") if mode == :update
-      if ( prop.blank? || (!prop.blank? && prop[0] == "other") ) && par_item[:is_public] == '2'
+      _props.each do |prop|
+        item_sub = Gw::ScheduleProp.new()
+        item_sub.schedule_id = item.id
+        item_sub.prop_type = "Gw::PropOther"
+        item_sub.prop_id = prop[1]
+        return false unless item_sub.save
+      end
+      if par_item[:is_public] == '2'
         _public_groups.each do |_public_group|
           item_public_role = Gw::SchedulePublicRole.new()
           item_public_role.schedule_id = item.id
           item_public_role.class_id = 2
           item_public_role.uid = _public_group[1]
-          return false if !item_public_role.save
+          return false unless item_public_role.save
         end
       end
       return true
@@ -186,51 +193,12 @@ class Gw::Schedule < Gw::Database
   end
 
   def repeated?
-    !self.schedule_repeat_id.blank?
+    self.schedule_repeat_id.present?
   end
 
   def  get_repeat_items
     return Array.new if !self.repeated?
     return self.find(:all, :conditions=>"schedule_repeat_id='#{self.schedule_repeat_id}'", :order=>"st_at, id")
-  end
-
-  def  get_parent_items
-    if self.schedule_parent_id.blank?
-      return Array.new
-    else
-      return self.find(:all, :conditions=>"schedule_parent_id='#{self.schedule_parent_id}'", :order=>"st_at, id")
-    end
-  end
-
-
-  def  get_repeat_and_parent_items
-    items = Array.new
-    items << self
-
-    parent_items = self.get_parent_items
-    parent_items.each do | parent_item |
-      items += parent_item.get_repeat_items
-    end
-
-    repeat_items = self.get_repeat_items
-    repeat_items.each do | repeat_item |
-      items += repeat_item.get_parent_items
-    end
-
-    return items.uniq
-  end
-
-  def  get_parent_props_items
-    parent_items = self.get_parent_items
-    if parent_items.blank?
-      return Array.new
-    else
-      props_items = Array.new
-      parent_items.each do |parent_item|
-        props_items << parent_item.schedule_prop
-      end
-      return props_items
-    end
   end
 
   def repeat_item_first?
@@ -254,7 +222,7 @@ class Gw::Schedule < Gw::Database
     sche = Gw::Schedule
     item = sche.find(:first, :conditions=>"schedule_repeat_id='#{repeat_id}'", :order=>"st_at DESC")
 
-    return " ～" + item.ed_at.day.to_s + "日"
+    return " ～#{item.ed_at.day.to_s}日"
   end
 
   def stepped_over?
@@ -273,11 +241,6 @@ class Gw::Schedule < Gw::Database
     return st_date == date
   end
 
-  def schedule_approval?
-    event_auth = {:approved => false, :opened => false}
-    return event_auth
-  end
-
   def search(params)
     params.each do |n, v|
       next if v.to_s == ''
@@ -287,20 +250,6 @@ class Gw::Schedule < Gw::Database
 
   def is_actual?
     return nil
-  end
-
-  def ret_repeated?
-    repeat_id = self.schedule_repeat_id
-    item = Gw::ScheduleProp.new
-    ret = item.find(:all, :select=>'gw_schedule_props.*, gw_schedules.st_at, gw_schedules.ed_at, gw_schedules.creator_gcode',
-      :joins=> "left join gw_schedules on gw_schedule_props.schedule_id = gw_schedules.id",
-      :conditions=>"schedule_repeat_id='#{repeat_id}'")
-
-    flg = true
-    ret = ret.select{|x|
-      flg = false if x.prop_stat > 1
-    }
-    return flg
   end
 
   def self.is_schedule_pref_admin?(uid = Site.user.id)
@@ -324,22 +273,20 @@ class Gw::Schedule < Gw::Database
     return false
   end
 
-  def is_public_closed_auth?(is_gw_admin = Gw.is_admin_admin?, options = {})
+  def is_public_auth?(is_gw_admin = Gw.is_admin_admin?, options = {})
 
-    return false if is_gw_admin
-    uids = []
-    gids = []
-
-    prop = self.schedule_prop
-    is_kanzai = 4
-    is_other_my = false
-    if !prop.blank? && !prop.prop.blank?
-      is_kanzai = prop.is_kanzai?
-      if is_kanzai == 3 && Gw::PropOtherRole.is_admin?(prop.prop.id)
-        is_other_my = true
-      end
+    if is_gw_admin
+      return true  # ログインユーザーがシステム管理者の時、true
     end
 
+    is_public = nz(self.is_public, 1)
+
+    if is_public == 1
+      return true # 公開設定の時、true
+    end
+
+    uids = []
+    gids = []
     uids = [self.creator_uid]
     self.schedule_users.each{|x|
       if x.class_id == 1
@@ -359,34 +306,45 @@ class Gw::Schedule < Gw::Database
       end
     }
 
+    # 公開範囲
     self.public_roles.each do |public_role|
       if public_role.class_id == 2
         role_group = public_role.group
         unless role_group.blank?
-          if !role_group.blank? && role_group.level_no == 2
-            role_group.children.each do |children|
-              gids << children.id
+          gids << role_group.id
+          role_group.enabled_children.each do |child|
+            gids << child.id
+            child.enabled_children.each do |c|
+              gids << c.id
             end
-          else
-            gids << role_group.id
           end
         end
       end
     end
 
+    uids.compact! # nil要素を削除
+    gids.compact! # nil要素を削除
     uids = uids.sort.uniq
     gids = gids.sort.uniq
 
-    common_condition =  ((self.is_public == 2 && self.creator_uid.to_i != Site.user.id && (gids.index(Site.user_group.id).nil? && gids.index(Site.user_group.parent_id).nil?)) ||
-        (self.is_public == 3 && uids.index(Site.user.id).nil?))
+    if is_public == 2
+      # 所属内の時、参加者および公開所属、および参加者に存在した場合true
+      if self.creator_uid.to_i == Site.user.id || gids.index(Site.user_group.id) || uids.index(Site.user.id)
+        return true
+      end
+    elsif is_public == 3
+      if uids.index(Site.user.id)
+        return true
+      end
+    end
 
-    if (is_kanzai == 1 || is_kanzai == 2) &&
-        common_condition && !is_gw_admin
-      return true
-    elsif is_kanzai == 3 && !is_other_my && common_condition && !is_gw_admin
-      return true
-    elsif is_kanzai == 4 && common_condition && !is_gw_admin
-      return true
+    props = self.schedule_props
+    props.each do |prop|
+      if prop.prop.present?
+        if Gw::PropOtherRole.is_admin?(prop.prop.id)
+          return true
+        end
+      end
     end
 
     return false
@@ -415,7 +373,7 @@ class Gw::Schedule < Gw::Database
   end
 
   def is_prop_type?
-    props = self.get_prop_items
+    props = self.schedule_props
     return 0 if props.length == 0
     type = 1
     props.each { |prop|
@@ -426,69 +384,48 @@ class Gw::Schedule < Gw::Database
     return type
   end
 
-  def get_prop_items
-    props = []
-    if !self.schedule_parent_id.blank?
-      if self.parent.blank?
-        item_parents = Gw::Schedule.find(:all, :conditions=>"schedule_parent_id = #{self.schedule_parent_id}", :order => "id")
-      else
-        item_parents = self.parent.child
-      end
-      item_parents.each do |item_parent|
-        item_parent.schedule_props.each do |prop|
-          props << prop if !prop.prop.blank? && prop.prop.delete_state == 0
-        end
-      end
-    else
-      self.schedule_props.each do |prop|
-        props << prop if !prop.prop.blank? && prop.prop.delete_state == 0
-      end
-    end
-    return props
-  end
-
   def get_propnames
-    props = self.get_prop_items
+    schedule_props = Gw::ScheduleProp.find(:all, :conditions=>["schedule_id = ?", self.id])
+    _names = Array.new
     names = ""
-    len = props.length
+    len = schedule_props.length
     if len > 0
       is_user = self.is_schedule_user? # 参加者
-      props.each_with_index { |prop, i|
-        name = ""
-        get_prop = prop.prop
-        if !prop.prop.blank? && (prop.prop_type != "Gw::PropOther" || (prop.prop_type == "Gw::PropOther" && (get_prop.is_admin_or_editor_or_reader? || is_user) ) )
+      schedule_props.each do |schedule_prop|
+        get_prop = schedule_prop.prop
+        if get_prop.present? && (get_prop.is_admin_or_editor_or_reader? || is_user)
           if get_prop.delete_state != 1
-            name = get_prop.name
+            _names << get_prop.name
           end
         end
-        names += name
-        names += "," if i != len - 1 && !name.blank?
-      }
+      end
     end
+    names = Gw.join(_names, '，')
     return names
   end
-
+  
   def get_usernames
     _names = Array.new
     names = ""
-    len = self.schedule_users.length
+    schedule_users = Gw::ScheduleUser.find(:all, :conditions=>["schedule_id = ?", self.id])
+    len = schedule_users.length
     if len > 0
-      self.schedule_users.each_with_index do |user, i|
+      schedule_users.each do |schedule_user|
         begin
-          case user.class_id
+          case schedule_user.class_id
           when 0
           when 1
-            _user = user.user
-            _names << user.user.name if !_user.blank? && _user.state == 'enabled'
+            user = schedule_user.user
+            _names << user.name if user.present? && user.state == 'enabled'
           when 2
-            _group = user.group
-            _names << user.group.name if !_group.blank? && _group.state == 'enabled'
+            group = schedule_user.group
+            _names << group.name if group.present? && group.state == 'enabled'
           end
         rescue
         end
       end
     end
-    names = Gw.join(_names, ',')
+    names = Gw.join(_names, '，')
     return names
   end
 
@@ -511,7 +448,7 @@ class Gw::Schedule < Gw::Database
   def self.save_with_rels_part(item, params)
 
     _params = params[:item].dup
-    if !params[:item][:st_at].blank?
+    if params[:item][:st_at].present?
       st_at, ed_at = Gw.get_parsed_date(params[:item][:st_at]), Gw.get_parsed_date(params[:item][:ed_at])
       d_st_at, d_ed_at = Gw.get_parsed_date(st_at), Gw.get_parsed_date(ed_at)
       item.errors.add :st_at, 'と終了日時の前後関係が不正です。'  if st_at > ed_at
@@ -577,40 +514,6 @@ class Gw::Schedule < Gw::Database
     return auth
   end
 
-  def schedule_event_existence
-     return false
-  end
-
-  def get_propdata_and_repeat_id
-    childs = self.child
-    ret = Array.new
-
-    if !childs.blank?
-      childs.each do |child|
-        if !child.schedule_repeat_id.blank?
-          prop = child.schedule_prop
-          ret << [ prop.is_return_genre?, prop.prop_id, child.schedule_repeat_id ]
-        end
-      end
-    end
-
-    if ret.empty?
-      return nil
-    else
-      return ret
-    end
-  end
-
-  def self.get_origin_repeat_id(prop, repeat_datas)
-    repeat_id = nil
-    repeat_datas.each do |repeat_data|
-      if repeat_data[0] == prop[0] && repeat_data[1].to_i == prop[1].to_i
-        repeat_id = repeat_data[2]
-      end
-    end
-    return repeat_id
-  end
-
   def get_edit_delete_level(auth = {})
     # auth_level[:edit_level]
     #    1：編集可能
@@ -632,50 +535,52 @@ class Gw::Schedule < Gw::Database
     end
 
     uid = Site.user.id
-    gid = Site.user_group.id
 
-    event_auth = self.schedule_approval?
-    event_state = '承認'
-    event_state = '公開' if event_auth[:opened]
-
-    creator = self.creator_uid == uid
-    creator_group = self.creator_gid == gid
+    if self.creator_uid == uid
+      creator = true
+    else
+      creator = false
+    end
 
     schedule_uids = self.schedule_users.select{|x|x.class_id==1}.collect{|x| x.uid}
-    participant = !schedule_uids.index(uid).nil?
+    participant = schedule_uids.index(uid).present?
 
-    prop = self.schedule_prop
-    if !prop.blank?
-      prop_state = nz(prop.prop_stat, 0).to_i
-    else
-      prop_state = 0
+    if participant # 参加者
+      auth_level[:edit_level] = 1
+      auth_level[:delete_level] = 1
     end
 
-    if !prop.blank? && prop.prop_type == "Gw::PropOther"
-        if Gw::PropOtherRole.is_admin?(prop.prop.id, gid)
-          auth_level[:edit_level] = 1
-          auth_level[:delete_level] = 1
-        end
-        if creator || participant
-          auth_level[:edit_level] = 1
-          auth_level[:delete_level] = 1
-        end
+    if creator # 作成者
+      auth_level[:edit_level] = 1
+      auth_level[:delete_level] = 1
     end
 
-    if prop.blank?
-        if creator || participant
-          auth_level[:edit_level] = 1
-          auth_level[:delete_level] = 1
-        end
+    # prop
+    props = self.schedule_props
+
+    prop_admin = true
+    if props.length == 0
+      prop_admin = false
+    end
+    props.each do |prop|
+      unless Gw::PropOtherRole.is_admin?(prop.prop.id)
+        prop_admin = false
+      end
+    end
+    if prop_admin
+      auth_level[:edit_level] = 1
+      auth_level[:delete_level] = 1
     end
 
     return auth_level
   end
 
-  def self.schedule_tabbox_struct(tab_captions, selected_tab_idx=nil, radio=nil, options={})
+  def self.schedule_tabbox_struct(tab_captions, selected_tab_idx = nil, radio = nil, options = {})
+
     tab_current_cls_s = ' ' + Gw.trim(nz(options[:tab_current_cls_s], 'current'))
     id_prefix = Gw.trim(nz(options[:id_prefix], nz(options[:name_prefix], '')))
     id_prefix = "[#{id_prefix}]" if !id_prefix.blank?
+    
     tabs = <<-"EOL"
 <div class="tabBox">
 <table class="tabtable">
@@ -688,10 +593,10 @@ EOL
       tab_idx += 1
       _name = "tabBox#{id_prefix}[#{tab_idx}]"
       _id = Gw.idize(_name)
-      tabs += %Q(<td class="tab#{selected_tab_idx - 1 == idx ? tab_current_cls_s : nil}" id="#{_id}">#{x}</td>) +
+      tabs.concat %Q(<td class="tab#{selected_tab_idx - 1 == idx ? tab_current_cls_s : nil}" id="#{_id}">#{x}</td>) +
         (tab_captions.length - 1 == idx ? '' : '<td id="spaceCenter" class="spaceCenter"></td>')
     }
-    tabs += <<-"EOL"
+    tabs.concat <<-"EOL"
 <td id="spaceRight" class="spaceRight">#{radio}</td>
 </tr>
 </tbody>
@@ -723,6 +628,15 @@ EOL
     end
     return ret
   end
+  
+  def self.repeat_weekday_select
+    items = [['日曜日', 0], ['月曜日', 1], ['火曜日', 2], ['水曜日', 3], ['木曜日', 4], ['金曜日', 5], ['土曜日', 6]]
+    return items
+  end
+  def self.repeat_weekday_show
+    is_public_items = [['公開（誰でも閲覧可）', 1],['所属内（参加者の所属および公開所属）', 2],['非公開（参加者のみ）',3]]
+    return is_public_items
+  end
 
   def self.is_public_select
     is_public_items = [['公開（誰でも閲覧可）', 1],['所属内（参加者の所属および公開所属）', 2],['非公開（参加者のみ）',3]]
@@ -739,20 +653,77 @@ EOL
     end
   end
 
-  def self.schedule_show_support(schedules)
-    schedule_parent_ids = Array.new
-    items = Array.new
-    schedules.each { |sche|
-      if sche.schedule_parent_id.blank?
-        items << sche
+  def time_show
+    if nz(self.allday, 0) == 0
+      st_at_s = self.st_at.strftime('%H:%M')
+      ed_at_s = self.ed_at.strftime('%H:%M')
+    elsif self.allday == 1
+      st_at_s = "時間未定"
+      ed_at_s = "時間未定"
+    elsif self.allday == 2
+      st_at_s = "終日"
+      ed_at_s = "終日"
+    end
+    return {:st_at_show => st_at_s, :ed_at_show => ed_at_s}
+  end
+  
+  def date_between(date)
+    flg = date == self.st_at.to_date || date == self.ed_at.to_date || (self.st_at.to_date < date && date < self.ed_at.to_date)
+    return flg
+  end
+  
+  def show_time(date, view = :pc)
+    # view
+    # :pc、:smart_phone、:mobile
+    case self.allday
+    when 1
+      if view == :pc
+        return "（時間未定）"
       else
-        if schedule_parent_ids.blank? || schedule_parent_ids.index(sche.schedule_parent_id).blank?
-          schedule_parent_ids << sche.schedule_parent_id
-          items << sche
+        return "時間未定"
+      end
+    when 2
+      if view == :pc
+        return ""
+      else
+        return "終日"
+      end
+    else
+      date_array = Gw.date_array(self.st_at, self.ed_at)
+      case date_array.length
+      when 1
+        return "#{Gw.time_str(self.st_at)}-#{Gw.time_str(self.ed_at)}"
+      else
+        if date == self.st_at.to_date
+          return "#{Gw.time_str(self.st_at)}-"
+        elsif date == self.ed_at.to_date
+          return "-#{Gw.time_str(self.ed_at)}"
+        else
+          return ""
         end
       end
-    }
-    return items
+    end
   end
-
+  
+  def show_day_date_range(st_date)
+    if self.ed_at.to_date > st_date
+      ed_at = 23.5
+    else
+      ed_at = self.ed_at.hour
+      ed_at += 0.5 if self.ed_at.min > 30
+      ed_at -= 0.5 if self.ed_at.min == 0 && ed_at != 0 && self.st_at != self.ed_at
+    end
+    if self.st_at.to_date < st_date
+      st_at = 0
+    else
+      st_at =  self.st_at.hour
+      st_at += 0.5 if  self.st_at.min >= 30
+    end
+    
+    return st_at, ed_at
+  end
+  
+  def get_category_class
+    return "category#{nz(self.title_category_id, 0)}"
+  end
 end

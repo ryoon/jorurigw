@@ -1,0 +1,20 @@
+development:
+  title  : Joruri Gw
+  uri    : http://192.168.217.137:8080/
+  proxy  : 
+  map_key: 
+  mail_domain : 192.168.32.243
+  
+test:
+  title  : 
+  uri    : 
+  proxy  :
+  map_key: 
+  mail_domain : 
+
+production:
+  title  : 
+  uri    : 
+  proxy  : 
+  map_key: 
+  mail_domain : 

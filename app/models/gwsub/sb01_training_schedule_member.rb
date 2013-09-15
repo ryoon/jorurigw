@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 class Gwsub::Sb01TrainingScheduleMember < Gwsub::GwsubPref
   include System::Model::Base
   include Cms::Model::Base::Content
@@ -29,6 +30,15 @@ class Gwsub::Sb01TrainingScheduleMember < Gwsub::GwsubPref
     Gwsub.gwsub_set_editors(self)
   end
 
+	#研修を受けるユーザ名
+	def training_user_name
+		return self.user_rel1.name
+	end
+
+	#研修を受けるユーザの所属名
+	def training_user_group_name
+		return self.group_rel1.name
+	end
 
   def search(params)
     params.each do |n, v|
@@ -61,7 +71,7 @@ class Gwsub::Sb01TrainingScheduleMember < Gwsub::GwsubPref
 #      `created_user`          text default NULL,
 #      `created_group`         text default NULL,
 #      PRIMARY KEY  (`id`)
-#    ) ENGINE=MyISAM DEFAULT CHARSET=utf8;"
+#    ) DEFAULT CHARSET=utf8;"
 #    connect.execute(create_query)
 #    return
 #  end

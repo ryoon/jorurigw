@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 class Gw::IconGroup < Gw::Database
   include System::Model::Base
 

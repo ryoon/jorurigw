@@ -1,0 +1,26 @@
+<% count = current_count_group_props_each(@item.gid) %>
+
+<%= f.error_messages %>
+
+<%= required_head %>
+
+<table class="show">
+<tr>
+  <th class="group">所属</th><td><%= @item.group.name %><%= f.hidden_field :gid, :value => @item.gid %></td>
+</tr>
+<tr>
+  <th class="item">制限数<%= required %></th><td><%= f.text_field :limit, :class => 'IMEoff', :size => 10 %></td>
+</tr>
+<tr>
+  <th class="item">合計</th><td><%= count[3] %></td>
+</tr>
+<tr>
+  <th class="item">公用車</th><td><%= count[0] %></td>
+</tr>
+<tr>
+  <th class="item">会議室</th><td><%= count[1] %></td>
+</tr>
+<tr>
+  <th class="item">一般備品</th><td><%= count[2] %></td>
+</tr>
+</table>

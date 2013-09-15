@@ -1,9 +1,9 @@
+# encoding: utf-8
 module Gw::Model::UserProperty
-
   def self.get(property_name, options={})
 
     if options[:class_id].blank? || options[:class_id] == 1
-      u = options[:uid].blank? ? Site.user : Gw::Model::Schedule.get_user(options[:uid])
+      u = options[:uid].blank? ? Core.user : Gw::Model::Schedule.get_user(options[:uid])
       uid = u.id
       cond = {:uid=>uid, :name=>property_name, :class_id => 1}
     elsif options[:class_id] == 2
@@ -11,7 +11,7 @@ module Gw::Model::UserProperty
     elsif options[:class_id] == 3
       cond = {:name=>property_name, :class_id => 3}
     end
-    require 'json_parser'
+
     if !u.blank? || options[:class_id] == 3
       hx = Gw::UserProperty.find(:first, :conditions => cond)
       key = property_name.pluralize
@@ -150,13 +150,13 @@ module Gw::Model::UserProperty
     end
 
     if options[:class_id].blank? || options[:class_id] == 1
-      uid = Site.user.id
+      uid = Core.user.id
       hx = Gw::UserProperty.find(:first, :conditions => {:uid=>uid, :name=>property_name, :class_id => 1})
       hx = Gw::UserProperty.new({:class_id=>1, :uid=>uid.to_s, :name=>property_name, :type_name=>'json', :options => ''}) if hx.nil?
     elsif options[:class_id] == 2
 
     elsif options[:class_id] == 3
-      uid = Site.user.id
+      uid = Core.user.id
       hx = Gw::UserProperty.find(:first, :conditions => {:name=>property_name, :class_id => 3})
       hx = Gw::UserProperty.new({:class_id=>3, :uid=>uid.to_s, :name=>property_name, :type_name=>'json', :options => ''}) if hx.nil?
     end

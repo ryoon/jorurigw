@@ -2,10 +2,11 @@
 /* =========================================================
    _common/themes/gw/css/admin.css
 ========================================================= */
-/*ƒ~ƒjƒAƒCƒRƒ“
+/*ãƒŸãƒ‹ã‚¢ã‚¤ã‚³ãƒ³
 ---------------------------------------------------------*/
 #content .piece {
   background-image: url(/_common/themes/gw/files/title/title_system.gif);
+  margin-top: 10px;
 }
 #content .piece.soumuMessage {
   background-image: url("/_common/themes/gw/files/title/title_general.gif");
@@ -25,7 +26,7 @@
 
 /* table index
 --------------------------------------------------------*/
-.piece table.index tr.items td, 
+.piece table.index tr.items td,
 table.index th.blueIndex,
 table.show th.blueIndex {
   border: none;
@@ -50,7 +51,7 @@ table.index td.update {
   width: 120px;
 }
 
-/* ‹@”\ƒ{ƒ^ƒ“
+/* æ©Ÿèƒ½ãƒœã‚¿ãƒ³
 --------------------------------------------------------*/
 .editingBox {
   width: 100%;
@@ -166,7 +167,7 @@ table.show th.title {
   width: auto;
 }
 
-/* ƒ^ƒu•ÒW
+/* ã‚¿ãƒ–ç·¨é›†
 --------------------------------------------------------*/
 #page-gw-editTabs  table.index th.state,
 #page-gw-editTabs-list table.index th.state {
@@ -220,7 +221,7 @@ table.show th.title {
   margin-left: 2px;
 }
 
-/* ƒy[ƒWã•”ƒƒjƒ…[
+/* ãƒšãƒ¼ã‚¸ä¸Šéƒ¨ãƒ¡ãƒ‹ãƒ¥ãƒ¼
 -----------------------------------------------------*/
 .menu {
   margin-bottom: 15px;
@@ -236,4 +237,51 @@ table.show th.title {
 .menu a span.current_menu {
   background-color: #ffffff;
   color: #ff0000;
+}
+
+
+/* Navi
+--------------------------------------------------------- */
+.AdminUsersGroups .navi, .AdminGroups .navi {
+  margin: 10px 0px 10px 0px;
+  padding: 6px;
+  border: 1px solid #ddd;
+  background-color: #f4f4f4;
+  line-height: 2.0;
+}
+.AdminUsersGroups .navi a, .AdminGroups .navi a {
+  display: inline-block;
+  padding: 0px 8px;
+  text-decoration: none;
+}
+
+.indexTabs {
+  left: 0;
+  position: relative;
+  top: -8px;
+}
+
+.indexTabs a, 
+.indexTabs span {
+  margin-top: 10px;
+  border: 1px solid #CCCCCC;
+  color: #999999;
+  display: inline-block;
+  line-height: 1.5;
+  text-align: center;
+  text-decoration: none;
+  width: 100px;
+}
+
+.indexTabs span {
+    background-color: #EEEEEE;
+    border: 1px solid #CCCCCC;
+}
+
+.user_explanation {
+    color: blue;
+    margin: 20px 10px;
+}
+.user_attention {
+    color: red;
 }

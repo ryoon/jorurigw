@@ -1,17 +1,37 @@
+# -*- encoding: utf-8 -*-
 class Gwsub::Sb01TrainingFile < Gwsub::GwsubPref
   include System::Model::Base
   include System::Model::Base::Content
   include Gwsub::Model::AttachFile
   include Cms::Model::Base::Content
-
-  belongs_to :status, :foreign_key => :state,     :class_name => 'System::Base::Status'
+  
+#  belongs_to :status, :foreign_key => :state,     :class_name => 'Sys::Base::Status'
   belongs_to :parent, :foreign_key => :parent_id, :class_name => 'Gwsub::Sb01Training'
 
   validates_presence_of :filename, :message => "ファイルが指定されていません。"
 
   FILE_URI = "/_attaches/gwsub/sb01_training"
-  FILE_DIR = "#{RAILS_ROOT}/public#{FILE_URI}"
-  UP_DIR = "#{RAILS_ROOT}/upload/#{FILE_URI}"
+  FILE_DIR = "#{Rails.root}/public#{FILE_URI}"
+  UP_DIR = "#{Rails.root}/upload/#{FILE_URI}"
+
+	#mysqlの int max = 2147483647
+	KARI_ID_START = 2000000000
+	KARI_ID_END = 2147483647
+	KARI_ID_RANGE = KARI_ID_END - KARI_ID_START
+	def self.create_kari_id()
+		return KARI_ID_START + rand(KARI_ID_RANGE)
+	end
+
+	#研修申し込み用に作成中の研修企画に添付された仮IDのままのファイルの一覧を取得する
+	def self.get_abandoned_files(created_at)
+			return self.where("parent_id >= #{KARI_ID_START} and created_at < '#{created_at}'")
+	end
+
+	#研修レコードと添付ファイルを削除する
+	def delete_record()
+		self.delete_attached_folder
+		self.delete
+	end
 
   #検索用
   def search(params)

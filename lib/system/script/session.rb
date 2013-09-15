@@ -1,3 +1,4 @@
+# encoding: utf-8
 class System::Script::Session
   def self.delete_expired_sessions
     start_str = "System::Script::Session.delete_expired_sessions セッション情報自動削除開始：#{Time.now.strftime('%Y-%m-%d %H:%M:%S')}"

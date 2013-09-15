@@ -1,6 +1,7 @@
+# encoding: utf-8
 class Gw::PropOtherLimit < Gw::Database
   include System::Model::Base
-  include Cms::Model::Base::Content
+  include System::Model::Base::Content
 
   belongs_to :group , :foreign_key=>'gid' , :class_name=>'System::Group'
 
@@ -12,11 +13,11 @@ class Gw::PropOtherLimit < Gw::Database
     return System::Role.is_admin?(uid)
   end
 
-  def self.limit_count(gid = Site.user.groups[0].id)
+  def self.limit_count(gid = Site.user_group.id)
 
     limit = self.find(:first, :conditions=>"gid = #{gid}")
     count = 20
-    unless limit.limit.blank?
+    if limit.present? && limit.limit.present?
       count = limit.limit
     end
     return count

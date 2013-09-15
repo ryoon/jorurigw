@@ -151,7 +151,7 @@ a.more{
   position: absolute;
   width: 40px;
   height: 0px !important;
-  height /**/:13px; /* 莠呈鋤繝｢繝ｼ繝臥畑 */
+  height /**/:13px;
   padding-top: 13px;
   background-image: url(/_common/images/icons/feed_rss.gif);
   vertical-align: middle;
@@ -164,7 +164,7 @@ a.more{
   position: absolute;
   width: 40px;
   height: 0px !important;
-  height /**/:13px; /* 莠呈鋤繝｢繝ｼ繝臥畑 */
+  height /**/:13px;
   background-image: url(/_common/images/icons/feed_rss.gif);
   vertical-align: middle;
   outline: 0;
@@ -185,7 +185,7 @@ a.more{
   top: 0.8em;
   width: 40px;
   height: 0px !important;
-  height /**/:13px; /* 莠呈鋤繝｢繝ｼ繝臥畑 */
+  height /**/:13px;
   margin-top: -13px;
   padding-top: 13px;
   background-image: url(/_common/images/icons/feed_rss.gif);

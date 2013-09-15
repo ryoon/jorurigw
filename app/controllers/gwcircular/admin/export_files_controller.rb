@@ -1,4 +1,5 @@
-class Gwcircular::Admin::ExportFilesController < ApplicationController
+# -*- encoding: utf-8 -*-
+class Gwcircular::Admin::ExportFilesController < Gw::Controller::Admin::Base
   include System::Controller::Scaffold
 
   rescue_from ActionController::InvalidAuthenticityToken, :with => :invalidtoken
@@ -12,7 +13,7 @@ class Gwcircular::Admin::ExportFilesController < ApplicationController
   end
 
   def index
-    target_zip_file ="#{RAILS_ROOT}/tmp/gwcircular/#{sprintf('%06d',@parent.id)}.zip"
+    target_zip_file ="#{Rails.root}/tmp/gwcircular/#{sprintf('%06d',@parent.id)}.zip"
     send_file target_zip_file if FileTest.exist?(target_zip_file)
 
     unless FileTest.exist?(target_zip_file)

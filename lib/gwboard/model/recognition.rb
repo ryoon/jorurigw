@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 module Gwboard::Model::Recognition
   def self.included(mod)
     mod.after_validation :validate_recognizers

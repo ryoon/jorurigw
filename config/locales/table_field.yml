@@ -641,7 +641,7 @@ gw_schedules:
     memo: メモ
     participant_nums_inner: 予約人数(庁内)
     participant_nums_outer: 予約人数(庁外)
-    inquire_to: 連絡先電話番号（内線）
+    inquire_to: 連絡先電話番号
     st_at: d:開始日時
     ed_at: d:終了日時
     created_at: d:作成日
@@ -1024,13 +1024,6 @@ intra_messages:
   body: 本文
 
 # system_cores
-system_group_nexts_state:
-#  1: 名称変更
-#  2: 新設
-#  3: 廃止
-  4: 移動
-  5: 統合
-  6: 変更なし
 system_group_nexts:
   _common:
     id: x
@@ -1045,11 +1038,6 @@ system_group_nexts:
     _cols: operation:old_code:old_name:updated_at
   show:
     _cols: operation:old_code:old_name:updated_at
-system_group_updates_state:
-  1: 名称変更
-  2: 新設
-  3: 廃止
-  6: 変更なし
 system_group_updates:
   _common:
     id: x
@@ -1083,18 +1071,6 @@ system_group_change_pickups:
     _cols: target_at:updated_at
   show:
     _cols: target_at:updated_at
-system_group_change_state:
-  1: 事前準備
-  2: 変更登録
-  3: 引継反映
-  4: 反映確認
-  5: 抽出設定
-  6: LDAP同期
-  7: 最新抽出
-  8: 抽出確認
-  9: 変更確定
-  10: CSV出力
-  11: 不要削除
 system_group_changes:
   _common:
     id: x
@@ -1108,7 +1084,6 @@ system_group_changes:
     _cols: state:updated_at:created_at:target_at
 system_groups:
   _common:
-#    _cols: state:code:name:name_en:email:level_no:parent_id
     id: x
     parent_id: dbraw:親グループ:system_groups:name:id
     state: r:状態:system_states
@@ -1125,7 +1100,6 @@ system_groups:
     sort_no: 表示順
     ldap_version: LDAPバージョン
     ldap: r:LDAP同期:system_users_ldaps
-#    version_id: dbraw:適用開始日:system_group_versions:start_at:id
   index:
     _cols: code:name:email:start_at:end_at:ldap:state
   show:
@@ -1172,7 +1146,6 @@ system_group_history_temporaries:
     _groups: グループ
   index_for_user:
     _cols: state:_groups:start_at:level_no:parent_id
-#    _cols: state:code:name:version_id:level_no:parent_id
     _groups: グループ
 system_languages:
   id: x
@@ -1222,14 +1195,14 @@ system_users:
     remember_token: x
     remember_token_expires_at: x
     _groups: グループ
-    offitial_position: 役職
+    official_position: 役職
     assigned_job: 担当
   index:
-    _cols: code:name:name_en:offitial_position:email:_groups:ldap:state
+    _cols: code:name:name_en:official_position:email:_groups:ldap:state
   show:
-    _cols: state:id:name:name_en:email:offitial_position:assigned_job
+    _cols: state:id:name:name_en:email:official_position:assigned_job
   show_for_public:
-    _cols: code:state:ldap:name:name_en:email:offitial_position:assigned_job
+    _cols: code:state:ldap:name:name_en:email:official_position:assigned_job
 system_users_groups:
   _common:
     rid: rid

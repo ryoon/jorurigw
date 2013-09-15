@@ -7,6 +7,7 @@
 ------------------------------------------*/
 #content .DLDocList {
   background-image: url(/_common/themes/gw/files/title/title_electronic-book.gif);
+  margin-top: 10px;
 }
 
 /* 図書名
@@ -178,6 +179,10 @@ table.docformBody th {
 }
 .inner .navi {
   margin-left: -10px;
+}
+
+.docsInnerBox {
+  margin: 7px;
 }
 
 /* 新規作成ボタン

@@ -1,11 +1,15 @@
+# -*- encoding: utf-8 -*-
 class Digitallibrary::Control < Gw::Database
   include System::Model::Base
   include System::Model::Base::Content
   include Gwboard::Model::ControlCommon
   include Gwboard::Model::AttachFile
   include Digitallibrary::Model::Systemname
+  include System::Model::Base::Status
 
-  belongs_to :status, :foreign_key => :state, :class_name => 'System::Base::Status'
+  has_many :adm, :foreign_key => :title_id, :class_name => 'Digitallibrary::Adm', :dependent => :destroy
+  has_many :role, :foreign_key => :title_id, :class_name => 'Digitallibrary::Role', :dependent => :destroy
+
   validates_presence_of :state, :recognize, :title, :separator_str1, :separator_str2, :category1_name
   after_validation :validate_params
   after_create :create_digitallib_system_database
@@ -222,9 +226,10 @@ class Digitallibrary::Control < Gw::Database
     end
     create_db
     create_table_docs
+    docs_add_index
     create_table_db_files
     create_table_files
-    cretae_table_images
+    #cretae_table_images
     create_table_recognizers
 
   end
@@ -300,7 +305,19 @@ class Digitallibrary::Control < Gw::Database
     strsql += "`notes_001` text,"
     strsql += "`attachmentfile` int(11) default NULL,"
     strsql += "PRIMARY KEY  (`id`)"
-    strsql += ") ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;"
+    strsql += ") DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;"
+    return connection.execute(strsql)
+  end
+
+
+  def docs_add_index
+    strsql =  "ALTER TABLE `#{self.dbname}`.`digitallibrary_docs` ADD INDEX state(state(30));"
+    connection.execute(strsql)
+    strsql =  "ALTER TABLE `#{self.dbname}`.`digitallibrary_docs` ADD INDEX level_no(level_no, display_order, sort_no, id);"
+    connection.execute(strsql)
+    strsql =  "ALTER TABLE `#{self.dbname}`.`digitallibrary_docs` ADD INDEX parent_id(parent_id);"
+    connection.execute(strsql)
+    strsql = "ALTER TABLE `#{self.dbname}`.`digitallibrary_docs` ADD INDEX display_order(display_order,sort_no);"
     return connection.execute(strsql)
   end
 
@@ -311,7 +328,7 @@ class Digitallibrary::Control < Gw::Database
     strsql += "`parent_id` int(11) default NULL,"
     strsql += "`data` longblob,"
     strsql += "PRIMARY KEY  (`id`)"
-    strsql += ") ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;"
+    strsql += ") DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;"
     return connection.execute(strsql)
   end
 
@@ -336,7 +353,7 @@ class Digitallibrary::Control < Gw::Database
     strsql += "`height` int(11) default NULL,"
     strsql += "`db_file_id` int(11) default NULL,"
     strsql += "PRIMARY KEY  (`id`)"
-    strsql += ") ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;"
+    strsql += ")  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;"
     return connection.execute(strsql)
   end
 
@@ -362,7 +379,7 @@ class Digitallibrary::Control < Gw::Database
     strsql += "`height` int(11) default NULL,"
     strsql += "`db_file_id` int(11) default NULL,"
     strsql += "PRIMARY KEY  (`id`)"
-    strsql += ") ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;"
+    strsql += ")  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;"
     return connection.execute(strsql)
   end
 
@@ -379,15 +396,16 @@ class Digitallibrary::Control < Gw::Database
     strsql += "`name` text,"
     strsql += "`recognized_at` datetime default NULL,"
     strsql += "PRIMARY KEY  (`id`)"
-    strsql += ") ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;"
+    strsql += ") DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;"
     return connection.execute(strsql)
   end
 
   def set_category_folder_root
     cnn = Digitallibrary::Folder.establish_connection
     cnn.spec.config[:database] = self.dbname
+    doc_item = Digitallibrary::Doc.establish_connection(cnn.spec.config)
     folder_item = Digitallibrary::Folder
-    folder_item.establish_connection(cnn.spec)
+    folder_item.establish_connection(cnn.spec.config)
     item = folder_item.new
     item.and :title_id, self.id
     item.and :level_no, 1
@@ -433,6 +451,8 @@ class Digitallibrary::Control < Gw::Database
   def adm_docs_path
     return "#{self.item_home_path}adms?title_id=#{self.id}"
   end
+
+
 
   def sort_name_display_states
     {'0' => '表示する', '1' => '表示しない'}

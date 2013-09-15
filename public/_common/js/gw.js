@@ -55,8 +55,6 @@ var select_options_update_by_html = function(elem, options_str) {
   // elem は select であることを想定
   // elem の Options(innerHTML) を上書きします。IE バグ対応つき。
   // @assumes Prototype >= 1.5.0
-  // IEでAjax.Updaterが動かない : Nacky - Snowland.net
-  // http://snowland.net/nucleus/item/742
   elem.update(options_str);
 }
 var select_options_get_index_by_value = function(elem, v, title) {
@@ -164,7 +162,6 @@ var dbdate_to_date = function(d) {
   return new Date(d.replace(/-/g, '/'));
 }
 var dbdate_to_format_date = function(d, format) {
-  // @depend: dateformat.js http://www.enjoyxstudy.com/javascript/dateformat/
   dd = new Date(d.replace(/-/g, '/'));
   var dateFormat = new DateFormat(format); 
   return dateFormat.format(dd);
@@ -178,10 +175,8 @@ var set_date_picker6 = function(form_name, name_partial, d) {
   name_prefix = form_name + '_' + name_partial
   mode = $('init_' + name_partial + '_mode').value;
   if (mode == 'datetime' || mode == 'date')
-    // ymd = $(name_prefix + '_1i').value + '-' + $(name_prefix + '_2i').value + '-' + $(name_prefix + '_3i').value;
     ymd = dbdate_to_format_date(d, 'yyyy-M-d');
   if (mode == 'datetime' || mode == 'time')
-    // hn = $(name_prefix + '_4i').value + ':' + $(name_prefix + '_5i').value;
     hn = dbdate_to_format_date(d, 'H:mm');
   switch(mode) {
   case 'datetime': ret = ymd + ' ' + hn; break;
@@ -195,5 +190,7 @@ var set_date_picker6 = function(form_name, name_partial, d) {
 // 個別
 // 個別 - app/views/gw/public/schedules/_piece_header.html.erb
 var calendar_schedule_redirect = function(d) {
-  location.href = $('my_url').value.replace(/%d/, dbdate_to_date8(d));
+  if (d) {
+    location.href = $('my_url').value.replace(/%d/, dbdate_to_date8(d));
+  }
 }

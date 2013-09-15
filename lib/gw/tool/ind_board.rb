@@ -1,3 +1,4 @@
+# encoding: utf-8
 class Gw::Tool::IndBoard
 
   def self.get_title(system, title_id)

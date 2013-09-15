@@ -1,11 +1,13 @@
-class Gwmonitor::Admin::BaseAttachmentsController < ApplicationController
+# -*- encoding: utf-8 -*-
+class Gwmonitor::Admin::BaseAttachmentsController < Gw::Controller::Admin::Base
   include System::Controller::Scaffold
 
   rescue_from ActionController::InvalidAuthenticityToken, :with => :invalidtoken
 
-  def initialize_scaffold
+  def pre_dispatch
     self.class.layout 'admin/gwboard_base'
-    @title = Gwmonitor::Control.find_by_id(params[:parent_id])
+    @parent_id = params[:gwmonitor_id]
+    @title = Gwmonitor::Control.find_by_id(@parent_id)
     return http_error(404) unless @title
   end
 
@@ -72,7 +74,6 @@ class Gwmonitor::Admin::BaseAttachmentsController < ApplicationController
   end
 
   def destroy
-    dump "params:#{params}"
     @item = Gwmonitor::BaseFile.find_by_id(params[:id])
     @item.destroy
     redirect_to "#{gwmonitor_base_attachments_path(@title.id)}?title_id=#{@title.id}"

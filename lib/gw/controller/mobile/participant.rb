@@ -19,11 +19,13 @@ module Gw::Controller::Mobile::Participant
     else params[:deleteMember]
       mobile_delete_member
     end
+    uid = params[:uid]
+    uid = Site.user.id if uid.blank?
     if params[:dis].blank?
       location = "/gw/mobile_participants?group_id=#{params[:group_id]}&view=#{params[:view]}&memo_id=#{params[:memo_id]}"
     else
       location = "/gw/mobile_schedules/list?group_id=#{params[:group_id]}&view=#{params[:view]}&memo_id=#{params[:memo_id]}"
-      location += "&gid=#{params[:gid]}&cgid=#{params[:cgid]}&uid=#{params[:uid]}&dis=#{params[:dis]}"
+      location += "&gid=#{params[:gid]}&cgid=#{params[:cgid]}&uid=#{uid}&dis=#{params[:dis]}"
     end
 
     redirect_to location
@@ -95,7 +97,7 @@ protected
     flash[:mail_to] = users_str
 
     location = "/gw/schedules/new"
-    location += "?gid=#{params[:gid]}&cgid=#{params[:cgid]}&uid=#{params[:uid]}&dis=#{params[:dis]}"
+    location += "?gid=#{params[:gid]}&cgid=#{params[:cgid]}&dis=#{params[:dis]}"
     session[:mobile] = nil
     return redirect_to location
   end
@@ -113,7 +115,7 @@ protected
     flash[:mail_to] = users_str
 
     location = "/gw/schedules/#{params[:memo_id]}/edit"
-    location += "?gid=#{params[:gid]}&cgid=#{params[:cgid]}&uid=#{params[:uid]}&dis=#{params[:dis]}"
+    location += "?gid=#{params[:gid]}&cgid=#{params[:cgid]}&dis=#{params[:dis]}"
     session[:mobile] = nil
     return redirect_to location
   end
@@ -131,7 +133,7 @@ protected
     flash[:mail_to] = users_str
 
     location = "/gw/schedules/#{params[:memo_id]}/quote"
-    location += "?gid=#{params[:gid]}&cgid=#{params[:cgid]}&uid=#{params[:uid]}&dis=#{params[:dis]}"
+    location += "?gid=#{params[:gid]}&cgid=#{params[:cgid]}&dis=#{params[:dis]}"
     session[:mobile] = nil
     return redirect_to location
   end

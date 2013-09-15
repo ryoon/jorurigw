@@ -1,0 +1,16 @@
+<div class="piece AdminSetting">
+<%= render :partial => 'header_str' %>
+
+<div class="pieceBody">
+<%= render :partial => '/gw/admin/edit_link_pieces/menu', :locals => {:d => @st_date, :mode => 'month'} %>
+<div class="btReturn">
+  <%= link_to '詳細に戻る', "/gw/edit_link_piece_csses/#{@item.id}" %>
+</div>
+
+<%= div_notice %>
+<%= form_for :item, :url => "/gw/edit_link_piece_csses", :action => :update, :html => {:method => :post, :multipart => true} do |f| %>
+  <%= render :partial => 'form', :locals => {:f => f} %>
+<% end  %>
+
+</div>
+</div>

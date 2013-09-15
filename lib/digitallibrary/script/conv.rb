@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 #######################################################################
 #
 #
@@ -8,7 +9,7 @@ class Digitallibrary::Script::Conv
   #添付ファイルDB->実体
   def self.convert(title_id)
     files_converter(title_id)
-    images_converter(title_id)
+    #images_converter(title_id)
   end
 
   #
@@ -85,7 +86,7 @@ class Digitallibrary::Script::Conv
     cnn = item.establish_connection
     #コントロールにdbnameが設定されているdbname名で接続する
     cnn.spec.config[:database] = @title.dbname.to_s
-    Gwboard::CommonDb.establish_connection(cnn.spec)
+    Gwboard::CommonDb.establish_connection(cnn.spec.config)
     return item
   end
 end

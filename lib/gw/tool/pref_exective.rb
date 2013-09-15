@@ -1,3 +1,4 @@
+# encoding: utf-8
 class Gw::Tool::PrefExective
 
   def self.accesslog_save(ip_addr=nil)

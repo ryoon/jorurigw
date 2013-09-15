@@ -1,6 +1,6 @@
-
+# -*- encoding: utf-8 -*-
 class Gwsub::Script::Tool
-  require 'fastercsv'
+  require 'csv'
   require 'pp'
   require 'yaml'
 
@@ -9,7 +9,7 @@ class Gwsub::Script::Tool
     hash_raw = YAML.load_file('config/locales/csv_settings.yml')
     if csv_setting_name
       csv = []
-      FasterCSV.parse(input_csv) do |row|
+      CSV.parse(input_csv) do |row|
         csv.push row
       end
       setting = hash_raw[csv_setting_name]
@@ -54,7 +54,7 @@ class Gwsub::Script::Tool
     hash_raw = YAML.load_file('config/locales/csv_settings.yml')
     if csv_setting_name
       csv = []
-      FasterCSV.parse(input_csv) do |row|
+      CSV.parse(input_csv) do |row|
         csv.push row
       end
       setting = hash_raw[csv_setting_name]
@@ -102,7 +102,7 @@ class Gwsub::Script::Tool
     hash_raw = YAML.load_file('config/locales/csv_settings.yml')
     if csv_setting_name
       csv = []
-      FasterCSV.parse(input_csv) do |row|
+      CSV.parse(input_csv) do |row|
         csv.push row
       end
       setting = hash_raw[csv_setting_name]
@@ -223,7 +223,7 @@ class Gwsub::Script::Tool
   def self.stafflistview_to_csv(a_ar, options={})
     opt_quotes = options[:quotes].nil? ? true : options[:quotes]
     ret = stafflistview_output_list(a_ar, options)
-    csv_string = FasterCSV.generate(:force_quotes => opt_quotes) do |csv|
+    csv_string = CSV.generate(:force_quotes => opt_quotes) do |csv|
       ret.each do |x|
         csv << x
       end
@@ -340,7 +340,7 @@ class Gwsub::Script::Tool
     else
       raise TypeError, "不明な型です(#{hx.class})"
     end
-    csv_string = FasterCSV.generate(:force_quotes => true) do |csv|
+    csv_string = CSV.generate(:force_quotes => true) do |csv|
       ret.each do |x|
         csv << x
       end

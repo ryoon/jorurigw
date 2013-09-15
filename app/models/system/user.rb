@@ -1,30 +1,53 @@
+# encoding: utf-8
 require 'digest/sha1'
 class System::User < ActiveRecord::Base
+  include Cms::Model::Base::Content
   include System::Model::Base
   include System::Model::Base::Config
-  include Cms::Model::Base::Content
+  include System::Model::Base::Content
 
   belongs_to :status,     :foreign_key => :state,   :class_name => 'System::Base::Status'
-  has_many :user_groups,   :foreign_key => :user_id, :class_name => 'System::UsersGroup'
-  has_and_belongs_to_many :groups, :class_name => 'System::Group',
-    :join_table => 'system_users_groups', :order => 'job_order,system_groups.sort_no'
-  has_many :user_groups_hist,   :foreign_key => :user_id, :class_name => 'System::UsersGroupHistory'
-  has_and_belongs_to_many :groups_hist, :class_name => 'System::GroupHistory',
-    :join_table => 'system_users_group_histories', :order => 'job_order,system_group_histories.sort_no'
-  has_many :user_custom_groups, :foreign_key => :user_id, :class_name => 'System::UsersCustomGroup'
 
+  has_many   :group_rels, :foreign_key => :user_id,
+    :class_name => 'System::UsersGroup'  , :primary_key => :id
+  has_many :user_groups, :foreign_key => :user_id,
+    :class_name => 'System::UsersGroup'
+  has_many :groups, :through => :user_groups,
+    :source => :group, :order => 'system_users_groups.job_order, system_groups.sort_no'
+  has_many :user_group_histories, :foreign_key => :user_id,
+    :class_name => 'System::UsersGroupHistory'
+  
   has_many :logins, :foreign_key => :user_id, :class_name => 'System::LoginLog',
     :order => 'id desc', :dependent => :delete_all
-
-  attr_accessor :in_password
+  
+  accepts_nested_attributes_for :user_groups, :allow_destroy => true, 
+    :reject_if => proc{|attrs| attrs['group_id'].blank?}
+  
+  attr_accessor :in_password, :in_group_id
 
   validates_presence_of     :code, :name, :state, :ldap
   validates_uniqueness_of   :code
 
   before_save :encrypt_password
+  after_save :save_users_group
 
-  @@ldap_class = System::Lib::Ldap
+  def group_name
+    user_groups.get_gname(id)
+  end
 
+  def show_group_name(error = Gw.user_groups_error)
+    group = self.groups.collect{|x| ("#{x.code}") + %Q(#{x.name})}.join(' ')
+    if group.blank?
+      return error
+    else
+      return group
+    end
+  end
+
+  def name_and_code
+    name + '(' + code + ')'
+  end
+  
   def mobile_pass_check
     valid = true
     if self.mobile_password.size < 4
@@ -46,6 +69,25 @@ class System::User < ActiveRecord::Base
     else
       return show_str[1]
     end
+  end
+
+  def self.mobile_access_show(mobile)
+    # CSV出力・登録用
+    mobile_access = Gw.yaml_to_array_for_select 't1f0_kyoka_fuka'
+    show = mobile_access.rassoc( nz(mobile, 0) )
+    if show.blank?
+      return ""
+    else
+      return show[0]
+    end
+  end
+
+  def name_with_id
+    "#{name}（#{id}）"
+  end
+
+  def name_with_account
+    "#{name}（#{code}）"
   end
 
   def self.is_dev?(uid = Site.user.id)
@@ -83,32 +125,13 @@ class System::User < ActiveRecord::Base
     return selects
   end
 
-  def self.user_states
-    Gw.yaml_to_array_for_select 'system_states'
-  end
-
-  def self.show_status(state)
-    states = Gw.yaml_to_array_for_select 'system_states'
-    show_state = []
-    states.each do |value,key|
-      show_state << [key,value]
-    end
-    show = show_state.assoc(state)
-    return show[1]
-  end
-
   def self.get(uid=nil)
     uid = Site.user.id if uid.nil?
     self.find(:first, :conditions=>"id=#{uid}")
   end
 
-  def ldap_states
-    {'0' => '非同期', '1' => '同期'}
-  end
-
   def display_name
-    #    "#{name} (#{id.to_s})"
-    Gw.user_display_name(id, name)
+    return "#{name} (#{code})"
   end
 
   def label(name)
@@ -172,23 +195,31 @@ class System::User < ActiveRecord::Base
     @@logger ||= RAILS_DEFAULT_LOGGER
   end
 
+  ## Authenticates a user by their account name and unencrypted password.  Returns the user or nil.
   def self.authenticate(in_account, in_password, encrypted = false)
-    in_password = Util::Crypt.decrypt(in_password) if encrypted
+    in_password = Util::String::Crypt.decrypt(in_password) if encrypted
 
-    begin
-      conditions = "state = 'enabled' and code = '#{in_account}'"
-      user = self.new.find(:first, :conditions => conditions)
-      raise ActiveRecord::RecordNotFound if user.nil?
-    rescue
-      return false
+    user = nil
+    self.new.enabled.find(:all, :conditions => {:code => in_account, :state => 'enabled'}).each do |u|
+      if u.ldap == 1
+        ## LDAP Auth
+        next unless ou1 = u.groups[0]
+        next unless ou2 = ou1.parent
+        dn = "uid=#{u.code},ou=#{ou1.ou_name},ou=#{ou2.ou_name},#{Core.ldap.base}"
+
+        if Core.ldap.connection.bound?
+          Core.ldap.connection.unbind
+          Core.ldap = nil
+        end
+        next unless Core.ldap.bind(dn, in_password)
+        u.password = in_password
+      else
+        ## DB Auth
+        next if in_password != u.password || u.password.to_s == ''
+      end
+      user = u
+      break
     end
-
-    if user.ldap == 0
-      return false if in_password != user.password || user.password.to_s == ''
-    else
-      return false unless conn = @@ldap_class.bind(in_account, in_password)
-    end
-
     return user
   end
 
@@ -202,7 +233,7 @@ class System::User < ActiveRecord::Base
 
   def encrypt_password
     return if password.blank?
-    Util::Crypt.encrypt(password)
+    Util::String::Crypt.encrypt(password)
   end
 
   def authenticated?(in_password)
@@ -216,19 +247,20 @@ class System::User < ActiveRecord::Base
   def remember_me
     self.remember_token_expires_at = 2.weeks.from_now.utc
     self.remember_token            = encrypt("#{email}--#{remember_token_expires_at}")
-    save(false)
+    save(:validate => false)
+  end
+
+  def remember_me
+    self.remember_token_expires_at = 2.weeks.from_now.utc
+    self.remember_token            = encrypt("#{email}--#{remember_token_expires_at}")
+    save(:validate => false)
   end
 
   def forget_me
     self.remember_token_expires_at = nil
     self.remember_token            = nil
-    save(false)
-  end
-
-  def self.truncate_table
-    connect = self.connection()
-    truncate_query = "TRUNCATE TABLE `system_users` ;"
-    connect.execute(truncate_query)
+    #save(:validate => false)
+    update_attributes :remember_token_expires_at => nil, :remember_token => nil
   end
 
   def previous_login_date
@@ -239,8 +271,122 @@ class System::User < ActiveRecord::Base
     @previous_login_date = list[1].login_at
   end
 
+  def self.truncate_table
+    connect = self.connection()
+    truncate_query = "TRUNCATE TABLE `system_users` ;"
+    connect.execute(truncate_query)
+  end
+
+  def save_with_rels(options)
+    # only user create
+    # create users_groups / users_group_histsorires after user create
+    params = options[:params]
+    ret = []
+    ret[0]  = true
+    ret[1]  = ""
+
+    # validate of params
+    valid = true
+
+    if params[:ug]['group_id'].to_i==0
+      valid = false
+    end
+
+    if params[:ug]['start_at'].blank?
+      valid = false
+    else
+      start_dt  = params[:ug]['start_at'].split('-')
+      if start_dt.size == 3
+        st_at = Time.local(start_dt[0],start_dt[1],start_dt[2] , 0 , 0 , 0 )
+      else
+        valid = false
+      end
+    end
+
+    if params[:ug]['end_at'].blank?
+      ed_at = nil
+      valid = true
+    else
+      end_dt  = params[:ug]['end_at'].split('-')
+      if end_dt.size==3
+        ed_at = Time.local(end_dt[0],end_dt[1],end_dt[2] , 0 , 0 , 0 )
+      else
+        valid = false
+      end
+    end
+
+    if valid==false
+      ret[1]="所属の指定・配属の日付けにエラーがあります。"
+      ret[0]=false
+      return ret
+    end
+
+    # save user
+    if self.save
+
+      if params[:ug]
+          ugr = System::UsersGroup.new
+          ugr.user_id   = self.id
+          ugr.group_id  = params[:ug]['group_id'].to_i
+          ugr.job_order = params[:ug]['job_order'].to_i
+          ugr.start_at  = st_at
+          ugr.end_at    = ed_at
+        if ugr.save
+          ugh = System::UsersGroupHistory.new
+          ugh.user_id   = self.id
+          ugh.group_id  = params[:ug]['group_id'].to_i
+          ugh.job_order = params[:ug]['job_order'].to_i
+          ugh.start_at  = st_at
+          ugh.end_at    = ed_at
+          #ugh.save(false)
+          if ugh.save
+          else
+            ret[1] = '登録ユーザーのグループ割当に失敗しました。'
+            ret[0]=false
+            return ret
+          end
+        else
+          ret[1] = '登録ユーザーのグループ割当に失敗しました。'
+          ret[0]=false
+          return ret
+        end
+      else
+          ret[1] = '登録ユーザーのグループ割当に失敗しました。'
+          ret[0]=false
+          return ret
+      end
+      ret[1]=""
+      ret[0]=true
+      return ret
+    else
+      ret[1]="登録に失敗しました。"
+      ret[0]=false
+      return ret
+    end
+  end
+
 protected
   def password_required?
     password.blank? || !in_password.blank?
+  end
+  
+  def save_users_group
+    return if in_group_id.blank?
+    
+    if ug = user_groups.find{|item| item.job_order == 0}
+      if in_group_id != ug.group_id
+        ug.group_id = in_group_id
+        ug.start_at = Core.now
+        ug.end_at = nil
+        ug.save(:validate => false)
+      end
+    else
+      System::UsersGroup.create(
+        :user_id   => id,
+        :group_id  => in_group_id, 
+        :start_at  => Core.now,
+        :job_order => 0
+      )
+    end
   end
 end

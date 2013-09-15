@@ -1,4 +1,0 @@
-<%=render(:partial => 'doclibrary/public/user_forms/form001/index_date') if params[:state] == 'DATE' %>
-<%=render(:partial => 'doclibrary/public/user_forms/form001/index_group') if params[:state] == 'GROUP' %>
-<%=render(:partial => 'doclibrary/public/user_forms/form001/index_date') if params[:state] == 'DRAFT' %>
-<%=render(:partial => 'doclibrary/public/user_forms/form001/index_normal') unless params[:state] == 'GROUP' unless params[:state] == 'DATE' unless params[:state] == 'DRAFT'%>

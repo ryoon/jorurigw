@@ -1,5 +1,6 @@
+# encoding: utf-8
 class System::Sequence < ActiveRecord::Base
-  set_table_name "system_sequences"
-  
-  named_scope :versioned, lambda{ |v| { :conditions => ["version = ?", "#{v}"] }}
+  self.table_name = "system_sequences"
+
+  scope :versioned, lambda{ |v| { :conditions => ["version = ?", "#{v}"] }}
 end

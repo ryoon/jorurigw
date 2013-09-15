@@ -11,7 +11,7 @@ table.bbsCreator td {
 
 /* table show
 ----------------------------------------------------*/
-table.show {
+.gwfaqDocList table.show {
   width: 98%;
   margin: 10px 10px 0;
 }

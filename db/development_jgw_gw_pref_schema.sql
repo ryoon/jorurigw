@@ -37,7 +37,7 @@ CREATE TABLE IF NOT EXISTS `gwsub_sb01_trainings` (
   `member_tel` text,
   `bbs_doc_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- --------------------------------------------------------
 
@@ -66,7 +66,7 @@ CREATE TABLE IF NOT EXISTS `gwsub_sb01_training_files` (
   `height` int(11) DEFAULT NULL,
   `db_file_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+) DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -93,7 +93,7 @@ CREATE TABLE IF NOT EXISTS `gwsub_sb01_training_guides` (
   `member_id` int(11) DEFAULT NULL,
   `group_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- --------------------------------------------------------
 
@@ -120,7 +120,7 @@ CREATE TABLE IF NOT EXISTS `gwsub_sb01_training_schedules` (
   `from_end` datetime DEFAULT NULL,
   `prop_name` text,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+) DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -158,7 +158,7 @@ CREATE TABLE IF NOT EXISTS `gwsub_sb01_training_schedule_conditions` (
   `prop_name` text,
   `repeat_class_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- --------------------------------------------------------
 
@@ -186,7 +186,7 @@ CREATE TABLE IF NOT EXISTS `gwsub_sb01_training_schedule_members` (
   `training_user_tel` text,
   `entry_user_tel` text,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- --------------------------------------------------------
 
@@ -215,7 +215,7 @@ CREATE TABLE IF NOT EXISTS `gwsub_sb01_training_schedule_props` (
   `state` text,
   `group_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- --------------------------------------------------------
 
@@ -244,7 +244,7 @@ CREATE TABLE IF NOT EXISTS `gwsub_sb04assignedjobs` (
   `created_user` text,
   `created_group` text,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+) DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -266,7 +266,7 @@ CREATE TABLE IF NOT EXISTS `gwsub_sb04helps` (
   `created_user` text,
   `created_group` text,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- --------------------------------------------------------
 
@@ -290,7 +290,7 @@ CREATE TABLE IF NOT EXISTS `gwsub_sb04officialtitles` (
   `created_user` text,
   `created_group` text,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+) DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -318,7 +318,7 @@ CREATE TABLE IF NOT EXISTS `gwsub_sb04sections` (
   PRIMARY KEY (`id`),
   KEY `fyear_id` (`fyear_id`),
   KEY `code` (`code`(10))
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+) DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -365,8 +365,10 @@ CREATE TABLE IF NOT EXISTS `gwsub_sb04stafflists` (
   `created_at` datetime DEFAULT NULL,
   `created_user` text,
   `created_group` text,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+  PRIMARY KEY (`id`),
+  KEY `fyear_markjp` (`fyear_markjp`(10)),
+  KEY `fyear_id` (`fyear_id`)
+) DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -395,7 +397,7 @@ CREATE TABLE IF NOT EXISTS `gwsub_sb04_check_assignedjobs` (
   `created_user` text,
   `created_group` text,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+) DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -419,7 +421,7 @@ CREATE TABLE IF NOT EXISTS `gwsub_sb04_check_officialtitles` (
   `created_user` text,
   `created_group` text,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+) DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -445,7 +447,7 @@ CREATE TABLE IF NOT EXISTS `gwsub_sb04_check_sections` (
   `created_user` text,
   `created_group` text,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+) DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -493,7 +495,7 @@ CREATE TABLE IF NOT EXISTS `gwsub_sb04_check_stafflists` (
   `created_user` text,
   `created_group` text,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+) DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -517,7 +519,7 @@ CREATE TABLE IF NOT EXISTS `gwsub_sb04_editable_dates` (
   `updated_user` text,
   `updated_group` text,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- --------------------------------------------------------
 
@@ -535,7 +537,7 @@ CREATE TABLE IF NOT EXISTS `gwsub_sb04_limit_settings` (
   `updated_user` text,
   `updated_group` text,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+) DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -558,7 +560,7 @@ CREATE TABLE IF NOT EXISTS `gwsub_sb04_seating_lists` (
   `updated_user` text,
   `updated_group` text,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+) DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -582,4 +584,4 @@ CREATE TABLE IF NOT EXISTS `gwsub_sb04_year_copy_logs` (
   `created_user` text,
   `created_group` text,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+) DEFAULT CHARSET=utf8;

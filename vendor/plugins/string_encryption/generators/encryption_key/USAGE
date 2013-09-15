@@ -1,8 +1,0 @@
-Description:
-    Adds a STRING_ENCRYPTION_KEY environmental constant
-
-Example:
-    ./script/generate string_encryption
-
-    This will create:
-       ENV['STRING_ENCRYPTION_KEY'] = "..."

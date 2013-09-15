@@ -1,0 +1,13 @@
+<% if params[:piece_param].blank? %>
+<div class="contentBanner"><%=raw @title.banner %></div>
+<% else %>
+<div class="pieceBanner">
+<h3><%= @title.title %></h3>
+<% unless @title.addnew_forbidden %>
+<% if @is_writable %>
+  <%= link_to " ", new_gwbbs_doc_path({:title_id=>params[:title_id], :limit=>params[:limit]}), :class=>"btNew" %>
+<% end %>
+<% end %><!--addnew-->
+<%= render :partial => '/gwbbs/admin/docs/header_help' %>
+</div>
+<% end %>

@@ -1,13 +1,25 @@
+# encoding: utf-8
 class Gw::Memo < Gw::Database
   include System::Model::Base
-  include Cms::Model::Base::Content
+  include System::Model::Base::Content
+
   validates_presence_of :title
-  gw_validates_datetime :ed_at
+#  gw_validates_datetime :ed_at
+
   has_many :memo_users, :foreign_key => :schedule_id, :class_name => 'Gw::MemoUser', :dependent=>:destroy
+  has_one :created_by, :primary_key => :uid, :foreign_key => :id, :class_name => 'System::User'
+
+  def deletable?
+    return true
+  end
+
+  def editable?
+    return true
+  end
 
   def self.cond(_uid = nil)
-    return "" if _uid.nil? && (Site.user.nil? || Site.user.id.nil?)
-    uid = nz(_uid, Site.user.id)
+    return "" if _uid.nil? && (Core.user.nil? || Core.user.id.nil?)
+    uid = nz(_uid, Core.user.id)
     return "(gw_memos.class_id = 1 and gw_memos.uid = #{uid})"
   end
 
@@ -50,19 +62,31 @@ class Gw::Memo < Gw::Database
     [['伝言', item.title],['', item.body],['所属/担当/社名', item.fr_group],['担当者', item.fr_user],['時刻', Gw.datetime_str(item.ed_at)],['送信者', "#{creator_name}<#{creator_email}>"],['',same_send_users]].each {|x| message += message_add_ln.call x[0], x[1] }
     send_addresses.each{|mail_to| Gw.send_mail(email_from, mail_to, subject, message)}
   end
+
   def save_with_rels(item, mode)
     di = item.dup
     di.delete :schedule_users
-
     users = ::JsonParser.new.parse(item['schedule_users_json'])
     di.delete :schedule_users_json
-
     _item = self
-    _item.st_at = Gw.date_common(Gw.get_parsed_date(params[:item][:st_at])) rescue nil
-    _item.ed_at = Gw.date_common(Gw.get_parsed_date(params[:item][:ed_at])) rescue nil
+    _item.st_at = Gw.date_common(Gw.get_parsed_date(item[:st_at])) rescue nil
+    _item.ed_at = Gw.date_common(Gw.get_parsed_date(item[:ed_at])) rescue nil
     _item.class_id = 1
+    _item.title = item[:title]
 
-    _item.uid = Site.user.id if /`create'/ =~ caller.grep(/gw_dev/).grep(/memos/)[0] || _item.uid.nil?
+    _item.uid = Core.user.id if /`create'/ =~ caller.grep(/gw_dev/).grep(/memos/)[0] || _item.uid.nil?
+    validate = true
+    if users.blank?
+      self.errors.add :memo_user, "が、選択されていません。"
+      validate = false
+    end
+    if item[:title].blank?
+      self.errors.add :title, "を入力してください。"
+      validate = false
+    end
+    if validate==false
+      return false
+    end
     begin
       transaction do
 
@@ -101,7 +125,7 @@ class Gw::Memo < Gw::Database
   end
 
   def _send_cls(s_send_cls='1')
-    _uid    = Site.user.id
+    _uid    = Core.user.id
     _target = self.memo_users
 
     case s_send_cls.to_i
@@ -201,7 +225,7 @@ class Gw::Memo < Gw::Database
         options << %(<option value="#{Gw.html_escape(value.to_s)}"#{selected_attribute}#{title}><span class="#{mobile_class}">#{keitai_str if !firefox}#{Gw.html_escape(text.to_s)}</span></option>)
       end
     end
-    options_for_select.join("\n")
+    options_for_select.join("\n").html_safe
   end
 
   def mobile_params(params)

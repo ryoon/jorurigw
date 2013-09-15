@@ -1,0 +1,20 @@
+<%
+public =  schedule.is_public_auth?(@is_gw_admin)
+-%>
+
+<% if public -%>
+  <div title="<%= create_schedule_tooltip(schedule, @ie) -%>" class="ind" id="<%= schedule_id -%>">
+    <a class="<%= schedule.get_category_class -%>" href="/gw/schedules/<%= schedule.id -%>/show_one">
+      <span><%= schedule.show_time(week_add_day) -%></span>
+      <span class="title"><%= schedule.title -%></span>
+      <% if @schedule_settings[:view_place_display] == '1' && schedule.place.present? %>
+        <span class="place">（<%= schedule.place -%>）</span>
+      <% end %>
+    </a>
+  </div>
+<% else %>
+  <div title="<%= schedule.show_time(week_add_day) -%> [非公開予定]" id="<%= schedule_id -%>" class="ind">
+    <span><%= schedule.show_time(week_add_day) -%></span>
+    <span class="title">[非公開予定]</span>
+  </div>
+<% end -%><%# public end %>

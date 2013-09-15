@@ -1,3 +1,4 @@
+# encoding: utf-8
 module Gw::Controller::Mobile
   def self.convert_for_mobile_body(body,session_id)
     @file_link = false
@@ -38,7 +39,8 @@ module Gw::Controller::Mobile
   end
 
   def self.convert_link(uri,label,session_id)
-    @file_link = true if uri =~ /\.(pdf|doc|docx|xls|xlsx|jtd|jst)$/i
+    @file_link = true if uri =~ /\.(pdf|doc|docx|xls|xlsx|jtd|jst|jpg|gif)$/i
+    @file_link = true if uri =~ /_attach/i
     @file_link = true if uri =~ /download_object/i
 
     if uri =~ /^\/$|^(\/|\.\/|\.\.\/)/
@@ -48,9 +50,9 @@ module Gw::Controller::Mobile
 
         unless session_id.blank?
           if uri =~ /\?/
-            uri += "&amp;_jgw_session=#{session_id}"
+            uri += "&_session_id=#{session_id}"
           else
-            uri += "?_jgw_session=#{session_id}"
+            uri += "?_session_id=#{session_id}"
           end
         end
         converted_link = %Q(<a href="#{uri}">#{label}</a>)
@@ -66,9 +68,9 @@ module Gw::Controller::Mobile
 
         unless session_id.blank?
           if uri =~ /\?/
-            uri += "&amp;_jgw_session=#{session_id}"
+            uri += "&_session_id=#{session_id}"
           else
-            uri += "?_jgw_session=#{session_id}"
+            uri += "?_session_id=#{session_id}"
           end
         end
         converted_link = %Q(<a href="#{uri}">#{label}</a>)
@@ -83,10 +85,11 @@ module Gw::Controller::Mobile
 
   def self.link_check(uri)
     return true if uri =~ /\.(pdf|doc|docx|xls|xlsx|jtd|jst|jpg|gif)$/i
+    return true if uri =~ /_attach/i
     return true if uri =~ /download_object/i
-    if uri =~ /^\/$|gw\/memos|\/schedules|gw\/schedule_todos|gwbbs\/docs/
-      return false if uri =~ /month|new|edit/
-      return false unless uri =~ /title_id=1/ if uri =~ /^gwbbs\/docs/
+    if uri =~ /^\/$|gw\/memos|\/schedules|gw\/schedule_todos|gwbbs\/docs|gw\/todos|login|mobile|portal/
+      return false if uri =~ /month/
+      #return false unless uri =~ /title_id=1/ if uri =~ /^gwbbs\/docs/
       return true
     else
       return false

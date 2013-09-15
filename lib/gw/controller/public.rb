@@ -1,3 +1,4 @@
+# encoding: utf-8
 module Gw::Controller::Public
 
   def self.included(mod)

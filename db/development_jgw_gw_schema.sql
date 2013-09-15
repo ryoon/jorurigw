@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS `digitallibrary_adms` (
   `group_code` varchar(255) DEFAULT NULL,
   `group_name` text,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+)   DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -51,7 +51,7 @@ CREATE TABLE IF NOT EXISTS `digitallibrary_controls` (
   `upload_graphic_file_size_max` int(11) DEFAULT NULL,
   `upload_document_file_size_max` int(11) DEFAULT NULL,
   `upload_graphic_file_size_currently` decimal(17,0) DEFAULT NULL,
-  ` upload_document_file_size_currently` decimal(17,0) DEFAULT NULL,
+  `upload_document_file_size_currently` decimal(17,0) DEFAULT NULL,
   `create_section` varchar(255) DEFAULT NULL,
   `addnew_forbidden` int(11) DEFAULT NULL,
   `draft_forbidden` int(11) DEFAULT NULL,
@@ -117,7 +117,7 @@ CREATE TABLE IF NOT EXISTS `digitallibrary_controls` (
   `help_admin_url` text,
   `docslast_updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+)   DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -140,7 +140,7 @@ CREATE TABLE IF NOT EXISTS `digitallibrary_roles` (
   `group_code` varchar(255) DEFAULT NULL,
   `group_name` text,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+)   DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -162,7 +162,7 @@ CREATE TABLE IF NOT EXISTS `doclibrary_adms` (
   `group_code` varchar(255) DEFAULT NULL,
   `group_name` text,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+)   DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -253,7 +253,7 @@ CREATE TABLE IF NOT EXISTS `doclibrary_controls` (
   `special_link` text,
   `docslast_updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+)   DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -276,7 +276,7 @@ CREATE TABLE IF NOT EXISTS `doclibrary_roles` (
   `group_code` varchar(255) DEFAULT NULL,
   `group_name` text,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+)   DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -379,7 +379,7 @@ CREATE TABLE IF NOT EXISTS `enquete_answers` (
   `expiry_date` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `user_code` (`user_code`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+)   DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -397,7 +397,7 @@ CREATE TABLE IF NOT EXISTS `enquete_base_users` (
   `base_user_name` text,
   PRIMARY KEY (`id`),
   KEY `base_user_code` (`base_user_code`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+)   DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -465,7 +465,7 @@ CREATE TABLE IF NOT EXISTS `gwbbs_adms` (
   `group_code` varchar(255) DEFAULT NULL,
   `group_name` text,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+)   DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -579,7 +579,7 @@ CREATE TABLE IF NOT EXISTS `gwbbs_controls` (
   `notes_field10` text,
   `docslast_updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+)   DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -606,7 +606,7 @@ CREATE TABLE IF NOT EXISTS `gwbbs_itemdeletes` (
   `limit_date` varchar(255) DEFAULT NULL,
   `board_limit_date` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+)   DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -629,7 +629,7 @@ CREATE TABLE IF NOT EXISTS `gwbbs_roles` (
   `group_code` varchar(255) DEFAULT NULL,
   `group_name` text,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+)   DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -665,7 +665,7 @@ CREATE TABLE IF NOT EXISTS `gwbbs_themes` (
   `editor_id` varchar(20) DEFAULT NULL,
   `editor` text,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+)  DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -687,7 +687,7 @@ CREATE TABLE IF NOT EXISTS `gwboard_bgcolors` (
   `pair_font_color` varchar(255) DEFAULT NULL,
   `memo` text,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+)  DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -729,7 +729,7 @@ CREATE TABLE IF NOT EXISTS `gwboard_images` (
   `editor_id` varchar(20) DEFAULT NULL,
   `editor` text,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+)  DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -757,7 +757,7 @@ CREATE TABLE IF NOT EXISTS `gwboard_maps` (
   `memo` text,
   `url` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+)  DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -775,7 +775,7 @@ CREATE TABLE IF NOT EXISTS `gwboard_renewal_groups` (
   `incoming_group_code` varchar(255) DEFAULT NULL,
   `incoming_group_name` text,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+)  DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -806,7 +806,7 @@ CREATE TABLE IF NOT EXISTS `gwboard_syntheses` (
   `acl_section_code` varchar(255) DEFAULT NULL,
   `acl_user_code` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+)   DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -828,7 +828,7 @@ CREATE TABLE IF NOT EXISTS `gwboard_synthesetups` (
   `digitallib_check` tinyint(1) DEFAULT NULL,
   `limit_date` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+)   DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -881,7 +881,7 @@ CREATE TABLE IF NOT EXISTS `gwboard_themes` (
   `editor_id` varchar(20) DEFAULT NULL,
   `editor` text,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+)  DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -903,7 +903,7 @@ CREATE TABLE IF NOT EXISTS `gwcircular_adms` (
   `group_code` varchar(255) DEFAULT NULL,
   `group_name` text,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+)  DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -1018,7 +1018,7 @@ CREATE TABLE IF NOT EXISTS `gwcircular_controls` (
   `notes_field10` text,
   `docslast_updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+)   DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -1049,7 +1049,7 @@ CREATE TABLE IF NOT EXISTS `gwcircular_custom_groups` (
   `readers_json` mediumtext,
   `readers` mediumtext,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+)   DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -1112,8 +1112,9 @@ CREATE TABLE IF NOT EXISTS `gwcircular_docs` (
   `reader_groups` mediumtext,
   `readers_json` mediumtext,
   `readers` mediumtext,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+  PRIMARY KEY (`id`),
+  KEY `parent_id` (`parent_id`)
+) DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -1142,7 +1143,7 @@ CREATE TABLE IF NOT EXISTS `gwcircular_files` (
   `height` int(11) DEFAULT NULL,
   `db_file_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+)   DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -1169,7 +1170,7 @@ CREATE TABLE IF NOT EXISTS `gwcircular_itemdeletes` (
   `limit_date` varchar(255) DEFAULT NULL,
   `board_limit_date` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+)   DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -1192,7 +1193,7 @@ CREATE TABLE IF NOT EXISTS `gwcircular_roles` (
   `group_code` varchar(255) DEFAULT NULL,
   `group_name` text,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+)   DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -1214,7 +1215,7 @@ CREATE TABLE IF NOT EXISTS `gwfaq_adms` (
   `group_code` varchar(255) DEFAULT NULL,
   `group_name` text,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+)   DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -1240,7 +1241,7 @@ CREATE TABLE IF NOT EXISTS `gwfaq_controls` (
   `upload_graphic_file_size_max` int(11) DEFAULT NULL,
   `upload_document_file_size_max` int(11) DEFAULT NULL,
   `upload_graphic_file_size_currently` decimal(17,0) DEFAULT NULL,
-  `  	upload_document_file_size_currently` decimal(17,0) DEFAULT NULL,
+  `upload_document_file_size_currently` decimal(17,0) DEFAULT NULL,
   `create_section` varchar(255) DEFAULT NULL,
   `addnew_forbidden` int(11) DEFAULT NULL,
   `draft_forbidden` int(11) DEFAULT NULL,
@@ -1305,7 +1306,7 @@ CREATE TABLE IF NOT EXISTS `gwfaq_controls` (
   `help_admin_url` text,
   `docslast_updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+)   DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -1326,7 +1327,7 @@ CREATE TABLE IF NOT EXISTS `gwfaq_recognizers` (
   `name` text,
   `recognized_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+)  DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -1349,7 +1350,7 @@ CREATE TABLE IF NOT EXISTS `gwfaq_roles` (
   `group_code` varchar(255) DEFAULT NULL,
   `group_name` text,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+)   DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -1378,7 +1379,7 @@ CREATE TABLE IF NOT EXISTS `gwmonitor_base_files` (
   `height` int(11) DEFAULT NULL,
   `db_file_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+)  DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -1443,7 +1444,7 @@ CREATE TABLE IF NOT EXISTS `gwmonitor_controls` (
   `upload_graphic_file_size_currently` decimal(17,0) DEFAULT NULL,
   `upload_document_file_size_currently` decimal(17,0) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+)   DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -1474,7 +1475,7 @@ CREATE TABLE IF NOT EXISTS `gwmonitor_custom_groups` (
   `readers_json` mediumtext,
   `readers` mediumtext,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+)   DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -1505,7 +1506,7 @@ CREATE TABLE IF NOT EXISTS `gwmonitor_custom_user_groups` (
   `readers_json` mediumtext,
   `readers` mediumtext,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+)  DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -1557,7 +1558,7 @@ CREATE TABLE IF NOT EXISTS `gwmonitor_docs` (
   `receipt_user_code` varchar(255) DEFAULT NULL,
   `attachmentfile` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+)   DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -1586,7 +1587,7 @@ CREATE TABLE IF NOT EXISTS `gwmonitor_files` (
   `height` int(11) DEFAULT NULL,
   `db_file_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+)  DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -1606,7 +1607,7 @@ CREATE TABLE IF NOT EXISTS `gwmonitor_forms` (
   `form_name` varchar(255) DEFAULT NULL,
   `form_caption` text,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+)   DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -1633,7 +1634,7 @@ CREATE TABLE IF NOT EXISTS `gwmonitor_itemdeletes` (
   `limit_date` varchar(255) DEFAULT NULL,
   `board_limit_date` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+)   DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -1655,7 +1656,7 @@ CREATE TABLE IF NOT EXISTS `gwqa_adms` (
   `group_code` varchar(255) DEFAULT NULL,
   `group_name` text,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+)   DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -1681,7 +1682,7 @@ CREATE TABLE IF NOT EXISTS `gwqa_controls` (
   `upload_graphic_file_size_max` int(11) DEFAULT NULL,
   `upload_document_file_size_max` int(11) DEFAULT NULL,
   `upload_graphic_file_size_currently` decimal(17,0) DEFAULT NULL,
-  ` upload_document_file_size_currently` decimal(17,0) DEFAULT NULL,
+  `upload_document_file_size_currently` decimal(17,0) DEFAULT NULL,
   `create_section` varchar(255) DEFAULT NULL,
   `addnew_forbidden` int(11) DEFAULT NULL,
   `draft_forbidden` int(11) DEFAULT NULL,
@@ -1746,7 +1747,7 @@ CREATE TABLE IF NOT EXISTS `gwqa_controls` (
   `help_admin_url` text,
   `docslast_updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+)   DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -1767,7 +1768,7 @@ CREATE TABLE IF NOT EXISTS `gwqa_recognizers` (
   `name` text,
   `recognized_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+)  DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -1790,7 +1791,7 @@ CREATE TABLE IF NOT EXISTS `gwqa_roles` (
   `group_code` varchar(255) DEFAULT NULL,
   `group_name` text,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+)   DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -1815,7 +1816,7 @@ CREATE TABLE IF NOT EXISTS `gw_admin_check_extensions` (
   `created_uid` int(11) DEFAULT NULL,
   `created_gid` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+)   DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -1832,7 +1833,7 @@ CREATE TABLE IF NOT EXISTS `gw_admin_messages` (
   `sort_no` int(11) DEFAULT NULL,
   `state` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+)   DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -1857,7 +1858,7 @@ CREATE TABLE IF NOT EXISTS `gw_blog_parts` (
   `deleted_user` text,
   `deleted_group` text,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+)  DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -1888,7 +1889,7 @@ CREATE TABLE IF NOT EXISTS `gw_circulars` (
   KEY `state` (`state`),
   KEY `uid` (`uid`),
   KEY `ed_at` (`ed_at`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+)   DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -1933,7 +1934,7 @@ CREATE TABLE IF NOT EXISTS `gw_edit_link_pieces` (
   `created_user` varchar(255) DEFAULT NULL,
   `created_group` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+)   DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -1959,7 +1960,7 @@ CREATE TABLE IF NOT EXISTS `gw_edit_link_piece_csses` (
   `created_user` varchar(255) DEFAULT NULL,
   `created_group` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+)   DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -2000,7 +2001,7 @@ CREATE TABLE IF NOT EXISTS `gw_edit_tabs` (
   `created_user` varchar(255) DEFAULT NULL,
   `created_group` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+)   DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -2017,7 +2018,7 @@ CREATE TABLE IF NOT EXISTS `gw_edit_tab_public_roles` (
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+)  DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -2047,7 +2048,7 @@ CREATE TABLE IF NOT EXISTS `gw_holidays` (
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `st_at` (`st_at`,`ed_at`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+)   DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -2066,7 +2067,7 @@ CREATE TABLE IF NOT EXISTS `gw_icons` (
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+)  DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -2081,7 +2082,7 @@ CREATE TABLE IF NOT EXISTS `gw_icon_groups` (
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+)  DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -2104,7 +2105,7 @@ CREATE TABLE IF NOT EXISTS `gw_ind_portal_pieces` (
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+)  DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -2120,7 +2121,7 @@ CREATE TABLE IF NOT EXISTS `gw_infos` (
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+)  DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -2146,7 +2147,7 @@ CREATE TABLE IF NOT EXISTS `gw_memos` (
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+)   DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -2161,7 +2162,7 @@ CREATE TABLE IF NOT EXISTS `gw_memo_mobiles` (
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+)   DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -2178,7 +2179,7 @@ CREATE TABLE IF NOT EXISTS `gw_memo_users` (
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+)   DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -2209,7 +2210,7 @@ CREATE TABLE IF NOT EXISTS `gw_monitor_reminders` (
   KEY `state` (`state`),
   KEY `uid` (`uid`),
   KEY `ed_at` (`ed_at`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+)   DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -2228,7 +2229,7 @@ CREATE TABLE IF NOT EXISTS `gw_notes` (
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+)  DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -2265,7 +2266,7 @@ CREATE TABLE IF NOT EXISTS `gw_portal_adds` (
   `deleted_user` text,
   `deleted_group` text,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+)  DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -2285,7 +2286,7 @@ CREATE TABLE IF NOT EXISTS `gw_portal_user_settings` (
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+)  DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -2317,7 +2318,7 @@ CREATE TABLE IF NOT EXISTS `gw_pref_assembly_members` (
   `created_user` varchar(255) DEFAULT NULL,
   `created_group` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+)   DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -2354,7 +2355,7 @@ CREATE TABLE IF NOT EXISTS `gw_pref_directors` (
   `created_group` varchar(255) DEFAULT NULL,
   `is_governor_view` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+)   DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -2392,7 +2393,7 @@ CREATE TABLE IF NOT EXISTS `gw_pref_executives` (
   `is_other_view` int(11) DEFAULT NULL,
   `is_governor_view` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+)   DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -2420,7 +2421,7 @@ CREATE TABLE IF NOT EXISTS `gw_prop_others` (
   `creator_uid` int(11) DEFAULT NULL,
   `updater_uid` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+)   DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -2440,7 +2441,7 @@ CREATE TABLE IF NOT EXISTS `gw_prop_other_images` (
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+)   DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -2458,7 +2459,7 @@ CREATE TABLE IF NOT EXISTS `gw_prop_other_limits` (
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+)   DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -2476,7 +2477,7 @@ CREATE TABLE IF NOT EXISTS `gw_prop_other_roles` (
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `prop_id` (`prop_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+)   DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -2495,7 +2496,7 @@ CREATE TABLE IF NOT EXISTS `gw_rss_caches` (
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+)  DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -2524,7 +2525,7 @@ CREATE TABLE IF NOT EXISTS `gw_rss_readers` (
   `deleted_user` text,
   `deleted_group` text,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+)  DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -2544,7 +2545,7 @@ CREATE TABLE IF NOT EXISTS `gw_rss_reader_caches` (
   `updated_at` datetime DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+)  DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -2605,8 +2606,9 @@ CREATE TABLE IF NOT EXISTS `gw_schedules` (
   `event_month` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `st_at` (`st_at`,`ed_at`),
-  KEY `schedule_repeat_id` (`schedule_repeat_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+  KEY `schedule_repeat_id` (`schedule_repeat_id`),
+  KEY `ed_at` (`ed_at`)
+)   DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -2640,7 +2642,7 @@ CREATE TABLE IF NOT EXISTS `gw_schedule_props` (
   PRIMARY KEY (`id`),
   KEY `schedule_id` (`schedule_id`,`prop_type`,`prop_id`),
   KEY `prop_id` (`prop_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+)   DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -2657,7 +2659,7 @@ CREATE TABLE IF NOT EXISTS `gw_schedule_public_roles` (
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+)  DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -2677,33 +2679,7 @@ CREATE TABLE IF NOT EXISTS `gw_schedule_repeats` (
   `class_id` int(11) DEFAULT NULL,
   `weekday_ids` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- テーブルの構造 `gw_schedule_todos`
---
-
-DROP TABLE IF EXISTS `gw_schedule_todos`;
-CREATE TABLE IF NOT EXISTS `gw_schedule_todos` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `schedule_id` int(11) DEFAULT NULL,
-  `st_at` datetime DEFAULT NULL,
-  `ed_at` datetime DEFAULT NULL,
-  `todo_ed_at_indefinite` int(11) NOT NULL DEFAULT '0' COMMENT '無期限。1の時、期限なし。',
-  `is_finished` int(11) DEFAULT NULL,
-  `todo_st_at_id` int(11) DEFAULT '0',
-  `todo_ed_at_id` int(11) DEFAULT '0',
-  `todo_repeat_time_id` int(11) DEFAULT '0',
-  `finished_at` datetime DEFAULT NULL,
-  `finished_uid` int(11) DEFAULT NULL,
-  `finished_gid` int(11) DEFAULT NULL,
-  `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL,
-  `todo_id` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+)   DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -2723,8 +2699,9 @@ CREATE TABLE IF NOT EXISTS `gw_schedule_users` (
   `ed_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `schedule_id` (`schedule_id`,`class_id`,`uid`),
-  KEY `uid` (`uid`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+  KEY `uid` (`uid`),
+  KEY `schedule_id2` (`schedule_id`)
+) DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -2732,25 +2709,27 @@ CREATE TABLE IF NOT EXISTS `gw_schedule_users` (
 -- テーブルの構造 `gw_section_admin_masters`
 --
 
+
+
 DROP TABLE IF EXISTS `gw_section_admin_masters`;
 CREATE TABLE IF NOT EXISTS `gw_section_admin_masters` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `func_name` text,
-  `state` varchar(255) DEFAULT NULL COMMENT '����',
+  `state` varchar(255) DEFAULT NULL COMMENT '状態',
   `edit_auth` int(11) DEFAULT NULL,
-  `management_parent_gid` int(11) DEFAULT NULL COMMENT '���ɲ�',
-  `management_gid` int(11) DEFAULT NULL COMMENT '���ɲ�',
-  `management_uid` int(11) DEFAULT NULL COMMENT '���ɲ�',
-  `range_class_id` int(11) DEFAULT NULL COMMENT '�ϰ�',
-  `division_parent_gid` int(11) DEFAULT NULL COMMENT '���ݡ����ɡ�',
-  `division_gid` int(11) DEFAULT NULL COMMENT '���ݡʽ��ݡ�',
-  `management_ucode` varchar(255) DEFAULT NULL COMMENT '�Żҿ���Ͽ��',
-  `fyear_id_sb04` int(11) DEFAULT NULL COMMENT 'ǯ�١��Żҿ���Ͽ��',
-  `management_gcode` varchar(255) DEFAULT NULL COMMENT '�Żҿ���Ͽ��',
-  `division_gcode` varchar(255) DEFAULT NULL COMMENT '�Żҿ���Ͽ��',
-  `management_uid_sb04` int(11) DEFAULT NULL COMMENT '�Żҿ���Ͽ��',
-  `management_gid_sb04` int(11) DEFAULT NULL COMMENT '�Żҿ���Ͽ��',
-  `division_gid_sb04` int(11) DEFAULT NULL COMMENT '�Żҿ���Ͽ��',
+  `management_parent_gid` int(11) DEFAULT NULL COMMENT '主管課',
+  `management_gid` int(11) DEFAULT NULL COMMENT '主管課',
+  `management_uid` int(11) DEFAULT NULL COMMENT '主管課',
+  `range_class_id` int(11) DEFAULT NULL COMMENT '範囲',
+  `division_parent_gid` int(11) DEFAULT NULL COMMENT '原課（部局）',
+  `division_gid` int(11) DEFAULT NULL COMMENT '原課（諸課）',
+  `management_ucode` varchar(255) DEFAULT NULL COMMENT '電子職員録用',
+  `fyear_id_sb04` int(11) DEFAULT NULL COMMENT '年度（電子職員録）',
+  `management_gcode` varchar(255) DEFAULT NULL COMMENT '電子職員録用',
+  `division_gcode` varchar(255) DEFAULT NULL COMMENT '電子職員録用',
+  `management_uid_sb04` int(11) DEFAULT NULL COMMENT '電子職員録用',
+  `management_gid_sb04` int(11) DEFAULT NULL COMMENT '電子職員録用',
+  `division_gid_sb04` int(11) DEFAULT NULL COMMENT '電子職員録用',
   `creator_uid` int(11) DEFAULT NULL,
   `creator_gid` int(11) DEFAULT NULL,
   `updator_uid` int(11) DEFAULT NULL,
@@ -2761,7 +2740,7 @@ CREATE TABLE IF NOT EXISTS `gw_section_admin_masters` (
   `updated_at` datetime DEFAULT NULL,
   `deleted_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+) DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -2784,7 +2763,7 @@ CREATE TABLE IF NOT EXISTS `gw_todos` (
   `category_id` int(11) DEFAULT NULL,
   `body` text,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+)   DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -2803,7 +2782,7 @@ CREATE TABLE IF NOT EXISTS `gw_user_properties` (
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+)   DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -2829,7 +2808,7 @@ CREATE TABLE IF NOT EXISTS `gw_year_fiscal_jps` (
   `created_user` text,
   `created_group` text,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+)   DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -2850,7 +2829,7 @@ CREATE TABLE IF NOT EXISTS `gw_year_mark_jps` (
   `created_user` text,
   `created_group` text,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+)   DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -2904,7 +2883,7 @@ CREATE TABLE IF NOT EXISTS `questionnaire_bases` (
   `result_open_state` tinyint(1) DEFAULT NULL,
   `keycode` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+)   DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -2926,7 +2905,7 @@ CREATE TABLE IF NOT EXISTS `questionnaire_field_options` (
   `value` varchar(255) DEFAULT NULL,
   `title` text,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+)   DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -2962,7 +2941,7 @@ CREATE TABLE IF NOT EXISTS `questionnaire_form_fields` (
   `group_body` text,
   `group_repeat` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+)   DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -2979,7 +2958,7 @@ CREATE TABLE IF NOT EXISTS `questionnaire_itemdeletes` (
   `admin_code` varchar(255) DEFAULT NULL,
   `limit_date` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+)   DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -3071,7 +3050,7 @@ CREATE TABLE IF NOT EXISTS `questionnaire_previews` (
   `editor_id` varchar(20) DEFAULT NULL,
   `editor` text,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+)   DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -3097,7 +3076,7 @@ CREATE TABLE IF NOT EXISTS `questionnaire_results` (
   `answer_count` int(11) DEFAULT NULL,
   `answer_ratio` decimal(10,5) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+)   DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -3145,7 +3124,7 @@ CREATE TABLE IF NOT EXISTS `questionnaire_template_bases` (
   `readers_json` text,
   `default_limit` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+)  DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -3167,7 +3146,7 @@ CREATE TABLE IF NOT EXISTS `questionnaire_template_field_options` (
   `value` varchar(255) DEFAULT NULL,
   `title` text,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+)  DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -3203,7 +3182,7 @@ CREATE TABLE IF NOT EXISTS `questionnaire_template_form_fields` (
   `group_body` text,
   `group_repeat` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+)  DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -3295,7 +3274,7 @@ CREATE TABLE IF NOT EXISTS `questionnaire_template_previews` (
   `editor_id` varchar(20) DEFAULT NULL,
   `editor` text,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+)  DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -3316,8 +3295,9 @@ CREATE TABLE IF NOT EXISTS `questionnaire_temporaries` (
   `question_type` varchar(255) DEFAULT NULL,
   `answer_text` text,
   `answer_option` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+  PRIMARY KEY (`id`),
+  KEY `title_id` (`title_id`)
+) DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 

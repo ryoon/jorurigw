@@ -1,3 +1,4 @@
+# encoding: utf-8
 class System::Creator < ActiveRecord::Base
   include System::Model::Base
 
@@ -11,13 +12,13 @@ class System::Creator < ActiveRecord::Base
 
   def set_user
     unless user_id
-      self.user_id = Site.user ? Site.user.id : 0
+      self.user_id = Core.user ? Core.user.id : 0
     end
   end
 
   def set_group
     unless group_id
-      self.group_id = Site.user_group ? Site.user_group.id : 0
+      self.group_id = Core.user_group ? Core.user_group.id : 0
     end
   end
 end

@@ -173,6 +173,9 @@ table.index th {
   line-height: 29px;
   padding-left: 10px;
   color: #ffffff;
+  display: inline-block;
+  height: 29px;
+  overflow: hidden;
 }
 #menu .headLine h3.sqr {
   background-image: url(/_common/themes/gw/files/title/title_schedule.gif);

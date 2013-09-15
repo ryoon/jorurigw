@@ -1,3 +1,4 @@
+# encoding: utf-8
 class Gw::Tool::Reminder
 
   def self.checker_api(uid)

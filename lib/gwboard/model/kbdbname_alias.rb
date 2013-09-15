@@ -1,22 +1,22 @@
 module Gwboard::Model::KbdbnameAlias
 
   def faq_admin_flags(title_id)
-    @is_sysadm = true if System::Model::Role.get(1, Site.user.id ,'gwfaq', 'admin')
-    @is_sysadm = true if System::Model::Role.get(2, Site.user_group.id ,'gwfaq', 'admin') unless @is_sysadm
+    @is_sysadm = true if System::Model::Role.get(1, Core.user.id ,'gwfaq', 'admin')
+    @is_sysadm = true if System::Model::Role.get(2, Core.user_group.id ,'gwfaq', 'admin') unless @is_sysadm
     @is_bbsadm = true if @is_sysadm
 
     unless @is_bbsadm
       item = Gwfaq::Adm.new
       item.and :user_id, 0
-      item.and :group_code, Site.user_group.code
+      item.and :group_code, Core.user_group.code
       item.and :title_id, title_id unless title_id == '_menu'
       items = item.find(:all)
       @is_bbsadm = true unless items.blank?
 
       unless @is_bbsadm
         item = Gwfaq::Adm.new
-        item.and :user_code, Site.user.code
-        item.and :group_code, Site.user_group.code
+        item.and :user_code, Core.user.code
+        item.and :group_code, Core.user_group.code
         item.and :title_id, title_id unless title_id == '_menu'
         items = item.find(:all)
         @is_bbsadm = true unless items.blank?
@@ -41,7 +41,7 @@ module Gwboard::Model::KbdbnameAlias
       items = Gwfaq::Role.find(:all, :order=>'group_code', :conditions => sql.where)
       items.each do |item|
         @is_writable = true if item.group_code == '0'
-        for group in Site.user.groups
+        for group in Core.user.groups
           @is_writable = true if item.group_code == group.code
           @is_writable = true if item.group_code == group.parent.code unless group.parent.blank?
           break if @is_writable
@@ -60,7 +60,7 @@ module Gwboard::Model::KbdbnameAlias
       items = Gwfaq::Role.find(:all, :order=>'group_code', :conditions => sql.where)
       items.each do |item|
         @is_readable = true if item.group_code == '0'
-        for group in Site.user.groups
+        for group in Core.user.groups
           @is_readable = true if item.group_code == group.code
           @is_readable = true if item.group_code == group.parent.code unless group.parent.blank?
           break if @is_readable
@@ -98,27 +98,27 @@ module Gwboard::Model::KbdbnameAlias
         end
       end
     end
-    Gwboard::CommonDb.establish_connection(cnn.spec)
+    Gwboard::CommonDb.establish_connection(cnn.spec.config)
     return item
   end
 
   def qa_admin_flags(title_id)
-    @is_sysadm = true if System::Model::Role.get(1, Site.user.id ,'gwqa', 'admin')
-    @is_sysadm = true if System::Model::Role.get(2, Site.user_group.id ,'gwqa', 'admin') unless @is_sysadm
+    @is_sysadm = true if System::Model::Role.get(1, Core.user.id ,'gwqa', 'admin')
+    @is_sysadm = true if System::Model::Role.get(2, Core.user_group.id ,'gwqa', 'admin') unless @is_sysadm
     @is_bbsadm = true if @is_sysadm
 
     unless @is_bbsadm
       item = Gwqa::Adm.new
       item.and :user_id, 0
-      item.and :group_code, Site.user_group.code
+      item.and :group_code, Core.user_group.code
       item.and :title_id, title_id unless title_id == '_menu'
       items = item.find(:all)
       @is_bbsadm = true unless items.blank?
 
       unless @is_bbsadm
         item = Gwqa::Adm.new
-        item.and :user_code, Site.user.code
-        item.and :group_code, Site.user_group.code
+        item.and :user_code, Core.user.code
+        item.and :group_code, Core.user_group.code
         item.and :title_id, title_id unless title_id == '_menu'
         items = item.find(:all)
         @is_bbsadm = true unless items.blank?
@@ -138,7 +138,7 @@ module Gwboard::Model::KbdbnameAlias
       items = Gwqa::Role.find(:all, :order=>'group_code', :conditions => sql.where)
       items.each do |item|
         @is_writable = true if item.group_code == '0'
-        for group in Site.user.groups
+        for group in Core.user.groups
           @is_writable = true if item.group_code == group.code
           @is_writable = true if item.group_code == group.parent.code unless group.parent.blank?
           break if @is_writable
@@ -157,7 +157,7 @@ module Gwboard::Model::KbdbnameAlias
       items = Gwqa::Role.find(:all, :order=>'group_code', :conditions => sql.where)
       items.each do |item|
         @is_readable = true if item.group_code == '0'
-        for group in Site.user.groups
+        for group in Core.user.groups
           @is_readable = true if item.group_code == group.code
           @is_readable = true if item.group_code == group.parent.code unless group.parent.blank?
           break if @is_readable
@@ -196,7 +196,7 @@ module Gwboard::Model::KbdbnameAlias
         end
       end
     end
-    Gwboard::CommonDb.establish_connection(cnn.spec)
+    Gwboard::CommonDb.establish_connection(cnn.spec.config)
     return item
 
   end

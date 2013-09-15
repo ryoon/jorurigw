@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 class Gwbbs::Script::Conv02
 
   def self.files_converter
@@ -26,7 +27,7 @@ class Gwbbs::Script::Conv02
   def self.db_alias(item)
     cnn = item.establish_connection
     cnn.spec.config[:database] = @title.dbname.to_s
-    Gwboard::CommonDb.establish_connection(cnn.spec)
+    Gwboard::CommonDb.establish_connection(cnn.spec.config)
     return item
   end
 end

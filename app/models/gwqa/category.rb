@@ -4,8 +4,6 @@ class Gwqa::Category < Gwboard::CommonDb
   include System::Model::Tree
   include Gwqa::Model::Systemname
 
-  belongs_to :status, :foreign_key => :state, :class_name => 'System::Base::Status'
-
   acts_as_tree :order=>'sort_no'
 
   validates_presence_of :state, :sort_no, :name

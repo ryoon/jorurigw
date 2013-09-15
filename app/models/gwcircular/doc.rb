@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 class Gwcircular::Doc < Gw::Database
   include System::Model::Base
   include System::Model::Base::Content
@@ -5,7 +6,7 @@ class Gwcircular::Doc < Gw::Database
   include Gwboard::Model::Recognition
   include Gwcircular::Model::Systemname
 
-  belongs_to :status,    :foreign_key => :state,        :class_name => 'System::Base::Status'
+#  belongs_to :status,    :foreign_key => :state,        :class_name => 'Sys::Base::Status'
   belongs_to :control,   :foreign_key => :title_id,     :class_name => 'Gwcircular::Control'
 
   validates_presence_of :state, :able_date, :expiry_date
@@ -270,7 +271,7 @@ class Gwcircular::Doc < Gw::Database
     docs = item.find(:all)
     for doc in docs
       unless doc.category3_id == 1
-        Gwboard.add_reminder_circular(doc.target_user_id.to_s, "<a href='#{doc.show_path}'>#{self.title}　[#{self.creater}(#{self.creater_id})]</a>", "次のボタンから記事を確認してください。<br /></a><a href='#{doc.show_path}'><img src='/_common/themes/gw/files/bt_addanswer.gif' alt='回覧する'></a>",{:doc_id => doc.id,:parent_id=>doc.parent_id,:ed_at=>doc.expiry_date.strftime("%Y-%m-%d %H:%M")})
+        Gwboard.add_reminder_circular(doc.target_user_id.to_s, "<a href='#{doc.show_path}'>#{self.title}　[#{self.creater}(#{self.creater_id})]</a>", "次のボタンから記事を確認してください。<br /><a href='#{doc.show_path}'><img src='/_common/themes/gw/files/bt_addanswer.gif' alt='回覧する' /></a>",{:doc_id => doc.id,:parent_id=>doc.parent_id,:ed_at=>doc.expiry_date.strftime("%Y-%m-%d %H:%M")})
         doc.category3_id = 1
       end
       doc.state = 'unread'
@@ -416,6 +417,10 @@ class Gwcircular::Doc < Gw::Database
     return self.importance_states[self.importance.to_s]
   end
 
+  def item_home_path
+    return "/gwcircular/"
+  end
+  
   def item_path
     return "#{Site.current_node.public_uri.chop}"
   end

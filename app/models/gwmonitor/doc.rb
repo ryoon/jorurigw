@@ -1,41 +1,57 @@
+# -*- encoding: utf-8 -*-
 class Gwmonitor::Doc < Gw::Database
   include System::Model::Base
   include System::Model::Base::Content
   include Gwmonitor::Model::Systemname
 
-  belongs_to :control , :foreign_key => :title_id  ,:class_name=>'Gwmonitor::Control'
+  belongs_to :control, :foreign_key => :title_id, :class_name => 'Gwmonitor::Control'
 
   before_save :set_section_name_and_receipt_user_code, :set_attach_files_count
   after_save  :commission_count_update, :renew_reminder
 
   def status_name
-    str = ''
-    str = '<div align="center"><span class="required">未回答</span></div>' if self.state == 'closed'
-    str = '<div align="center"><span class="required">受取待ち</span></div>' if self.state == 'draft'
-    str = '<div align="center">受取済み</div>' if self.state == 'editing'
-    str = '<div align="center"><span class="notice">回答済</span></div>' if self.state == 'public'
-    str = '<div align="center"><span class="notice">該当なし</span></div>' if self.state == 'qNA'
-    return str
+    case self.state
+    when 'closed'
+      '<span style="display:block; text-align:center" class="required">未回答</span>'
+    when 'draft'
+      '<span style="display:block; text-align:center" class="required">受取待ち</span>'
+    when 'editing'
+      '<span style="display:block; text-align:center">受取済み</span>'
+    when 'public'
+      '<span style="display:block; text-align:center" class="notice">回答済</span>'
+    when 'qNA'
+      '<span style="display:block; text-align:center" class="notice">該当なし</span>'
+    end
   end
 
   def status_name_show
-    str = ''
-    str = '<span class="required">未回答</span>' if self.state == 'closed'
-    str = '<span class="required">受取待ち</span>' if self.state == 'draft'
-    str = '受取済み' if self.state == 'editing'
-    str = '<span class="notice">該当なし</span>' if self.state == 'qNA'
-    str = '<span class="notice">回答済</span>' if self.state == 'public'
-    return str
+    case self.state
+    when 'closed'
+      '<span class="required">未回答</span>'
+    when 'draft'
+      '<span class="required">受取待ち</span>'
+    when 'editing'
+      '受取済み'
+    when 'public'
+      '<span class="notice">回答済</span>'
+    when 'qNA'
+      '<span class="notice">該当なし</span>'
+    end
   end
 
   def status_name_csv
-    str = ''
-    str = '未回答' if self.state == 'closed'
-    str = '受取待ち' if self.state == 'draft'
-    str = '受取済み' if self.state == 'editing'
-    str = '該当なし' if self.state == 'qNA'
-    str = '回答済' if self.state == 'public'
-    return str
+    case self.state
+    when 'closed'
+      '未回答'
+    when 'draft'
+      '受取待ち'
+    when 'editing'
+      '受取済み'
+    when 'public'
+      '回答済'
+    when 'qNA'
+      '該当なし'
+    end
   end
 
   def str_attache_span

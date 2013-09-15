@@ -1,0 +1,30 @@
+<div class="piece docLibrary">
+<div class="pieceHeader">
+<h2>書庫</h2>
+<%= render :partial => 'header' if @is_admin %>
+</div>
+<div class="pieceBody">
+<table class="index">
+  <tr class="items">
+  <td class="libraryTitle">書庫</td>
+  <td class="explanation">説明</td>
+  <td class="manager">管理</td>
+  <td class="update">更新日時</td>
+  </tr>
+  <% for item in @items %>
+  <tr class="<%= cycle 'article', 'article cycle' %>">
+    <td class="libraryTitle"><%= link_to item.title, doclibrary_docs_path({:title_id=>item.id}) %></td>
+    <td class="explanation"><%= raw(item.caption) %></td>
+    <td class="manager"><%= gwbd_admin_name(item.admingrps_json,item.adms_json, item.dsp_admin_name) %></td>
+    <td class="update"><%= item.docslast_updated_at.strftime('%y-%m-%d %H:%M').to_s unless item.docslast_updated_at.blank? %></td>
+  </tr>
+  <% if item.special_link.present? %>
+  <tr class="<%= cycle 'article', 'article cycle' %>">
+    <%= index_special_link(item.special_link) %>
+  </tr>
+  <% end %>
+  <% end %>
+</table>
+<%= paginate @items %>
+</div>
+</div>

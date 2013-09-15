@@ -1,0 +1,92 @@
+ja:
+  activerecord:
+    attributes:
+      gw/todo:
+        ed_at: 期限
+        title: 内容
+      gw/memo:
+        ed_at: 時刻
+        title: 伝言
+        fr_user: 担当者
+        body: 内容
+        memo_user: 送り先
+      gw/schedule:
+        st_at: 開始日時
+        ed_at: 終了日時
+        title: 件名（用務名等）
+        repeat_st_date_at: 開始日
+        repeat_ed_date_at: 終了日
+        repeat_st_time_at: 開始時刻
+        repeat_ed_time_at: 終了時刻
+        repeat_class_id: 規則
+        repeat_weekday_ids: 繰り返す曜日
+        is_public: 公開
+        participant_nums_inner: 参加人数(庁内)
+        participant_nums_outer: 参加人数(庁外)
+        check_30_over : 通知文書
+        inquire_to: 連絡先電話番号
+        guide_start_time: 公開時間の開始時間
+        guide_end_time: 公開時間の終了時間
+        place: 場所
+        to_go: 行き先（最遠地）
+        schedule_users_add_buf: 参加者
+        schedule_props_add_buf: 設備予約
+        allday: 終日
+        repeat_allday: 終日
+        guide_place: 会議等案内表示（場所）
+        guide_place_id: 会議等案内表示（場所）
+        owner_udisplayname: 利用責任者
+      gw/prop_other:
+        name: 名称
+        sort_no: 表示順
+        type_id: 種別
+      gw/prop_other_limit:
+        limit: 制限数
+      gw/holiday:
+        st_at: 年月日
+        title: 休日名
+      gw/admin_message:
+        state: 表示
+        sort_no: 表示順
+        body: メッセージ
+      gw/edit_tab:
+        name: 表示名
+        field_account: アカウント項目名
+        field_pass: パスワード項目名
+        role_name_id: 対象機能
+        display_auth: 関数
+        link_url: リンク先URL
+        is_public: 公開区分
+        tab_keys: タブキー
+      gw/edit_link_piece:
+        name: 表示名
+        field_account: アカウント項目名
+        field_pass: パスワード項目名
+        role_name_id: 対象機能
+        display_auth: 対象権限
+        link_url: リンク先URL
+        ssoid: SSO選択
+        parent_id: 保存先
+        tab_keys: タブキー
+      gw/edit_link_piece_css:
+        css_name: css表示名
+        css_class: cssクラス
+        role_name_id: 対象機能
+        display_auth: 対象権限
+        link_url: リンク先URL
+      gw/year_mark_jp:
+        name: 年号
+        mark: 記号
+        start_at: 開始日（西暦）
+      gw/year_fiscal_jp:
+        fyear: 西暦年度
+        namejp: 年号年度
+        markjp: 記号年度
+        start_at: 開始日（西暦）
+      gw/pref_assembly_member:
+        g_name: 会派
+        g_order: 会派表示順
+        u_lname: 姓
+        u_name: 名
+        u_order: 議員表示順
+        state: 状態

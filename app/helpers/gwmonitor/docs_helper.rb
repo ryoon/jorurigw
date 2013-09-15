@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 module Gwmonitor::DocsHelper
 
   def gwmonitor_attachments_form(form, item)

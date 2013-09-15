@@ -7,7 +7,7 @@ class Gwbbs::Theme < Gw::Database
   belongs_to :theme , :foreign_key => :theme_id  ,:class_name=>'Gwboard::Theme'
 
   def item_path
-    return "#{Site.current_node.public_uri}"
+    return "#{Core.current_node.public_uri}"
   end
 
   def show_path

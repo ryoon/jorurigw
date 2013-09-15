@@ -1,15 +1,17 @@
-class Gwcircular::Admin::AttachmentsController < ApplicationController
+# -*- encoding: utf-8 -*-
+class Gwcircular::Admin::AttachmentsController < Gw::Controller::Admin::Base
   include System::Controller::Scaffold
 
   rescue_from ActionController::InvalidAuthenticityToken, :with => :invalidtoken
 
   def initialize_scaffold
+    @parent_id = params[:gwcircular_id]
     self.class.layout 'admin/gwboard_base'
     params[:title_id] = 1
     @title = Gwcircular::Control.find_by_id(params[:title_id])
     return http_error(404) unless @title
     @doc_type = 0
-    item = Gwcircular::Doc.find_by_id(params[:parent_id])
+    item = Gwcircular::Doc.find_by_id(@parent_id)
     @doc_type = item.doc_type unless item.blank?
   end
 
@@ -17,9 +19,9 @@ class Gwcircular::Admin::AttachmentsController < ApplicationController
     item = Gwcircular::File
     item = item.new
     item.and :title_id, 1
-    item.and :parent_id, params[:parent_id]
+    item.and :parent_id, @parent_id
     item.order  'id'
-    @items = item.find(:all)
+    @items = item.find(:all);
   end
 
   def create
@@ -55,7 +57,7 @@ class Gwcircular::Admin::AttachmentsController < ApplicationController
       end
     end
 
-    redirect_to gwcircular_attachments_path(params[:parent_id])
+    redirect_to gwcircular_attachments_path(@parent_id)
   end
 
   def create_file
@@ -67,7 +69,7 @@ class Gwcircular::Admin::AttachmentsController < ApplicationController
         :size => @uploaded[:upload].size,
         :memo => @uploaded[:memo],
         :title_id => params[:title_id],
-        :parent_id => params[:parent_id],
+        :parent_id => @parent_id,
         :content_id => @title.upload_system,
         :db_file_id => 0
       })
@@ -79,7 +81,7 @@ class Gwcircular::Admin::AttachmentsController < ApplicationController
   def destroy
     @item = Gwcircular::File.find_by_id(params[:id])
     @item.destroy
-    redirect_to gwcircular_attachments_path(params[:parent_id])
+    redirect_to gwcircular_attachments_path(@parent_id)
   end
 
   def is_integer(no)

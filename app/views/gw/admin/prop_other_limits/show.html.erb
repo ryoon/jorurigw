@@ -1,0 +1,51 @@
+<% count = current_count_group_props_each(@item.gid) %>
+<div class="piece prop index">
+
+<div class="pieceHeader">
+  <%# 見出し置き場 %>
+  <%= render :partial=>'piece_header' %>
+</div>
+
+<div class="pieceBody">
+<div class="pieceBodyHeader">
+<%# メニュー 置き場 %>
+</div>
+<%= render :partial=>'piece_menu1' %>
+
+<div class="pieceBodyBody">
+<%= div_notice %>
+<div class="editingBox">
+  <%# ボタン置き場 %>
+  <span class="btEdit"><%= link_to_edit @item.id %></span>
+  <!-- <span class="btDestroy"><%#= link_to_destroy @item.id %></span> -->
+</div>
+
+<table class="show">
+<tr>
+  <th class="group">所属</th><td><%= @item.group.name %></td>
+</tr>
+<tr>
+  <th class="item">制限数</th><td><%= @item.limit %></td>
+</tr>
+<tr>
+  <th class="item">合計</th><td><%= count[3] %></td>
+</tr>
+<tr>
+  <th class="item">公用車</th><td><%= count[0] %></td>
+</tr>
+<tr>
+  <th class="item">会議室</th><td><%= count[1] %></td>
+</tr>
+<tr>
+  <th class="item">一般備品</th><td><%= count[2] %></td>
+</tr>
+</table>
+<div class="btReturn">
+  <%= link_to '一覧へ戻る', '/gw/prop_other_limits' %>
+</div>
+
+</div>
+
+</div>
+
+</div>

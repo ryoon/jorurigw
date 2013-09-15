@@ -24,7 +24,7 @@ CREATE TABLE IF NOT EXISTS `gwbbs_categories` (
   `level_no` int(11) DEFAULT NULL,
   `name` text,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+)  DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -75,7 +75,7 @@ CREATE TABLE IF NOT EXISTS `gwbbs_comments` (
   `inpfld_001` text,
   `inpfld_002` text,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -90,7 +90,7 @@ CREATE TABLE IF NOT EXISTS `gwbbs_db_files` (
   `parent_id` int(11) DEFAULT NULL,
   `data` longblob,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -173,7 +173,7 @@ CREATE TABLE IF NOT EXISTS `gwbbs_docs` (
   `inpfld_024` text,
   `inpfld_025` text,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+)  DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -202,7 +202,7 @@ CREATE TABLE IF NOT EXISTS `gwbbs_files` (
   `height` int(11) DEFAULT NULL,
   `db_file_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+)  DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -232,7 +232,7 @@ CREATE TABLE IF NOT EXISTS `gwbbs_images` (
   `height` int(11) DEFAULT NULL,
   `db_file_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+)  DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -253,4 +253,4 @@ CREATE TABLE IF NOT EXISTS `gwbbs_recognizers` (
   `name` text,
   `recognized_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) DEFAULT CHARSET=utf8;

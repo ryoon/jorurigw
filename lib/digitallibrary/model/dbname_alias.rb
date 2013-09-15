@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 module Digitallibrary::Model::DbnameAlias
 
   def set_parent_docs_hash
@@ -52,7 +53,7 @@ module Digitallibrary::Model::DbnameAlias
     items = item.find(:all,:order => 'level_no, sort_no, parent_id, id')
     @position = []
     make_position_hash(doc_type, items)
-    @position << ['最後尾', 999999999]
+    @position << ['最後尾', 999999999.0]
   end
 
   def make_position_hash(doc_type, items)
@@ -331,7 +332,7 @@ module Digitallibrary::Model::DbnameAlias
         end
       end
     end
-    Gwboard::CommonDb.establish_connection(cnn.spec)
+    Gwboard::CommonDb.establish_connection(cnn.spec.config)
     return item
 
   end
@@ -348,6 +349,62 @@ module Digitallibrary::Model::DbnameAlias
       rescue
         return false
       end
+    end
+  end
+
+protected
+   def seq_name_update_all()
+    folder_item = digitallib_db_alias(Digitallibrary::Folder)
+    folder_item.update_all("seq_name = NULL")
+
+    f_item = digitallib_db_alias(Digitallibrary::Folder)
+    f_item = f_item.new
+    f_item.and :state, '!=','preparation'
+    f_item.and :level_no ,'>' ,1
+    items = f_item.find(:all, :order=>"level_no, parent_id, doc_type, seq_no, id")
+
+    seq = 0
+    brk_doc_type = ''
+    brk_level = ''
+    brk_parent = ''
+    for item in items
+      item_seq_no = 0
+      item_order_no = 0
+      item_sort_no = 0
+      item_seq_name = ''
+
+      unless brk_doc_type == item.doc_type
+        seq = 0
+        brk_doc_type = item.doc_type
+      end
+
+      unless brk_level == item.level_no
+        seq = 0
+        brk_level = item.level_no
+      end
+
+      unless brk_parent == item.parent_id
+        seq = 0
+        brk_parent = item.parent_id
+      end
+      item.chg_parent_id = item.parent_id
+      seq = seq + 1
+      item_seq_no = seq
+      item_order_no = seq
+      item_sort_no = seq + item.doc_type * 1000000000
+
+      if item.parent.seq_name.blank?
+
+        item_seq_name = seq.to_s if item.doc_type == 0
+        item_seq_name = seq.to_s unless item.doc_type == 0
+      else
+
+        item_seq_name = item.seq_name.to_s + item.parent.seq_name.to_s + @title.separator_str1 + seq.to_s if item.doc_type == 0     #見出し
+        item_seq_name = item.seq_name.to_s + item.parent.seq_name.to_s + @title.separator_str2 + seq.to_s unless item.doc_type == 0 #記事
+      end if item.parent
+
+      folder_item.update_all("seq_no = #{item_seq_no}, order_no = #{item_order_no}, sort_no = #{item_sort_no}, seq_name = '#{item_seq_name}'", ["id = ?", item.id])
+      #item.save
     end
   end
 

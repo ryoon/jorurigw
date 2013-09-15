@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 class Gw::SectionAdminMaster < Gw::Database
   include System::Model::Base
   include Cms::Model::Base::Content
@@ -22,13 +23,13 @@ class Gw::SectionAdminMaster < Gw::Database
   
   # before methods　作成者・編集者の設定
   def set_creator
-    self.creator_uid   = Site.user.id
-    self.creator_gid  = Site.user_group.id
+    self.creator_uid   = Core.user.id
+    self.creator_gid  = Core.user_group.id
   end
 
   def set_updator
-    self.updator_uid   = Site.user.id
-    self.updator_gid  = Site.user_group.id
+    self.updator_uid   = Core.user.id
+    self.updator_gid  = Core.user_group.id
   end
 
   def search(params)
@@ -147,13 +148,13 @@ class Gw::SectionAdminMaster < Gw::Database
   def self.find_uniqueness(_params, action = nil, id = nil, model = Gw::SectionAdminMaster)
     # 重複チェック
     cond = "management_parent_gid = #{_params[:management_parent_gid]}"
-    cond += " and func_name = #{_params[:func_name]}"
-    cond += " and management_gid = #{_params[:management_gid]}"
-    cond += " and management_uid = #{_params[:management_uid]}"
-    cond += " and range_class_id = #{_params[:range_class_id]}"
-    cond += " and division_parent_gid = #{_params[:division_parent_gid]}"
-    cond += " and division_gid = #{_params[:division_gid]}" unless _params[:division_gid].blank?
-    cond += " and id <> #{id}" if action == :update
+    cond.concat " and func_name = #{_params[:func_name]}"
+    cond.concat " and management_gid = #{_params[:management_gid]}"
+    cond.concat " and management_uid = #{_params[:management_uid]}"
+    cond.concat " and range_class_id = #{_params[:range_class_id]}"
+    cond.concat " and division_parent_gid = #{_params[:division_parent_gid]}"
+    cond.concat " and division_gid = #{_params[:division_gid]}" unless _params[:division_gid].blank?
+    cond.concat " and id <> #{id}" if action == :update
 
     _item = model.find(:first, :conditions => cond)
 
@@ -168,8 +169,8 @@ class Gw::SectionAdminMaster < Gw::Database
     ret = ""
     'page:sort_keys:s_m_gid:s_d_gid:s_func_name'.split(':').each_with_index do |col, idx|
       unless params[col.to_sym].blank?
-        ret += "&" unless ret.blank?
-        ret += "#{col}=#{params[col.to_sym]}"
+        ret.concat "&" unless ret.blank?
+        ret.concat "#{col}=#{params[col.to_sym]}"
       end
     end
     ret = '?' + ret unless ret.blank?

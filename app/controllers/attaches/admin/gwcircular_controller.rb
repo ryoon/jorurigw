@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 class Attaches::Admin::GwcircularController < ApplicationController
   include System::Controller::Scaffold
 

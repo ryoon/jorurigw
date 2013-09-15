@@ -3,7 +3,7 @@
    _common/themes/gw/css/bbs.css
 ========================================================= */
 
-/* ƒ~ƒjƒAƒCƒRƒ“İ’è
+/* ãƒŸãƒ‹ã‚¢ã‚¤ã‚³ãƒ³è¨­å®š
 ------------------------------------------*/
 .bbs {
   height: 1%;
@@ -11,7 +11,7 @@
   background-image: url(/_common/themes/gw/files/title/title_board.gif);
 }
 
-/* ®F‘å˜g
+/* ç´ºè‰²å¤§æ 
 ------------------------------------------*/
 .bbs .pieceBody {
   padding: 10px;
@@ -46,7 +46,7 @@ table.show td.text {
   width: 100%;
 }
 
-/* ƒ^ƒuü‚è
+/* ã‚¿ãƒ–å‘¨ã‚Š
 -----------------------------------------*/
 #contentBody td.tab {
   width: 145px;
@@ -55,15 +55,15 @@ table.show td.text {
   border-bottom: 1px solid #E3EFFF;
 }
 
-/* ‹@”\ƒ{ƒ^ƒ“
+/* æ©Ÿèƒ½ãƒœã‚¿ãƒ³
 -----------------------------------------*/
-.editingBox {
+.bbs .editingBox {
   width: 100%;
 }
-.contentMenu {
+.bbs .contentMenu {
   margin-bottom: 10px;
 }
-.docLink, .showoLink {
+.bbs .docLink, .showoLink {
   float: right;
   display: inline-block;
 }

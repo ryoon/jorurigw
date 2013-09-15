@@ -1,30 +1,5 @@
+# encoding: utf-8
 module FormHelper
-
-  def submit_for(form, options = {})
-    js_submitter = nz(options[:js_submitter], nil)
-    caption = nz(options[:caption], 'Submit')
-    no_out_div = options[:no_out_div]
-    [:js_submitter, :caption, :no_out_div].each {|x| options.delete x unless options[x].nil?}
-    if js_submitter.nil?
-      ret = form.submit(caption, options)
-    else
-      options[:id] = nz(options[:id], 'item_submit')
-      options[:name] = nz(options[:name], 'commit')
-      ret = button_to_function(caption, js_submitter, options)
-    end
-    return no_out_div ? ret : '<div class="submitters">' + ret + '</div>'
-  end
-
-  def submit_for_create(form, options = {})
-    options[:caption] = '登録する' if options[:caption].nil?
-    submit_for(form, options)
-  end
-
-  def submit_for_update(form, options = {})
-    options[:caption] = '編集する' if options[:caption].nil?
-    submit_for(form, options)
-  end
-
   def select_by_list(form, name, list, options = {}, default_key = nil)
     l = (list.nil? ? [] : list.collect {|a,b|[b,a]})
     l.unshift ['',''] if options[:include_blank]
@@ -37,12 +12,76 @@ module FormHelper
     select_tag(select_name, options_for_select(l, default_key), options)
   end
 
-  def date_common(d, value_if_err='!!!')
-    begin
-      return d.strftime("%Y-%m-%d %H:%M")
-    rescue
-      return (value_if_err == '!!!' ? d.to_s : value_if_err.to_s )
+  ## tinyMCE
+  def init_tiny_mce(options = {})
+    settings = []
+    options.each do |k, v|
+      v = %Q("#{v}") if v.class == String
+      settings << "#{k}:#{v}"
     end
+    [
+      javascript_include_tag("/_common/js/tiny_mce/tiny_mce.js"),
+      javascript_include_tag("/_common/js/tiny_mce/init.js"),
+      javascript_tag("initTinyMCE({#{settings.join(',')}});")
+    ].join("\n")
+  end
+
+  def submission_label(name)
+    {
+      :add       => '追加する',
+      :create    => '作成する',
+      :register  => '登録する',
+      :edit      => '編集する',
+      :update    => '更新する',
+      :change    => '変更する',
+      :delete    => '削除する'
+    }[name]
+  end
+
+  def submit(*args)
+    make_tag = Proc.new do |_name, _label|
+      _label ||= submission_label(_name) || _name.to_s.humanize
+      submit_tag(_label, :name => "commit_#{_name}", :class => _name)
+    end
+
+    h = '<div class="submitters">'
+    if args[0].class == String || args[0].class == Symbol
+      h += make_tag.call(args[0], args[1])
+    elsif args[0].class == Hash
+      args[0].each {|k, v| h += make_tag.call(k, v) }
+    elsif args[0].class == Array
+      args[0].each {|v, k| h += make_tag.call(k, v) }
+    end
+    h += '</div>'
+  end
+
+  def submit_for(form, options = {})
+    js_submitter = options[:js_submitter] || nil
+    caption = options[:caption] || 'Submit'
+    no_out_div = options[:no_out_div]
+    [:js_submitter, :caption, :no_out_div].each {|x| options.delete x unless options[x].nil?}
+    if js_submitter.nil?
+      ret = form.submit(caption, options)
+    else
+      options[:id] = options[:id] || 'item_submit'
+      options[:name] = options[:name] || 'commit'
+      ret = button_to_function(caption, js_submitter, options)
+    end
+    return no_out_div ? ret : ('<div class="submitters">' + ret + '</div>').html_safe
+  end
+
+  def submit_for_create(form, options = {})
+    options[:caption] = '登録する' if options[:caption].nil?
+    submit_for(form, options)
+  end
+
+  def submit_for_update(form, options = {})
+    options[:caption] = '編集する' if options[:caption].nil?
+    submit_for(form, options)
+  end
+
+  def tool_tiny_mce(base_url = "/", options = {})
+    render :partial => 'system/tool/tiny_mce/init', :locals => {:base_url => base_url, :options => options}
   end
 
   def radio(form, name, list, options = {})
@@ -52,7 +91,8 @@ module FormHelper
     options.delete :force_tag
     opt_return_array = options[:return_array]
     options.delete :return_array
-    radio_1line = proc {
+#
+    radio_1line = proc {|v,k|
       _v = v
       _text = ''
       unless options[:text_field].nil?
@@ -67,13 +107,38 @@ module FormHelper
       html_a.push "#{radio_w}" +
         "<label for=\"#{form.object_name}_#{name}_#{k.to_s}\">#{_v}</label>#{_text}#{br}\n"
     }
+#
     br = options[:br].nil? ? '' : '<br />'
     if list.class == Array
-      list.each {|v, k| radio_1line.call}
+#      list.each {|v, k| radio_1line.call}
+      list.each do |v, k|
+        radio_1line.call(v,k)
+      end
     else
-      list.each {|k, v| radio_1line.call}
+#      list.each {|k, v| radio_1line.call}
+      list.each do |k, v|
+        radio_1line.call(v,k)
+      end
     end
-    return !opt_return_array.blank? ? html_a : "#{options[:prefix]}#{Gw.join(html_a, options[:delim])}#{options[:suffix]}"
+    return !opt_return_array.blank? ? html_a : "#{options[:prefix]}#{Gw.join(html_a, options[:delim])}#{options[:suffix]}".html_safe
+  end
+
+  def date_picker3(f, name, value=nil, options={})
+    object_name = f.is_a?(ActionView::Helpers::FormBuilder) ? f.object_name : f.to_s
+    tag_name = "#{object_name}[#{name}]" rescue name
+    options[:id] = Gw.name_to_id(tag_name)
+    options[:format] = :db
+    options[:image] = '/_common/themes/gw/files/icon/ic_act_calendar.gif'
+    options[:embedded] = false if options[:embedded].blank?
+    options[:time] = true if options[:time].nil?
+    options[:style] = 'width:10em; ime-mode: disabled;' if options[:style].blank?
+    this_year = Date.today.year
+    options[:year_range] = (((this_year - 5)..(this_year + 5))).to_a if options[:year_range].blank?
+    err_flg = options[:errors].nil? ? nil : options[:errors][name].first
+    options.delete :errors
+    ret = calendar_date_select_tag tag_name, value, options
+    ret = %Q(<span class="field_with_errors">#{ret}</span>) if !err_flg.nil?
+    ret
   end
 
   def check_boxes(form, name, list, _options = {})
@@ -131,16 +196,16 @@ module FormHelper
     options[:style] = 'width:10em; ime-mode: disabled;' if options[:style].blank?
     this_year = Date.today.year
     options[:year_range] = (((this_year - 5)..(this_year + 5))).to_a if options[:year_range].blank?
-    err_flg = options[:errors].nil? ? nil : options[:errors].on(name)
+    err_flg = options[:errors].nil? ? nil : options[:errors][name].first
     options.delete :errors
     ret = calendar_date_select_tag tag_name, value, options
-    ret = %Q(<span class="fieldWithErrors">#{ret}</span>) if !err_flg.nil?
+    ret = %Q(<span class="field_with_errors">#{ret}</span>) if !err_flg.nil?
     ret
   end
 
   def date_picker5(f, name, value=nil, _options={})
     options = HashWithIndifferentAccess.new(_options)
-    err_flg =  options[:errors].on(name)
+    err_flg =  options[:errors][name].first
     options.delete :errors
 
     tag_name = "#{f.object_name}[#{name}]" rescue name
@@ -154,7 +219,7 @@ module FormHelper
       ret += %Q( #{select_tag("item[schedule_props][prop_type_id]",Gw.options_for_select((0..23).to_a.collect{|x| [x,x]}, :include_blank=>1))} 時) +
         %Q( #{select_tag("item[schedule_props][prop_type_id]",Gw.options_for_select([0,15,30,45].collect{|x| [x,x]}, :include_blank=>1))} 分)
     end
-    ret = %Q(<span class="fieldWithErrors">#{ret}</span>) if !err_flg.nil?
+    ret = %Q(<span class="field_with_errors">#{ret}</span>) if !err_flg.nil?
     ret = %Q(<div class="fieldDatetime2">#{ret}</div>)
     ret
   end
@@ -170,7 +235,7 @@ module FormHelper
     tag_id = Gw.idize(tag_name)
     this_year = Date.today.year
     years_a = nz(options[:years_range], ((this_year - 5)..(this_year + 5))).to_a
-    err_flg = options[:errors].nil? ? nil : options[:errors].on(name)
+    err_flg = options[:errors].nil? ? nil : options[:errors][name].first
     options.delete :errors
     minute_interval = nz(options[:minute_interval], 15).to_i rescue 15
     minute_interval = 15 if minute_interval <= 0
@@ -229,7 +294,7 @@ EOL
     ret += !%w(date datetime).index(mode).nil? ?
       calendar_date_select_tag(tag_name, value, options_calendar_date_select) :
       hidden_field_tag(tag_name, Gw.time_str(value))
-    ret = %Q(<span class="fieldWithErrors">#{ret}</span>) if !err_flg.nil?
+    ret = %Q(<span class="field_with_errors">#{ret}</span>) if !err_flg.nil?
     ret += <<-EOL
 <script type="text/javascript">
 //<![CDATA[
@@ -488,7 +553,7 @@ EOL
       end
     this_year = Date.today.year
     years_a = nz(options[:years_range], ((this_year - 5)..(this_year + 5))).to_a
-    err_flg = options[:errors].nil? ? nil : options[:errors].on(name)
+    err_flg = options[:errors].nil? ? nil : options[:errors][name].first
     options.delete :errors
     minute_interval = nz(options[:minute_interval], 15).to_i rescue 15
     minute_interval = 15 if minute_interval <= 0
@@ -538,8 +603,8 @@ EOL
     ret += captions_caption[2]
     ret += !%w(date datetime).index(mode).nil? ?
      ""  : hidden_field_tag(tag_name, Gw.time_str(value))
-    ret = %Q(<span class="fieldWithErrors">#{ret}</span>) if !err_flg.nil?
-    ret
+    ret = %Q(<span class="field_with_errors">#{ret}</span>) if !err_flg.nil?
+    ret.html_safe
   end
 
 
@@ -567,7 +632,7 @@ EOL
       end
     this_year = Date.today.year
     years_a = nz(options[:years_range], ((this_year - 5)..(this_year + 5))).to_a
-    err_flg = options[:errors].nil? ? nil : options[:errors].on(name)
+    err_flg = options[:errors].nil? ? nil : options[:errors][name].first
     options.delete :errors
     minute_interval = nz(options[:minute_interval], 15).to_i rescue 15
     minute_interval = 15 if minute_interval <= 0
@@ -609,35 +674,21 @@ EOL
 
     end
     ret += captions_caption[2]
-    ret = %Q(<span class="fieldWithErrors">#{ret}</span>) if !err_flg.nil?
-    ret
+    ret = %Q(<span class="field_with_errors">#{ret}</span>) if !err_flg.nil?
+    ret.html_safe
   end
 
   def date_picker_prop(f, name, _options={})
-    options_org = HashWithIndifferentAccess.new(_options)
-    options = options_org
+    options = HashWithIndifferentAccess.new(_options)
     value = nz(options[:value], Time.now)
     value = Gw.to_time(value) if value.is_a?(String)
     mode = nz(options[:mode], :datetime).to_s
     object_name = f.is_a?(ActionView::Helpers::FormBuilder) ? f.object_name : f.to_s
     tag_name = "#{object_name}[#{name}]" rescue name
     tag_id = Gw.idize(tag_name)
-    tag_id_ed = if tag_id == 'item_st_at'
-        "item_ed_at"
-      elsif tag_id == 'item_st_at_noprop'
-        "item_ed_at_noprop"
-      elsif tag_id == 'item_repeat_st_date_at'
-        "item_repeat_ed_date_at"
-      elsif tag_id == 'item_repeat_st_date_at_noprop'
-        "item_repeat_ed_date_at_noprop"
-      elsif tag_id == 'item_repeat_st_date_at'
-        'item_repeat_ed_date_at'
-      elsif tag_id == 'item_repeat_ed_date_at_noprop'
-        'item_repeat_ed_date_at_noprop'
-      end
     this_year = Date.today.year
     years_a = nz(options[:years_range], ((this_year - 5)..(this_year + 5))).to_a
-    err_flg = options[:errors].nil? ? nil : options[:errors].on(name)
+    err_flg = options[:errors].nil? ? nil : options[:errors][name].first
     options.delete :errors
     minute_interval = nz(options[:minute_interval], 15).to_i rescue 15
     minute_interval = 15 if minute_interval <= 0
@@ -676,12 +727,10 @@ EOL
     if !%w(time datetime).index(mode).nil?
       ret += datetime_part.call 4, 0..23, value.hour
 
-      _selected_min_flg = false
       _selected_min = value.min
       minute_array = []
       _min_cnt = 0
       while _min_cnt < 60
-        _selected_min_flg = true if _min_cnt == _selected_min
         minute_array << _min_cnt
         _min_cnt += minute_interval
       end
@@ -693,7 +742,7 @@ EOL
     ret += !%w(date datetime).index(mode).nil? ?
       "<span id=\"#{tag_id}_calendar\">" + calendar_date_select_tag(tag_name, value, options_calendar_date_select) + "</span>" :
       hidden_field_tag(tag_name, Gw.time_str(value))
-    ret = %Q(<span class="fieldWithErrors">#{ret}</span>) if !err_flg.nil?
+    ret = %Q(<span class="field_with_errors">#{ret}</span>) if !err_flg.nil?
     ret
   end
 
@@ -708,7 +757,7 @@ EOL
     tag_id = Gw.idize(tag_name)
     this_year = Date.today.year
     years_a = nz(options[:years_range], ((this_year - 5)..(this_year + 5))).to_a
-    err_flg = options[:errors].nil? ? nil : options[:errors].on(name)
+    err_flg = options[:errors].nil? ? nil : options[:errors].has_key?(name)
     options.delete :errors
     minute_interval = nz(options[:minute_interval], 15).to_i rescue 15
     minute_interval = 15 if minute_interval <= 0
@@ -725,6 +774,7 @@ EOL
       :hidden => 1, :id=>tag_id, :time=> !%w(time datetime).index(mode).nil?, :minute_interval=>minute_interval,
       :onchange => "update_#{tag_id}_from_calendar();",
       :image=>'/_common/themes/gw/files/icon/ic_act_calendar.gif',
+      :year_range => years_a
     }
     datetime_part = lambda{|idx, _select_options_a, selected|
       select_options_a = _select_options_a.is_a?(Array) ? _select_options_a : _select_options_a.to_a
@@ -768,7 +818,7 @@ EOL
     ret += !%w(date datetime).index(mode).nil? ?
       calendar_date_select_tag(tag_name, value, options_calendar_date_select) :
       hidden_field_tag(tag_name, Gw.time_str(value))
-    ret = %Q(<span class="fieldWithErrors">#{ret}</span>) if !err_flg.nil?
+    ret = %Q(<span class="field_with_errors">#{ret}</span>) if !err_flg.nil?
     ret += <<-EOL
 <script type="text/javascript">
 //<![CDATA[
@@ -834,10 +884,6 @@ EOL
     opt[:cols] = 60 if opt[:cols].blank?
     opt[:rows] = 5 if opt[:rows].blank?
     form.text_area name, opt
-  end
-
-  def tool_tiny_mce(base_url = "/", options = {})
-    render :partial => 'system/tool/tiny_mce/init', :locals => {:base_url => base_url, :options => options}
   end
 
   def link_check(form_name, elm_name, item = nil)

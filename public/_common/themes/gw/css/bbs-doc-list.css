@@ -8,6 +8,7 @@
 -------------------------------------------------*/
 #content .bbsDocList {
   background-image: url(/_common/themes/gw/files/title/title_board.gif);
+  margin-top: 10px;
 }
 
 /* ヘルプボックス
@@ -31,6 +32,7 @@
 }
 #contentBody .bbsDocList .pieceBody {
   zoom: 100%;
+  border-right: none;
 }
 
 /* table index
@@ -43,9 +45,9 @@
   border: none;
 }
 .bbsDocList td.bbsImportant span,
-.bbsDocList td.bbsAttach span, 
-.bbsDocList td.bbsBalloon span { 
-  display: inline-block;  
+.bbsDocList td.bbsAttach span,
+.bbsDocList td.bbsBalloon span {
+  display: inline-block;
 }
 .bbsDocList td.bbsAttach,
 .bbsDocList td.bbsBalloon {
@@ -87,7 +89,7 @@
 .bbsDocList .item {
   width: 10px;
 }
-.bbsDocList table.index td.docTitle { 
+.bbsDocList table.index td.docTitle {
   border-left: none;
   word-break: break-all;
 }

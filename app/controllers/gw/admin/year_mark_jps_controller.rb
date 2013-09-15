@@ -1,22 +1,15 @@
-class Gw::Admin::YearMarkJpsController < ApplicationController
+# encoding: utf-8
+class Gw::Admin::YearMarkJpsController < Gw::Controller::Admin::Base
   include System::Controller::Scaffold
+  layout "admin/template/admin"
 
   def initialize_scaffold
-
     return redirect_to(request.env['PATH_INFO']) if params[:reset]
-    _search_condition
-
-  end
-
-  def _search_condition
-
   end
 
   def index
-    params[:limit] = nz(params[:limit], 10)
-    @limit = params[:limit]
-    qsa = ['limit', 's_keyword']
-    @qs = qsa.delete_if{|x| nz(params[x],'')==''}.collect{|x| %Q(#{x}=#{params[x]})}.join('&')
+    init_params
+    return authentication_error(403) unless @u_role
 
     @sort_keys = nz(params[:sort_keys], 'start_at DESC')
     item = Gw::YearMarkJp.new #.readable
@@ -28,80 +21,97 @@ class Gw::Admin::YearMarkJpsController < ApplicationController
   end
 
   def show
+    init_params
+    return authentication_error(403) unless @u_role
     @item = Gw::YearMarkJp.find(params[:id])
+    return http_error(404) if @item.blank?
   end
 
   def new
+    init_params
+    return authentication_error(403) unless @u_role
     @item = Gw::YearMarkJp.new
   end
+
   def create
+    init_params
+    return authentication_error(403) unless @u_role
     @item = Gw::YearMarkJp.new(params[:item])
-    _create @item
+
+    location  = "/gw/year_mark_jps?#{@qs}"
+    options={:success_redirect_uri=>location}
+    _create(@item,options)
   end
 
   def edit
+    init_params
+    return authentication_error(403) unless @u_role
     @item = Gw::YearMarkJp.find(params[:id])
+    return http_error(404) if @item.blank?
+
+    # 過去年号は編集不可
+    cnt =  Gw::YearMarkJp.count(:all , :order=>"start_at DESC" , :conditions=>"start_at > '#{@item.start_at.strftime("%Y-%m-%d 00:00:00")}'")
+#    return redirect_to("#{Site.current_node.public_uri}#{@item.id}") if cnt != 0
+    return redirect_to("/gw/year_mark_jps/#{@item.id}?#{@qs}") if cnt != 0
   end
+
   def update
+    init_params
+    return authentication_error(403) unless @u_role
     @item = Gw::YearMarkJp.new.find(params[:id])
+    return http_error(404) if @item.blank?
+
+    # 過去年号は編集不可
+    cnt =  Gw::YearMarkJp.count(:all , :order=>"start_at DESC" , :conditions=>"start_at > '#{@item.start_at.strftime("%Y-%m-%d 00:00:00")}'")
+#    return redirect_to("#{Site.current_node.public_uri}#{@item.id}") if cnt != 0
+    return redirect_to("/gw/year_mark_jps/#{@item.id}?#{@qs}") if cnt != 0
+
     @item.attributes = params[:item]
-    _update @item
+
+    location  = "/gw/year_mark_jps/#{@item.id}?#{@qs}"
+    options={:success_redirect_uri=>location}
+    _update(@item,options)
   end
 
   def destroy
+    init_params
+    return authentication_error(403) unless @u_role
     @item = Gw::YearMarkJp.new.find(params[:id])
+    return http_error(404) if @item.blank?
+
+    # 過去年号は削除不可
+    cnt =  Gw::YearMarkJp.count(:all , :order=>"start_at DESC" , :conditions=>"start_at > '#{@item.start_at.strftime("%Y-%m-%d 00:00:00")}'")
+#    return redirect_to("#{Site.current_node.public_uri}#{@item.id}") if cnt != 0
+    return redirect_to("/gw/year_mark_jps/#{@item.id}?#{@qs}") if cnt != 0
+
+    location  = "/gw/year_mark_jps?#{@qs}"
+    options={:success_redirect_uri=>location}
+    _destroy(@item,options)
   end
 
-  def csvput
-    case params[:csv]
-    when 'init'
-    when 'put'
-        items = Gw::YearMarkJp.find(:all)
-        filename = "year_mark_jps_#{params[:nkf]}.csv"
-      if items.blank?
-      else
-        file = Gw::Script::Tool.ar_to_csv(items)
-        case params[:nkf]
-        when 'utf8'  # UTF8
-          send_download "#{filename}", NKF::nkf('-w',file)
-        when 'sjis'  # SJIS
-          send_download "#{filename}", NKF::nkf('-s',file)
-        else
-          raise TypeError, 'unknown character set'
-        end
-      end
-    else
-      redirect_to gw_year_mark_jps_path
-    end
+  def init_params
+    @role_developer  = Gw::YearMarkJp.is_dev?
+    @role_admin      = Gw::YearMarkJp.is_admin?
+    @u_role = @role_developer || @role_admin
+
+    @limit = nz(params[:limit],10)
+
+    search_condition
+    sortkeys_setting
+
+    @css = %w(/layout/admin/style.css)
+    Page.title = "年号設定"
   end
 
-  def csvup
-    return if params[:item].nil?
-    par_item = params[:item]
-    case par_item[:csv]
-    when 'up'
-      if par_item.nil? || par_item[:nkf].nil? || par_item[:file].nil?
-        flash[:notice] = 'ファイル名を入力してください'
-      else
-        upload_data = par_item[:file]
-        f = upload_data.read
-        nkf_options = case par_item[:nkf]
-        when 'utf8'
-          '-w -W'
-        when 'sjis'
-          '-w -S'
-        end
-        file =  NKF::nkf(nkf_options,f)
-        if file.blank?
-        else
-          Gw::YearMarkJp.drop_create_table
-          s_to = Gw::Script::Tool.import_csv(file, "gw_year_mark_jps")
-        end
-        redirect_to gw_year_mark_jps_path
-      end
-    else
-      redirect_to gw_year_mark_jps_path
-    end
+  def search_condition
+    params[:limit]        = nz(params[:limit],@limit)
 
+    qsa = ['limit', 's_keyword']
+    @qs = qsa.delete_if{|x| nz(params[x],'')==''}.collect{|x| %Q(#{x}=#{params[x]})}.join('&')
   end
+
+  def sortkeys_setting
+     @sort_keys = nz(params[:sort_keys], 'start_at DESC')
+  end
+
 end

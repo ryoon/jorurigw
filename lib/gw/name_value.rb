@@ -1,17 +1,22 @@
+# encoding: utf-8
 module Gw::NameValue
   PATH_SEPARATOR = '/'
+
+  def self.nz(value, valueifnull='')
+    value.blank? ? valueifnull : value
+  end
 
   def self.get_cache(type, section, key, criteria='')
     c_key = "Gw::NameValue.get_" + type.to_s + "_" + section.to_s + "_" + key.to_s + "_" + criteria.to_s
     begin
-        value = CACHE.get c_key
-        if value.blank?
-            value = self.get type, section, key, criteria
-            CACHE.set c_key, value, 3600
-        else
-        end
-    rescue
+      value = Rails.cache.read(c_key)
+      if value.nil?
         value = self.get type, section, key, criteria
+        Rails.cache.write(c_key, value, :expires_in => 3600)
+      else
+      end
+    rescue
+      value = self.get type, section, key, criteria
     end
     return value
   end

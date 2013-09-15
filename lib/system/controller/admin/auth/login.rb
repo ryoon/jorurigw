@@ -1,3 +1,4 @@
+# encoding: utf-8
 module System::Controller::Admin::Auth::Login
 
 protected

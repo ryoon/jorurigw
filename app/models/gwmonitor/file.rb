@@ -4,4 +4,8 @@ class Gwmonitor::File < Gw::Database
   include Gwmonitor::Model::Systemname
   include Gwboard::Model::AttachFile
   include Gwboard::Model::AttachesFile
+  
+  before_create :before_create
+  after_create :after_create
+  after_destroy :after_destroy
 end

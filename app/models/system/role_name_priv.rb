@@ -1,3 +1,4 @@
+# encoding: utf-8
 class System::RoleNamePriv < ActiveRecord::Base
   include System::Model::Base
   include System::Model::Base::Config
@@ -37,4 +38,10 @@ class System::RoleNamePriv < ActiveRecord::Base
     return ret
   end
 
+  def editable?
+    return true
+  end
+  def deletable?
+    return true
+  end
 end

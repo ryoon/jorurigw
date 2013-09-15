@@ -1,6 +1,15 @@
-<%# app/views/system/admin/roles/new.html.erb %>
-<% form_for :item, :url => {:action => :create} do |f| %>
+<%
+  @create_path = "/system/roles?#{@qs}"
+%>
+
+<div class="piece AdminMessage">
+<%= render :partial => 'header' %>
+
+<div class="pieceBody">
+<%= form_for :item, :url => @create_path do |f| %>
   <%= f.error_messages %>
   <%= render :partial => 'form', :locals => {:f => f} %>
-  <%= submit_for_create f %>
+  <%= submit_for(f, {:caption => '保存'}) %>
 <% end %>
+</div>
+</div>

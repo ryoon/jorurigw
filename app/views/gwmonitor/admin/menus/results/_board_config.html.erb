@@ -1,0 +1,13 @@
+<%
+  array_help = Gw::UserProperty.load_gwmonitor_help_links
+%>
+<table class="show">
+<% if @title.state == 'closed' %>
+<tr><th>状態</th>
+<td><%= @title.status_name %></td></tr>
+<% end %>
+<tr><th>回答表示設定<span class="help"><%=raw array_help[1] %></span></th>
+<td><%= @title.spec_config_name_status %></td></tr>
+<tr><th>回答期限日</th>
+<td><%= @title.expiry_date.strftime('%Y-%m-%d %H:%M') unless @title.expiry_date.blank? %></td></tr>
+</table>

@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 module Questionnaire::Model::TemplateFieldOption
   def self.included(mod)
     mod.has_many :options,  :foreign_key => :field_id,  :order => "#{Questionnaire::TemplateFieldOption.table_name}.sort_no",

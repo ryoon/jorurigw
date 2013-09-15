@@ -1,8 +1,0 @@
-<div class="menu">
-<p>ユーザー</p>
-<%= link_to "グループ", system_groups_path(0)          ,:class => (current == :group ? 'current' : '') %>
-<%= link_to "ユーザー", system_users_path              ,:class => (current == :user ? 'current' : '') %>
-<%= link_to "LDAP", system_ldap_groups_path(0)        ,:class => (current == :ldap ? 'current' : '') if Site.ldap_use==true %>
-<%= link_to "LDAP同期", system_ldap_temporaries_path  ,:class => (current == :ldap_synchro ? 'current' : '') if Site.ldap_use==true %>
-<%= link_to "組織変更", system_group_changes_path     ,:class => (current == :group_changes ? 'current' : '')  %>
-</div>

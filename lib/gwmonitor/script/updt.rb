@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 class Gwmonitor::Script::Updt
 
   def self.field_update

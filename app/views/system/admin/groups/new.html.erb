@@ -1,8 +1,13 @@
-<% form_for :item, :url => {:action => :create} do |f| %>
-
-<%= f.error_messages %>
-<%= render :partial => 'form', :locals => {:f => f} %>
-
-<%= submit_for_create f %>
-
-<% end %>
+<div class="piece AdminSetting AdminGroups">
+  <%= render :partial => 'header' %>
+  <div class="pieceBody">
+    <%= render :partial => '/system/admin/users/header_menu' %>
+    <%= render :partial => 'navi' %>
+    <%= render :partial => 'switching' %>
+    <%= form_for :item, :url => {:action => :create} do |f| %>
+      <%= f.error_messages %>
+      <%= render :partial => 'form', :locals => {:f => f} %>
+      <%= submit_for_update f %>
+    <% end %>
+  </div>
+</div>

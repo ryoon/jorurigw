@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 class Gwsub::Sb01TrainingGuide  < Gwsub::GwsubPref
   include System::Model::Base
   include Cms::Model::Base::Content
@@ -110,7 +111,7 @@ class Gwsub::Sb01TrainingGuide  < Gwsub::GwsubPref
   end
   def before_save_setting_columns
     self.member_id  = Site.user.id
-    self.group_id   = Site.user_group.group_id
+    self.group_id   = Site.user_group.id
   end
 
   def self.bbs_docs_link_check(url=nil)
@@ -216,7 +217,7 @@ class Gwsub::Sb01TrainingGuide  < Gwsub::GwsubPref
 #      `created_user`        text default NULL,
 #      `created_group`       text default NULL,
 #      PRIMARY KEY  (`id`)
-#    ) ENGINE=MyISAM DEFAULT CHARSET=utf8;"
+#    ) DEFAULT CHARSET=utf8;"
 #    connect.execute(create_query)
 #    return
 #  end

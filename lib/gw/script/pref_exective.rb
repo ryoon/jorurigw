@@ -1,3 +1,4 @@
+# encoding: utf-8
 class Gw::Script::PrefExective
   def self.state_all_off
     updated_at     = Time.now.strftime("%Y-%m-%d %H:%M:%S")

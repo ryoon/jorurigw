@@ -1,3 +1,4 @@
+# encoding: utf-8
 module System::Controller::Scaffold
   def self.included(mod)
     mod.before_filter :initialize_scaffold
@@ -12,6 +13,11 @@ module System::Controller::Scaffold
   end
 
 protected
+  def argument_check(options={})
+    # GW2.0ではすべてのコマンドが admin 以下に移動したのでこのチェックを外す
+    # raise ArgumentError, 'public call では必ず :success_redirect_uri を指定してください' if Core.mode == 'public' && options[:success_redirect_uri].nil?
+  end
+  
   def _index(items)
     respond_to do |format|
       format.html { render }
@@ -31,12 +37,11 @@ protected
   end
 
   def _create(item, options = {})
-    raise ArgumentError, 'public call では必ず :success_redirect_uri を指定してください' if Site.mode == 'public' && options[:success_redirect_uri].nil?
+    argument_check(options)
     respond_to do |format|
-      validation = nz(options[:validation], true)
-      if item.creatable? && item.save(validation)
+      if item.creatable? && item.save
         options[:after_process].call if options[:after_process]
-        system_log.add(:item => item, :action => 'create')
+        #system_log.add(:item => item, :action => 'create')
 
         location = nz(options[:success_redirect_uri], url_for(:action => :index))
         location.sub!(/\[\[id\]\]/, "#{item.id}") if options[:no_update_id].nil?
@@ -51,13 +56,14 @@ protected
     end
   end
 
+  
+  
+  
   def _update(item, options = {})
-    raise ArgumentError, 'public call では必ず :success_redirect_uri を指定してください' if Site.mode == 'public' && options[:success_redirect_uri].nil?
+    argument_check(options)
     respond_to do |format|
-      validation = nz(options[:validation], true)
-      if item.editable? && item.save(validation)
+      if item.editable? && item.save
         options[:after_process].call if options[:after_process]
-        system_log.add(:item => item, :action => 'update')
 
         location = nz(options[:success_redirect_uri], url_for(:action => :index))
         location.sub!(/\[\[id\]\]/, "#{item.id}") if options[:no_update_id].nil?
@@ -74,7 +80,7 @@ protected
 
   def send_recognition_mail(item)
     mail_fr = 'admin@192.168.0.2'
-    subject = '【' + Site.title + '】 承認依頼'
+    subject = '【' + Core.title + '】 承認依頼'
     message = '下記URLから承認処理をお願いします。' + "\n\n" +
       url_for(:action => :show)
 
@@ -85,11 +91,11 @@ protected
   end
 
   def _destroy(item, options = {})
-    raise ArgumentError, 'public call では必ず :success_redirect_uri を指定してください' if Site.mode == 'public' && options[:success_redirect_uri].nil?
+    argument_check(options)
     respond_to do |format|
       if item.deletable? && item.destroy
         options[:after_process].call if options[:after_process]
-        system_log.add(:item => item, :action => 'destroy')
+        #system_log.add(:item => item, :action => 'destroy')
 
         flash[:notice] = options[:notice] || '削除処理が完了しました'
         format.html { redirect_to nz(options[:success_redirect_uri], url_for(:action => :index)) }

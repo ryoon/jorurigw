@@ -1,6 +1,7 @@
+# encoding: utf-8
 class Gw::EditLinkPieceCss < Gw::Database
   include System::Model::Base
-  include Cms::Model::Base::Content
+  include System::Model::Base::Content
 
   validates_presence_of     :css_name, :css_class
 

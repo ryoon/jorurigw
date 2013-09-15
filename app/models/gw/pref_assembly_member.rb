@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 class Gw::PrefAssemblyMember < Gw::Database
   include System::Model::Base
   include Cms::Model::Base::Content

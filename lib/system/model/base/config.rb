@@ -1,8 +1,9 @@
+# encoding: utf-8
 module System::Model::Base::Config
   def states
     {'disabled' => '無効', 'enabled' => '有効'}
   end
-  
+
   def readable
     self.and "'readable'", 'readable'
     return self
@@ -27,27 +28,27 @@ module System::Model::Base::Config
     self.and "state", 'disabled'
     return self
   end
-  
+
   def readable?
     return true
   end
-  
+
   def creatable?
     return true
   end
-  
+
   def editable?
     return true
   end
-  
+
   def deletable?
     return true
   end
-  
+
   def enabled?
     return state == 'enabled'
   end
-  
+
   def disabled?
     return state == 'disabled'
   end

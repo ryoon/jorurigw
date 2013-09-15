@@ -1,0 +1,17 @@
+<div class="bbsDocList circular">
+<%= render :partial => 'piece_header' %>
+<%= render :partial => 'piece_banner' %>
+
+<div class="pieceBody">
+<%= render :partial => 'header' %>
+<%= render :partial => 'index_unread' if params[:cond] == 'unread' %>
+<%= render :partial => 'index_already' if params[:cond] == 'already' %>
+<%= render :partial => 'index_owner' if params[:cond] == 'owner' %>
+<%= render :partial => 'index_void' if params[:cond] == 'void' %>
+<% if @is_admin %>
+ <%= render :partial => 'index_admin' if params[:cond] == 'admin' %>
+<% end %>
+<%= paginate @items %>
+
+</div><!--pieceBody-->
+</div><!--bbsDocList circular-->

@@ -1,0 +1,67 @@
+<div class="piece prop index">
+
+<div class="pieceHeader">
+  <%= render :partial => 'piece_header' %>
+</div>
+
+<div class="pieceBody">
+
+<div class="pieceBodyHeader">
+  <%# メニュー 置き場 %>
+</div>
+<%= render :partial => 'piece_menu1' %>
+
+<div class="pieceBodyBody">
+<%= div_notice %>
+<% if @items.blank? %>
+<% else %>
+<table class="index">
+<tr>
+  <th class="item">詳細</th>
+  <th class="group">所属</th>
+  <th class="item">制限数</th>
+  <th class="item">合計</th>
+  <th class="item">公用車</th>
+  <th class="item">会議室</th>
+  <th class="item">一般備品</th>
+</tr>
+<% @items.each do |item| %>
+ <%
+ count = current_count_group_props_each(item.gid)
+ g_count = System::Group.count(:all,:conditions=>"id=#{item.gid}")
+ detail=0
+ if g_count> 0
+   g_name = item.group.name
+ else
+   detail=1
+   g_h_count = System::GroupHistory.count(:all,:conditions=>"id=#{item.gid}")
+   if g_h_count >  0
+     group_h = System::GroupHistory.find_by_id(item.gid)
+     if group_h.blank?
+       g_name = %Q(<span style="color:red;">削除済　[id=#{item.gid}]</span>)
+     else
+       g_name = %Q(<span style="color:red;">削除済　#{group_h.name}[id=#{item.gid}]</span>)
+     end
+   else
+     g_name = %Q(<span style="color:red;">削除済　[id=#{item.gid}]</span>)
+   end
+ end
+ %>
+<tr class="<%= cycle '' , 'cycle' %>">
+  <td><%= link_to_show item.id if detail==0 %></td>
+  <td><%= raw(g_name) %></td>
+  <td><%= item.limit %></td>
+  <td><%= count[3] %></td>
+  <td><%= count[0] %></td>
+  <td><%= count[1] %></td>
+  <td><%= count[2] %></td>
+</tr>
+<% end %>
+</table>
+<% end %>
+<%= paginate @items %>
+</div>
+
+</div>
+
+</div>

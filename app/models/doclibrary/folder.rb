@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 class Doclibrary::Folder < Gwboard::CommonDb
   include System::Model::Base
   include System::Model::Base::Content
@@ -5,7 +6,6 @@ class Doclibrary::Folder < Gwboard::CommonDb
   include Cms::Model::Base::Content
   include Doclibrary::Model::Systemname
 
-  belongs_to :status, :foreign_key => :state, :class_name => 'System::Base::Status'
 
   acts_as_tree :order=>'sort_no'
 
@@ -91,6 +91,11 @@ class Doclibrary::Folder < Gwboard::CommonDb
     return ret
   end
 
+  def status_select
+    [['公開','public'], ['非公開','closed']]
+  end
+
+
   def status_name
     {'public' => '公開', 'closed' => '非公開'}
   end
@@ -127,23 +132,23 @@ class Doclibrary::Folder < Gwboard::CommonDb
   end
 
   def item_path
-    return "#{Site.current_node.public_uri}?title_id=#{self.title_id}&state=CATEGORY&cat=#{self.parent_id}"
+    return "#{self.item_home_path}folders?title_id=#{self.title_id}&state=CATEGORY&cat=#{self.parent_id}"
   end
 
   def show_path
-    return "#{Site.current_node.public_uri}#{self.id}?title_id=#{self.title_id}&state=CATEGORY&cat=#{self.parent_id}"
+    return "#{self.item_home_path}folders/#{self.id}?title_id=#{self.title_id}&state=CATEGORY&cat=#{self.parent_id}"
   end
 
   def edit_path
-    return "#{Site.current_node.public_uri}#{self.id}/edit?title_id=#{self.title_id}&state=CATEGORY&cat=#{self.parent_id}"
+    return "#{self.item_home_path}folders/#{self.id}/edit?title_id=#{self.title_id}&state=CATEGORY&cat=#{self.parent_id}"
   end
 
   def delete_path
-    return "#{Site.current_node.public_uri}#{self.id}/delete?title_id=#{self.title_id}&state=CATEGORY&cat=#{self.parent_id}"
+    return "#{self.item_home_path}folders/#{self.id}?title_id=#{self.title_id}&state=CATEGORY&cat=#{self.parent_id}"
   end
 
   def update_path
-    return "#{Site.current_node.public_uri}#{self.id}/update?title_id=#{self.title_id}&state=CATEGORY&cat=#{self.parent_id}"
+    return "#{self.item_home_path}folders/#{self.id}/update?title_id=#{self.title_id}&state=CATEGORY&cat=#{self.parent_id}"
   end
 
   def child_count

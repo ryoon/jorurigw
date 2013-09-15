@@ -1,3 +1,4 @@
+# encoding: utf-8
 module System::Controller::Scaffold::Commitment
   def rollback(item)
     _rollback(item)
@@ -15,7 +16,7 @@ protected
         status = params[:_created_status] || :created
 
         flash[:notice] = options[:notice] || 'ロールバック処理が完了しました'
-        system_log.add(:item => item, :action => 'rollback')
+        #system_log.add(:item => item, :action => 'rollback')
         format.html { redirect_to location }
         format.xml  { render :xml => to_xml(item), :status => status, :location => location }
       else

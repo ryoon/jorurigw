@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 class Gwsub::Sb04stafflist < Gwsub::GwsubPref
   include System::Model::Base
   include Cms::Model::Base::Content
@@ -16,13 +17,15 @@ class Gwsub::Sb04stafflist < Gwsub::GwsubPref
   before_update :before_update_setting_columns
   before_save :before_save_setting_columns
 
-  def self.is_dev?(uid = Site.user.id)
-    System::Model::Role.get(1, uid ,'gwsub', 'developer')
+  def self.is_dev?(uid = Core.user.id)
+    ret = System::Model::Role.get(1, uid ,'gwsub', 'developer')
+    return ret
   end
-  def self.is_admin?(uid = Site.user.id)
-    System::Model::Role.get(1, uid ,'sb04', 'admin')
+  def self.is_admin?(uid = Core.user.id)
+    ret = System::Model::Role.get(1, uid ,'sb04', 'admin')
+    return ret
   end
-  def self.is_editor?(org_code , g_code = Site.user_group.code)
+  def self.is_editor?(org_code , g_code = Core.user_group.code)
     # get section name
     return false if org_code.blank?
     section = Gwsub::Sb04section.new
@@ -41,7 +44,7 @@ class Gwsub::Sb04stafflist < Gwsub::GwsubPref
     return true
   end
 
-  def self.duties_editable?(uid = Site.user.id , data=nil , u_role = false)
+  def self.duties_editable?(uid = Core.user.id , data=nil , u_role = false)
     # uid  : login user id
     # data : divide_duties top record on assigned job unit (担当ごとのトップレコード)
     #
@@ -128,62 +131,101 @@ class Gwsub::Sb04stafflist < Gwsub::GwsubPref
     end
   end
   def before_save_setting_id
-    if self.fyear_markjp.blank?
-      if self.fyear_id.blank?
+    # 年度
+    if self.fyear_id.blank?
+      if self.fyear_markjp.blank?
         self.fyear_id = 0
+      else
+        # 年号から逆引き
+        order = "start_at DESC"
+        conditions = "markjp = '#{self.fyear_markjp}'"
+        fyear = Gw::YearFiscalJp.find(:first,:conditions=>conditions,:order=>order)
+        self.fyear_id = fyear.id
       end
     else
-      order = "start_at DESC"
-      conditions = "markjp = '#{self.fyear_markjp}'"
-      fyear = Gw::YearFiscalJp.find(:first,:conditions=>conditions,:order=>order)
-      self.fyear_id = fyear.id
+        fyear = Gw::YearFiscalJp.find_by_id(self.fyear_id.to_i)
+        if fyear.blank?
+          self.fyear_markjp = nil
+        else
+          self.fyear_markjp = fyear.markjp
+        end
     end
-
-    if self.section_code.blank?
-      if self.section_id.blank?
-        self.section_id = 0
+    # 所属
+    if self.section_id.blank?
+      if self.section_code.blank?
+        self.section_id   = 0
+        self.section_name = nil
+      else
+        # コードから逆引き
+        section = Gwsub::Sb04section.new
+        section.fyear_id = self.fyear_id
+        section.code = self.section_code
+        section.order "fyear_markjp DESC , code ASC"
+        sections = section.find(:all)
+        self.section_id   = sections[0].id unless sections.blank?
+        self.section_name = sections[0].name
       end
     else
-      section = Gwsub::Sb04section.new
-      section.fyear_id = self.fyear_id
-      section.code = self.section_code
-      section.order "fyear_markjp DESC , code ASC"
-      sections = section.find(:all)
-      self.section_id = sections[0].id unless sections.blank?
+        section = Gwsub::Sb04section.find_by_id(self.section_id.to_i)
+        if section.blank?
+          self.section_code = nil
+          self.section_name = nil
+        else
+          self.section_code = section.code
+          self.section_name = section.name
+        end
     end
-    if self.assignedjobs_code.blank?
-      if self.assignedjobs_id.blank?
-        job = Gwsub::Sb04assignedjob.new
-        job.fyear_id  = self.fyear_id
-        job.section_id  = self.section_id
-        job.order "code_int"
-        jobs = job.find(:first)
-        self.assignedjobs_id        = jobs.id
-        self.assignedjobs_code      = jobs.code
-        self.assignedjobs_code_int  = jobs.code.to_i
-        self.assignedjobs_name      = jobs.name
-        self.assignedjobs_tel       = jobs.tel
-        self.assignedjobs_address   = jobs.address
+    # 担当
+    if self.assignedjobs_id.blank?
+      if self.assignedjobs_code.blank?
+        self.assignedjobs_id        = 0
+      else
+        assignedjob   = Gwsub::Sb04assignedjob.new
+        assignedjob.fyear_id = self.fyear_id
+        assignedjob.code = self.assignedjobs_code
+        assignedjob.order "fyear_markjp DESC , code ASC"
+        assignedjobs  = assignedjob.find(:all)
+        self.assignedjobs_id = assignedjobs[0].id unless assignedjobs.blank?
       end
     else
-      assignedjob   = Gwsub::Sb04assignedjob.new
-      assignedjob.fyear_id = self.fyear_id
-      assignedjob.code = self.assignedjobs_code
-      assignedjob.order "fyear_markjp DESC , code ASC"
-      assignedjobs  = assignedjob.find(:all)
-      self.assignedjobs_id = assignedjobs[0].id unless assignedjobs.blank?
+        job = Gwsub::Sb04assignedjob.find_by_id(self.assignedjobs_id.to_i)
+        if job.blank?
+          self.assignedjobs_id        = 0
+          self.assignedjobs_code      = nil
+          self.assignedjobs_code_int  = 0
+          self.assignedjobs_name      = nil
+          self.assignedjobs_tel       = nil
+          self.assignedjobs_address   = nil
+        else
+          self.assignedjobs_id        = job.id
+          self.assignedjobs_code      = job.code
+          self.assignedjobs_code_int  = job.code.to_i
+          self.assignedjobs_name      = job.name
+          self.assignedjobs_tel       = job.tel
+          self.assignedjobs_address   = job.address
+        end
     end
-    if self.official_title_code.blank?
-      if self.official_title_id.blank?
+    # 職名
+    if self.official_title_id.blank?
+      if self.official_title_code.blank?
         self.official_title_id = 0
+      else
+        official_title = Gwsub::Sb04officialtitle.new
+        official_title.fyear_id = self.fyear_id
+        official_title.code     = self.official_title_code
+        official_title.order "fyear_markjp DESC , code ASC"
+        official_titles = official_title.find(:all)
+        self.official_title_id = official_titles[0].id unless official_titles.blank?
       end
     else
-      official_title = Gwsub::Sb04officialtitle.new
-      official_title.fyear_id = self.fyear_id
-      official_title.code     = self.official_title_code
-      official_title.order "fyear_markjp DESC , code ASC"
-      official_titles = official_title.find(:all)
-      self.official_title_id = official_titles[0].id unless official_titles.blank?
+        official_title = official_title.find_by_id(self.official_title_id.to_i)
+        if official_title.blank?
+          self.official_title_code     = nil
+          self.official_title_name     = nil
+        else
+          self.official_title_code     = official_title.code
+          self.official_title_name     = official_title.name
+        end
     end
   end
   def before_create_setting_columns
@@ -321,7 +363,14 @@ class Gwsub::Sb04stafflist < Gwsub::GwsubPref
 
     if assignedjobs.length == 0
       ret[:result]    = false
-      msg << ['エラー' ,"コピー先の担当が存在しません。担当のデータコピーの実施をしてください。"]
+      msg << ['エラー' ,"コピー先の担当が存在しません。担当データのコピーを実施してください。"]
+    end
+
+    items = self.find(:all, :conditions => ["fyear_id = ? and section_id = ?", par_item[:origin_fyear_id].to_i, par_item[:origin_section_id].to_i ],
+      :order => 'id')
+    if items.blank?
+      ret[:result]    = false
+      msg << ['エラー' ,"コピー元の職員データが存在しません。コピー元の選択を変更してください。"]
     end
 
     if ret[:result] == false
@@ -391,7 +440,7 @@ class Gwsub::Sb04stafflist < Gwsub::GwsubPref
             eval("model.#{field} = nz(item.#{field}, nil)")
           end
         end
-        model.save(false)
+        model.save(:validate=>false)
       end
       origin_fyear         = Gw::YearFiscalJp.find_by_id(par_item[:origin_fyear_id])
       destination_fyear    = Gw::YearFiscalJp.find_by_id(par_item[:destination_fyear_id])

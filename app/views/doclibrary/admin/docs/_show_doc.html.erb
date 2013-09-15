@@ -1,0 +1,63 @@
+<%= render :partial => 'header_help' %>
+<%= render :partial => 'folder_name' unless @title.form_name == 'form002' %>
+
+<%
+params_set = ""
+state = params[:state]
+if state=='GROUP'
+  params_set = "&state=#{state}&grp=#{params[:grp]}&gcd=#{params[:gcd]}"
+else
+  params_set = "&state=#{state}&cat=#{params[:cat]}"
+end
+%>
+<div class="contentMenu bbs">
+<div class="editingBox">
+<% if @is_editable %>
+  <% unless @title.use_recognize %><%#承認機能使用しない%>
+    <span class="btEdit"><%=link_to '編集', edit_doclibrary_doc_path(@item,{:title_id => @title.id}) + params_set %></span>
+  <% else %>
+    <% if @item.category4_id == 1 %>
+      <span class="btAppEdit"><%= link_to '承認あり編集', edit_doclibrary_doc_path(@item, {:title_id => @title.id}) + params_set %></span>
+    <% else %>
+      <span class="btEdit"><%= link_to '編集', edit_doclibrary_doc_path(@item, {:title_id => @title.id}) + params_set %></span>
+    <% end %>
+  <% end %>
+  <span class="btDestroy"><%= link_to '削除', doclibrary_doc_path(@item, {:title_id => @title.id}) + params_set, :confirm => '削除をすると元に戻せません。削除しますか', :method => :delete %></span>
+<% end %>
+<% if @is_recognize %>
+  <span class="btRecognize"><%= link_to '承認', "#{recognize_update_doclibrary_doc_path(@item,{:title_id=>@title.id})}#{gwbbs_params_set}" %></span>
+<% end %>
+<% if @is_publish %>
+  <span class="btPublish"><%= link_to '公開', "#{publish_update_doclibrary_doc_path(@item,{:title_id=>@title.id})}#{gwbbs_params_set}" %></span>
+<% end %>
+</div>
+</div>
+
+<table class="docCreator">
+<tr>
+<th style="width: 60px; text-align: left;">作成者</th>
+<td style="width: 120px; text-align: left;"><%= @item.createdate %></td>
+<td style="text-align: left;"><%= @item.createrdivision %></td>
+<td style="width: 150px; text-align: left;"><%= @item.creater %></td>
+</tr>
+<tr>
+<th style="width: 60px; text-align: left;">編集者</th>
+<td style="width: 120px; text-align: left;"><%= @item.editdate %></td>
+<td style="text-align: left;"><%= @item.editordivision %></td>
+<td style="width: 150px; text-align: left;"><%= @item.editor %></td>
+</tr>
+</table>
+<div class="doclibDocform">
+<%= render :partial => @title.doclib_form_name + 'show' %>
+</div>
+<% if attach_use_old %>
+  <%= render :partial => '/gwboard/admin/docs/upload_index' %>
+<% else %>
+  <%= render :partial => '/gwboard/admin/docs/library_index' %>
+<% end %>
+
+<% if @title.use_recognize %>
+<%= render :partial => 'recognize_users' if @item.state == 'draft'%>
+<%= render :partial => 'recognize_users' if @item.state == 'recognize'%>
+<%= render :partial => 'recognize_users' if @item.state == 'recognized'%>
+<% end %>

@@ -1,10 +1,10 @@
+# -*- encoding: utf-8 -*-
 class Gwqa::Doc < Gwboard::CommonDb
   include System::Model::Base
   include System::Model::Base::Content
   include Cms::Model::Base::Content
   include Gwqa::Model::Systemname
 
-  belongs_to :status,    :foreign_key => :state,        :class_name => 'System::Base::Status'
   belongs_to :content,   :foreign_key => :content_id,   :class_name => 'Cms::Content'
   belongs_to :control,   :foreign_key => :title_id,     :class_name => 'Gwqa::Control'
 
@@ -43,6 +43,10 @@ class Gwqa::Doc < Gwboard::CommonDb
 
   def resolved_status
     { 'unresolved' => '未解決'  , 'resolved'   =>  '解決済'}
+  end
+
+  def resolved_status_select
+    [['未解決','unresolved'],['解決済','resolved']]
   end
 
   def public_path
@@ -178,7 +182,7 @@ class Gwqa::Doc < Gwboard::CommonDb
     item = Gwboard::Synthesis.new
     item.and :title_id, self.title_id
     item.and :parent_id, doc_id
-    item.and :system_name , self.system_name,
+    item.and :system_name, self.system_name
     item = item.find(:first)
     item.destroy if item
   end
@@ -204,58 +208,58 @@ class Gwqa::Doc < Gwboard::CommonDb
   end
 
   def close_path
-    return "#{Site.current_node.public_uri}#{self.id}?title_id=#{self.title_id}&do=close"
+    return "/gwqa/docs/#{self.id}?title_id=#{self.title_id}&do=close"
   end
 
   def clone_path
-    return "#{Site.current_node.public_uri}#{self.id}?title_id=#{self.title_id}&do=clone"
+    return "/gwqa/docs/#{self.id}?title_id=#{self.title_id}&do=clone"
   end
 
   def publish_path
-    return "#{Site.current_node.public_uri}#{self.id}?title_id=#{self.title_id}&do=publish"
+    return "/gwqa/docs/#{self.id}?title_id=#{self.title_id}&do=publish"
   end
 
   def item_path
-    return "#{Site.current_node.public_uri.chop}?title_id=#{self.title_id}"
+    return "/gwqa/docs?title_id=#{self.title_id}"
   end
 
   def docs_path
     if self.doc_type == 0
-      str_path = "#{Site.current_node.public_uri}?title_id=#{self.title_id}"
+      str_path = "/gwqa/docs?title_id=#{self.title_id}"
     else
-      str_path = "#{Site.current_node.public_uri}#{self.parent_id}/?title_id=#{self.title_id}"
+      str_path = "/gwqa/docs/#{self.parent_id}/?title_id=#{self.title_id}"
     end
     return str_path
   end
 
   def show_path
     if self.doc_type == 0
-      str_path = "#{Site.current_node.public_uri}#{self.id}/?title_id=#{self.title_id}"
+      str_path = "/gwqa/docs/#{self.id}/?title_id=#{self.title_id}"
     else
-      str_path = "#{Site.current_node.public_uri}#{self.parent_id}/?title_id=#{self.title_id}"
+      str_path = "/gwqa/docs/#{self.parent_id}/?title_id=#{self.title_id}"
     end
     return str_path
   end
 
   def edit_path
-    str_path =  "#{Site.current_node.public_uri}#{self.id}/edit?title_id=#{self.title_id}"
+    str_path =  "/gwqa/docs/#{self.id}/edit?title_id=#{self.title_id}"
     str_path = str_path + "&parent_id=#{self.parent_id}" if self.doc_type == 1
     return str_path
   end
 
   def delete_path
-    str_path = "#{Site.current_node.public_uri}#{self.id}/delete?title_id=#{self.title_id}"
+    str_path = "/gwqa/docs/#{self.id}?title_id=#{self.title_id}"
     return str_path
   end
 
   def settlement_path
     str_path = ''
-    str_path = "#{Site.current_node.public_uri}#{self.id}/settlement?title_id=#{self.title_id}" if self.doc_type == 0
+    str_path = "/gwqa/docs/#{self.id}/settlement?title_id=#{self.title_id}" if self.doc_type == 0
     return str_path
   end
 
   def update_path
-    str_path = "#{Site.current_node.public_uri}#{self.id}/update?title_id=#{self.title_id}"
+    str_path = "#{Site.current_node.public_uri}#{self.id}?title_id=#{self.title_id}"
     if self.doc_type==1
       str_path = str_path + "&parent_id=#{self.parent_id}"
     else
@@ -280,7 +284,7 @@ class Gwqa::Doc < Gwboard::CommonDb
 
   def set_title
     if self.doc_type == 0
-      strsql = "UPDATE gwqa_docs SET title = '#{Mysql::quote(self.title)}' WHERE doc_type = 1 AND parent_id = #{self.id};"
+      strsql = "UPDATE gwqa_docs SET title = '#{self.title}' WHERE doc_type = 1 AND parent_id = #{self.id};"
       connection.execute(strsql)
     else
       item = Gwqa::Doc.find_by_id(self.parent_id)
@@ -299,7 +303,7 @@ class Gwqa::Doc < Gwboard::CommonDb
     if self.state=='public'
       item = Gwqa::Control.find(self.title_id)
       item.docslast_updated_at = Time.now
-      item.save(false)
+      item.save(:validate=>false)
     end
   end
 

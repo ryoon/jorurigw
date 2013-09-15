@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 class Questionnaire::FormField < Gw::Database
   include System::Model::Base
   include System::Model::Base::Content
@@ -16,6 +17,18 @@ class Questionnaire::FormField < Gw::Database
   after_destroy :create_form_fields
 
   attr_accessor :_skip_logic
+
+  def group_body_json
+    form_str = self.group_body
+    form_str = form_str.gsub(/\r\n?/, '\\n') unless form_str.blank?
+    return form_str
+  end
+
+  def option_body_json
+    form_str = self.option_body
+    form_str = form_str.gsub(/\r\n?/, '\\n') unless form_str.blank?
+    return form_str
+  end
 
   def validate_title
     unless self.title.blank?
@@ -150,6 +163,24 @@ class Questionnaire::FormField < Gw::Database
     return ret
   end
 
+  def form_field_type
+    [
+      ["テキストボックス","text"],
+      ["テキストエリア","textarea"],
+      ["ラジオボタン","radio"],
+      ["チェックボックス","checkbox"],
+      ["セレクトボックス","select"],
+      ["ラベルテキスト","display"],
+      ["グループ設定","group"]
+    ]
+  end
+
+  def form_field_type_name
+    select = form_field_type
+    select.each{|a| return a[0] if a[1] == question_type }
+    return nil
+  end
+
   def show_path
     return "/#{self.system_name}/#{self.parent_id}/form_fields/#{self.id}"
   end
@@ -282,6 +313,7 @@ class Questionnaire::FormField < Gw::Database
   end
   #
   def create_group_field_hash(fld)
+    return if self._skip_logic
     item = Questionnaire::FormField.new
     item.and :state, 'public'
     item.and :question_type, '!=', 'group'
@@ -296,7 +328,10 @@ class Questionnaire::FormField < Gw::Database
         :field_cols=>group.field_cols, :field_type=>group.question_type, :field_id => group.id}
     end
     group_body_string = JsonBuilder.new.build(group_body)
+    #old_skip_logic = self._skip_logic
+    #self._skip_logic = true
     Questionnaire::FormField.update_all("group_body='#{group_body_string}'", "id=#{fld.id}")
+    #self._skip_logic = old_skip_logic
   end
 
   #選択肢描画用データを保持する
@@ -339,6 +374,7 @@ class Questionnaire::FormField < Gw::Database
       option_string = ''
       option_string = JsonBuilder.new.build(form_option) unless form_option.size == 0
       self.option_body = option_string
+      self._skip_logic = true
       self.save
     end
   end
@@ -349,7 +385,7 @@ class Questionnaire::FormField < Gw::Database
 
   def cut_off(text, len)
     if text != nil
-      if text.jlength < len
+      if text.split(//).size < len
         text
       else
         text.scan(/^.{#{len}}/m)[0] + "…"

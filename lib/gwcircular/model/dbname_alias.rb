@@ -1,3 +1,4 @@
+#encoding:utf-8
 module Gwcircular::Model::DbnameAlias
 
   def gwcircular_select_status(params)

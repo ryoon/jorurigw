@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 module Cms::Model::Base::Content
   def states
     {'draft' => '下書き保存', 'recognize' => '承認待ち'}

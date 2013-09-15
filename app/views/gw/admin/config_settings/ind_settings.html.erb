@@ -1,0 +1,15 @@
+<div class="piece AdminSetting">
+<%= render :partial => 'header_str' %>
+
+<div class="pieceBanner">
+</div>
+
+<div class="pieceBody">
+<%= render :partial => 'menu' if @u_role==true %>
+
+<%#= show_notice %>
+<%# 個人設定メニュー %>
+<%= render :partial => 'index_ind' %>
+
+</div>
+</div>

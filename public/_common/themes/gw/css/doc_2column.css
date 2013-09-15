@@ -3,7 +3,7 @@
    _common/themes/gw/css/doc_2column.css
 ========================================================= */
 
-/* ƒJƒ‰ƒ€İ’è
+/* ã‚«ãƒ©ãƒ è¨­å®š
 ---------------------------------------------*/
 #content { 
   overflow: visible;
@@ -61,7 +61,7 @@ html:not(:only-child:only-child) #content .outer {
   overflow-x: hidden;
 }
 
-/* Œf¦”ÂA¿–âŠÇ—ƒ^ƒCƒgƒ‹•”•ª
+/* æ²ç¤ºæ¿ã€è³ªå•ç®¡ç†ã‚¿ã‚¤ãƒˆãƒ«éƒ¨åˆ†
 ---------------------------------------------*/
 .pieceBanner {
   clear:both;
@@ -74,7 +74,7 @@ html:not(:only-child:only-child) #content .outer {
   font-size: 200%;
 }
 
-/* ‹@”\ƒ{ƒ^ƒ“
+/* æ©Ÿèƒ½ãƒœã‚¿ãƒ³
 ---------------------------------------------*/
 .pieceBanner .btNew {
   display: block;
@@ -86,7 +86,7 @@ html:not(:only-child:only-child) #content .outer {
   text-indent: -9999px;
 }
 
-/* Ú×ƒy[ƒW@‰EƒJƒ‰ƒ€
+/* è©³ç´°ãƒšãƒ¼ã‚¸ã€€å³ã‚«ãƒ©ãƒ 
 ---------------------------------------------*/
 .docsInnerBox {
   margin: 10px;
@@ -107,7 +107,7 @@ html:not(:only-child:only-child) #content .outer {
   background-color: #fff;
 }
 
-/* ƒTƒCƒhƒƒjƒ…[@ƒoƒi[İ’è
+/* ã‚µã‚¤ãƒ‰ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã€€ãƒãƒŠãƒ¼è¨­å®š
 ---------------------------------------------*/
 .inner .rightBanner {
   margin-top: 15px;
@@ -117,7 +117,7 @@ html:not(:only-child:only-child) #content .outer {
   margin-left: 10px;
 }
 
-/* ƒTƒCƒhƒƒjƒ…[@ƒƒjƒ…[İ’è
+/* ã‚µã‚¤ãƒ‰ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã€€ãƒ¡ãƒ‹ãƒ¥ãƒ¼è¨­å®š
 ---------------------------------------------*/
 #contentBody .sideMenu {
   float: left;
@@ -194,7 +194,7 @@ html:not(:only-child:only-child) #content .outer {
   margin-left: 10px;
 }
 
-/* ƒTƒCƒhƒƒjƒ…[@•\¦Ø‘Öƒ{ƒ^ƒ“
+/* ã‚µã‚¤ãƒ‰ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã€€è¡¨ç¤ºåˆ‡æ›¿ãƒœã‚¿ãƒ³
 -----------------------------------------------------------*/
 #contentBody .sideMenu h3 span {
   display: inline-block;
@@ -217,15 +217,15 @@ html:not(:only-child:only-child) #content .outer {
   display: block;
 }
 
-/* ƒ^ƒuü‚è
+/* ã‚¿ãƒ–å‘¨ã‚Š
 -----------------------------------------------------------*/
 .tabBox {
   background-color: #FFFCF0;
 }
 
-/* table bbsImage(“ü—Íƒy[ƒW@‰æ‘œ“\•t—“)
-   table bbsFile(“ü—Íƒy[ƒW@“Y•tƒtƒ@ƒCƒ‹—“)
-   table bbsComment(“ü—Íƒy[ƒW@1sƒRƒƒ“ƒg—“)
+/* table bbsImage(å…¥åŠ›ãƒšãƒ¼ã‚¸ã€€ç”»åƒè²¼ä»˜æ¬„)
+   table bbsFile(å…¥åŠ›ãƒšãƒ¼ã‚¸ã€€æ·»ä»˜ãƒ•ã‚¡ã‚¤ãƒ«æ¬„)
+   table bbsComment(å…¥åŠ›ãƒšãƒ¼ã‚¸ã€€1è¡Œã‚³ãƒ¡ãƒ³ãƒˆæ¬„)
 -----------------------------------------------------------*/
 table.bbsImage,
 table.bbsFile,
@@ -248,7 +248,7 @@ table.bbsComment td {
   border-left: 1px solid #CCCCCC;
 }
 
-/* table bbsImage(“ü—Íƒy[ƒW@‰æ‘œ“\•t—“)
+/* table bbsImage(å…¥åŠ›ãƒšãƒ¼ã‚¸ã€€ç”»åƒè²¼ä»˜æ¬„)
 -----------------------------------------------------------*/
 table.bbsImage {
   border-top: none;
@@ -259,7 +259,7 @@ table#image_form {
   border-top: 1px solid #CCCCCC;
 }
 
-/* table bbsFile(“ü—Íƒy[ƒW@“Y•tƒtƒ@ƒCƒ‹—“)
+/* table bbsFile(å…¥åŠ›ãƒšãƒ¼ã‚¸ã€€æ·»ä»˜ãƒ•ã‚¡ã‚¤ãƒ«æ¬„)
 -----------------------------------------------------------*/
 table.bbsFile {
   margin-top: 20px;
@@ -270,7 +270,7 @@ table#attach_form {
   border-top: 1px solid #CCCCCC;
 }
 
-/* “Y•tƒtƒ@ƒCƒ‹ƒŠƒXƒg
+/* æ·»ä»˜ãƒ•ã‚¡ã‚¤ãƒ«ãƒªã‚¹ãƒˆ
 -----------------------------------------------------------*/
 table.gwboardAttachlist {
   margin: 10px auto;
@@ -299,7 +299,7 @@ form table.gwboardAttachlist .remark {
   width: 220px;
 }
 
-/* “ü—Íƒy[ƒW@submitƒ{ƒ^ƒ“
+/* å…¥åŠ›ãƒšãƒ¼ã‚¸ã€€submitãƒœã‚¿ãƒ³
 -----------------------------------------------------------*/
 .right .submitters {
   text-align: center;

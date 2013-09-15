@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 class Attaches::Admin::GwmonitorController < ApplicationController
   include System::Controller::Scaffold
 

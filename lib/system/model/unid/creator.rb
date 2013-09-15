@@ -1,3 +1,4 @@
+# encoding: utf-8
 module System::Model::Unid::Creator
   def self.included(mod)
     mod.has_one :creator, :primary_key => 'unid', :foreign_key => 'unid', :class_name => 'System::Creator',

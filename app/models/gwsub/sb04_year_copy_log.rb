@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 class Gwsub::Sb04YearCopyLog < Gwsub::GwsubPref
   include System::Model::Base
   include Cms::Model::Base::Content
@@ -18,6 +19,6 @@ class Gwsub::Sb04YearCopyLog < Gwsub::GwsubPref
     item.created_user   = Site.user.name
     item.created_group  = Site.user_group.code+Site.user_group.name
     item.created_at     = Time.now
-    item.save(false)
+    item.save(:validate=>false)
   end
 end

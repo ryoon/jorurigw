@@ -1,0 +1,18 @@
+<div class="piece AdminSetting">
+<%= render :partial => 'header_str' %>
+
+<div class="pieceBody">
+<%= render :partial => 'header_new_botton' %>
+<%= render :partial => 'header_navi' %>
+
+<div class="btReturn">
+  <%= link_to '詳細に戻る' , "/gw/edit_tabs/#{@item.id}?pid=#{@parent.id}" %>
+</div>
+
+<%= div_notice %>
+<%= form_for :item, :url => "/gw/edit_tabs/#{@item.id}?pid=#{@parent.id}", :action => :update, :html => {:id => "itemForm", :method => :put, :multipart => true} do |f| %>
+  <%= render :partial => 'form', :locals => {:f => f} %>
+<% end  %>
+
+</div>
+</div>

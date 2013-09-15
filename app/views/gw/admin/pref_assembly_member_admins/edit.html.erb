@@ -1,0 +1,22 @@
+<%
+  @action = "edit"
+  @edit_path = "#{@public_uri}/#{@item.id}"
+%>
+
+<div class="piece AdminSetting">
+
+<%= render :partial => 'header_str' %>
+
+<div class="pieceBody">
+  <%= render :partial => 'header_new_botton' %>
+
+  <%= raw(%Q(<div class="notice">#{flash[:notice]}</div>)) unless flash[:notice].blank? %>
+  <%= form_for :item, :url => @edit_path ,:action=>:update, :html => {:id => "itemForm", :method => :put, :multipart => true} do |f| %>
+    <%= render :partial => 'form', :locals => {:f => f} %>
+  <% end  %>
+    <div class="btReturn">
+    <%= link_to '詳細に戻る' , "#{@public_uri}/#{@item.id}" %>
+  </div>
+</div>
+
+</div>

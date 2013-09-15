@@ -4,7 +4,7 @@
    _common/themes/gw/css/portal_1column.css
 ========================================================= */
 
-/* 個別業務一覧ページ
+/* 蛟句挨讌ｭ蜍吩ｸ隕ｧ繝壹�ｼ繧ｸ
 ----------------------------------------------- */
 #content #basic .pieceContainer {
   padding: 20px 0 0;
@@ -86,9 +86,12 @@
   border-right: none;
 }
 
-/* フォームボタン
+/* 繝輔か繝ｼ繝繝懊ち繝ｳ
 --------------------------------------*/
 form .submitters {
   text-align: center;
 }
 
+.sb04 .notice {
+  margin-left: 20px;
+}

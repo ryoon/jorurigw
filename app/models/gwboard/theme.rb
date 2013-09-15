@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 class Gwboard::Theme < Gw::Database
   include System::Model::Base
   include System::Model::Base::Content

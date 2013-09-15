@@ -1,3 +1,4 @@
+# encoding: utf-8
 class Gw::Tool::BoardAuth
 
   SYSTEMS = ["gwbbs", "gwfaq", "gwqa", "doclibrary", "digitallibrary"]

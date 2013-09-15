@@ -1,8 +1,24 @@
-<div class="showMenu">
-<%= link_to_edit     @item.id  %>
-<%= link_to_destroy  @item.id  %>
+<%#*<p>Find me in app/views/gw/admin/year_mark_jp/show.html.erb</p>%>
+<%
+  cnt =  Gw::YearMarkJp.count(:all , :order=>"start_at DESC" , :conditions=>"start_at > '#{@item.start_at.strftime("%Y-%m-%d 00:00:00")}'")
+%>
+<div class="piece YearMarkJp">
+<%= render :partial => 'header' %>
+<div class="pieceBody">
+<% if cnt == 0 %>
+  <div class="editingBox">
+  <span class="btEdit"><%= link_to_edit  @item.id %></span>
+  <span class="btDestroy"><%=  link_to '削除', "/gw/year_mark_jps/#{@item.id}?#{@qs}", :confirm => '削除をすると元に戻せません。削除しますか', :method => :delete %></span>
+  </div>
+<%else%>
+  <div>最新の年号以外は編集・削除を行うことはできません。</div>
+<%end%>
+<%= raw(table_to_show2 @item, { 'table_name' => 'gw_year_mark_jps' }) %>
+<br />
+<!--戻るボタン-->
+<div class="btReturn">
+  <%=link_to '年号一覧へ戻る', "/gw/year_mark_jps?#{@qs}" %>
 </div>
 <br />
-<%= table_to_show2 @item, { 'table_name' => 'gw_year_mark_jps' } %>
-<br />
-<br />
+</div>
+</div>

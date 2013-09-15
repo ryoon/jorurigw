@@ -6,332 +6,6 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 --
 
 --
--- テーブルのデータをダンプしています `cms_contents`
---
-
-INSERT INTO `cms_contents` (`id`, `unid`, `state`, `created_at`, `updated_at`, `module`, `controller`, `name`, `title`, `path`) VALUES
-(106, 735, 'public', '2009-05-29 10:41:27', '2009-05-29 10:41:27', 'system', 'system', 'system', 'system', 'system'),
-(107, 736, 'public', '2009-05-29 10:43:43', '2009-05-29 10:43:43', 'gw', 'gw', 'gw', 'gw', 'gw'),
-(113, 2234, 'public', '2009-06-29 14:37:24', '2009-09-11 16:20:51', 'gwbbs', 'gwbbs', 'gwbbs', '掲示板', 'gwbbs'),
-(114, 2267, 'public', '2009-07-01 20:41:39', '2009-07-01 20:41:39', 'gwfaq', 'gwfaq', 'gwfaq', 'グループウェアFAQ', 'gwfaq/docs'),
-(116, 2351, 'public', '2009-07-15 09:55:35', '2009-07-15 09:55:35', 'gwqa', 'gwqa', 'gwqa', 'グループウェアQ&A', 'gwqa/docs'),
-(118, 2697, 'public', '2009-09-01 13:47:10', '2009-09-01 13:47:10', 'doclibrary', 'doclibrary', 'doclibrary', '書庫', 'doclibrary'),
-(119, 2814, 'public', '2009-11-16 18:02:33', '2009-11-16 18:02:33', 'gwboard', 'gwboard', 'gwboard', '掲示板系共通', 'gwboard'),
-(120, 3132, 'public', '2009-12-24 14:16:00', '2009-12-24 14:16:00', 'digitallibrary', 'digitallibrary', 'digitallibrary', '電子図書', 'digitallibrary'),
-(123, 3389, 'public', '2010-11-04 20:34:27', '2010-11-04 20:34:27', 'gwcircular', 'gwcircular', 'gwcircular', '回覧板', 'gwcircular'),
-(125, 3433, 'public', '2010-12-15 19:30:30', '2010-12-28 11:37:49', 'gwmonitor', 'gwmonitor', 'gwmonitor', '照会・回答システム', 'gwmonitor'),
-(126, 3467, 'public', '2011-02-01 13:47:05', '2011-02-01 13:47:05', 'questionnaire', 'questionnaire', 'questionnaire', 'アンケート設問管理', 'questionnaire'),
-(127, 3468, 'public', '2011-02-01 13:48:04', '2011-02-01 13:48:04', 'enquete', 'enquete', 'enquete', 'アンケート回答', 'enquete'),
-(128, 3449, 'public', '2012-05-10 14:50:17', '2012-05-10 14:50:17', 'gwsub', 'gwsub', 'gwsub', 'gwsub', 'gwsub');
-
---
--- テーブルのデータをダンプしています `cms_content_mappings`
---
-
-
---
--- テーブルのデータをダンプしています `cms_content_pages`
---
-
-
---
--- テーブルのデータをダンプしています `cms_files`
---
-
-
---
--- テーブルのデータをダンプしています `cms_layouts`
---
-
-INSERT INTO `cms_layouts` (`id`, `unid`, `state`, `created_at`, `updated_at`, `recognized_at`, `published_at`, `name`, `title`, `head`, `body`, `stylesheet`, `mobile_head`, `mobile_body`, `mobile_stylesheet`, `s_mobile_head`, `s_mobile_body`, `s_mobile_stylesheet`) VALUES
-(165, 3412, 'public', '2010-12-07 15:37:01', '2010-12-07 16:06:07', NULL, '2010-12-07 16:06:06', 'gwbbs-theme-setting', '掲示板テーマ設定画面用テンプレート', '<link rel="stylesheet" type="text/css" href="/_common/themes/gw/css/print.css" media="print"/>', '<div id="container">\r\n\r\n<!--ここからヘッダー-->\r\n<div id="header">\r\n<div id="headerBody">\r\n[[piece/gw-header]]\r\n</div>\r\n</div>\r\n<!--ここまでヘッダー-->\r\n\r\n<!--ここからバナー-->\r\n<div id="banner">\r\n<div id="bannerBody">\r\n[[piece/gw-header-menu-icons 61]] \r\n</div>\r\n</div>\r\n<!--ここまでバナー-->\r\n\r\n<!--ここからナビ-->\r\n<div id="navi">\r\n<div id="naviBody">\r\n\r\n</div>\r\n</div>\r\n<!--ここまでナビ-->\r\n\r\n<!--ここからナビ2-->\r\n<div id="navi2">\r\n<div id="navi2Body">\r\n</div>\r\n</div>\r\n<!--ここまでナビ-->\r\n<!--ここからメインコンテンツ-->\r\n<div id="main">\r\n<div id="wrapper">\r\n<!--ここからコンテンツ-->\r\n<div id="content">\r\n<div id="contentContainer">\r\n<div id="contentHeader"></div>\r\n\r\n<div id="contentBody">\r\n\r\n<!--ここから修正中-->\r\n<!--掲示板ヘッダー-->\r\n<div class="bbsDocList">\r\n<div class="pieceHeader">\r\n<h2>掲示板</h2>\r\n</div><!--pieceHeader-->\r\n\r\n<!--掲示板タイトルモード-->\r\n[[piece/gwbbs-theme-banner]]\r\n\r\n<!--カラム用タグ-->\r\n<div class="pieceBody">\r\n\r\n[[piece/gwboard-theme-menus]]\r\n\r\n<div class="outer">\r\n<div class="right">\r\n\r\n[[content]]\r\n\r\n</div><!--right-->\r\n</div><!--outer-->\r\n\r\n</div><!--pieceBody-->\r\n</div><!--bbsDocList-->\r\n\r\n<!--修正終わり-->\r\n\r\n\r\n</div><!--contentBody-->\r\n<div id="contentFooter"></div>\r\n</div>\r\n</div>\r\n<!--ここまでコンテンツ-->\r\n<!--ここから左サイド-->\r\n<div id="menu">\r\n<div id="menuContainer">\r\n<div id="menuHeader"></div>\r\n<div id="menuBody">\r\n\r\n</div>\r\n<div id="menuFooter"></div>\r\n</div>\r\n</div>\r\n<!--ここまで左サイド-->\r\n</div>\r\n<!--ここから右サイド-->\r\n<div id="links">\r\n<div id="linksContainer">\r\n\r\n<div id="linksHeader"></div>\r\n<div id="linksBody">右サイド</div>\r\n<div id="linksFooter"></div>\r\n\r\n</div>\r\n</div>\r\n<!--ここまで右サイド-->\r\n</div>\r\n<!--ここまでメインコンテンツ-->\r\n\r\n<!--ここからフッター-->\r\n<div id="footer">\r\n<div id="footerContainer">\r\n\r\n<div id="footerHeader"></div>\r\n<div id="footerBody">\r\n[[piece/copyright2]]\r\n</div>\r\n<div id="footerFooter"></div>\r\n</div>\r\n</div>\r\n<!--ここまでフッター-->\r\n\r\n</div>', '@charset "UTF-8";\r\n@import "/_common/themes/gw/css/gwboard/iconfile.css";\r\n@import "/_common/themes/gw/css/sidemenu_common.css";\r\n@import "/_common/themes/gw/css/bbs-doc-list.css";', NULL, NULL, NULL, NULL, NULL, NULL),
-(145, 2347, 'public', '2009-07-15 09:44:17', '2010-11-05 17:20:57', NULL, '2010-08-10 15:04:48', 'gwfaq', 'グループウェアFAQ', '<link rel="stylesheet" type="text/css" href="/_common/themes/gw/css/print.css" media="print"/>', '<div id="container">\r\n\r\n<!--ここからヘッダー-->\r\n<div id="header">\r\n<div id="headerBody">\r\n[[piece/gw-header]]\r\n</div>\r\n</div>\r\n<!--ここまでヘッダー-->\r\n\r\n<!--ここからバナー-->\r\n<div id="banner">\r\n<div id="bannerBody">\r\n[[piece/gw-header-menu-icons 61]] \r\n</div>\r\n</div>\r\n<!--ここまでバナー-->\r\n\r\n\r\n<!--ここからナビ-->\r\n<div id="navi">\r\n<div id="naviBody">\r\n\r\n</div>\r\n</div>\r\n<!--ここまでナビ-->\r\n\r\n<!--ここからナビ2-->\r\n<div id="navi2">\r\n<div id="navi2Body">\r\n</div>\r\n</div>\r\n<!--ここまでナビ-->\r\n<!--ここからメインコンテンツ-->\r\n<div id="main">\r\n<div id="wrapper">\r\n<!--ここからコンテンツ-->\r\n<div id="content">\r\n<div id="contentContainer">\r\n<div id="contentHeader"></div>\r\n\r\n<!--掲示板バナー-->\r\n[[piece/gwfaq-banner]]\r\n<div id="contentBody">\r\n\r\n<!--ここから修正中-->\r\n<!--掲示板ヘッダー-->\r\n<div class="gwfaqDocList">\r\n<div class="pieceHeader">\r\n<h2>質問管理</h2>\r\n</div><!--pieceHeader-->\r\n<!--\r\n<div class="btBox">\r\n<div class="btIndex"><a href="/gwqa/">Q&A</a></div>\r\n<div class="btIndex current"><a href="/gwfaq/">FAQ</a></div>\r\n</div>-->\r\n\r\n<!--掲示板タイトルモード-->\r\n[[piece/gwfaq-banner TitleDisplayMode]]\r\n\r\n<!--カラム用タグ-->\r\n<div class="pieceBody">\r\n\r\n[[piece/gwfaq-menus]]\r\n\r\n<div class="outer">\r\n<div class="right">\r\n\r\n[[content]]\r\n\r\n</div><!--right-->\r\n</div><!--outer-->\r\n\r\n</div><!--pieceBody-->\r\n</div><!--gwfaqDocList-->\r\n\r\n<!--修正終わり-->\r\n\r\n\r\n</div><!--contentBody-->\r\n<div id="contentFooter"></div>\r\n</div>\r\n</div>\r\n<!--ここまでコンテンツ-->\r\n<!--ここから左サイド-->\r\n<div id="menu">\r\n<div id="menuContainer">\r\n<div id="menuHeader"></div>\r\n<div id="menuBody">\r\n\r\n</div>\r\n<div id="menuFooter"></div>\r\n</div>\r\n</div>\r\n<!--ここまで左サイド-->\r\n</div>\r\n<!--ここから右サイド-->\r\n<div id="links">\r\n<div id="linksContainer">\r\n\r\n<div id="linksHeader"></div>\r\n<div id="linksBody">右サイド</div>\r\n<div id="linksFooter"></div>\r\n\r\n</div>\r\n</div>\r\n<!--ここまで右サイド-->\r\n</div>\r\n<!--ここまでメインコンテンツ-->\r\n\r\n<!--ここからフッター-->\r\n<div id="footer">\r\n<div id="footerContainer">\r\n\r\n<div id="footerHeader"></div>\r\n<div id="footerBody">\r\n[[piece/copyright2]]\r\n</div>\r\n<div id="footerFooter"></div>\r\n</div>\r\n</div>\r\n<!--ここまでフッター-->\r\n\r\n</div>', '@charset "UTF-8";\r\n@import "/_common/themes/gw/css/gwboard/iconfile.css";\r\n@import "/_common/themes/gw/css/sidemenu_common.css";\r\n@import "/_common/themes/gw/css/gwfaq_doc_list.css";', NULL, NULL, NULL, NULL, NULL, NULL),
-(147, 2369, 'public', '2009-07-17 17:35:48', '2010-11-05 17:17:46', NULL, '2010-02-08 17:37:18', 'gwqa', 'グループウェアQA', '<link rel="stylesheet" type="text/css" href="/_common/themes/gw/css/print.css" media="print"/>', '<div id="container">\r\n\r\n<!--ここからヘッダー-->\r\n<div id="header">\r\n<div id="headerBody">\r\n[[piece/gw-header]]\r\n</div>\r\n</div>\r\n<!--ここまでヘッダー-->\r\n\r\n<!--ここからバナー-->\r\n<div id="banner">\r\n<div id="bannerBody">\r\n[[piece/gw-header-menu-icons 61]] \r\n</div>\r\n</div>\r\n<!--ここまでバナー-->\r\n\r\n\r\n<!--ここからナビ-->\r\n<div id="navi">\r\n<div id="naviBody">\r\n\r\n</div>\r\n</div>\r\n<!--ここまでナビ-->\r\n\r\n<!--ここからナビ2-->\r\n<div id="navi2">\r\n<div id="navi2Body">\r\n</div>\r\n</div>\r\n<!--ここまでナビ-->\r\n<!--ここからメインコンテンツ-->\r\n<div id="main">\r\n<div id="wrapper">\r\n<!--ここからコンテンツ-->\r\n<div id="content">\r\n<div id="contentContainer">\r\n<div id="contentHeader"></div>\r\n\r\n<!--掲示板バナー（使用しない）-->\r\n\r\n\r\n<div id="contentBody">\r\n\r\n\r\n<!--ここから修正中-->\r\n<!--掲示板ヘッダー-->\r\n<div class="gwqaDocList">\r\n<div class="pieceHeader">\r\n<h2>質問管理</h2>\r\n</div><!--pieceHeader-->\r\n\r\n\r\n<!--掲示板タイトルモード-->\r\n\r\n[[piece/gwqa-banner TitleDisplayMode]]\r\n\r\n<!--カラム用タグ-->\r\n<div class="pieceBody">\r\n\r\n[[piece/gwqa-menus]]\r\n\r\n<div class="outer">\r\n<div class="right">\r\n\r\n[[content]]\r\n\r\n</div><!--right-->\r\n</div><!--outer-->\r\n\r\n</div><!--pieceBody-->\r\n</div><!--bbsDocList-->\r\n\r\n<!--修正終わり-->\r\n\r\n\r\n</div><!--contentBody-->\r\n<div id="contentFooter"></div>\r\n</div>\r\n</div>\r\n<!--ここまでコンテンツ-->\r\n<!--ここから左サイド-->\r\n<div id="menu">\r\n<div id="menuContainer">\r\n<div id="menuHeader"></div>\r\n<div id="menuBody">\r\n\r\n</div>\r\n<div id="menuFooter"></div>\r\n</div>\r\n</div>\r\n<!--ここまで左サイド-->\r\n</div>\r\n<!--ここから右サイド-->\r\n<div id="links">\r\n<div id="linksContainer">\r\n\r\n<div id="linksHeader"></div>\r\n<div id="linksBody">右サイド</div>\r\n<div id="linksFooter"></div>\r\n\r\n</div>\r\n</div>\r\n<!--ここまで右サイド-->\r\n</div>\r\n<!--ここまでメインコンテンツ-->\r\n\r\n<!--ここからフッター-->\r\n<div id="footer">\r\n<div id="footerContainer">\r\n\r\n<div id="footerHeader"></div>\r\n<div id="footerBody">\r\n[[piece/copyright2]]\r\n</div>\r\n<div id="footerFooter"></div>\r\n</div>\r\n</div>\r\n<!--ここまでフッター-->\r\n\r\n</div>', '@charset "UTF-8";\r\n@import "/_common/themes/gw/css/gwboard/iconfile.css";\r\n@import "/_common/themes/gw/css/gwqa_common.css";\r\n@import "/_common/themes/gw/css/sidemenu_common.css";\r\n@import "/_common/themes/gw/css/gwqa_doc_list.css";', NULL, NULL, NULL, NULL, NULL, NULL),
-(162, 3301, 'public', '2010-07-12 10:33:21', '2011-03-14 20:08:35', NULL, '2010-07-12 10:33:30', 'admin', 'admin', '<link rel="stylesheet" type="text/css" href="/_common/themes/gw/css/print.css" media="print"/>', '<div id="container">\r\n\r\n\r\n<!--ここからヘッダー-->\r\n<div id="header">\r\n<div id="headerBody">\r\n[[piece/gw-header]]\r\n</div>\r\n</div>\r\n<!--ここまでヘッダー-->\r\n\r\n<!--ここからバナー-->\r\n<div id="banner">\r\n<div id="bannerBody">\r\n[[piece/gw-header-menu-icons 61]] \r\n</div>\r\n</div>\r\n<!--ここまでバナー-->\r\n\r\n\r\n<!--ここからナビ-->\r\n<div id="navi">\r\n<div id="naviBody">\r\n</div>\r\n</div>\r\n<!--ここまでナビ-->\r\n\r\n<!--ここからナビ2-->\r\n<div id="navi2">\r\n<div id="navi2Body">\r\n</div>\r\n</div>\r\n<!--ここまでナビ-->\r\n\r\n<!--ここからメインコンテンツ-->\r\n<div id="main">\r\n<div id="wrapper">\r\n<!--ここからコンテンツ-->\r\n<div id="content">\r\n<div id="contentContainer">\r\n<div id="contentHeader"></div>\r\n<div id="contentBody">\r\n[[content]]\r\n</div>\r\n<div id="contentFooter"></div>\r\n</div>\r\n</div>\r\n<!--ここまでコンテンツ-->\r\n<!--ここから左サイド-->\r\n<div id="menu">\r\n<div id="menuContainer">\r\n<div id="menuHeader"></div>\r\n<div id="menuBody">\r\n</div>\r\n<div id="menuFooter"></div>\r\n</div>\r\n</div>\r\n<!--ここまで左サイド-->\r\n</div>\r\n<!--ここから右サイド-->\r\n<div id="links">\r\n<div id="linksContainer">\r\n\r\n<div id="linksHeader"></div>\r\n<div id="linksBody">右サイド</div>\r\n<div id="linksFooter"></div>\r\n\r\n</div>\r\n</div>\r\n<!--ここまで右サイド-->\r\n</div>\r\n<!--ここまでメインコンテンツ-->\r\n\r\n<!--ここからフッター-->\r\n<div id="footer">\r\n<div id="footerContainer">\r\n\r\n<div id="footerHeader"></div>\r\n<div id="footerBody">\r\n[[piece/copyright2]]\r\n</div>\r\n<div id="footerFooter"></div>\r\n</div>\r\n</div>\r\n<!--ここまでフッター-->\r\n\r\n</div>\r\n', '@charset "UTF-8";\r\n@import "/_common/themes/gw/css/portal_1column.css";\r\n@import "/_common/themes/gw/css/admin.css";\r\n@import "/_common/themes/gw/css/gwboard/iconfile.css";\r\n', '', '\r\n[[piece/gw-mobile-common-header]]\r\n\r\n[[content]]\r\n\r\n\r\n<hr class="borderDouble"/>\r\n\r\n[[piece/gw-mobile-footer]]\r\n[[piece/mobile-copyright]]\r\n', '', '', '', ''),
-(146, 2350, 'public', '2009-07-15 09:53:23', '2009-12-03 11:15:57', NULL, '2009-12-03 11:15:56', 'gwqa-docs', 'グループウェアQA記事', '', '<div id="container">\r\n\r\n\r\n<!--ここからヘッダー-->\r\n<div id="header">\r\n<div id="headerBody">\r\n[[piece/gw-header]]\r\n</div>\r\n</div>\r\n<!--ここまでヘッダー-->\r\n\r\n<!--ここからバナー-->\r\n<div id="banner">\r\n<div id="bannerBody">\r\n[[piece/gw-header-menu]]\r\n</div>\r\n</div>\r\n<!--ここまでバナー-->\r\n\r\n\r\n<!--ここからナビ-->\r\n<div id="navi">\r\n<div id="naviBody">\r\n[[piece/gwqa_bread_crumbs]]\r\n</div>\r\n</div>\r\n<!--ここまでナビ-->\r\n\r\n<!--ここからナビ2-->\r\n<div id="navi2">\r\n<div id="navi2Body">\r\n</div>\r\n</div>\r\n<!--ここまでナビ-->\r\n\r\n<!--ここからメインコンテンツ-->\r\n<div id="main">\r\n<div id="wrapper">\r\n<!--ここからコンテンツ-->\r\n<div id="content">\r\n<div id="contentContainer">\r\n<div id="contentHeader"></div>\r\n<div id="contentBody">\r\n[[content]]\r\n</div>\r\n<div id="contentFooter"></div>\r\n</div>\r\n</div>\r\n<!--ここまでコンテンツ-->\r\n<!--ここから左サイド-->\r\n<div id="menu">\r\n<div id="menuContainer">\r\n<div id="menuHeader"></div>\r\n<div id="menuBody">\r\n</div>\r\n<div id="menuFooter"></div>\r\n</div>\r\n</div>\r\n<!--ここまで左サイド-->\r\n</div>\r\n<!--ここから右サイド-->\r\n<div id="links">\r\n<div id="linksContainer">\r\n\r\n<div id="linksHeader"></div>\r\n<div id="linksBody">右サイド</div>\r\n<div id="linksFooter"></div>\r\n\r\n</div>\r\n</div>\r\n<!--ここまで右サイド-->\r\n</div>\r\n<!--ここまでメインコンテンツ-->\r\n\r\n<!--ここからフッター-->\r\n<div id="footer">\r\n<div id="footerContainer">\r\n\r\n<div id="footerHeader"></div>\r\n<div id="footerBody">\r\n[[piece/copyright2]]\r\n</div>\r\n<div id="footerFooter"></div>\r\n</div>\r\n</div>\r\n<!--ここまでフッター-->\r\n\r\n</div>', '@charset "UTF-8";\r\n@import "/_common/themes/gw/css/gwqa_common.css";', NULL, NULL, NULL, NULL, NULL, NULL),
-(130, 744, 'public', '2009-06-04 16:47:15', '2011-05-21 21:06:13', NULL, '2009-06-05 22:27:32', 'portal', 'portal', '<script src="/_common/js/gw_schedules.js" type="text/javascript"></script>\r\n<script src="/_common/js/yui/build/yahoo/yahoo-min.js" type="text/javascript"></script>\r\n<script src="/_common/js/yui/build/dom/dom-min.js" type="text/javascript"></script>\r\n<script src="/_common/js/yui/build/event/event-min.js" type="text/javascript"></script>\r\n<script src="/_common/js/yui/build/container/container-min.js" type="text/javascript"></script>\r\n<script src="/_common/js/yui/build/menu/menu-min.js" type="text/javascript"></script>\r\n<script src="/_common/js/popup_calendar/popup_calendar.js" type="text/javascript"></script>\r\n<script src="/_common/js/yui/build/calendar/calendar.js" type="text/javascript"></script>\r\n<script src="/_common/js/dateformat.js" type="text/javascript"></script>\r\n<link href="/_common/js/yui/build/menu/assets/menu.css" media="screen" rel="stylesheet" type="text/css" />', '<div id="container">\r\n\r\n\r\n<!--ここからヘッダー-->\r\n<div id="header">\r\n<div id="headerBody">\r\n[[piece/gw-header]]\r\n</div>\r\n</div>\r\n<!--ここまでヘッダー-->\r\n\r\n<!--ここからバナー-->\r\n<div id="banner">\r\n<div id="bannerBody">\r\n[[piece/gw-header-menu-icons 61]]\r\n</div>\r\n</div>\r\n<!--ここまでバナー-->\r\n\r\n\r\n<!--ここからナビ-->\r\n<div id="navi">\r\n<div id="naviBody">\r\n[[piece/gw-message]]\r\n[[piece/gw-tabs 1]]\r\n</div>\r\n</div>\r\n<!--ここまでナビ-->\r\n\r\n<!--ここからナビ2-->\r\n<div id="navi2">\r\n<div id="navi2Body">\r\n[[piece/gw-schedules]]\r\n</div>\r\n</div>\r\n<!--ここまでナビ-->\r\n\r\n<!--ここからメインコンテンツ-->\r\n<div id="main">\r\n<div id="wrapper">\r\n<!--ここからコンテンツ-->\r\n<div id="content">\r\n<div id="contentContainer">\r\n<div id="contentBody">\r\n[[piece/gw-dev-links]]\r\n[[piece/gw-reminder]]\r\n[[piece/gw-bbs-syntheses]]\r\n[[piece/gw-bbs-news gwbbs_1_10]]\r\n</div>\r\n</div>\r\n</div>\r\n<!--ここまでコンテンツ-->\r\n<!--ここから左サイド-->\r\n<div id="menu">\r\n<div id="menuContainer">\r\n<div id="menuHeader"></div>\r\n<div id="menuBody">\r\n[[piece/portal-left-adds]]\r\n[[piece/gw-link-pieces 2]]\r\n</div>\r\n<div id="menuFooter"></div>\r\n</div>\r\n</div>\r\n<!--ここまで左サイド-->\r\n</div>\r\n<!--ここから右サイド-->\r\n<div id="links">\r\n<div id="linksContainer">\r\n\r\n<div id="linksHeader"></div>\r\n<div id="linksBody">右サイド</div>\r\n<div id="linksFooter"></div>\r\n\r\n</div>\r\n</div>\r\n<!--ここまで右サイド-->\r\n</div>\r\n<!--ここまでメインコンテンツ-->\r\n\r\n<!--ここからフッター-->\r\n<div id="footer">\r\n<div id="footerContainer">\r\n\r\n<div id="footerHeader">\r\n[[piece/portal-bottom-adds]]\r\n</div>\r\n<div id="footerBody">\r\n[[piece/copyright2]]\r\n</div>\r\n<div id="footerFooter"></div>\r\n</div>\r\n</div>\r\n<!--ここまでフッター-->\r\n</div>\r\n<script type="text/javascript">\r\n//<![CDATA[\r\n  var myMenu = new YAHOO.widget.Menu(''popup_select_group'');\r\n//]]>\r\n</script>\r\n', '@import "/_common/themes/gw/css/portal.css";\r\n', '', '[[piece/gw-header]]\r\n\r\n<hr class="borderDash"/>\r\n\r\n[[piece/gw-schedules]]\r\n\r\n<hr class="borderDash"/>\r\n\r\n[[piece/gw-reminder]]\r\n\r\n<hr class="borderDouble"/>\r\n\r\n[[piece/gw-mobile-portal-function]]\r\n\r\n<hr class="borderDouble"/>\r\n\r\n[[piece/gw-mobile-top-footer]]\r\n[[piece/mobile-copyright]]\r\n', '', '', '', ''),
-(128, 738, 'public', '2009-05-29 10:45:22', '2011-03-14 20:08:51', NULL, '2010-02-08 18:30:50', 'portal_1column', 'portal_1column', '<link rel="stylesheet" type="text/css" href="/_common/themes/gw/css/print.css" media="print"/>', '<div id="container">\r\n\r\n\r\n<!--ここからヘッダー-->\r\n<div id="header">\r\n<div id="headerBody">\r\n[[piece/gw-header]]\r\n</div>\r\n</div>\r\n<!--ここまでヘッダー-->\r\n\r\n<!--ここからバナー-->\r\n<div id="banner">\r\n<div id="bannerBody">\r\n[[piece/gw-header-menu-icons 61]]\r\n</div>\r\n</div>\r\n<!--ここまでバナー-->\r\n\r\n<!--ここからナビ2-->\r\n<div id="navi2">\r\n<div id="navi2Body">\r\n</div>\r\n</div>\r\n<!--ここまでナビ-->\r\n\r\n<!--ここからメインコンテンツ-->\r\n<div id="main">\r\n<div id="wrapper">\r\n<!--ここからコンテンツ-->\r\n<div id="content">\r\n<div id="contentContainer">\r\n<div id="contentHeader"></div>\r\n<div id="contentBody">\r\n[[content]]\r\n</div>\r\n<div id="contentFooter"></div>\r\n</div>\r\n</div>\r\n<!--ここまでコンテンツ-->\r\n<!--ここから左サイド-->\r\n<div id="menu">\r\n<div id="menuContainer">\r\n<div id="menuHeader"></div>\r\n<div id="menuBody">\r\n</div>\r\n<div id="menuFooter"></div>\r\n</div>\r\n</div>\r\n<!--ここまで左サイド-->\r\n</div>\r\n<!--ここから右サイド-->\r\n<div id="links">\r\n<div id="linksContainer">\r\n\r\n<div id="linksHeader"></div>\r\n<div id="linksBody">右サイド</div>\r\n<div id="linksFooter"></div>\r\n\r\n</div>\r\n</div>\r\n<!--ここまで右サイド-->\r\n</div>\r\n<!--ここまでメインコンテンツ-->\r\n\r\n<!--ここからフッター-->\r\n<div id="footer">\r\n<div id="footerContainer">\r\n\r\n<div id="footerHeader"></div>\r\n<div id="footerBody">\r\n[[piece/copyright2]]\r\n</div>\r\n<div id="footerFooter"></div>\r\n</div>\r\n</div>\r\n<!--ここまでフッター-->\r\n\r\n</div>\r\n', '@charset "UTF-8";\r\n@import "/_common/themes/gw/css/portal_1column.css";\r\n', '', '\r\n[[piece/gw-mobile-common-header]]\r\n\r\n\r\n\r\n[[content]]\r\n\r\n<hr class="borderDouble"/>\r\n\r\n[[piece/gw-mobile-footer]]\r\n[[piece/mobile-copyright]]\r\n', '', '', '', ''),
-(141, 2198, 'public', '2009-06-24 17:22:44', '2010-11-05 16:09:34', NULL, NULL, 'gw-tab-main', 'gw-tab-main', '', '<div id="container">\r\n\r\n\r\n<!--ここからヘッダー-->\r\n<div id="header">\r\n<div id="headerBody">\r\n[[piece/gw-header]]\r\n</div>\r\n</div>\r\n<!--ここまでヘッダー-->\r\n\r\n<!--ここからバナー-->\r\n<div id="banner">\r\n<div id="bannerBody">\r\n[[piece/gw-header-menu-icons 61]]\r\n\r\n</div>\r\n</div>\r\n<!--ここまでバナー-->\r\n<!--ここからバナー-->\r\n<div id="banner">\r\n<div id="banner2Body">\r\n[[piece/gw-pref-soumu-messages]]\r\n[[piece/gw-admin-message]]\r\n</div>\r\n</div>\r\n<!--ここまでバナー-->\r\n\r\n[[content]]\r\n\r\n<!--ここからフッター-->\r\n<div id="footer">\r\n<div id="footerContainer">\r\n\r\n<div id="footerHeader"></div>\r\n<div id="footerBody">\r\n[[piece/copyright2]]\r\n</div>\r\n<div id="footerFooter"></div>\r\n</div>\r\n</div>\r\n<!--ここまでフッター-->\r\n\r\n</div>', '/* @import "/_common/themes/gw/css/development-portal.css"; */\r\n/* @import "/_common/themes/gw/css/gwsub_common.css"; */\r\n/* @import "/_common/themes/tokushima/portal2_1column.css"; */\r\n@import "/_common/themes/gw/css/development-portal_1column.css";', NULL, NULL, NULL, NULL, NULL, NULL),
-(139, 2125, 'public', '2009-06-16 13:14:52', '2009-06-16 15:11:18', NULL, '2009-06-16 15:11:17', 'contents-tester-icon-tab', 'contents-tester-icon-tab', '', '<div id="container">\r\n\r\n\r\n<!--ここからヘッダー-->\r\n<div id="header">\r\n<div id="headerBody">\r\n[[piece/gw-header]]<!--[[piece/header2]]-->\r\n</div>\r\n</div>\r\n<!--ここまでヘッダー-->\r\n\r\n<!--ここからバナー-->\r\n<div id="banner">\r\n<div id="bannerBody">\r\n[[piece/gw-header-menu]]<!--[[piece/header-menu2]]-->\r\n</div>\r\n</div>\r\n<!--ここまでバナー-->\r\n\r\n<!--ここからナビ-->\r\n<div id="navi">\r\n<div id="naviBody">\r\n[[piece/gw-tabs]]<!--[[piece/tabs]]-->\r\n</div>\r\n</div>\r\n<!--ここまでナビ-->\r\n\r\n[[content]]\r\n\r\n<!--ここからフッター-->\r\n<div id="footer">\r\n<div id="footerContainer">\r\n\r\n<div id="footerHeader"></div>\r\n<div id="footerBody">\r\n[[piece/copyright2]]\r\n</div>\r\n<div id="footerFooter"></div>\r\n</div>\r\n</div>\r\n<!--ここまでフッター-->\r\n\r\n</div>\r\n', '@charset "UTF-8";\r\n@import "/_common/themes/gw/css/development-portal.css";\r\n@import "/_common/themes/gw/css/cmsfaq.css";\r\n', NULL, NULL, NULL, NULL, NULL, NULL),
-(135, 798, 'public', '2009-06-11 15:07:37', '2009-11-13 14:56:57', NULL, '2009-11-13 14:56:57', 'login', 'login', '', '[[content]]\r\n', '@charset "UTF-8";\r\n@import "/_common/themes/admin/login.css";\r\n', NULL, NULL, NULL, NULL, NULL, NULL),
-(136, 802, 'public', '2009-06-12 16:30:30', '2009-06-12 20:14:29', NULL, NULL, 'cmsfaq-top', 'CMSFAQトップ', '', '<div id="container">\r\n\r\n<div id="header">\r\n<div id="headerContainer">\r\n<div id="headerHeader"></div>\r\n<div id="headerBody">\r\n\r\n[[piece/cmsfaq-header]]\r\n\r\n</div>\r\n<div id="headerFooter"></div>\r\n<!-- end #headerContainer --></div>\r\n<!-- end #header --></div>\r\n\r\n<div id="banner">\r\n<div id="bannerContainer">\r\n<div id="bannerHeader"></div>\r\n<div id="bannerBody">\r\n\r\n\r\n[[piece/bread-crumbs]]\r\n\r\n</div>\r\n<div id="bannerFooter"></div>\r\n<!-- end #bannerContainer --></div>\r\n<!-- end #banner --></div>\r\n\r\n<div id="main">\r\n\r\n<div id="wrapper">\r\n\r\n<div id="content">\r\n<div id="contentContainer">\r\n<div id="contentHeader"></div>\r\n<div id="contentBody">\r\n\r\n<table style="width: 100%;">\r\n<tr>\r\n<td class="stMenu">\r\n\r\n</td>\r\n<td style="width: 30px; "></td>\r\n<td rowspan="2" style="vertical-align: top;">\r\n\r\n[[content]]\r\n</td>\r\n<td width="200px "style="vertical-align: top;">\r\n\r\n</td>\r\n</tr>\r\n</table>\r\n\r\n</div>\r\n<div id="contentFooter"></div>\r\n<!-- end #contentContainer --></div>\r\n<!-- end #content --></div>\r\n\r\n<!-- end #wrapper --></div>\r\n\r\n<!-- end #main --></div>\r\n\r\n<div id="footer">\r\n<div id="footerContainer">\r\n<div id="footerHeader"></div>\r\n<div id="footerBody">\r\n\r\n[[piece/footer-addr]]\r\n\r\n</div>\r\n<div id="footerFooter"></div>\r\n<!-- end #footerContainer --></div>\r\n<!-- end #footer --></div>\r\n\r\n<!-- end #container --></div>', '', NULL, NULL, NULL, NULL, NULL, NULL),
-(137, 803, 'public', '2009-06-12 16:31:04', '2009-06-16 15:11:04', NULL, '2009-06-16 15:11:04', 'cmsfaq', 'CMSFAQ-記事', '', '<div id="container">\r\n\r\n\r\n<!--ここからヘッダー-->\r\n<div id="header">\r\n<div id="headerBody">\r\n[[piece/gw-header]]<!--[[piece/header2]]-->\r\n</div>\r\n</div>\r\n<!--ここまでヘッダー-->\r\n\r\n<!--ここからバナー-->\r\n<div id="banner">\r\n<div id="bannerBody">\r\n[[piece/gw-header-menu]]<!--[[piece/header-menu2]]-->\r\n</div>\r\n</div>\r\n<!--ここまでバナー-->\r\n\r\n[[content]]\r\n\r\n<!--ここからフッター-->\r\n<div id="footer">\r\n<div id="footerContainer">\r\n\r\n<div id="footerHeader"></div>\r\n<div id="footerBody">\r\n[[piece/copyright2]]\r\n</div>\r\n<div id="footerFooter"></div>\r\n</div>\r\n</div>\r\n<!--ここまでフッター-->\r\n\r\n</div>\r\n', '@charset "UTF-8";\r\n@import "/_common/themes/gw/css/development-portal.css";\r\n@import "/_common/themes/gw/css/cmsfaq.css";\r\n', NULL, NULL, NULL, NULL, NULL, NULL),
-(138, 2124, 'public', '2009-06-16 13:09:30', '2009-06-16 15:11:35', NULL, '2009-06-16 15:11:35', 'contents-tester-minimum', 'contents-tester-minimum', '', '<div id="container">\r\n\r\n\r\n<!--ここからヘッダー-->\r\n<div id="header">\r\n<div id="headerBody">\r\n[[piece/gw-header]]<!--[[piece/header2]]-->\r\n</div>\r\n</div>\r\n<!--ここまでヘッダー-->\r\n\r\n[[content]]\r\n\r\n<!--ここからフッター-->\r\n<div id="footer">\r\n<div id="footerContainer">\r\n\r\n<div id="footerHeader"></div>\r\n<div id="footerBody">\r\n[[piece/copyright2]]\r\n</div>\r\n<div id="footerFooter"></div>\r\n</div>\r\n</div>\r\n<!--ここまでフッター-->\r\n\r\n</div>\r\n', '@charset "UTF-8";\r\n@import "/_common/themes/gw/css/development-portal.css";\r\n@import "/_common/themes/gw/css/cmsfaq.css";\r\n', NULL, NULL, NULL, NULL, NULL, NULL),
-(142, 2252, 'public', '2009-06-29 16:04:43', '2011-03-14 20:15:03', NULL, '2011-01-17 11:53:52', 'gwbbs', 'グループウェア掲示板', '<link rel="stylesheet" type="text/css" href="/_common/themes/gw/css/print.css" media="print"/>', '<div id="container">\r\n\r\n<!--ここからヘッダー-->\r\n<div id="header">\r\n<div id="headerBody">\r\n[[piece/gw-header]]\r\n</div>\r\n</div>\r\n<!--ここまでヘッダー-->\r\n\r\n<!--ここからバナー-->\r\n<div id="banner">\r\n<div id="bannerBody">\r\n[[piece/gw-header-menu-icons 61]] \r\n</div>\r\n</div>\r\n<!--ここまでバナー-->\r\n\r\n\r\n<!--ここからナビ-->\r\n<div id="navi">\r\n<div id="naviBody">\r\n\r\n</div>\r\n</div>\r\n<!--ここまでナビ-->\r\n\r\n<!--ここからナビ2-->\r\n<div id="navi2">\r\n<div id="navi2Body">\r\n</div>\r\n</div>\r\n<!--ここまでナビ-->\r\n<!--ここからメインコンテンツ-->\r\n<div id="main">\r\n<div id="wrapper">\r\n<!--ここからコンテンツ-->\r\n<div id="content">\r\n<div id="contentContainer">\r\n<div id="contentHeader"></div>\r\n\r\n<!--掲示板バナーモード（使用しない-->\r\n\r\n<div id="contentBody">\r\n\r\n<!--ここから修正中-->\r\n<!--掲示板ヘッダー-->\r\n<div class="bbsDocList">\r\n<div class="pieceHeader">\r\n<h2>掲示板</h2>\r\n</div><!--pieceHeader-->\r\n\r\n<!--掲示板タイトルモード-->\r\n[[piece/gwbbs-banner TitleDisplayMode]]\r\n\r\n<!--カラム用タグ-->\r\n<div class="pieceBody">\r\n\r\n[[piece/gwbbs-menus]]\r\n\r\n<div class="outer">\r\n<div class="right">\r\n\r\n[[content]]\r\n\r\n</div><!--right-->\r\n</div><!--outer-->\r\n\r\n</div><!--pieceBody-->\r\n</div><!--bbsDocList-->\r\n\r\n<!--修正終わり-->\r\n\r\n\r\n</div><!--contentBody-->\r\n<div id="contentFooter"></div>\r\n</div>\r\n</div>\r\n<!--ここまでコンテンツ-->\r\n<!--ここから左サイド-->\r\n<div id="menu">\r\n<div id="menuContainer">\r\n<div id="menuHeader"></div>\r\n<div id="menuBody">\r\n\r\n</div>\r\n<div id="menuFooter"></div>\r\n</div>\r\n</div>\r\n<!--ここまで左サイド-->\r\n</div>\r\n<!--ここから右サイド-->\r\n<div id="links">\r\n<div id="linksContainer">\r\n\r\n<div id="linksHeader"></div>\r\n<div id="linksBody">右サイド</div>\r\n<div id="linksFooter"></div>\r\n\r\n</div>\r\n</div>\r\n<!--ここまで右サイド-->\r\n</div>\r\n<!--ここまでメインコンテンツ-->\r\n\r\n<!--ここからフッター-->\r\n<div id="footer">\r\n<div id="footerContainer">\r\n\r\n<div id="footerHeader"></div>\r\n<div id="footerBody">\r\n[[piece/copyright2]]\r\n</div>\r\n<div id="footerFooter"></div>\r\n</div>\r\n</div>\r\n<!--ここまでフッター-->\r\n\r\n</div>', '@charset "UTF-8";\r\n@import "/_common/themes/gw/css/gwboard/iconfile.css";\r\n@import "/_common/themes/gw/css/sidemenu_common.css";', '', '\r\n[[piece/gw-mobile-common-header]]\r\n\r\n[[content]]\r\n\r\n<hr class="borderDouble"/>\r\n\r\n[[piece/gw-mobile-footer]]\r\n[[piece/mobile-copyright]]\r\n', '', '', '', ''),
-(149, 2705, 'public', '2009-09-03 22:03:43', '2011-01-19 21:12:49', NULL, '2011-01-19 21:12:47', 'doclibrary', '書庫', '<link rel="stylesheet" type="text/css" href="/_common/themes/gw/css/print.css" media="print"/>', '<div id="container">\r\n\r\n<!--ここからヘッダー-->\r\n<div id="header">\r\n<div id="headerBody">\r\n[[piece/gw-header]]\r\n</div>\r\n</div>\r\n<!--ここまでヘッダー-->\r\n\r\n<!--ここからバナー-->\r\n<div id="banner">\r\n<div id="bannerBody">\r\n[[piece/gw-header-menu-icons 61]] \r\n</div>\r\n</div>\r\n<!--ここまでバナー-->\r\n\r\n\r\n<!--ここからナビ-->\r\n<div id="navi">\r\n<div id="naviBody">\r\n\r\n</div>\r\n</div>\r\n<!--ここまでナビ-->\r\n\r\n<!--ここからナビ2-->\r\n<div id="navi2">\r\n<div id="navi2Body">\r\n</div>\r\n</div>\r\n<!--ここまでナビ-->\r\n<!--ここからメインコンテンツ-->\r\n<div id="main">\r\n<div id="wrapper">\r\n<!--ここからコンテンツ-->\r\n<div id="content">\r\n<div id="contentContainer">\r\n<div id="contentHeader"></div>\r\n\r\n<!--書庫バナー-->\r\n\r\n<div id="contentBody">\r\n\r\n<div class="doclibraryDocList">\r\n<div class="pieceHeader">\r\n<h2>書庫</h2>\r\n</div><!--pieceHeader-->\r\n\r\n[[piece/doclib-banner TitleDisplayMode]]\r\n\r\n<div class="pieceBody">\r\n[[piece/doclib-folder]]\r\n\r\n<div class="outer">\r\n<div class="right">\r\n\r\n<div class="inner">\r\n[[content]]\r\n</div>\r\n\r\n</div><!--right-->\r\n</div><!--outer-->\r\n</div><!--pieceBody-->\r\n</div><!--bbsDocList-->\r\n</div>\r\n<div id="contentFooter"></div>\r\n</div>\r\n</div>\r\n<!--ここまでコンテンツ-->\r\n<!--ここから左サイド-->\r\n<div id="menu">\r\n<div id="menuContainer">\r\n<div id="menuHeader"></div>\r\n<div id="menuBody">\r\n\r\n</div>\r\n<div id="menuFooter"></div>\r\n</div>\r\n</div>\r\n<!--ここまで左サイド-->\r\n</div>\r\n<!--ここから右サイド-->\r\n<div id="links">\r\n<div id="linksContainer">\r\n\r\n<div id="linksHeader"></div>\r\n<div id="linksBody">右サイド</div>\r\n<div id="linksFooter"></div>\r\n\r\n</div>\r\n</div>\r\n<!--ここまで右サイド-->\r\n</div>\r\n<!--ここまでメインコンテンツ-->\r\n\r\n<!--ここからフッター-->\r\n<div id="footer">\r\n<div id="footerContainer">\r\n\r\n<div id="footerHeader"></div>\r\n<div id="footerBody">\r\n[[piece/copyright2]]\r\n</div>\r\n<div id="footerFooter"></div>\r\n</div>\r\n</div>\r\n<!--ここまでフッター-->\r\n\r\n</div>', '@charset "UTF-8";\r\n@import "/_common/themes/gw/css/gwboard/iconfile.css";\r\n@import "/_common/themes/gw/css/sidemenu_common.css";\r\n@import "/_common/themes/gw/css/doclibrary_doc_list.css";', NULL, NULL, NULL, NULL, NULL, NULL),
-(154, 3133, 'public', '2009-12-24 14:18:12', '2010-11-05 17:21:51', NULL, '2010-08-11 15:23:43', 'digitallibrary', '電子図書', '<link rel="stylesheet" type="text/css" href="/_common/themes/gw/css/print.css" media="print"/>', '<div id="container">\r\n\r\n<!--ここからヘッダー-->\r\n<div id="header">\r\n<div id="headerBody">\r\n[[piece/gw-header]]\r\n</div>\r\n</div>\r\n<!--ここまでヘッダー-->\r\n\r\n<!--ここからバナー-->\r\n<div id="banner">\r\n<div id="bannerBody">\r\n[[piece/gw-header-menu-icons 61]] \r\n</div>\r\n</div>\r\n<!--ここまでバナー-->\r\n\r\n\r\n<!--ここからナビ-->\r\n<div id="navi">\r\n<div id="naviBody">\r\n\r\n</div>\r\n</div>\r\n<!--ここまでナビ-->\r\n\r\n<!--ここからナビ2-->\r\n<div id="navi2">\r\n<div id="navi2Body">\r\n</div>\r\n</div>\r\n<!--ここまでナビ-->\r\n<!--ここからメインコンテンツ-->\r\n<div id="main">\r\n<div id="wrapper">\r\n<!--ここからコンテンツ-->\r\n<div id="content">\r\n<div id="contentContainer">\r\n<div id="contentHeader"></div>\r\n\r\n<!--電子図書バナー-->\r\n<!--電子図書バナーを挿入-->\r\n\r\n<div id="contentBody">\r\n\r\n<div class="DLDocList">\r\n<div class="pieceHeader">\r\n<h2>電子図書</h2>\r\n</div><!--pieceHeader-->\r\n\r\n<!--掲示板タイトルモード-->\r\n[[piece/digitallib-banner TitleDisplayMode]]\r\n\r\n<div class="pieceBody">\r\n\r\n[[piece/digitallib-folder]]\r\n\r\n<div class="outer">\r\n<div class="right">\r\n\r\n[[content]]\r\n\r\n</div><!--right-->\r\n</div><!--outer-->\r\n\r\n</div><!--pieceBody-->\r\n</div><!--DLDocList-->\r\n\r\n\r\n\r\n</div><!--contentBody-->\r\n<div id="contentFooter"></div>\r\n</div>\r\n</div>\r\n<!--ここまでコンテンツ-->\r\n<!--ここから左サイド-->\r\n<div id="menu">\r\n<div id="menuContainer">\r\n<div id="menuHeader"></div>\r\n<div id="menuBody">\r\n\r\n\r\n\r\n</div>\r\n<div id="menuFooter"></div>\r\n</div>\r\n</div>\r\n<!--ここまで左サイド-->\r\n</div>\r\n<!--ここから右サイド-->\r\n<div id="links">\r\n<div id="linksContainer">\r\n\r\n<div id="linksHeader"></div>\r\n<div id="linksBody">右サイド</div>\r\n<div id="linksFooter"></div>\r\n\r\n</div>\r\n</div>\r\n<!--ここまで右サイド-->\r\n</div>\r\n<!--ここまでメインコンテンツ-->\r\n\r\n<!--ここからフッター-->\r\n<div id="footer">\r\n<div id="footerContainer">\r\n\r\n<div id="footerHeader"></div>\r\n<div id="footerBody">\r\n[[piece/copyright2]]\r\n</div>\r\n<div id="footerFooter"></div>\r\n</div>\r\n</div>\r\n<!--ここまでフッター-->\r\n\r\n</div>', '@charset "UTF-8";\r\n@import "/_common/themes/gw/css/gwboard/iconfile.css";\r\n@import "/_common/themes/gw/css/gwboard/digitallibrary_sidemenu.css";\r\n@import "/_common/themes/gw/css/digitallibrary_doc_list.css";', NULL, NULL, NULL, NULL, NULL, NULL),
-(155, 3152, 'public', '2010-01-04 20:58:17', '2010-12-21 11:08:29', NULL, NULL, 'portal_2column', 'portal_2column', '', '<div id="container">\r\n\r\n<!--ここからヘッダー-->\r\n<div id="header">\r\n<div id="headerBody">\r\n[[piece/gw-header]]\r\n</div>\r\n</div>\r\n<!--ここまでヘッダー-->\r\n\r\n<!--ここからバナー-->\r\n<div id="banner">\r\n<div id="bannerBody">\r\n[[piece/gw-header-menu-icons 61]]\r\n</div>\r\n</div>\r\n<!--ここまでバナー-->\r\n\r\n\r\n<!--ここからナビ-->\r\n<div id="navi">\r\n<div id="naviBody">\r\n[[piece/gw-tabs 2]]\r\n</div>\r\n</div>\r\n<!--ここまでナビ-->\r\n\r\n<!--ここからナビ2-->\r\n<div id="navi2">\r\n<div id="navi2Body">\r\n[[piece/gw-schedules]]\r\n</div>\r\n</div>\r\n<!--ここまでナビ-->\r\n\r\n<!--ここからメインコンテンツ-->\r\n<div id="main">\r\n<div class="piece contentAddition">\r\n<div class="pieceBody">\r\n<h3 class="contentAddition"><a href="/gw/ind_portal_pieces">コンテンツの追加</a></h3>\r\n</div>\r\n</div>\r\n<div id="wrapper">\r\n<!--ここからコンテンツ-->\r\n<div id="content">\r\n<div id="contentContainer">\r\n<div id="contentHeader"></div>\r\n<div id="contentBody">\r\n[[content]]\r\n</div>\r\n</div>\r\n</div>\r\n<!--ここまでコンテンツ-->\r\n<!--ここから左サイド-->\r\n<div id="menu">\r\n<div id="menuContainer">\r\n<div id="menuBody">\r\n[[piece/gw-ind-left-pieces 2]]\r\n</div>\r\n</div>\r\n</div>\r\n<!--ここまで左サイド-->\r\n</div>\r\n<!--ここから右サイド-->\r\n<div id="links">\r\n<div id="linksContainer">\r\n<div id="linksBody">右サイド</div>\r\n</div>\r\n</div>\r\n<!--ここまで右サイド-->\r\n</div>\r\n<!--ここまでメインコンテンツ-->\r\n\r\n<!--ここからフッター-->\r\n<div id="footer">\r\n<div id="footerContainer">\r\n<div id="footerBody">\r\n[[piece/copyright2]]\r\n</div>\r\n</div>\r\n</div>\r\n<!--ここまでフッター-->\r\n</div>\r\n<script type="text/javascript">\r\n//<![CDATA[\r\n  var myMenu = new YAHOO.widget.Menu(''popup_select_group'');\r\n//]]>\r\n</script>\r\n', '@charset "UTF-8";\r\n@import "/_common/themes/gw/css/portal.css";', NULL, NULL, NULL, NULL, NULL, NULL),
-(158, 3222, 'public', '2010-02-04 21:00:14', '2010-12-07 20:06:02', NULL, '2010-12-02 19:05:33', 'gwboard_theme_regist', 'テーマ登録処理画面用テンプレート', '<link rel="stylesheet" type="text/css" href="/_common/themes/gw/css/print.css" media="print"/>', '<div id="container">\r\n\r\n<!--ここからヘッダー-->\r\n<div id="header">\r\n<div id="headerBody">\r\n[[piece/gw-header]]\r\n</div>\r\n</div>\r\n<!--ここまでヘッダー-->\r\n\r\n<!--ここからバナー-->\r\n<div id="banner">\r\n<div id="bannerBody">\r\n[[piece/gw-header-menu-icons 61]] \r\n</div>\r\n</div>\r\n<!--ここまでバナー-->\r\n\r\n<!--ここからナビ-->\r\n<div id="navi">\r\n<div id="naviBody">\r\n\r\n</div>\r\n</div>\r\n<!--ここまでナビ-->\r\n\r\n<!--ここからナビ2-->\r\n<div id="navi2">\r\n<div id="navi2Body">\r\n</div>\r\n</div>\r\n<!--ここまでナビ-->\r\n<!--ここからメインコンテンツ-->\r\n<div id="main">\r\n<div id="wrapper">\r\n<!--ここからコンテンツ-->\r\n<div id="content">\r\n<div id="contentContainer">\r\n<div id="contentHeader"></div>\r\n\r\n<div id="contentBody">\r\n\r\n<!--ここから修正中-->\r\n<!--掲示板ヘッダー-->\r\n<div class="bbsDocList">\r\n<div class="pieceHeader">\r\n<h2>背景テーマ登録</h2>\r\n</div><!--pieceHeader-->\r\n\r\n<!--掲示板タイトルモード-->\r\n[[piece/gwboard-banner]]\r\n\r\n<!--カラム用タグ-->\r\n<div class="pieceBody">\r\n\r\n[[piece/gwboard-theme-menus]]\r\n\r\n<div class="outer">\r\n<div class="right">\r\n\r\n[[content]]\r\n\r\n</div><!--right-->\r\n</div><!--outer-->\r\n\r\n</div><!--pieceBody-->\r\n</div><!--bbsDocList-->\r\n\r\n<!--修正終わり-->\r\n\r\n\r\n</div><!--contentBody-->\r\n<div id="contentFooter"></div>\r\n</div>\r\n</div>\r\n<!--ここまでコンテンツ-->\r\n<!--ここから左サイド-->\r\n<div id="menu">\r\n<div id="menuContainer">\r\n<div id="menuHeader"></div>\r\n<div id="menuBody">\r\n\r\n</div>\r\n<div id="menuFooter"></div>\r\n</div>\r\n</div>\r\n<!--ここまで左サイド-->\r\n</div>\r\n<!--ここから右サイド-->\r\n<div id="links">\r\n<div id="linksContainer">\r\n\r\n<div id="linksHeader"></div>\r\n<div id="linksBody">右サイド</div>\r\n<div id="linksFooter"></div>\r\n\r\n</div>\r\n</div>\r\n<!--ここまで右サイド-->\r\n</div>\r\n<!--ここまでメインコンテンツ-->\r\n\r\n<!--ここからフッター-->\r\n<div id="footer">\r\n<div id="footerContainer">\r\n\r\n<div id="footerHeader"></div>\r\n<div id="footerBody">\r\n[[piece/copyright2]]\r\n</div>\r\n<div id="footerFooter"></div>\r\n</div>\r\n</div>\r\n<!--ここまでフッター-->\r\n\r\n</div>', '@charset "UTF-8";\r\n@import "/_common/themes/gw/css/gwboard/iconfile.css";\r\n@import "/_common/themes/gw/css/sidemenu_common.css";\r\n@import "/_common/themes/gw/css/bbs-doc-list.css";', NULL, NULL, NULL, NULL, NULL, NULL),
-(161, 3287, 'public', '2010-06-02 14:47:59', '2011-03-14 20:09:01', NULL, '2010-06-02 14:48:11', 'schedule', 'schedule', '<link rel="stylesheet" type="text/css" href="/_common/themes/gw/css/print_schedule.css" media="print"/>', '<div id="container">\r\n\r\n\r\n<!--ここからヘッダー-->\r\n<div id="header">\r\n<div id="headerBody">\r\n[[piece/gw-header]]\r\n</div>\r\n</div>\r\n<!--ここまでヘッダー-->\r\n\r\n<!--ここからバナー-->\r\n<div id="banner">\r\n<div id="bannerBody">\r\n[[piece/gw-header-menu-icons 61]]\r\n</div>\r\n</div>\r\n<!--ここまでバナー-->\r\n\r\n\r\n<!--ここからナビ-->\r\n<div id="navi">\r\n<div id="naviBody">\r\n</div>\r\n</div>\r\n<!--ここまでナビ-->\r\n\r\n<!--ここからナビ2-->\r\n<div id="navi2">\r\n<div id="navi2Body">\r\n</div>\r\n</div>\r\n<!--ここまでナビ-->\r\n\r\n<!--ここからメインコンテンツ-->\r\n<div id="main">\r\n<div id="wrapper">\r\n<!--ここからコンテンツ-->\r\n<div id="content">\r\n<div id="contentContainer">\r\n<div id="contentHeader"></div>\r\n<div id="contentBody">\r\n[[content]]\r\n</div>\r\n<div id="contentFooter"></div>\r\n</div>\r\n</div>\r\n<!--ここまでコンテンツ-->\r\n<!--ここから左サイド-->\r\n<div id="menu">\r\n<div id="menuContainer">\r\n<div id="menuHeader"></div>\r\n<div id="menuBody">\r\n</div>\r\n<div id="menuFooter"></div>\r\n</div>\r\n</div>\r\n<!--ここまで左サイド-->\r\n</div>\r\n<!--ここから右サイド-->\r\n<div id="links">\r\n<div id="linksContainer">\r\n\r\n<div id="linksHeader"></div>\r\n<div id="linksBody">右サイド</div>\r\n<div id="linksFooter"></div>\r\n\r\n</div>\r\n</div>\r\n<!--ここまで右サイド-->\r\n</div>\r\n<!--ここまでメインコンテンツ-->\r\n\r\n<!--ここからフッター-->\r\n<div id="footer">\r\n<div id="footerContainer">\r\n\r\n<div id="footerHeader"></div>\r\n<div id="footerBody">\r\n[[piece/copyright2]]\r\n</div>\r\n<div id="footerFooter"></div>\r\n</div>\r\n</div>\r\n<!--ここまでフッター-->\r\n\r\n</div>', '@charset "UTF-8";\r\n@import "/_common/themes/gw/css/portal_1column.css";\r\n@import "/_common/themes/gw/css/gwboard/iconfile.css";', '', '\r\n[[piece/gw-mobile-common-header]]\r\n\r\n[[content]]\r\n\r\n<hr class="borderDouble"/>\r\n\r\n[[piece/gw-mobile-footer]]\r\n[[piece/mobile-copyright]]\r\n', '', '', '', ''),
-(163, 3316, 'public', '2010-07-27 13:21:15', '2010-11-05 11:24:22', NULL, '2010-07-27 13:21:24', 'memo', 'memo', '', '	<div id="container">\r\n\r\n\r\n<!--ここからヘッダー-->\r\n<div id="header">\r\n<div id="headerBody">\r\n[[piece/gw-header]]\r\n</div>\r\n</div>\r\n<!--ここまでヘッダー-->\r\n\r\n<!--ここからバナー-->\r\n<div id="banner">\r\n<div id="bannerBody">\r\n[[piece/gw-header-menu-icons 61]] \r\n</div>\r\n</div>\r\n<!--ここまでバナー-->\r\n\r\n\r\n<!--ここからナビ-->\r\n<div id="navi">\r\n<div id="naviBody">\r\n</div>\r\n</div>\r\n<!--ここまでナビ-->\r\n\r\n<!--ここからナビ2-->\r\n<div id="navi2">\r\n<div id="navi2Body">\r\n</div>\r\n</div>\r\n<!--ここまでナビ-->\r\n\r\n<!--ここからメインコンテンツ-->\r\n<div id="main">\r\n<div id="wrapper">\r\n<!--ここからコンテンツ-->\r\n<div id="content">\r\n<div id="contentContainer">\r\n<div id="contentHeader"></div>\r\n<div id="contentBody">\r\n[[content]]\r\n</div>\r\n<div id="contentFooter"></div>\r\n</div>\r\n</div>\r\n<!--ここまでコンテンツ-->\r\n<!--ここから左サイド-->\r\n<div id="menu">\r\n<div id="menuContainer">\r\n<div id="menuHeader"></div>\r\n<div id="menuBody">\r\n</div>\r\n<div id="menuFooter"></div>\r\n</div>\r\n</div>\r\n<!--ここまで左サイド-->\r\n</div>\r\n<!--ここから右サイド-->\r\n<div id="links">\r\n<div id="linksContainer">\r\n\r\n<div id="linksHeader"></div>\r\n<div id="linksBody">右サイド</div>\r\n<div id="linksFooter"></div>\r\n\r\n</div>\r\n</div>\r\n<!--ここまで右サイド-->\r\n</div>\r\n<!--ここまでメインコンテンツ-->\r\n\r\n<!--ここからフッター-->\r\n<div id="footer">\r\n<div id="footerContainer">\r\n\r\n<div id="footerHeader"></div>\r\n<div id="footerBody">\r\n[[piece/copyright2]]\r\n</div>\r\n<div id="footerFooter"></div>\r\n</div>\r\n</div>\r\n<!--ここまでフッター-->\r\n\r\n</div>', '@charset "UTF-8";\r\n@import "/_common/themes/gw/css/portal_1column.css";\r\n@import "/_common/themes/gw/css/gwboard/iconfile.css";\r\n@import "/_common/themes/gw/css/memo.css";', NULL, NULL, NULL, NULL, NULL, NULL),
-(164, 3318, 'public', '2010-07-28 17:29:29', '2010-11-05 11:25:40', NULL, '2010-07-28 17:29:41', 'todo', 'todo', '', '<div id="container">\r\n\r\n\r\n<!--ここからヘッダー-->\r\n<div id="header">\r\n<div id="headerBody">\r\n[[piece/gw-header]]\r\n</div>\r\n</div>\r\n<!--ここまでヘッダー-->\r\n\r\n<!--ここからバナー-->\r\n<div id="banner">\r\n<div id="bannerBody">\r\n[[piece/gw-header-menu-icons 61]]\r\n</div>\r\n</div>\r\n<!--ここまでバナー-->\r\n\r\n\r\n<!--ここからナビ-->\r\n<div id="navi">\r\n<div id="naviBody">\r\n</div>\r\n</div>\r\n<!--ここまでナビ-->\r\n\r\n<!--ここからナビ2-->\r\n<div id="navi2">\r\n<div id="navi2Body">\r\n</div>\r\n</div>\r\n<!--ここまでナビ-->\r\n\r\n<!--ここからメインコンテンツ-->\r\n<div id="main">\r\n<div id="wrapper">\r\n<!--ここからコンテンツ-->\r\n<div id="content">\r\n<div id="contentContainer">\r\n<div id="contentHeader"></div>\r\n<div id="contentBody">\r\n[[content]]\r\n</div>\r\n<div id="contentFooter"></div>\r\n</div>\r\n</div>\r\n<!--ここまでコンテンツ-->\r\n<!--ここから左サイド-->\r\n<div id="menu">\r\n<div id="menuContainer">\r\n<div id="menuHeader"></div>\r\n<div id="menuBody">\r\n</div>\r\n<div id="menuFooter"></div>\r\n</div>\r\n</div>\r\n<!--ここまで左サイド-->\r\n</div>\r\n<!--ここから右サイド-->\r\n<div id="links">\r\n<div id="linksContainer">\r\n\r\n<div id="linksHeader"></div>\r\n<div id="linksBody">右サイド</div>\r\n<div id="linksFooter"></div>\r\n\r\n</div>\r\n</div>\r\n<!--ここまで右サイド-->\r\n</div>\r\n<!--ここまでメインコンテンツ-->\r\n\r\n<!--ここからフッター-->\r\n<div id="footer">\r\n<div id="footerContainer">\r\n\r\n<div id="footerHeader"></div>\r\n<div id="footerBody">\r\n[[piece/copyright2]]\r\n</div>\r\n<div id="footerFooter"></div>\r\n</div>\r\n</div>\r\n<!--ここまでフッター-->\r\n\r\n</div>', '@charset "UTF-8";\r\n@import "/_common/themes/gw/css/portal_1column.css";\r\n@import "/_common/themes/gw/css/gwboard/iconfile.css";\r\n@import "/_common/themes/gw/css/todo.css";', NULL, NULL, NULL, NULL, NULL, NULL),
-(168, 3407, 'public', '2011-04-05 00:26:09', '2011-04-13 19:49:35', NULL, '2011-04-05 01:21:57', 'schedule_assembly', 'schedule_assembly', '<link rel="stylesheet" type="text/css" href="/_common/themes/gw/css/print_schedule.css" media="print"/> \r\n', '<div id="container">\r\n\r\n\r\n<!--ここからヘッダー-->\r\n<div id="header">\r\n<div id="headerBody">\r\n[[piece/gw-header]]\r\n</div>\r\n</div>\r\n<!--ここまでヘッダー-->\r\n\r\n<!--ここからバナー-->\r\n<div id="banner">\r\n<div id="bannerBody">\r\n</div>\r\n</div>\r\n<!--ここまでバナー-->\r\n\r\n\r\n<!--ここからナビ-->\r\n<div id="navi">\r\n<div id="naviBody">\r\n</div>\r\n</div>\r\n<!--ここまでナビ-->\r\n\r\n<!--ここからナビ2-->\r\n<div id="navi2">\r\n<div id="navi2Body">\r\n</div>\r\n</div>\r\n<!--ここまでナビ-->\r\n\r\n<!--ここからメインコンテンツ-->\r\n<div id="main">\r\n<div id="wrapper">\r\n<!--ここからコンテンツ-->\r\n<div id="content">\r\n<div id="contentContainer">\r\n<div id="contentHeader"></div>\r\n<div id="contentBody">\r\n[[content]]\r\n</div>\r\n<div id="contentFooter"></div>\r\n</div>\r\n</div>\r\n<!--ここまでコンテンツ-->\r\n<!--ここから左サイド-->\r\n<div id="menu">\r\n<div id="menuContainer">\r\n<div id="menuHeader"></div>\r\n<div id="menuBody">\r\n</div>\r\n<div id="menuFooter"></div>\r\n</div>\r\n</div>\r\n<!--ここまで左サイド-->\r\n</div>\r\n<!--ここから右サイド-->\r\n<div id="links">\r\n<div id="linksContainer">\r\n\r\n<div id="linksHeader"></div>\r\n<div id="linksBody">右サイド</div>\r\n<div id="linksFooter"></div>\r\n\r\n</div>\r\n</div>\r\n<!--ここまで右サイド-->\r\n</div>\r\n<!--ここまでメインコンテンツ-->\r\n\r\n<!--ここからフッター-->\r\n<div id="footer">\r\n<div id="footerContainer">\r\n\r\n<div id="footerHeader"></div>\r\n<div id="footerBody">\r\n[[piece/copyright3]]\r\n</div>\r\n<div id="footerFooter"></div>\r\n</div>\r\n</div>\r\n<!--ここまでフッター-->\r\n\r\n</div> \r\n', '@charset "UTF-8";\r\n@import "/_common/themes/gw/css/portal_1column.css";\r\n@import "/_common/themes/gw/css/gwboard/iconfile.css"; \r\n', '', '', '', '', '', '');
-INSERT INTO `cms_layouts` (`id`, `unid`, `state`, `created_at`, `updated_at`, `recognized_at`, `published_at`, `name`, `title`, `head`, `body`, `stylesheet`, `mobile_head`, `mobile_body`, `mobile_stylesheet`, `s_mobile_head`, `s_mobile_body`, `s_mobile_stylesheet`) VALUES
-(171, 3451, 'public', '2012-05-10 14:57:42', '2012-05-10 14:57:42', NULL, NULL, 'portal_1column_gwsub', 'portal_1column_gwsub', '<link rel="stylesheet" type="text/css" href="/_common/themes/gw/css/print_gwsub.css" media="print"/>', '<div id="container">\r\n\r\n\r\n<!--ここからヘッダー-->\r\n<div id="header">\r\n<div id="headerBody">\r\n[[piece/gw-header]]\r\n</div>\r\n</div>\r\n<!--ここまでヘッダー-->\r\n\r\n<!--ここからバナー-->\r\n<div id="banner">\r\n<div id="bannerBody">\r\n[[piece/gw-header-menu-icons 61]]\r\n</div>\r\n</div>\r\n<!--ここまでバナー-->\r\n\r\n<!--ここからナビ2-->\r\n<div id="navi2">\r\n<div id="navi2Body">\r\n</div>\r\n</div>\r\n<!--ここまでナビ-->\r\n\r\n<!--ここからメインコンテンツ-->\r\n<div id="main">\r\n<div id="wrapper">\r\n<!--ここからコンテンツ-->\r\n<div id="content">\r\n<div id="contentContainer">\r\n<div id="contentHeader"></div>\r\n<div id="contentBody">\r\n[[content]]\r\n</div>\r\n<div id="contentFooter"></div>\r\n</div>\r\n</div>\r\n<!--ここまでコンテンツ-->\r\n<!--ここから左サイド-->\r\n<div id="menu">\r\n<div id="menuContainer">\r\n<div id="menuHeader"></div>\r\n<div id="menuBody">\r\n</div>\r\n<div id="menuFooter"></div>\r\n</div>\r\n</div>\r\n<!--ここまで左サイド-->\r\n</div>\r\n<!--ここから右サイド-->\r\n<div id="links">\r\n<div id="linksContainer">\r\n\r\n<div id="linksHeader"></div>\r\n<div id="linksBody">右サイド</div>\r\n<div id="linksFooter"></div>\r\n\r\n</div>\r\n</div>\r\n<!--ここまで右サイド-->\r\n</div>\r\n<!--ここまでメインコンテンツ-->\r\n\r\n<!--ここからフッター-->\r\n<div id="footer">\r\n<div id="footerContainer">\r\n\r\n<div id="footerHeader"></div>\r\n<div id="footerBody">\r\n[[piece/copyright2]]\r\n</div>\r\n<div id="footerFooter"></div>\r\n</div>\r\n</div>\r\n<!--ここまでフッター-->\r\n\r\n</div>', '@charset "UTF-8";\r\n\r\n@import "/_common/themes/gw/css/portal_1column.css";\r\n\r\n@import "/_common/themes/gw/css/gwboard/iconfile.css";', '', '[[piece/gw-mobile-common-header]]\r\n\r\n\r\n\r\n[[content]]\r\n\r\n<hr class="borderDouble"/>\r\n\r\n[[piece/gw-mobile-footer]]\r\n[[piece/mobile-copyright]]', '', '<link rel="stylesheet" type="text/css" href="/_common/themes/gw/css/print_gwsub.css" media="print"/>', '<div id="header">\r\n<div id="headerBody">\r\n[[piece/gw-header]]\r\n</div>\r\n</div>\r\n<div id="banner">\r\n<div id="bannerBody">\r\n[[piece/gw-header-menu-icons 61]]\r\n</div>\r\n</div>\r\n\r\n<div id="navi2">\r\n<div id="navi2Body">\r\n\r\n</div>\r\n</div>\r\n\r\n<div id="main">\r\n<div id="wrapper">\r\n<div id="content">\r\n<div id="contentContainer">\r\n<div id="contentBody">\r\n[[content]]\r\n</div>\r\n</div>\r\n</div>\r\n\r\n\r\n\r\n<div id="footer">\r\n<div id="footerContainer">\r\n\r\n<div id="footerHeader">\r\n</div>\r\n<div id="footerBody">\r\n[[piece/gw-mobile-top-footer]]\r\n\r\n</div>\r\n<div id="footerFooter"></div>\r\n</div>\r\n</div>', '');
-
---
--- テーブルのデータをダンプしています `cms_maps`
---
-
-INSERT INTO `cms_maps` (`id`, `unid`, `state`, `created_at`, `updated_at`, `sort_no`, `parent_id`, `node_id`, `title`) VALUES
-(1, NULL, 'public', '2009-01-01 00:00:00', '2009-01-01 00:00:00', 1, 0, 1, 'ポータル'),
-(213, 2254, 'public', '2009-06-29 16:07:47', '2009-06-29 16:07:47', 1, 1, 291, '掲示板'),
-(214, 2278, 'public', '2009-07-01 20:52:08', '2009-07-03 21:42:44', 1, 1, 224, 'グループウェアFAQ'),
-(215, 2279, 'public', '2009-07-01 20:52:25', '2009-07-01 20:52:25', 1, 214, 295, '基本情報'),
-(216, 2280, 'public', '2009-07-01 21:01:25', '2009-07-01 21:01:25', 1, 214, 296, '分類登録'),
-(218, 2282, 'public', '2009-07-01 21:01:53', '2009-07-01 21:01:53', 1, 214, 298, '記事検索');
-
---
--- テーブルのデータをダンプしています `cms_nodes`
---
-
-INSERT INTO `cms_nodes` (`id`, `unid`, `state`, `created_at`, `updated_at`, `recognized_at`, `published_at`, `parent_id`, `content_id`, `layout_id`, `controller`, `name`, `title`) VALUES
-(1, 0, 'public', '2009-01-01 00:00:00', '2009-01-01 00:00:00', '0000-00-00 00:00:00', '2009-01-01 00:00:00', 0, 1, 107, 'nodes', '/', 'ROOT'),
-(224, 655, 'public', '2009-04-14 15:55:59', '2010-10-18 14:18:54', NULL, NULL, 1, 119, 128, 'knowledges', 'gwfaq', '質問管理'),
-(308, 2348, 'public', '2009-07-15 09:47:22', '2009-10-16 14:23:27', NULL, NULL, 224, 114, 145, 'uploads', 'uploads', '記事　添付ファイル'),
-(309, 2349, 'public', '2009-07-15 09:51:30', '2010-07-02 14:24:51', NULL, NULL, 1, 119, 128, 'knowledges', 'gwqa', 'グループウェアQ&A'),
-(310, 2352, 'public', '2009-07-15 09:56:24', '2009-07-15 09:56:24', NULL, NULL, 309, 116, 146, 'answers', 'answers', '管理者メンテナンス（回答情報）'),
-(312, 2354, 'public', '2009-07-15 09:57:26', '2009-10-26 20:38:49', NULL, NULL, 309, 116, 128, 'categories', 'categories', '分類登録'),
-(311, 2353, 'public', '2009-07-15 09:56:54', '2009-07-15 09:56:54', NULL, NULL, 309, 116, 146, 'answer_posts', 'answer_posts', '回答投稿'),
-(314, 2356, 'public', '2009-07-15 09:59:55', '2009-10-26 20:38:38', NULL, NULL, 309, 116, 128, 'makers', 'makers', '基本情報'),
-(313, 2355, 'public', '2009-07-15 09:57:59', '2010-07-08 20:16:31', NULL, NULL, 309, 116, 147, 'docs', 'docs', '記事'),
-(245, 737, 'public', '2009-05-29 10:44:28', '2009-07-10 19:21:13', NULL, NULL, 1, NULL, 128, 'nodes', 'gw', 'gw'),
-(246, 741, 'public', '2009-05-29 11:00:06', '2010-10-18 14:20:29', NULL, NULL, 245, 107, 161, 'schedules', 'schedules', 'スケジュール'),
-(247, 742, 'public', '2009-06-04 16:45:10', '2009-06-11 15:08:02', NULL, NULL, 1, 106, 135, 'account', 'login', 'login'),
-(248, 743, 'public', '2009-06-04 16:45:37', '2009-06-04 16:45:37', NULL, NULL, 1, 106, 128, 'logout', 'logout', 'logout'),
-(249, 750, 'public', '2009-06-04 17:35:14', '2009-07-29 03:49:18', NULL, NULL, 245, 107, 128, 'rssreader', 'rssreader', 'rssreader'),
-(612, 3406, 'public', '2010-12-01 18:57:01', '2010-12-07 15:34:42', NULL, NULL, 245, 107, 162, 'rss_readers', 'rss_readers', 'RSSリーダー設定'),
-(613, 3408, 'public', '2010-12-03 15:51:55', '2010-12-03 15:51:55', NULL, NULL, 551, 119, 158, 'theme_registries', 'theme_registries', '背景デザインテーマ登録'),
-(295, 2269, 'public', '2009-07-01 20:47:35', '2009-10-16 18:11:27', NULL, NULL, 224, 114, 128, 'makers', 'makers', '基本情報'),
-(264, 807, 'public', '2009-06-12 19:09:37', '2010-02-05 16:58:29', NULL, NULL, 1, NULL, 136, 'nodes', 'cmsfaq', 'ＦＡＱ'),
-(265, 808, 'public', '2009-06-12 19:10:22', '2009-06-12 19:10:22', NULL, NULL, 264, 111, 137, 'docs', 'docs', 'FAQ文書一覧'),
-(266, 2126, 'public', '2009-06-16 13:16:20', '2009-06-16 13:16:20', NULL, NULL, 264, 111, 139, 'docs', 'docs-icon-tab', 'docs-icon-tab'),
-(267, 2127, 'public', '2009-06-16 13:16:51', '2009-06-16 13:16:51', NULL, NULL, 264, 111, 138, 'docs', 'docs-minimum', 'docs-minimum'),
-(274, 2200, 'public', '2009-06-24 17:25:11', '2010-07-29 14:22:30', NULL, NULL, 1, 107, 141, 'tab_main', 'tab_main', 'tab_main'),
-(614, 3409, 'public', '2010-12-06 16:16:05', '2010-12-06 16:16:05', NULL, NULL, 291, 113, 128, 'csv_exports', 'csv_exports', '掲示板CSV出力'),
-(290, 2230, 'public', '2009-06-25 18:59:21', '2010-10-18 14:22:30', NULL, NULL, 245, 107, 128, 'todos', 'todos', 'ToDo'),
-(291, 2235, 'public', '2009-06-29 14:38:03', '2010-02-04 10:39:50', NULL, NULL, 1, 113, 128, 'menus', 'gwbbs', '掲示板'),
-(292, 2236, 'public', '2009-06-29 14:38:47', '2010-02-05 14:15:11', NULL, NULL, 291, 113, 142, 'docs', 'docs', '掲示板'),
-(293, 2237, 'public', '2009-06-29 14:39:25', '2009-10-02 01:14:21', NULL, NULL, 291, 113, 128, 'categories', 'categories', '掲示板　分類登録'),
-(294, 2238, 'public', '2009-06-29 14:39:58', '2009-10-01 05:54:41', NULL, NULL, 291, 113, 128, 'makers', 'makers', '掲示板　タイトル情報'),
-(296, 2270, 'public', '2009-07-01 20:48:07', '2009-10-16 14:22:11', NULL, NULL, 224, 114, 128, 'categories', 'categories', '分類登録'),
-(298, 2272, 'public', '2009-07-01 20:49:09', '2010-08-10 14:44:34', NULL, NULL, 224, 114, 145, 'docs', 'docs', '記事'),
-(315, 2357, 'public', '2009-07-15 10:00:33', '2009-07-15 10:00:33', NULL, NULL, 309, 116, 146, 'questions', 'questions', '管理者メンテナンス（質問情報）'),
-(316, 2358, 'public', '2009-07-15 10:01:07', '2009-07-15 10:01:07', NULL, NULL, 309, 116, 146, 'question_posts', 'question_posts', '質問投稿'),
-(430, 2850, 'public', '2009-12-16 16:47:11', '2009-12-16 16:47:11', NULL, NULL, 350, 118, 149, 'adms', 'adms', '書庫　承認管理'),
-(342, 2464, 'public', '2009-08-17 21:38:46', '2009-08-17 21:38:46', NULL, NULL, 245, 107, 128, 'memos', 'memos', '連絡メモ'),
-(343, 2471, 'public', '2009-08-18 16:31:13', '2009-08-21 16:00:55', NULL, NULL, 309, 116, 146, 'qa_previews', 'qa_previews', '公開確認'),
-(393, 2784, 'public', '2009-10-23 23:46:26', '2010-06-02 15:48:09', NULL, NULL, 245, 107, 128, 'schedule_users', 'schedule_users', 'schedule_users'),
-(350, 2698, 'public', '2009-09-01 13:48:47', '2009-10-27 19:45:00', NULL, NULL, 1, 118, 128, 'menus', 'doclibrary', '書庫'),
-(351, 2699, 'public', '2009-09-01 13:49:36', '2010-03-11 16:44:55', NULL, NULL, 350, 118, 128, 'group_folders', 'group_folders', '所属フォルダ管理'),
-(354, 2702, 'public', '2009-09-03 21:36:58', '2010-04-29 00:44:01', NULL, NULL, 350, 118, 128, 'cabinets', 'cabinets', '書庫登録'),
-(355, 2703, 'public', '2009-09-03 22:01:05', '2010-04-27 23:23:33', NULL, NULL, 350, 118, 149, 'categories', 'categories', 'フォルダ登録'),
-(356, 2704, 'public', '2009-09-03 22:01:59', '2009-11-25 13:23:01', NULL, NULL, 350, 118, 149, 'folders', 'folders', 'フォルダ登録'),
-(357, 2714, 'public', '2009-09-07 18:52:52', '2009-10-27 19:44:34', NULL, NULL, 350, 118, 149, 'docs', 'docs', '一覧'),
-(361, 2727, 'public', '2009-09-11 16:56:15', '2010-08-23 20:50:29', NULL, NULL, 291, 113, 128, 'synthesetup', 'synthesetup', '記事更新情報管理'),
-(368, 2739, 'public', '2009-09-28 15:19:14', '2009-10-02 01:15:01', NULL, NULL, 291, 113, 142, 'comments', 'comments', '掲示板 1行コメント'),
-(377, 2759, 'public', '2009-10-02 01:15:53', '2010-02-03 13:37:41', NULL, NULL, 291, 113, 128, 'builders', 'builders', '課専用掲示板作成'),
-(380, 2763, 'public', '2009-10-05 08:59:57', '2010-06-02 15:14:00', NULL, NULL, 245, 107, 161, 'schedule_props', 'schedule_props', '施設スケジュール'),
-(389, 2778, 'public', '2009-10-15 15:52:21', '2009-10-15 15:52:21', NULL, NULL, 245, 107, 128, 'prop_others', 'prop_others', '一般施設マスタ'),
-(490, 3269, 'public', '2010-03-18 13:34:07', '2010-03-18 13:34:07', NULL, NULL, 245, 107, 128, 'holidays', 'holidays', 'holidays'),
-(681, 3403, 'public', '2011-03-30 22:32:28', '2011-05-21 19:18:12', NULL, NULL, 245, 107, 161, 'pref_executive_admins', 'pref_executive_admins', '全庁幹部在庁表示管理'),
-(444, 3134, 'public', '2009-12-24 14:19:29', '2009-12-24 14:19:29', NULL, NULL, 1, 120, 128, 'menus', 'digitallibrary', '電子図書'),
-(445, 3135, 'public', '2009-12-24 14:20:18', '2009-12-24 14:20:18', NULL, NULL, 444, 120, 154, 'adms', 'adms', '管理'),
-(446, 3136, 'public', '2009-12-24 14:20:51', '2009-12-24 14:20:51', NULL, NULL, 444, 120, 128, 'cabinets', 'cabinets', '電子図書登録'),
-(447, 3137, 'public', '2009-12-24 14:21:22', '2009-12-24 14:21:22', NULL, NULL, 444, 120, 154, 'docs', 'docs', '記事'),
-(452, 3153, 'public', '2010-01-04 20:59:04', '2010-07-29 14:23:18', NULL, NULL, 1, 107, 155, 'ind_portal', 'ind_portal', 'JoruriGw 個人ポータル'),
-(453, 3154, 'public', '2010-01-05 09:59:03', '2010-01-05 09:59:03', NULL, NULL, 444, 120, 154, 'folders', 'folders', '見出し編集'),
-(478, 3213, 'public', '2010-02-03 21:29:00', '2010-02-03 21:29:00', NULL, NULL, 1, 119, 128, 'syntheses', 'syntheses', '掲示板新着総合案内'),
-(493, 3273, 'public', '2010-03-19 15:16:47', '2010-03-19 15:16:47', NULL, NULL, 444, 120, 128, 'builders', 'builders', '電子図書一般ユーザ作成機能'),
-(511, 3295, 'public', '2010-06-28 15:11:52', '2010-06-28 15:11:52', NULL, NULL, 1, 106, 128, 'nodes', 'system', 'system'),
-(512, 3296, 'public', '2010-06-28 15:12:28', '2010-07-30 10:17:09', NULL, NULL, 511, 106, 162, 'custom_groups', 'custom_groups', 'custom_groups'),
-(513, 3297, 'public', '2010-07-07 19:19:23', '2010-07-07 19:19:23', NULL, NULL, 224, 119, 128, 'knowledge_makers', 'controls', '基本情報'),
-(514, 3298, 'public', '2010-07-07 19:19:53', '2010-07-07 19:19:53', NULL, NULL, 309, 119, 128, 'knowledge_makers', 'controls', '基本情報'),
-(515, 3299, 'public', '2010-07-10 20:44:44', '2010-07-12 10:34:38', NULL, NULL, 245, 107, 162, 'admin_settings', 'admin_settings', '管理者設定'),
-(516, 3300, 'public', '2010-07-10 20:45:31', '2010-07-12 10:34:22', NULL, NULL, 245, 107, 162, 'admin_messages', 'admin_messages', '管理者メッセージ'),
-(517, 3302, 'public', '2010-07-13 14:14:09', '2010-07-30 10:37:14', NULL, NULL, 245, 107, 162, 'year_fiscal_jps', 'year_fiscal_jps', '年度設定'),
-(529, 3314, 'public', '2010-07-24 14:22:17', '2010-07-27 13:21:50', NULL, NULL, 245, 107, 163, 'memo_settings', 'memo_settings', '連絡メモ設定'),
-(530, 3315, 'public', '2010-07-24 14:25:51', '2010-07-28 17:34:09', NULL, NULL, 245, 107, 164, 'todo_settings', 'todo_settings', 'ToDo設定'),
-(531, 3317, 'public', '2010-07-28 09:59:36', '2010-07-28 09:59:36', NULL, NULL, 511, 106, 128, 'roles', 'roles', '管理者権限設定'),
-(532, 3319, 'public', '2010-07-29 14:37:21', '2010-08-04 15:01:41', NULL, NULL, 511, 106, 128, 'role_names', 'role_names', '機能名設定'),
-(537, 3324, 'public', '2010-08-03 10:34:14', '2010-08-04 15:01:55', NULL, NULL, 511, 106, 128, 'priv_names', 'priv_names', '対象権限追加'),
-(536, 3323, 'public', '2010-08-03 10:33:55', '2010-08-04 15:03:55', NULL, NULL, 511, 106, 128, 'role_developers', 'role_developers', '開発者権限設定 '),
-(538, 3325, 'public', '2010-08-03 11:19:08', '2010-08-03 11:19:08', NULL, NULL, 1, 119, 128, 'siteinfo', 'siteinfo', '接続情報確認'),
-(541, 3328, 'public', '2010-08-25 13:50:45', '2010-08-25 13:50:45', NULL, NULL, 245, 107, 128, 'prop_other_limits', 'prop_other_limits', '一般施設マスタ登録制限設定'),
-(540, 3327, 'public', '2010-08-03 17:56:14', '2010-08-03 17:56:14', NULL, NULL, 291, 113, 128, 'itemdeletes', 'itemdeletes', '掲示板　記事削除'),
-(544, 3333, 'public', '2010-09-13 17:53:26', '2010-09-13 17:53:26', NULL, NULL, 245, 107, 161, 'schedule_settings', 'schedule_settings', 'スケジュール設定'),
-(547, 3336, 'public', '2010-09-14 16:42:09', '2010-09-14 16:45:36', NULL, NULL, 245, 107, 162, 'schedule_lists', 'schedule_lists', 'スケジュール一覧'),
-(551, 3341, 'public', '2010-09-29 09:48:37', '2010-09-29 09:48:37', NULL, NULL, 1, NULL, NULL, 'nodes', 'gwboard', '掲示板系共通'),
-(552, 3342, 'public', '2010-09-29 09:49:24', '2010-09-29 09:49:24', NULL, NULL, 551, 119, 128, 'images', 'images', '背景画像アップローダ'),
-(553, 3343, 'public', '2010-10-04 11:56:17', '2010-10-04 11:56:17', NULL, NULL, 511, 106, 162, 'users', 'users', 'ユーザー管理'),
-(555, 3345, 'public', '2010-10-06 15:31:04', '2010-10-06 15:31:04', NULL, NULL, 245, 107, 162, 'year_mark_jps', 'year_mark_jps', '年号設定'),
-(564, 3354, 'public', '2010-10-20 14:47:09', '2010-10-21 10:39:11', NULL, NULL, 245, 107, 162, 'edit_tabs', 'edit_tabs', 'タブ編集'),
-(569, 3359, 'public', '2010-10-22 20:50:47', '2010-10-22 20:50:47', NULL, NULL, 245, 107, 162, 'edit_link_piece_csses', 'edit_link_piece_csses', 'ポータルリンクピース適用CSS編集'),
-(570, 3360, 'public', '2010-10-22 20:50:54', '2010-10-22 20:50:54', NULL, NULL, 245, 107, 162, 'edit_link_pieces', 'edit_link_pieces', 'ポータルリンクピース編集'),
-(595, 3388, 'public', '2010-11-02 17:34:52', '2010-11-02 17:34:52', NULL, NULL, 511, 106, 128, 'role_name_privs', 'role_name_privs', '機能権限設定'),
-(596, 3390, 'public', '2010-11-04 20:35:21', '2010-11-04 20:35:21', NULL, NULL, 1, 123, 128, 'menus', 'gwcircular', '回覧板'),
-(597, 3391, 'public', '2010-11-04 20:36:03', '2010-11-04 20:36:03', NULL, NULL, 596, 123, 128, 'basics', 'basics', '基本情報設定'),
-(598, 3392, 'public', '2010-11-04 20:36:40', '2010-11-15 17:45:49', NULL, NULL, 596, 123, 128, 'custom_groups', 'custom_groups', 'カスタム配信先設定'),
-(599, 3393, 'public', '2010-11-04 20:37:19', '2010-11-04 20:37:19', NULL, NULL, 596, 123, 128, 'docs', 'docs', '返信編集'),
-(602, 3396, 'public', '2010-11-15 17:46:37', '2010-11-17 13:17:24', NULL, NULL, 596, 123, 128, 'settings', 'settings', '回覧板設定メニュー'),
-(603, 3397, 'public', '2010-11-25 17:48:52', '2010-11-25 17:55:15', NULL, NULL, 596, 123, 128, 'itemdeletes', 'itemdeletes', '夜間削除設定'),
-(616, 3413, 'public', '2010-12-07 15:42:26', '2010-12-07 15:42:26', NULL, NULL, 291, 113, 165, 'theme_settings', 'theme_settings', '掲示板テーマ割り当て'),
-(618, 3418, 'public', '2010-12-09 15:51:56', '2010-12-09 16:03:02', NULL, NULL, 245, 107, 162, 'ind_edit_link_pieces', 'ind_edit_link_pieces', '個人ポータルリンクピース設定'),
-(627, 3429, 'public', '2010-12-14 15:53:10', '2010-12-14 15:53:10', NULL, NULL, 245, 107, 128, 'notes', 'notes', 'メモ帳'),
-(630, 3434, 'public', '2010-12-15 19:31:12', '2010-12-28 11:36:37', NULL, NULL, 1, 125, 128, 'menus', 'gwmonitor', '照会・回答システム'),
-(631, 3435, 'public', '2010-12-15 19:32:05', '2010-12-28 11:37:04', NULL, NULL, 630, 125, 128, 'builders', 'builders', '照会・回答システム設問作成'),
-(656, 3464, 'public', '2011-01-28 13:28:50', '2011-01-28 13:28:50', NULL, NULL, 1, 106, 135, 'api', 'api', 'api'),
-(633, 3438, 'public', '2010-12-16 20:33:55', '2010-12-16 20:33:55', NULL, NULL, 245, 107, 162, 'blog_parts', 'blog_parts', 'ブログパーツ設定'),
-(635, 3440, 'public', '2010-12-21 09:53:39', '2011-01-04 10:38:49', NULL, NULL, 245, 107, 128, 'ind_portal_pieces', 'ind_portal_pieces', '個人ポータルコンテンツ設定'),
-(640, 3447, 'public', '2010-12-24 17:06:00', '2010-12-24 17:06:00', NULL, NULL, 630, 125, 128, 'settings', 'settings', '機能設定'),
-(641, 3448, 'public', '2010-12-24 17:06:38', '2011-01-04 17:50:40', NULL, NULL, 630, 125, 128, 'custom_groups', 'custom_groups', '所属配信先グループ設定'),
-(644, 3451, 'public', '2011-01-04 10:38:10', '2011-01-04 10:38:10', NULL, NULL, 245, 107, 162, 'ind_portal_settings', 'ind_portal_settings', '個人ポータル管理者設定 '),
-(645, 3452, 'public', '2011-01-04 17:50:49', '2011-01-04 17:50:49', NULL, NULL, 630, 125, 128, 'custom_user_groups', 'custom_user_groups', '個人配信先グループ設定'),
-(647, 3454, 'public', '2011-01-12 16:24:41', '2011-01-12 17:32:47', NULL, NULL, 630, 125, 128, 'help_configs', 'help_configs', '照会・回答システムヘルプ設定'),
-(650, 3457, 'public', '2011-01-17 11:51:20', '2011-01-17 11:51:20', NULL, NULL, 245, 107, 128, 'portal_adds', 'portal_adds', '広告アイコン管理'),
-(651, 3458, 'public', '2011-01-19 09:39:55', '2011-01-19 09:39:55', NULL, NULL, 630, 125, 128, 'itemdeletes', 'itemdeletes', '夜間削除設定'),
-(657, 3469, 'public', '2011-02-01 13:49:53', '2011-02-01 13:49:53', NULL, NULL, 1, 126, 128, 'menus', 'questionnaire', 'アンケート管理'),
-(658, 3470, 'public', '2011-02-01 14:02:36', '2011-02-01 14:03:50', NULL, NULL, 1, 127, 128, 'menus', 'enquete', 'アンケート'),
-(659, 3471, 'public', '2011-02-02 15:32:53', '2011-02-02 15:32:53', NULL, NULL, 245, 107, 162, 'config_settings', 'config_settings', '設定'),
-(661, 3473, 'public', '2011-02-10 20:19:53', '2011-03-15 15:17:02', NULL, NULL, 245, 107, 161, 'schedule_todos', 'schedule_todos', 'Todo'),
-(662, 3474, 'public', '2011-02-14 14:14:46', '2011-02-14 14:14:46', NULL, NULL, 657, 126, 128, 'templates', 'templates', 'アンケート テンプレート管理'),
-(665, 3482, 'public', '2011-03-02 14:16:15', '2011-03-02 14:16:15', NULL, NULL, 245, 107, 162, 'countings', 'countings', '各種カウント'),
-(671, 3488, 'public', '2011-03-10 01:52:21', '2011-03-10 01:52:21', NULL, NULL, 245, 107, 162, 'mobile_settings', 'mobile_settings', '携帯アクセス設定'),
-(672, 3489, 'public', '2011-03-10 20:06:33', '2011-03-25 13:01:17', NULL, NULL, 245, 107, 162, 'pref_assembly_member_admins', 'pref_assembly_member_admins', '議員在庁表示管理'),
-(675, 3397, 'public', '2011-03-24 00:41:56', '2011-05-21 19:17:39', NULL, NULL, 245, 107, 161, 'pref_executives', 'pref_executives', '全庁幹部在庁表示'),
-(676, 3398, 'public', '2011-03-24 23:01:55', '2011-03-24 23:01:55', NULL, NULL, 245, 107, 161, 'pref_directors', 'pref_directors', '所属幹部在庁表示'),
-(677, 3399, 'public', '2011-03-25 04:02:07', '2011-05-21 19:16:48', NULL, NULL, 245, 107, 161, 'pref_assembly', 'pref_assembly', '議会議員在庁表示'),
-(684, 3408, 'public', '2011-04-05 00:27:15', '2011-04-05 00:27:15', NULL, NULL, 245, 107, 168, 'pref_only_directors', 'pref_only_directors', '在庁表示　議員控え室'),
-(687, 3411, 'public', '2011-04-05 00:35:15', '2011-04-05 00:35:15', NULL, NULL, 245, 107, 168, 'pref_only_assembly', 'pref_only_assembly', '在庁表示　議員控え室'),
-(686, 3410, 'public', '2011-04-05 00:28:09', '2011-04-05 00:28:09', NULL, NULL, 245, 107, 168, 'pref_only_executives', 'pref_only_executives', '在庁表示　議員控え室'),
-(690, 3414, 'public', '2011-04-05 23:04:11', '2011-04-05 23:04:11', NULL, NULL, 245, 107, 161, 'pref_director_admins', 'pref_director_admins', '所属幹部在庁表示管理'),
-(694, 3418, 'public', '2011-04-14 19:46:56', '2011-04-14 19:46:56', NULL, NULL, 245, 107, 128, 'mobile_participants', 'mobile_participants', '連絡メモ'),
-(704, 3429, 'public', '2011-04-19 18:17:19', '2011-04-20 15:26:28', NULL, NULL, 245, 107, 161, 'mobile_schedules', 'mobile_schedules', 'スケジュール'),
-(719, 3448, 'public', '2012-05-09 13:58:57', '2012-05-09 13:58:57', NULL, NULL, 245, 107, 162, 'pref_configs', 'pref_configs', '在庁表示管理'),
-(720, 3450, 'public', '2012-05-10 14:52:21', '2012-05-10 14:52:21', NULL, NULL, 1, NULL, NULL, 'nodes', 'gwsub', 'GW補完機能(gwsub)'),
-(733, 3464, 'public', '2012-05-14 14:58:25', '2012-05-14 14:58:25', NULL, NULL, 657, 126, 128, 'itemdeletes', 'itemdeletes', 'アンケート 削除設定'),
-(722, 3453, 'public', '2012-05-10 15:00:27', '2012-05-10 15:00:27', NULL, NULL, 720, 128, NULL, 'nodes', 'sb01', '研修申込・受付(sb01)'),
-(723, 3454, 'public', '2012-05-10 15:01:56', '2012-05-10 15:01:56', NULL, NULL, 722, 128, 171, 'sb01/sb01_trainings', 'sb01_trainings', 'sb01_trainings'),
-(724, 3455, 'public', '2012-05-10 15:02:58', '2012-05-10 15:02:58', NULL, NULL, 722, 128, 171, 'sb01/sb01_training_boards', 'sb01_training_boards', '記事管理'),
-(725, 3456, 'public', '2012-05-10 15:03:59', '2012-05-10 15:03:59', NULL, NULL, 722, 128, 171, 'sb01/sb01_training_entries', 'sb01_training_entries', '検索・申込'),
-(726, 3457, 'public', '2012-05-10 15:04:59', '2012-05-10 15:04:59', NULL, NULL, 722, 128, 171, 'sb01/sb01_training_guides', 'sb01_training_guides', '利用の手引き'),
-(727, 3458, 'public', '2012-05-10 15:05:43', '2012-05-10 15:05:43', NULL, NULL, 722, 128, 171, 'sb01/sb01_training_helps', 'sb01_training_helps', '利用の手引き'),
-(728, 3459, 'public', '2012-05-10 15:06:29', '2012-05-10 15:06:29', NULL, NULL, 722, 128, 171, 'sb01/sb01_training_plans', 'sb01_training_plans', '企画・設定'),
-(729, 3460, 'public', '2012-05-10 15:07:37', '2012-05-10 15:07:37', NULL, NULL, 722, 128, 171, 'sb01/sb01_training_schedules', 'sb01_training_schedules', '開催予定'),
-(730, 3461, 'public', '2012-05-10 15:08:27', '2012-05-10 15:08:27', NULL, NULL, 722, 128, 171, 'sb01/sb01_training_schedule_conditions', 'sb01_training_schedule_conditions', '施設予約条件'),
-(731, 3462, 'public', '2012-05-10 15:09:15', '2012-05-10 15:09:15', NULL, NULL, 722, 128, 171, 'sb01/sb01_training_schedule_members', 'sb01_training_schedule_members', '受講者設定'),
-(732, 3463, 'public', '2012-05-10 15:09:58', '2012-05-10 15:09:58', NULL, NULL, 722, 128, 171, 'sb01/sb01_training_schedule_props', 'sb01_training_schedule_props', '開催予定'),
-(734, 3465, 'public', '2012-05-14 15:11:11', '2012-05-14 15:11:11', NULL, NULL, 720, NULL, NULL, 'nodes', 'sb04', '職員名簿(sb04)'),
-(735, 3466, 'public', '2012-05-14 15:12:11', '2012-05-14 15:12:11', NULL, NULL, 734, NULL, NULL, 'nodes', '01', '職員録(01)'),
-(736, 3467, 'public', '2012-05-14 15:13:05', '2012-05-14 15:13:05', NULL, NULL, 735, 128, 171, 'sb04/sb04stafflistview', 'sb04stafflistview', '職員録'),
-(737, 3468, 'public', '2012-05-14 15:13:42', '2012-05-14 15:13:42', NULL, NULL, 735, 128, 171, 'sb04/sb04stafflistview_masters', 'sb04stafflistview_masters', '電子職員録 主管課マスタ'),
-(738, 3469, 'public', '2012-05-14 15:46:25', '2012-05-14 15:46:25', NULL, NULL, 734, NULL, NULL, 'nodes', '02', '事務分掌(02)'),
-(739, 3470, 'public', '2012-05-14 15:46:50', '2012-05-14 15:46:50', NULL, NULL, 734, NULL, NULL, 'nodes', '04', 'コード管理(04)'),
-(740, 3471, 'public', '2012-05-14 15:47:09', '2012-05-14 15:47:09', NULL, NULL, 734, NULL, NULL, 'nodes', '05', 'ヘルプ(05)'),
-(741, 3472, 'public', '2012-05-14 15:47:21', '2012-05-14 15:47:21', NULL, NULL, 734, NULL, NULL, 'nodes', '06', '座席表(06)'),
-(742, 3473, 'public', '2012-05-14 15:47:33', '2012-05-14 15:47:33', NULL, NULL, 734, NULL, NULL, 'nodes', '09', '設定(09)'),
-(743, 3474, 'public', '2012-05-14 15:48:22', '2012-05-14 15:48:22', NULL, NULL, 738, 128, 171, 'sb04/sb04divideduties', 'sb04divideduties', '事務分掌'),
-(744, 3475, 'public', '2012-05-14 15:49:27', '2012-05-14 15:49:27', NULL, NULL, 739, 128, 171, 'sb04/sb0404menu', 'sb0404menu', '管理対象一覧'),
-(745, 3476, 'public', '2012-05-14 15:50:01', '2012-05-14 15:52:23', NULL, NULL, 739, 128, 171, 'sb04/sb04assignedjobs', 'sb04assignedjobs', '30担当一覧'),
-(746, 3477, 'public', '2012-05-14 15:51:42', '2012-05-14 15:51:42', NULL, NULL, 739, 128, 171, 'sb04/sb04officialtitles', 'sb04officialtitles', '10職名一覧'),
-(747, 3478, 'public', '2012-05-14 15:52:09', '2012-05-14 15:52:09', NULL, NULL, 739, 128, 171, 'sb04/sb04sections', 'sb04sections', '20所属一覧'),
-(748, 3479, 'public', '2012-05-14 15:53:09', '2012-05-14 15:53:09', NULL, NULL, 739, 128, 171, 'sb04/sb04stafflists', 'sb04stafflists', '40職員一覧'),
-(749, 3480, 'public', '2012-05-14 15:53:35', '2012-05-14 15:53:35', NULL, NULL, 739, 128, 171, 'sb04/sb04_editable_dates', 'sb04_editable_dates', '00期限設定'),
-(750, 3481, 'public', '2012-05-14 15:53:58', '2012-05-14 15:53:58', NULL, NULL, 739, 128, 171, 'sb04/sb04_seating_lists', 'sb04_seating_lists', '90座席表設定'),
-(751, 3482, 'public', '2012-05-14 15:55:05', '2012-05-14 15:55:05', NULL, NULL, 740, 128, 171, 'sb04/sb04helps', 'sb04helps', 'ヘルプ'),
-(752, 3483, 'public', '2012-05-14 15:55:49', '2012-05-14 15:55:49', NULL, NULL, 741, 128, 171, 'sb04/sb04_seating_lists', 'sb04_seating_lists', '座席表'),
-(753, 3484, 'public', '2012-05-14 15:56:22', '2012-05-14 15:56:22', NULL, NULL, 742, 128, 171, 'sb04/sb04_limit_settings', 'sb04_limit_settings', '表示行数 設定');
-
---
--- テーブルのデータをダンプしています `cms_pages`
---
-
-INSERT INTO `cms_pages` (`id`, `unid`, `state`, `created_at`, `updated_at`, `recognized_at`, `published_at`, `node_id`, `layout_id`, `name`, `title`, `head`, `body`) VALUES
-(245, 745, 'public', '2009-06-04 16:48:12', '2011-05-21 19:53:40', NULL, '2011-05-21 19:53:39', 1, 130, 'index.html', 'JoruriGw ポータル', '', '<p>ここにページの内容を書いてください</p>');
-
---
--- テーブルのデータをダンプしています `cms_pieces`
---
-
-INSERT INTO `cms_pieces` (`id`, `unid`, `state`, `created_at`, `updated_at`, `recognized_at`, `published_at`, `content_id`, `controller`, `outline`, `name`, `title`, `head`, `body`) VALUES
-(128, 801, 'public', '2009-06-12 16:26:34', '2009-09-03 22:02:50', NULL, NULL, 118, 'menus', '書庫フォルダ', 'doclib-folder', '書庫フォルダ', '', ''),
-(129, 816, 'public', '2009-06-12 19:45:48', '2009-06-12 19:45:48', NULL, NULL, NULL, 'frees', 'FAQヘッダー', 'cmsfaq-header', 'CMSFAQヘッダー', '', '<div id="statisticsHeader" class="piece">\r\n<div class="pieceContainer">\r\n<div class="pieceHeader">\r\n</div>\r\n<div id="tokei_body">\r\n<a href="/faq/docs/"><img width="1000" height="85" alt="CMSFAQ" title="CMSFAQ" src="/_common/themes/tokushima/subsystem/files/head_cmsfaq.gif"/></a>\r\n</div>\r\n<div class="pieceBody"></div>\r\n<div class="pieceFooter"></div>\r\n</div></div>'),
-(140, 2361, 'public', '2009-07-15 11:30:06', '2010-02-08 14:48:22', NULL, NULL, 116, 'banners', 'GWQAヘッダバナー', 'gwqa-banner', 'GWQAヘッダバナー', '', ''),
-(141, 2370, 'public', '2009-07-21 13:00:30', '2009-10-26 22:41:21', NULL, NULL, 116, 'menus', 'GWQA左メニュー', 'gwqa-menus', 'GWQA左メニュー', '', ''),
-(142, 2385, 'public', '2009-07-23 15:01:56', '2009-07-23 15:01:56', NULL, NULL, 107, 'reminder', 'gw-reminder', 'gw-reminder', 'gw-reminder', '', ''),
-(110, 740, 'public', '2009-05-29 10:47:01', '2009-05-29 10:47:01', NULL, NULL, 107, 'schedules', 'schedules', 'gw-schedules', 'gw-schedules', '', '__ignore__'),
-(111, 746, 'public', '2009-06-04 16:52:00', '2009-07-29 03:49:56', NULL, NULL, 107, 'rssreader', 'rssreader', 'gw-rssreader', 'gw-rssreader', '', '__ignore__'),
-(162, 3271, 'public', '2010-03-19 10:16:32', '2010-03-19 10:16:32', NULL, NULL, 120, 'banners', '電子図書ヘッダバナー', 'digitallib-banner', '電子図書ヘッダバナー', '', ''),
-(124, 776, 'public', '2009-06-08 19:36:47', '2009-06-08 19:36:47', NULL, NULL, 107, 'tabs', 'gw-tabs', 'gw-tabs', 'gw-tabs', '', ''),
-(123, 775, 'public', '2009-06-08 18:06:57', '2009-06-08 18:08:00', NULL, NULL, 107, 'header', 'header', 'gw-header', 'gw-header', '', ''),
-(139, 2360, 'public', '2009-07-15 11:27:55', '2009-10-26 22:33:13', NULL, NULL, 113, 'menus', '掲示板左メニュー', 'gwbbs-menus', '掲示板左メニュー', '', ''),
-(126, 778, 'public', '2009-06-09 10:53:59', '2011-06-29 14:31:30', NULL, NULL, NULL, 'frees', 'コピーライト2', 'copyright2', 'コピーライト2', '', '<div class="copyright"><a target="_blank" href="http://joruri.org"><img src="/_common/themes/gw/files/powered.gif" /></a><a class="siteinfo" target="_blank" href="/siteinfo/">接続情報</a></div>'),
-(132, 2199, 'public', '2009-06-24 17:23:44', '2010-12-09 16:37:04', NULL, NULL, 107, 'ind_link_pieces', '個人ポータルヘッドライン', 'gw-headline', 'gw-headline', '', ''),
-(179, 3466, 'closed', '2011-01-31 13:51:18', '2011-05-12 21:03:15', NULL, NULL, 107, 'portal_left_adds', 'ポータル左上広告', 'portal-left-adds', 'portal-left-adds', '', ''),
-(180, 3475, 'public', '2011-02-18 09:33:40', '2011-02-18 09:33:40', NULL, NULL, 107, 'mobile_footer', '携帯用フッター', 'gw-mobile-footer', 'gw-mobile-footer', '', ''),
-(181, 3476, 'public', '2011-02-18 09:34:59', '2011-02-18 09:34:59', NULL, NULL, 107, 'mobile_portal_functions', '携帯ポータル機能', 'gw-mobile-portal-function', 'gw-mobile-portal-function', '', ''),
-(182, 3477, 'public', '2011-02-18 09:35:36', '2011-02-18 09:35:36', NULL, NULL, 107, 'mobile_top_footer', '携帯用フッター（ポータル）', 'gw-mobile-top-footer', 'gw-mobile-top-footer', '', ''),
-(183, 3478, 'public', '2011-02-18 09:36:20', '2011-03-17 21:41:33', NULL, NULL, NULL, 'frees', '携帯用コピーライト表示', 'mobile-copyright', 'mobile-copyright', '', '<p class="footer"><img src="/_common/themes/gw/files/mobile/footer.gif" border="0" /></p>'),
-(184, 3479, 'public', '2011-02-18 09:36:52', '2011-02-18 09:36:52', NULL, NULL, 107, 'mobile_common_header', '携帯用共通ヘッダー', 'gw-mobile-common-header', 'gw-mobile-common-header', '', ''),
-(185, 3406, 'public', '2011-04-05 00:25:17', '2011-04-05 00:25:17', NULL, NULL, NULL, 'frees', 'コピーライト3', 'copyright3', 'コピーライト3', '', '<div class="copyright"><a target="_blank" href="http://joruri.org"><img src="/_common/themes/gw/files/powered.gif" /></a></div> '),
-(152, 2815, 'public', '2009-11-18 17:08:32', '2010-12-02 19:02:32', NULL, NULL, NULL, 'frees', 'テーマ登録サイドメニュー', 'gwboard-theme-menus', 'テーマ登録サイドメニュー', '', '<div class="sideMenu">\r\n<div class="menuBody">\r\n<div class="search">\r\n<h4 class="iconSideKey">キーワード</h4>\r\n<div class="submitters">\r\n</div><!--submitters-->\r\n</div><!--search-->\r\n<h3 class="iconSideMonth">月別<span class="current">月別</span></h3>\r\n</div>\r\n</div>'),
-(153, 2816, 'public', '2009-11-25 13:20:54', '2009-11-25 13:20:54', NULL, NULL, 118, 'banners', '書庫ヘッダバナー', 'doclib-banner', '書庫ヘッダバナー', '', ''),
-(154, 2828, 'public', '2009-12-03 11:20:33', '2009-12-03 11:20:33', NULL, NULL, NULL, 'frees', 'Q&Aメニュータブ', 'gwqa-menu-tab', 'Q&Aメニュータブ', '', '<div id="docTab" class="docTab">\r\n<div class="tabs">\r\n<a class="tab current">Q&amp;A</a>\r\n<a href="/gwfaq/" class="tab">FAQ</a>\r\n</div>\r\n</div>'),
-(136, 2268, 'public', '2009-07-01 20:42:58', '2009-07-01 20:53:20', NULL, NULL, NULL, 'bread_crumbs', 'パンくずリスト', 'bread_crumbs', 'パンくずリスト', '', '<div id="breadCrumbTrail" class="piece">\r\n<div class="pieceContainer">\r\n<div class="pieceHeader"></div>\r\n<div class="pieceBody"><a href="/">トップページ</a></div>\r\n<div class="pieceFooter"></div>\r\n</div></div>'),
-(149, 2781, 'public', '2009-10-16 18:36:25', '2009-10-26 22:40:01', NULL, NULL, 114, 'menus', 'GWFAQ左メニュー', 'gwfaq-menus', 'GWFAQ左メニュー', '', ''),
-(148, 2780, 'public', '2009-10-16 18:35:29', '2009-10-16 18:35:29', NULL, NULL, 114, 'banners', 'GWFAQヘッダバナー', 'gwfaq-banner', 'GWFAQヘッダバナー', '', ''),
-(147, 2750, 'public', '2009-10-01 05:52:14', '2009-10-08 19:01:08', NULL, NULL, 113, 'banners', '掲示板ヘッダバナー', 'gwbbs-banner', '掲示板ヘッダバナー', '', '<img width="650" height="60" alt="" title="" src=""/>'),
-(151, 2812, 'public', '2009-11-16 14:25:08', '2010-12-03 13:28:11', NULL, NULL, NULL, 'frees', 'テーマ登録タイトル', 'gwboard-banner', 'テーマ登録タイトル', '', '<div class="pieceBanner">\r\n<h3>テーマ登録</h3>\r\n <a class="btNew" href="/gwboard/theme_registries/new"></a>\r\n</div>\r\n'),
-(155, 2829, 'public', '2009-12-03 11:21:58', '2009-12-03 11:27:53', NULL, NULL, NULL, 'frees', 'FAQメニュータブ', 'gwfaq-menu-tab', 'FAQメニュータブ', '', '<div id="docTab" class="docTab">\r\n<div class="tabs">\r\n<a href="/gwqa/" class="tab">Q&amp;A</a>\r\n<a class="tab current">FAQ</a>\r\n</div>\r\n</div>\r\n'),
-(158, 3143, 'public', '2009-12-25 17:47:17', '2009-12-25 17:47:17', NULL, NULL, 120, 'menus', '電子図書フォルダ', 'digitallib-folder', '電子図書フォルダ', '', ''),
-(160, 3212, 'public', '2010-02-03 20:49:54', '2011-05-21 20:31:42', NULL, NULL, 107, 'admin_messages', '特別メッセージ', 'gw-message', '特別メッセージ', '', '<div id="message">\r\n<div class="pieceBody">\r\n</div>\r\n</div>'),
-(161, 3214, 'public', '2010-02-03 21:30:26', '2010-02-03 21:30:26', NULL, NULL, 119, 'syntheses', 'gw-bbs-syntheses', 'gw-bbs-syntheses', 'gw-bbs-syntheses', '', ''),
-(178, 3465, 'public', '2011-01-31 13:50:48', '2011-01-31 13:50:48', NULL, NULL, 107, 'portal_bottom_adds', 'ポータル下部広告', 'portal-bottom-adds', 'portal-bottom-adds', '', ''),
-(174, 3430, 'public', '2010-12-14 15:54:18', '2010-12-14 15:54:18', NULL, NULL, 107, 'notes', 'メモ帳', 'gw-notes', 'gw-notes', '', ''),
-(175, 3437, 'public', '2010-12-16 20:27:29', '2010-12-16 20:27:29', NULL, NULL, 107, 'blog_parts', 'ブログパーツ', 'gw-blog-parts', 'gw-blog-parts', '', ''),
-(176, 3441, 'public', '2010-12-21 09:57:38', '2010-12-21 09:57:38', NULL, NULL, 107, 'ind_left_pieces', '個人ポータル左サイド', 'gw-ind-left-pieces', 'gw-ind-left-pieces', '', ''),
-(186, 3445, 'public', '2011-05-21 21:07:29', '2011-05-21 21:08:11', NULL, NULL, 119, 'news', '庁内ポータル向け新着情報表示', 'gw-bbs-news', '庁内ポータル向け新着情報表示', '', ''),
-(167, 3361, 'public', '2010-10-22 20:52:19', '2010-10-22 20:52:19', NULL, NULL, 107, 'link_pieces', '新ヘッドライン', 'gw-link-pieces', 'gw-link-pieces', '', ''),
-(168, 3380, 'public', '2010-10-27 19:52:04', '2010-10-27 19:52:04', NULL, NULL, 107, 'header_menus', 'ヘッダメニューアイコン', 'gw-header-menu-icons', 'gw-header-menu-icons', '', ''),
-(169, 3407, 'public', '2010-12-01 19:02:45', '2010-12-01 19:02:45', NULL, NULL, 107, 'rss_readers', 'RSS表示', 'gw-rss-readers', 'gw-rss-readers', '', '__ignore__'),
-(170, 3411, 'public', '2010-12-07 15:35:14', '2010-12-07 15:35:14', NULL, NULL, 113, 'utility_banners', 'gwbbs-theme-banner', 'gwbbs-theme-banner', 'gwbbs-theme-banner', '', ''),
-(187, 3446, 'public', '2012-05-08 19:07:34', '2012-05-10 13:58:13', NULL, NULL, NULL, 'frees', 'smartphone_tab_up', 'smartphone_tab_up', 'smartphone_tab_up', '', '<div id="javascript_tab">\r\n<ul id="tab">\r\n<li class="selected"><a href="#portal_reminder_part">リマインダー</a></li>\r\n<li><a href="#portal_schedule_part">スケジュール</a></li>\r\n<li><a href="#portal_bbs_par">全庁掲示板</a></li>\r\n</ul>'),
-(188, 3447, 'public', '2012-05-08 19:07:58', '2012-05-10 13:58:07', NULL, NULL, NULL, 'frees', 'smartphone_tab', 'smartphone_tab', 'smartphone_tab', '', '</div>\r\n<script type="text/javascript">\r\n//<![CDATA[\r\n/*--setup--*/\r\nwindow.onload=function() {\r\ntab.setup = {\r\ntabs: document.getElementById(''tab'').getElementsByTagName(''li''),\r\npages: [\r\ndocument.getElementById(''portal_reminder_part''),\r\ndocument.getElementById(''schedule_part''),\r\ndocument.getElementById(''portal_bbs_part'')\r\n]\r\n}\r\ntab.init();\r\n}\r\n/*--setup end--*/\r\n\r\nvar tab = {\r\ninit: function(){\r\nvar tabs = this.setup.tabs;\r\nvar pages = this.setup.pages;\r\n\r\nfor(i=0; i<pages.length; i++) {\r\nif(i !== 0) pages[i].style.display = ''none'';\r\ntabs[i].onclick = function(){ tab.showpage(this); return false; };\r\n}\r\n},\r\n\r\nshowpage: function(obj){\r\nvar tabs = this.setup.tabs;\r\nvar pages = this.setup.pages;\r\nvar num;\r\n\r\nfor(num=0; num<tabs.length; num++) {\r\nif(tabs[num] === obj) break;\r\n}\r\n\r\nfor(var i=0; i<pages.length; i++) {\r\nif(i == num) {\r\npages[num].style.display = ''block'';\r\ntabs[num].className = ''selected'';\r\n}\r\nelse{\r\npages[i].style.display = ''none'';\r\ntabs[i].className = null;\r\n}\r\n}\r\n}\r\n}\r\n\r\n//]]>\r\n</script>');
-
---
--- テーブルのデータをダンプしています `cms_piece_links`
---
-
-
---
--- テーブルのデータをダンプしています `cms_routes`
---
-
-
---
--- テーブルのデータをダンプしています `cms_sites`
---
-
-INSERT INTO `cms_sites` (`id`, `unid`, `state`, `created_at`, `updated_at`, `domain`, `name`, `node_id`, `mobile_is`, `mobile_id`) VALUES
-(1, 2304, 'public', '2009-01-01 00:00:00', '2011-05-13 14:57:40', 'demo.gw.joruri.org', 'JoruriGw', 1, 0, 2),
-(2, NULL, 'public', '2009-01-01 00:00:00', '2009-01-01 00:00:00', 'demo.gw.joruri.org', 'JoruriGw', 2, 1, NULL);
-
---
--- テーブルのデータをダンプしています `cms_texts`
---
-
-
---
--- テーブルのデータをダンプしています `cms_tmp_files`
---
-
-
---
--- テーブルのデータをダンプしています `cms_tmp_file_groups`
---
-
-
---
 -- テーブルのデータをダンプしています `intra_maintenances`
 --
 
@@ -345,9 +19,6 @@ INSERT INTO `cms_sites` (`id`, `unid`, `state`, `created_at`, `updated_at`, `dom
 -- テーブルのデータをダンプしています `sessions`
 --
 
-INSERT INTO `sessions` (`id`, `session_id`, `data`, `created_at`, `updated_at`) VALUES
-(236, '4e874c1388bde998f73ab07abe5e6430', 'BAh7CToSdXNlcl9wYXNzd29yZCIlNmY1NTUxOGIxNmRjMzcxMjc3MWNkOTA3\nNmEwZjlmMTI6DHVzZXJfaWRpAkoUOhF1c2VyX2FjY291bnQiCmFkbWluOhBf\nY3NyZl90b2tlbiIxV3RXNGtmMTh3N0ZuRTFYZWwyN2p3T0pwb2lOSnl4Z1FP\nMTE4RGhjUEhXaz0=\n', '2012-05-22 20:29:55', '2012-05-22 20:30:06'),
-(237, '0655e140237a05803eede42fcf3b1381', 'BAh7AA==\n', '2012-05-22 20:30:03', '2012-05-22 20:30:03');
 
 --
 -- テーブルのデータをダンプしています `system_admin_logs`
@@ -1087,11 +758,6 @@ INSERT INTO `system_groups` (`id`, `parent_id`, `state`, `created_at`, `updated_
 (703, 702, 'enabled', '2011-05-07 01:22:21', '2011-05-12 20:57:24', 3, 0, '002001', '部長室', NULL, NULL, '2011-05-07 00:00:00', NULL, 90, '1305201424', 0);
 
 --
--- テーブルのデータをダンプしています `system_groups_back`
---
-
-
---
 -- テーブルのデータをダンプしています `system_group_changes`
 --
 
@@ -1157,10 +823,6 @@ INSERT INTO `system_group_histories` (`id`, `parent_id`, `state`, `created_at`, 
 (718, 1, 'enabled', '2011-05-07 01:22:21', '2011-05-12 20:57:25', 2, 0, '011', '教育委員会', NULL, NULL, '2011-05-07 00:00:00', NULL, 240, '1305201424', 0),
 (704, 702, 'enabled', '2011-05-07 01:22:21', '2011-05-12 20:57:24', 3, 0, '002002', '財政課', NULL, NULL, '2011-05-07 00:00:00', NULL, 100, '1305201424', 0),
 (703, 702, 'enabled', '2011-05-07 01:22:21', '2011-05-12 20:57:24', 3, 0, '002001', '部長室', NULL, NULL, '2011-05-07 00:00:00', NULL, 90, '1305201424', 0);
-
---
--- テーブルのデータをダンプしています `system_group_histories_back`
---
 
 
 --
@@ -1406,18 +1068,21 @@ INSERT INTO `system_public_logs` (`id`, `created_at`, `user_id`, `item_unid`, `c
 --
 
 INSERT INTO `system_roles` (`id`, `table_name`, `priv_name`, `idx`, `class_id`, `uid`, `priv`, `created_at`, `updated_at`, `role_name_id`, `priv_user_id`, `group_id`) VALUES
-(1, '_admin', 'admin', 1, 1, '5194', 1, '2011-05-07 01:56:58', '2011-05-07 21:41:30', 21, 1, 698),
-(13, '_admin', 'developer', 1, 1, '5194', 1, '2011-05-21 22:24:07', '2011-05-21 22:24:07', 21, 1, 698),
-(3, 'doclibrary', 'admin', 1, 1, '5194', 1, '2011-05-11 18:41:01', '2011-05-11 18:41:01', 4, 1, 698),
-(4, 'digitallibrary', 'admin', 1, 1, '5194', 1, '2011-05-11 20:14:03', '2011-05-11 20:14:03', 3, 1, 698),
-(5, 'gwfaq', 'admin', 1, 1, '5194', 1, '2011-05-11 21:04:37', '2011-05-11 21:04:37', 8, 1, 698),
-(6, 'gwmonitor', 'admin', 1, 1, '5194', 1, '2011-05-12 20:07:53', '2011-05-13 13:55:13', 42, 1, 698),
-(7, 'gwbbs', 'admin', 1, 1, '5194', 1, '2011-05-12 22:36:59', '2011-05-12 22:36:59', 6, 1, 698),
-(8, 'gw_pref_executive', 'admin', 1, 1, '5194', 1, '2011-05-12 23:09:26', '2011-05-12 23:09:26', 48, 1, 698),
-(9, 'gw_pref_director', 'admin', 1, 1, '5194', 1, '2011-05-12 23:09:42', '2011-05-12 23:09:42', 51, 1, 698),
-(10, 'gw_pref_assembly', 'admin', 1, 1, '5194', 1, '2011-05-12 23:10:00', '2011-05-12 23:10:00', 46, 1, 698),
-(12, 'gwqa', 'admin', 1, 1, '5194', 1, '2011-05-13 13:54:46', '2011-05-13 13:54:46', 9, 1, 698);
-
+(1,'_admin','admin',1,1,'5194',1,'2011-05-07 01:56:58','2011-05-07 21:41:30',21,1,698),
+(13,'_admin','developer',1,1,'5194',1,'2011-05-21 22:24:07','2011-05-21 22:24:07',21,2,698),
+(3,'doclibrary','admin',1,1,'5194',1,'2011-05-11 18:41:01','2011-05-11 18:41:01',4,1,698),
+(4,'digitallibrary','admin',1,1,'5194',1,'2011-05-11 20:14:03','2011-05-11 20:14:03',3,1,698),
+(5,'gwfaq','admin',1,1,'5194',1,'2011-05-11 21:04:37','2011-05-11 21:04:37',8,1,698),
+(6,'gwmonitor','admin',1,1,'5194',1,'2011-05-12 20:07:53','2011-05-13 13:55:13',42,1,698),
+(7,'gwbbs','admin',1,1,'5194',1,'2011-05-12 22:36:59','2011-05-12 22:36:59',6,1,698),
+(8,'gw_pref_executive','admin',1,1,'5194',1,'2011-05-12 23:09:26','2011-05-12 23:09:26',48,1,698),
+(9,'gw_pref_director','admin',1,1,'5194',1,'2011-05-12 23:09:42','2011-05-12 23:09:42',51,1,698),
+(10,'gw_pref_assembly','admin',1,1,'5194',1,'2011-05-12 23:10:00','2011-05-12 23:10:00',46,1,698),
+(12,'gwqa','admin',1,1,'5194',1,'2011-05-13 13:54:46','2011-05-13 13:54:46',9,1,698),
+(14,'sb01','admin',1,1,'5194',1,'2012-08-23 19:53:55','2012-08-23 19:53:55',56,1,698),
+(15,'sb04','admin',1,1,'5194',1,'2012-08-23 19:54:19','2012-08-23 19:54:19',57,1,698),
+(16,'enquete','admin',1,1,'5194',1,'2012-08-23 19:54:19','2012-08-23 19:54:19',45,1,698),
+(17,'gwcircular','admin',1,1,'5194',1,'2012-08-23 19:54:19','2012-08-23 19:54:19',41,1,698);
 --
 -- テーブルのデータをダンプしています `system_role_developers`
 --
@@ -1451,24 +1116,24 @@ INSERT INTO `system_role_names` (`id`, `unid`, `state`, `content_id`, `created_a
 --
 
 INSERT INTO `system_role_name_privs` (`id`, `role_id`, `priv_id`, `created_at`, `updated_at`) VALUES
-(9, 3, 1, '2010-11-02 10:10:00', '2010-11-02 10:10:00'),
-(17, 4, 1, '2010-11-02 10:10:00', '2010-11-02 10:10:00'),
-(33, 6, 1, '2010-11-02 10:10:00', '2010-11-02 10:10:00'),
-(49, 8, 1, '2010-11-02 10:10:00', '2010-11-02 10:10:00'),
-(57, 9, 1, '2010-11-02 10:10:00', '2010-11-02 10:10:00'),
-(153, 21, 1, '2010-11-02 10:10:00', '2010-11-02 10:10:00'),
-(161, 37, 8, '2010-11-02 10:10:00', '2010-11-02 16:49:49'),
-(177, 39, 1, '2010-11-02 10:10:00', '2010-11-02 10:10:00'),
-(189, 40, 1, '2010-11-02 19:02:01', '2010-11-02 19:02:01'),
-(190, 42, 1, '2010-11-02 19:02:20', '2010-11-02 19:02:20'),
-(192, 41, 1, '2010-11-06 16:47:30', '2010-11-06 16:47:30'),
-(196, 45, 1, '2010-12-02 09:36:29', '2010-12-02 09:36:29'),
-(197, 46, 1, '2010-12-16 20:49:52', '2010-12-16 20:49:52'),
-(199, 48, 1, '2010-12-27 13:54:21', '2010-12-27 13:54:21'),
-(203, 39, 10, '2011-02-07 18:55:34', '2011-02-07 18:55:34'),
-(204, 40, 10, '2011-02-07 18:56:20', '2011-02-07 18:56:20'),
-(206, 51, 1, '2011-04-05 23:43:29', '2011-04-05 23:43:29');
-
+(9,3,1,'2010-11-02 10:10:00','2010-11-02 10:10:00'),
+(17,4,1,'2010-11-02 10:10:00','2010-11-02 10:10:00'),
+(33,6,1,'2010-11-02 10:10:00','2010-11-02 10:10:00'),
+(49,8,1,'2010-11-02 10:10:00','2010-11-02 10:10:00'),
+(57,9,1,'2010-11-02 10:10:00','2010-11-02 10:10:00'),
+(153,21,1,'2010-11-02 10:10:00','2010-11-02 10:10:00'),
+(161,37,8,'2010-11-02 10:10:00','2010-11-02 16:49:49'),
+(189,40,1,'2010-11-02 19:02:01','2010-11-02 19:02:01'),
+(190,42,1,'2010-11-02 19:02:20','2010-11-02 19:02:20'),
+(192,41,1,'2010-11-06 16:47:30','2010-11-06 16:47:30'),
+(196,45,1,'2010-12-02 09:36:29','2010-12-02 09:36:29'),
+(197,46,1,'2010-12-16 20:49:52','2010-12-16 20:49:52'),
+(199,48,1,'2010-12-27 13:54:21','2010-12-27 13:54:21'),
+(203,39,10,'2011-02-07 18:55:34','2011-02-07 18:55:34'),
+(204,40,10,'2011-02-07 18:56:20','2011-02-07 18:56:20'),
+(206,51,1,'2011-04-05 23:43:29','2011-04-05 23:43:29'),
+(209,56,1,'2012-08-22 17:51:36','2012-08-22 17:51:36'),
+(210,57,1,'2012-08-23 13:26:03','2012-08-23 13:26:03');
 --
 -- テーブルのデータをダンプしています `system_sequences`
 --
@@ -2090,7 +1755,7 @@ INSERT INTO `system_unids` (`id`, `created_at`, `updated_at`, `module`, `item_ty
 -- テーブルのデータをダンプしています `system_users`
 --
 
-INSERT INTO `system_users` (`id`, `air_login_id`, `state`, `created_at`, `updated_at`, `code`, `ldap`, `ldap_version`, `auth_no`, `sort_no`, `name`, `name_en`, `kana`, `password`, `mobile_access`, `mobile_password`, `email`, `offitial_position`, `assigned_job`, `remember_token`, `remember_token_expires_at`, `air_token`) VALUES
+INSERT INTO `system_users` (`id`, `air_login_id`, `state`, `created_at`, `updated_at`, `code`, `ldap`, `ldap_version`, `auth_no`, `sort_no`, `name`, `name_en`, `kana`, `password`, `mobile_access`, `mobile_password`, `email`, `official_position`, `assigned_job`, `remember_token`, `remember_token_expires_at`, `air_token`) VALUES
 (5194, NULL, 'enabled', '2010-11-15 19:59:49', '2011-05-12 20:57:24', 'admin', 0, 1305201424, NULL, '001003001012', 'システム管理者', 'system ', NULL, 'admin', 1, 'admin', 'admin@127.0.0.1', '部長', NULL, NULL, NULL, NULL),
 (5466, NULL, 'enabled', '2011-05-07 01:22:21', '2011-05-12 20:57:24', 'user3', 0, 1305201424, '3', '001003003016', '吉野　三郎', 'user3', NULL, 'user3', 1, 'user3', 'user3@127.0.0.1', '係長', NULL, NULL, NULL, NULL),
 (5465, NULL, 'enabled', '2011-05-07 01:22:21', '2011-05-12 20:57:24', 'user2', 0, 1305201424, '3', '001003003014', '阿波　花子', 'user2', NULL, 'user2', 1, 'user2', 'user2@127.0.0.1', '課長', NULL, NULL, NULL, NULL),
@@ -2102,14 +1767,10 @@ INSERT INTO `system_users` (`id`, `air_login_id`, `state`, `created_at`, `update
 (5471, NULL, 'enabled', '2011-05-12 20:57:24', '2011-05-12 20:59:57', 'user8', 0, 1305201424, '3', '001003003021', '渡辺　真由子', 'user8', NULL, 'user8', NULL, NULL, 'user8@127.0.0.1', '課長', NULL, NULL, NULL, NULL),
 (5472, NULL, 'enabled', '2011-05-12 20:57:24', '2011-05-12 21:02:20', 'user9', 0, 1305201424, '3', '001003003022', '伊藤　勝', 'user9', NULL, 'user9', NULL, NULL, 'user9@127.0.0.1', '係長', NULL, NULL, NULL, NULL),
 (5473, NULL, 'enabled', '2011-05-13 13:54:45', '2011-05-13 13:55:38', '001002_0', 0, NULL, NULL, NULL, '秘書広報課予定', '', NULL, '001002_0pass', NULL, NULL, '001002_0@127.0.0.1', '', '', NULL, NULL, NULL),
-(5474, NULL, 'enabled', '2011-05-13 13:56:00', '2011-05-13 14:20:41', '001_0', 0, NULL, NULL, NULL, '企画部予定', '', NULL, '', NULL, NULL, '001_0@127.0.0.1', '', '', NULL, NULL, NULL),
+(5474, NULL, 'enabled', '2011-05-13 13:56:00', '2011-05-13 14:20:41', '001_0', 0, NULL, NULL, NULL, '企画部予定', '', NULL, '001_0pass', NULL, NULL, '001_0@127.0.0.1', '', '', NULL, NULL, NULL),
 (5475, NULL, 'enabled', '2011-05-13 13:56:42', '2011-05-13 13:56:42', '001003_0', 0, NULL, NULL, NULL, '人事課予定', '', NULL, '001003_0pass', NULL, NULL, '001003_0@127.0.0.1', '', '', NULL, NULL, NULL),
 (5476, NULL, 'enabled', '2011-05-13 13:57:14', '2011-05-13 13:57:14', '001004_0', 0, NULL, NULL, NULL, '企画政策課予定', '', NULL, '001004_0pass', NULL, NULL, '001004_0@127.0.0.1', '', '', NULL, NULL, NULL),
 (5477, NULL, 'enabled', '2011-05-13 14:21:11', '2011-05-13 14:21:11', '1_0', 0, NULL, NULL, NULL, '全庁予定', '', NULL, '1_0pass', NULL, NULL, '1_0@127.0.0.1', '', '', NULL, NULL, NULL);
-
---
--- テーブルのデータをダンプしています `system_users_back`
---
 
 
 --
@@ -2169,11 +1830,6 @@ INSERT INTO `system_users_groups` (`rid`, `created_at`, `updated_at`, `user_id`,
 (11864, '2011-05-13 14:21:11', '2011-05-13 14:21:11', 5477, 698, 9, '2011-05-13 00:00:00', NULL, '1_0', '001002');
 
 --
--- テーブルのデータをダンプしています `system_users_groups_back`
---
-
-
---
 -- テーブルのデータをダンプしています `system_users_group_histories`
 --
 
@@ -2185,25 +1841,21 @@ INSERT INTO `system_users_group_histories` (`rid`, `created_at`, `updated_at`, `
 (5, '2011-05-11 14:56:58', '2011-05-11 14:56:58', 5467, 699, 0, '2011-04-01 00:00:00', '2011-05-12 20:57:24', 'user4', '未登録グループ'),
 (6, '2011-05-11 15:01:35', '2011-05-11 15:01:35', 5468, 699, 0, '2011-04-01 00:00:00', '2011-05-12 20:57:24', 'user5', '未登録グループ'),
 (7, '2011-05-11 15:03:28', '2011-05-11 15:03:28', 5469, 699, 9, '2011-04-01 00:00:00', '2011-05-12 20:57:24', 'user6', '未登録グループ'),
-(8, '2011-05-12 20:57:24', '2011-05-12 20:57:24', 5194, 34, 0, '2011-05-12 20:57:24', NULL, 'admin', '001002'),
-(9, '2011-05-12 20:57:24', '2011-05-12 20:57:24', 5464, 34, 0, '2011-05-12 20:57:24', NULL, 'user1', '001002'),
-(10, '2011-05-12 20:57:24', '2011-05-12 20:57:24', 5465, 34, 0, '2011-05-12 20:57:24', NULL, 'user2', '001002'),
-(11, '2011-05-12 20:57:24', '2011-05-12 20:57:24', 5466, 34, 0, '2011-05-12 20:57:24', NULL, 'user3', '001002'),
-(12, '2011-05-12 20:57:24', '2011-05-12 20:57:24', 5467, 35, 0, '2011-05-12 20:57:24', NULL, 'user4', '001003'),
-(13, '2011-05-12 20:57:24', '2011-05-12 20:57:24', 5468, 35, 0, '2011-05-12 20:57:24', NULL, 'user5', '001003'),
-(14, '2011-05-12 20:57:24', '2011-05-12 20:57:24', 5469, 35, 0, '2011-05-12 20:57:24', NULL, 'user6', '001003'),
-(15, '2011-05-12 20:57:24', '2011-05-12 20:57:24', 5470, 36, 0, '2011-05-12 20:57:24', NULL, 'user7', '001004'),
-(16, '2011-05-12 20:57:24', '2011-05-12 20:57:24', 5471, 36, 0, '2011-05-12 20:57:24', NULL, 'user8', '001004'),
-(17, '2011-05-12 20:57:24', '2011-05-12 20:57:24', 5472, 36, 0, '2011-05-12 20:57:24', NULL, 'user9', '001004'),
+(8, '2011-05-12 20:57:24', '2011-05-12 20:57:24', 5194, 698, 0, '2011-05-12 20:57:24', NULL, 'admin', '001002'),
+(9, '2011-05-12 20:57:24', '2011-05-12 20:57:24', 5464, 698, 0, '2011-05-12 20:57:24', NULL, 'user1', '001002'),
+(10, '2011-05-12 20:57:24', '2011-05-12 20:57:24', 5465, 698, 0, '2011-05-12 20:57:24', NULL, 'user2', '001002'),
+(11, '2011-05-12 20:57:24', '2011-05-12 20:57:24', 5466, 698, 0, '2011-05-12 20:57:24', NULL, 'user3', '001002'),
+(12, '2011-05-12 20:57:24', '2011-05-12 20:57:24', 5467, 699, 0, '2011-05-12 20:57:24', NULL, 'user4', '001003'),
+(13, '2011-05-12 20:57:24', '2011-05-12 20:57:24', 5468, 699, 0, '2011-05-12 20:57:24', NULL, 'user5', '001003'),
+(14, '2011-05-12 20:57:24', '2011-05-12 20:57:24', 5469, 699, 0, '2011-05-12 20:57:24', NULL, 'user6', '001003'),
+(15, '2011-05-12 20:57:24', '2011-05-12 20:57:24', 5470, 700, 0, '2011-05-12 20:57:24', NULL, 'user7', '001004'),
+(16, '2011-05-12 20:57:24', '2011-05-12 20:57:24', 5471, 700, 0, '2011-05-12 20:57:24', NULL, 'user8', '001004'),
+(17, '2011-05-12 20:57:24', '2011-05-12 20:57:24', 5472, 700, 0, '2011-05-12 20:57:24', NULL, 'user9', '001004'),
 (18, '2011-05-13 13:54:45', '2011-05-13 13:54:45', 5473, 698, 9, '2011-05-13 00:00:00', NULL, '001002_0', '001002'),
 (19, '2011-05-13 13:56:00', '2011-05-13 13:56:00', 5474, 1, 9, '2011-05-13 00:00:00', NULL, '001_0', '1'),
 (20, '2011-05-13 13:56:42', '2011-05-13 13:56:42', 5475, 1, 9, '2011-05-13 00:00:00', NULL, '001003_0', '1'),
 (21, '2011-05-13 13:57:14', '2011-05-13 13:57:14', 5476, 1, 9, '2011-05-13 00:00:00', NULL, '001004_0', '1'),
 (22, '2011-05-13 14:21:11', '2011-05-13 14:21:11', 5477, 698, 9, '2011-05-13 00:00:00', NULL, '1_0', '001002');
-
---
--- テーブルのデータをダンプしています `system_users_group_histories_back`
---
 
 
 --

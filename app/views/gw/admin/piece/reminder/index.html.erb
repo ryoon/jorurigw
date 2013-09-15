@@ -1,0 +1,47 @@
+<%
+  # アイコンクラスの並び順は、先頭IDのアルファベット順とすること（assocの条件）
+  icon_clses = [
+  # 回覧版
+  ['circular','circular'],
+  # 連絡メモ
+  ['memo','memo'],
+  # 照会回答
+  ['monitor','monitor'],
+  # TODO
+  ['todo','todo']
+  ]
+  remind = []
+  %w(todo memo circular monitor).each{|mod|
+    remind += eval("Gw::Model::#{mod.capitalize}.remind.collect{|x| x[:c]='#{mod}'; x}")
+  }
+%>
+<div class="piece gadget reminder">
+<div class="pieceHeader"><h3 class="remainder">リマインダー</h3></div>
+<div class="borderbox">
+<% if remind.length > 0 %>
+<div class="pieceBody">
+<table>
+<%
+cols = %w(date_ste cls title)
+cols.each{|col| concat raw %Q(<colgroup class="#{col}"></colgroup>)}
+remind.sort{|a, b| b[:date_d] <=> a[:date_d]}.each do |x|
+  c_s_a = []
+  c_s_a.push cycle('', 'cycle')
+  c_s_a.push 'expired' if x[:delay]
+  c_s_a.push x[:c]
+  c_s_a.push x[:css_class] if !x[:css_class].blank?
+  c_s = Gw.join(c_s_a, ' ')
+  c_s = %Q( class="#{c_s}") if !c_s.blank?
+  icon_cls  = icon_clses.assoc(x[:c])
+  icon_cls1 = icon_cls.blank? ? nil:icon_cls[1]
+  concat raw %Q(<tr#{c_s}><td class="date_ste">#{x[:date_str]}</td><td class="cls #{icon_cls1}"><span>#{x[:cls]}　：　</span></td><td class="title">#{x[:title]}</td></tr>)
+end
+%>
+</table></div>
+<% else %>
+<div class="pieceBody" style="color: #080;">
+表示する内容はありません。
+</div>
+<% end %>
+</div>
+</div>

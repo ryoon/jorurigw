@@ -1,11 +1,12 @@
-<%# app/views/system/admin/users/new.html %>
+<div class="piece AdminSetting AdminMessage">
+<%= render :partial => 'header' %>
+<div class="pieceBody">
 
-<% form_for :item, :url => {:action => :create} do |f| %>
-
-<%= f.error_messages %>
-
-<%= render :partial => 'form', :locals => {:f => f} %>
-
-<%= submit_for_create f %>
-
+<%= form_for :item, :url => system_users_path do |f| %>
+  <%= f.error_messages %>
+  <%= render :partial => 'form', :locals => {:f => f} %>
+  <%= submit_for(f, {:caption => '保存'}) %>
 <% end %>
+
+</div>
+</div>

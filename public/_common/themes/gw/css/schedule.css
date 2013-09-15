@@ -2,7 +2,7 @@
 /* =========================================================
    _common/themes/gw/css/schedule.css
 ========================================================= */
-/* ƒ~ƒjƒAƒCƒRƒ“İ’è
+/* ãƒŸãƒ‹ã‚¢ã‚¤ã‚³ãƒ³è¨­å®š
 --------------------------------------*/
 .schedulePiece {
   height: 1%;
@@ -26,7 +26,7 @@
   table-layout: fixed;
 }
 
-/* •\¦Ø‘Öƒ{ƒ^ƒ“
+/* è¡¨ç¤ºåˆ‡æ›¿ãƒœã‚¿ãƒ³
 --------------------------------------*/
 .btBox {
   width: auto;
@@ -162,7 +162,7 @@
   border-width: 1px;
 }
 
-/* ƒƒjƒ…[
+/* ãƒ¡ãƒ‹ãƒ¥ãƒ¼
 --------------------------------------------------*/
 .menu a {
   padding: 0 8px 0 0;
@@ -178,7 +178,7 @@
   background-image: url(/_common/themes/gw/files/schedule/menu_tri_05on.gif);
 }
 
-/* ƒƒbƒZ[ƒW•ÒWƒ{ƒ^ƒ“
+/* ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ç·¨é›†ãƒœã‚¿ãƒ³
 --------------------------------------------------*/
 .pieceBodyHeader {
   position: relative;
@@ -197,7 +197,7 @@
   border-width: 1px;
 }
 
-/* ƒOƒ‹[ƒv•\¦@‰Û–¼•”•ª
+/* ã‚°ãƒ«ãƒ¼ãƒ—è¡¨ç¤ºã€€èª²åéƒ¨åˆ†
 --------------------------------------------------*/
 .scheduleTableTitle {
   clear: both;
@@ -219,7 +219,7 @@
   margin-left: 10px;
 }
 
-/* ƒ^ƒCƒgƒ‹‰E‰¡@ƒeƒLƒXƒgƒŠƒ“ƒN
+/* ã‚¿ã‚¤ãƒˆãƒ«å³æ¨ªã€€ãƒ†ã‚­ã‚¹ãƒˆãƒªãƒ³ã‚¯
 --------------------------------------------------*/
 .titleLine .linkSpace {
   display: block;
@@ -238,7 +238,7 @@
   border: 1px solid #CCCCCC;
 }
 
-/* “ú•tA‘O“úE—‚“ú“™‚ÌˆÚ“®ƒ{ƒ^ƒ“
+/* æ—¥ä»˜ã€å‰æ—¥ãƒ»ç¿Œæ—¥ç­‰ã®ç§»å‹•ãƒœã‚¿ãƒ³
 --------------------------------------------------*/
 .lineBox {
   clear: both;
@@ -352,7 +352,7 @@ html:not(:target) .pieceBody .pieceBodyFooter {
   background-image: url("/_common/themes/gw/files/icon/followmonth/bt_followmonth04.gif");
 }
 
-/* ƒXƒPƒWƒ…[ƒ‹ƒe[ƒuƒ‹@Šî–{İ’è
+/* ã‚¹ã‚±ã‚¸ãƒ¥ãƒ¼ãƒ«ãƒ†ãƒ¼ãƒ–ãƒ«ã€€åŸºæœ¬è¨­å®š
 ----------------------------------------------------*/
 th.scheduleUser {
   width: 175px;
@@ -379,7 +379,7 @@ td.scheduleData {
   display: none;
 }
 
-/* ƒXƒPƒWƒ…[ƒ‹ƒe[ƒuƒ‹@Fİ’è
+/* ã‚¹ã‚±ã‚¸ãƒ¥ãƒ¼ãƒ«ãƒ†ãƒ¼ãƒ–ãƒ«ã€€è‰²è¨­å®š
 ----------------------------------------------------*/
 .dayview .scheduleTableHead th.scheduleData,
 .guardview .scheduleTableHead th.scheduleData,
@@ -411,7 +411,7 @@ td.holiday .ind {
   color: #D40D0B;
 }
 
-/* ƒ†[ƒUƒAƒCƒRƒ“—“
+/* ãƒ¦ãƒ¼ã‚¶ã‚¢ã‚¤ã‚³ãƒ³æ¬„
 -------------------------------------------------------*/
 .username {
   height: auto!important;
@@ -471,7 +471,7 @@ td.holiday .ind {
   background-image: url("/_common/themes/gw/files/tab/ic-schedule.gif");
 }
 
-/* ‰ï‹cºEƒŒƒ“ƒ^ƒJ[E‚»‚Ì‘¼İ”õ
+/* ä¼šè­°å®¤ãƒ»ãƒ¬ãƒ³ã‚¿ã‚«ãƒ¼ãƒ»ãã®ä»–è¨­å‚™
 ----------------------------------------------------*/
 .username.meetingroom,
 .username.room {
@@ -486,7 +486,7 @@ td.holiday .ind {
   background-image: url(/_common/themes/gw/files/ic_etc.gif);
 }
 
-/* Š²•”—\’è
+/* å¹¹éƒ¨äºˆå®š
 ----------------------------------------------------*/
 .userIcon3 {
   background-image: url(/_common/themes/gw/files/ic_human_03.gif);
@@ -525,7 +525,7 @@ table.sectionSchedulesVer2 .scheduleTableBody.lineNo3 th {
   border-top: 1px solid #1E3B8C;
 }
 
-/* s–—\’è
+/* è¡Œäº‹äºˆå®š
 ----------------------------------------------------*/
 #page-gw-schedules-eventMonth th.day {
   width: 70px;
@@ -611,7 +611,7 @@ table.scheduleTable span.allday {
   color: #FFFFFF;
 }
 
-/* Œ•\¦
+/* æœˆè¡¨ç¤º
 ----------------------------------------------------*/
 .monthview tr.dayHead th {
   padding-left: 5px;
@@ -636,7 +636,7 @@ th.rangeOut span.nobr a {
   color: #0033CC;
 }
 
-/* T•\¦
+/* é€±è¡¨ç¤º
 ----------------------------------------------------*/
 .weekview .scheduleTableBody .scheduleData {
   padding: 5px;
@@ -660,7 +660,7 @@ th.rangeOut span.nobr a {
   white-space: nowrap;
 }
 
-/* “–“ú•”•ª
+/* å½“æ—¥éƒ¨åˆ†
 ----------------------------------------------------*/
 .schedulePiece.monthview table .scheduleTableBody td.today,
 .schedulePiece.monthview table .scheduleTableHead th.today,
@@ -684,7 +684,7 @@ th.rangeOut span.nobr a {
   background-color: #ecc;
 }
 
-/* V‹Kì¬ƒy[ƒW
+/* æ–°è¦ä½œæˆãƒšãƒ¼ã‚¸
 ----------------------------------------------------*/
 .pieceBodyBody table#inputDatetimeRepeatNoprop,
 .pieceBodyBody table#inputDatetimeNormalNoprop {
@@ -698,21 +698,21 @@ th.rangeOut span.nobr a {
   float: left;
   margin-right: 10px;
 }
-#page-gw-schedules-new table.show,
-#page-gw-maaSchedules-new table.show,
-form.edit table.show,
-form.quote table.show {
+.scheduleform table.show,
+#page-gw-maaSchedules-new table.show {
   width: 105%;
 }
-*html #page-gw-schedules-new table.show,
-*html form.edit table.show,
-*html form.quote table.show{
-  width: 110%;
+.scheduleform table.tabtable td.tab {
+  width: 70px;
+  padding: 2px 10px;
 }
-*:first-child+html #page-gw-schedules-new table.show,
-*:first-child+html form.edit table.show,
-*:first-child+html form.quote table.show {
-  width: 110%;
+.schedulePiece .pieceBodyBody {
+  padding-left: 1px;
+  padding-right: 1px;
+  margin-bottom: 0px;
+}
+*:first-child+html .schedulePiece .pieceBodyBody {
+  margin-bottom: 15px;
 }
 .schedulePiece.form .pieceBodyBody {
   clear: both;
@@ -747,7 +747,7 @@ form.quote table.show {
   border-top: none;
 }
 
-/* “ú•\¦E‰q‹—p
+/* æ—¥è¡¨ç¤ºãƒ»è¡›è¦–ç”¨
 -----------------------------------------*/
 .dayview table tr.scheduleTableBody.categoryBorder td.scheduleData,
 .guardview table tr.scheduleTableBody.categoryBorder td.scheduleData {
@@ -770,7 +770,7 @@ form.quote table.show {
   border-bottom: 1px solid #CCCCCC;
 }
 
-/* ‰q‹—p
+/* è¡›è¦–ç”¨
 -----------------------------------------*/
 #page-gw-scheduleProps-showGuard td.scheduleData {
   overflow: hidden;
@@ -789,7 +789,7 @@ form.quote table.show {
   margin-bottom: 0px;
 }
 
-/* ƒJƒeƒSƒŠFİ’è@ŒÂlƒXƒPƒWƒ…[ƒ‹
+/* ã‚«ãƒ†ã‚´ãƒªè‰²è¨­å®šã€€å€‹äººã‚¹ã‚±ã‚¸ãƒ¥ãƒ¼ãƒ«
 -----------------------------------------*/
 .ind a {
   display: block;
@@ -913,7 +913,7 @@ form.quote table.show {
   color: white;
 }
 
-/* ƒJƒeƒSƒŠFİ’è@‰ï‹cºEƒŒƒ“ƒ^ƒJ[
+/* ã‚«ãƒ†ã‚´ãƒªè‰²è¨­å®šã€€ä¼šè­°å®¤ãƒ»ãƒ¬ãƒ³ã‚¿ã‚«ãƒ¼
 -----------------------------------------*/
 .rentcar .ind a,
 .meetingroom .ind a {
@@ -961,7 +961,7 @@ form.quote table.show {
   background-repeat: no-repeat;
 }
 
-/* –}—á
+/* å‡¡ä¾‹
 ----------------------------------------*/
 .explainColor {
   clear: both;
@@ -1007,7 +1007,7 @@ form.quote table.show {
   color: #CFD0D2;
 }
 
-/* –}—áiŒİ•‰ïj
+/* å‡¡ä¾‹ï¼ˆäº’åŠ©ä¼šï¼‰
 ----------------------------------------------------*/
 .explainColor .confirmed .square {
   color: #2E49B4;
@@ -1048,7 +1048,7 @@ table.maaPropBs a.temporary {
   color: #35E1FF;
 }
 
-/* İ’¡•\¦
+/* åœ¨åºè¡¨ç¤º
 -------------------------------------------*/
 .pageLink {
   margin-bottom: 5px;
@@ -1185,7 +1185,7 @@ div.scheduleUser .title span {
   font-size: 80%;
 }
 
-/* İ’¡•\¦ ‹c‰ï
+/* åœ¨åºè¡¨ç¤º è­°ä¼š
 -------------------------------------------*/
 #page-gw-prefExecutives .pieceBodyBody,
 #page-gw-prefDirectors .pieceBodyBody,
@@ -1255,13 +1255,13 @@ div.scheduleUser .title span {
   background-image: url("/_common/themes/gw/files/schedule/ic-giin-off.gif");
 }
 
-/* Ú×ƒy[ƒW@ƒ^ƒCƒgƒ‹‰¡ƒŠƒ“ƒN
+/* è©³ç´°ãƒšãƒ¼ã‚¸ã€€ã‚¿ã‚¤ãƒˆãƒ«æ¨ªãƒªãƒ³ã‚¯
 ----------------------------------------*/
 .showLink a {
   width: 200px;
 }
 
-/* ‹@”\ƒ{ƒ^ƒ“
+/* æ©Ÿèƒ½ãƒœã‚¿ãƒ³
 ----------------------------------------*/
 .editingBox {
   width: 100%;

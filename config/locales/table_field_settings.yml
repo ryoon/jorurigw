@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 #初期値設定
 
 gw_schedules_settings_ind:
@@ -12,10 +13,10 @@ gw_schedules_settings_ind:
 gw_schedules_settings_system_default:
   _cols: month_view_leftest_weekday:view_place_display
   month_view_leftest_weekday: 1
-  week_view_piecehead_format: %Y年%m月%d日（%_wd）
-  week_view_dayhead_format: %m/%d(%_wd)
-  month_view_piecehead_format: %Y年%m月
-  month_view_dayhead_format: %_d
+  week_view_piecehead_format: "%Y年%m月%d日（%_wd）"
+  week_view_dayhead_format: "%m/%d(%_wd)"
+  month_view_piecehead_format: "%Y年%m月"
+  month_view_dayhead_format: "%_d"
   header_each: 5
   view_place_display: 0
   # 以下、画面からは設定させない項

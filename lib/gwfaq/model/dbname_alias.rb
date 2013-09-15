@@ -118,7 +118,7 @@ module Gwfaq::Model::DbnameAlias
         end
       end
     end
-    Gwboard::CommonDb.establish_connection(cnn.spec)
+    Gwboard::CommonDb.establish_connection(cnn.spec.config)
     return item
 
   end

@@ -1,0 +1,33 @@
+<div class="piece todo setting">
+
+<%= render :partial => 'header_str' %>
+<div class="pieceBody">
+<div class="pieceBodyHeader">
+<div class="titleLine">
+<span class="title">リマインダー表示設定</span>
+</div>
+</div>
+
+<div class="pieceBodyBody">
+<%=div_notice%>
+<%@key = 'reminder'%>
+<a name="<%=@key%>"></a>
+<%=form_for :item, :url => "/gw/todo_settings/edit_#{@key}", :html => {:method=>:put, :multipart => true} do |f|%>
+<table class="show">
+<tr><th>完了</th><td>
+<%=select_by_list(f, :finish_todos_display, Gw.yaml_to_array_for_select('gw_todos_display_term', :for_select_by_list=>1),
+    {}, @item[:finish_todos_display].to_i)%>
+</td></tr>
+<tr><th>未完</th><td>
+<%=select_by_list(f, :unfinish_todos_display_start, Gw.yaml_to_array_for_select('gw_todos_display_start_term', :for_select_by_list=>1),
+        {}, @item[:unfinish_todos_display_start].to_i)%>
+<%=select_by_list(f, :unfinish_todos_display_end, Gw.yaml_to_array_for_select('gw_todos_display_end_term', :for_select_by_list=>1),
+        {}, @item[:unfinish_todos_display_end].to_i)%>
+</td></tr>
+</table>
+    <%=raw(submit_for_update(f, :id=>"item_submit_#{@key}", :caption => '保存'))%>
+  <%end%>
+</div>
+
+</div>
+</div>

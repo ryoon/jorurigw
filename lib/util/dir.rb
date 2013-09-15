@@ -1,3 +1,0 @@
-class Util::Dir
-
-end

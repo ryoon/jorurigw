@@ -1,20 +1,21 @@
+# -*- encoding: utf-8 -*-
 module Gwbbs::Model::DbnameAlias
 
   def admin_flags(title_id)
-    @is_sysadm = true if System::Model::Role.get(1, Site.user.id ,'gwbbs', 'admin')
-    @is_sysadm = true if System::Model::Role.get(2, Site.user_group.id ,'gwbbs', 'admin') unless @is_sysadm
+    @is_sysadm = true if System::Model::Role.get(1, Core.user.id ,'gwbbs', 'admin')
+    @is_sysadm = true if System::Model::Role.get(2, Core.user_group.id ,'gwbbs', 'admin') unless @is_sysadm
     @is_bbsadm = true if @is_sysadm
 
     unless @is_bbsadm
       item = Gwbbs::Adm.new
       item.and :user_id, 0
-      item.and :group_code, Site.user_group.code
+      item.and :group_code, Core.user_group.code
       item.and :title_id, title_id unless title_id == '_menu'
       items = item.find(:all)
       @is_bbsadm = true unless items.blank?
 
       parent_group_code = ''
-      parent_group_code = Site.user_group.parent.code unless Site.user_group.parent.blank?
+      parent_group_code = Core.user_group.parent.code unless Core.user_group.parent.blank?
       unless @is_bbsadm
         item = Gwbbs::Adm.new
         item.and :user_id, 0
@@ -26,8 +27,8 @@ module Gwbbs::Model::DbnameAlias
 
       unless @is_bbsadm
         item = Gwbbs::Adm.new
-        item.and :user_code, Site.user.code
-        item.and :group_code, Site.user_group.code
+        item.and :user_code, Core.user.code
+        item.and :group_code, Core.user_group.code
         item.and :title_id, title_id unless title_id == '_menu'
         items = item.find(:all)
         @is_bbsadm = true unless items.blank?
@@ -47,7 +48,7 @@ module Gwbbs::Model::DbnameAlias
       items = Gwbbs::Role.find(:all, :order=>'group_code', :conditions => sql.where)
       items.each do |item|
         @is_writable = true if item.group_code == '0'
-        for group in Site.user.groups
+        for group in Core.user.groups
           @is_writable = true if item.group_code == group.code
           @is_writable = true if item.group_code == group.parent.code unless group.parent.blank?
           break if @is_writable
@@ -60,9 +61,9 @@ module Gwbbs::Model::DbnameAlias
       item = Gwbbs::Role.new
       item.and :role_code, 'w'
       item.and :title_id, @title.id
-      item.and :user_code, Site.user.code
+      item.and :user_code, Core.user.code
       item = item.find(:first)
-      @is_writable = true if item.user_code == Site.user.code unless item.blank?
+      @is_writable = true if item.user_code == Core.user.code unless item.blank?
     end
   end
 
@@ -76,7 +77,7 @@ module Gwbbs::Model::DbnameAlias
       items = Gwbbs::Role.find(:all, :order=>'group_code', :conditions => sql.where)
       items.each do |item|
         @is_readable = true if item.group_code == '0'
-        for group in Site.user.groups
+        for group in Core.user.groups
           @is_readable = true if item.group_code == group.code
           @is_readable = true if item.group_code == group.parent.code unless group.parent.blank?
           break if @is_readable
@@ -89,9 +90,9 @@ module Gwbbs::Model::DbnameAlias
       item = Gwbbs::Role.new
       item.and :role_code, 'r'
       item.and :title_id, @title.id
-      item.and :user_code, Site.user.code
+      item.and :user_code, Core.user.code
       item = item.find(:first)
-      @is_readable = true if item.user_code == Site.user.code unless item.blank?
+      @is_readable = true if item.user_code == Core.user.code unless item.blank?
     end
   end
 
@@ -121,7 +122,7 @@ module Gwbbs::Model::DbnameAlias
         end
       end
     end
-    Gwboard::CommonDb.establish_connection(cnn.spec)
+    Gwboard::CommonDb.establish_connection(cnn.spec.config)
     return item
 
   end
@@ -154,7 +155,7 @@ module Gwbbs::Model::DbnameAlias
     _clone.able_date = Time.now.strftime("%Y-%m-%d")
     _clone.expiry_date = @title.default_published.months.since.strftime("%Y-%m-%d")
 
-    _clone.section_code = Site.user_group.code
+    _clone.section_code = Core.user_group.code
 
     group = Gwboard::Group.new
     group.and :code ,  _clone.section_code
@@ -172,22 +173,22 @@ module Gwbbs::Model::DbnameAlias
     end if _clone.editdate.blank?
     if mode == 'create'
       _clone.createdate = Time.now.strftime("%Y-%m-%d %H:%M")
-      _clone.creater_id = Site.user.code unless Site.user.code.blank?
-      _clone.creater = Site.user.name unless Site.user.name.blank?
-      _clone.createrdivision = Site.user_group.name unless Site.user_group.name.blank?
-      _clone.createrdivision_id = Site.user_group.code unless Site.user_group.code.blank?
-      _clone.editor_id = Site.user.code unless Site.user.code.blank?
-      _clone.editordivision_id = Site.user_group.code unless Site.user_group.code.blank?
+      _clone.creater_id = Core.user.code unless Core.user.code.blank?
+      _clone.creater = Core.user.name unless Core.user.name.blank?
+      _clone.createrdivision = Core.user_group.name unless Core.user_group.name.blank?
+      _clone.createrdivision_id = Core.user_group.code unless Core.user_group.code.blank?
+      _clone.editor_id = Core.user.code unless Core.user.code.blank?
+      _clone.editordivision_id = Core.user_group.code unless Core.user_group.code.blank?
       _clone.creater_admin = true if @is_admin
       _clone.creater_admin = false unless @is_admin
       _clone.editor_admin = true if @is_admin          #1
       _clone.editor_admin = false unless @is_admin     #0
     else
       _clone.editdate = Time.now.strftime("%Y-%m-%d %H:%M")
-      _clone.editor = Site.user.name unless Site.user.name.blank?
-      _clone.editordivision = Site.user_group.name unless Site.user_group.name.blank?
-      _clone.editor_id = Site.user.code unless Site.user.code.blank?
-      _clone.editordivision_id = Site.user_group.code unless Site.user_group.code.blank?
+      _clone.editor = Core.user.name unless Core.user.name.blank?
+      _clone.editordivision = Core.user_group.name unless Core.user_group.name.blank?
+      _clone.editor_id = Core.user.code unless Core.user.code.blank?
+      _clone.editordivision_id = Core.user_group.code unless Core.user_group.code.blank?
       _clone.editor_admin = true if @is_admin          #1
       _clone.editor_admin = false unless @is_admin     #0
     end

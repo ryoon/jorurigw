@@ -207,20 +207,17 @@ span.translation_missing {
  border: 2px solid #f00;
  margin: 15px 0px;
 }
-/*
-.yui-dialog .fieldWithErrors{
-  background: inherit;
-  border: none;
-  border-width: 0;
-  margin: 0;
+.field_with_errors{
+  border: 1px solid #FF0000;
+  display: inline-block;
+  padding: 1px;
 }
-.yui-dialog .fieldWithErrors input{
+.field_with_errors input{
   color: red;
 }
-.yui-dialog .fieldWithErrors label{
+.field_with_errors label{
   color: red;
 }
-*/
 .required {
   color: #c00;
 }

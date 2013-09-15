@@ -1,6 +1,8 @@
+# encoding: utf-8
 class Gw::ScheduleUser < Gw::Database
   include System::Model::Base
-  include Cms::Model::Base::Content
+  include System::Model::Base::Content
+
   belongs_to :schedule, :foreign_key => :schedule_id, :class_name => 'Gw::Schedule'
   belongs_to :user, :foreign_key => :uid, :class_name => 'System::User'
   belongs_to :group, :foreign_key => :uid, :class_name => 'System::Group'
@@ -69,8 +71,8 @@ class Gw::ScheduleUser < Gw::Database
     include_table_tag = true if options[:include_table_tag].nil?
 
     ret = ''
-    ret += '<table class="show">' if include_table_tag
-    ret += %Q(<tr><th colspan="2">#{caption}</th></tr>) if caption
+    ret.concat '<table class="show">' if include_table_tag
+    ret.concat %Q(<tr><th colspan="2">#{caption}</th></tr>) if caption
     items.each do |x|
       begin
         case x.class_id
@@ -78,7 +80,7 @@ class Gw::ScheduleUser < Gw::Database
           th = 'すべて'
           td = ''
         when 1
-          th = 'ユーザ'
+          th = 'ユーザー'
           user = System::User.find(:first, :conditions => "id=#{x.uid}")
           if user.blank? || user.state != 'enabled'
             td = ''
@@ -96,11 +98,11 @@ class Gw::ScheduleUser < Gw::Database
           end
 
         end
-        ret += "<tr><th>#{th}</th><td>#{td}</td></tr>" unless td.blank?
+        ret.concat "<tr><th>#{th}</th><td>#{td}</td></tr>" unless td.blank?
       rescue
       end
     end
-    ret += '</table>' if include_table_tag
+    ret.concat '</table>' if include_table_tag
     return ret
   end
 end

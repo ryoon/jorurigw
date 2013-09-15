@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 class Gwboard::Group < System::Group
 
   acts_as_tree :order=>'sort_no'

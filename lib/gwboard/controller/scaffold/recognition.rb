@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 module Gwboard::Controller::Scaffold::Recognition
   def recognize(item)
     _recognize(item)
@@ -6,13 +7,13 @@ module Gwboard::Controller::Scaffold::Recognition
 protected
   def _recognize(item, options = {})
     respond_to do |format|
-      if item.recognizable?(Site.user) && item.recognize(Site.user)
+      if item.recognizable?(Core.user) && item.recognize(Core.user)
         options[:after_process].call if options[:after_process]
 
         location = item.item_path
 
         flash[:notice] = options[:notice] || '承認処理が完了しました'
-        system_log.add(:item => item, :action => 'recognize')
+        #system_log.add(:item => item, :action => 'recognize')
         format.html { redirect_to location }
         format.xml  { head :ok }
       else

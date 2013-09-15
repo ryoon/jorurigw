@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 class Questionnaire::TemplateFormField < Gw::Database
   include System::Model::Base
   include System::Model::Base::Content
@@ -16,6 +17,18 @@ class Questionnaire::TemplateFormField < Gw::Database
   after_destroy :create_form_fields
 
   attr_accessor :_skip_logic
+
+  def group_body_json
+    form_str = self.group_body
+    form_str = form_str.gsub(/\r\n?/, '\\n') unless form_str.blank?
+    return form_str
+  end
+
+  def option_body_json
+    form_str = self.option_body
+    form_str = form_str.gsub(/\r\n?/, '\\n') unless form_str.blank?
+    return form_str
+  end
 
   def validate_title
     unless self.title.blank?
@@ -91,6 +104,18 @@ class Questionnaire::TemplateFormField < Gw::Database
     return self.question_types[self.question_type]
   end
 
+
+  def form_field_type
+    [
+      ["テキストボックス","text"],
+      ["テキストエリア","textarea"],
+      ["ラジオボタン","radio"],
+      ["チェックボックス","checkbox"],
+      ["セレクトボックス","select"],
+      ["ラベルテキスト","display"],
+      ["グループ設定","group"]
+    ]
+  end
   def post_permit_base_states
     return [
       ['使用しない', false],
@@ -338,6 +363,7 @@ class Questionnaire::TemplateFormField < Gw::Database
       option_string = ''
       option_string = JsonBuilder.new.build(form_option) unless form_option.size == 0
       self.option_body = option_string
+      self._skip_logic = true
       self.save
     end
   end
@@ -348,7 +374,7 @@ class Questionnaire::TemplateFormField < Gw::Database
 
   def cut_off(text, len)
     if text != nil
-      if text.jlength < len
+      if text.split(//).size < len
         text
       else
         text.scan(/^.{#{len}}/m)[0] + "…"

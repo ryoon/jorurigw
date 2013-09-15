@@ -1,10 +1,13 @@
-class Gw::Admin::PortalController < ApplicationController
+# encoding: utf-8
+class Gw::Admin::PortalController < Gw::Controller::Admin::Base
   include System::Controller::Scaffold
+  layout "admin/template/portal"
 
-  def index
-    item = Gw::PortalUserSetting.new
-    @items = item.find(:all, :order => 'idx')
-    _index @items
+  def initialize_scaffold
+    Page.title = "Joruri Gw ポータル"
   end
 
+  def index
+
+  end
 end

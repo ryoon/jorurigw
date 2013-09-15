@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 class Gwsub::Sb04CheckStafflist < Gwsub::GwsubPref
   include System::Model::Base
   include Cms::Model::Base::Content
@@ -149,7 +150,7 @@ class Gwsub::Sb04CheckStafflist < Gwsub::GwsubPref
     import_csv = Array.new # インポートデータ
     error_csv  = Array.new # エラー発生データ
     error_row_cnt = 0      # エラー行数カウント
-    require 'fastercsv'
+    require 'csv'
 
     par_item = params[:item]
 #      raise ArgumentError, '入力指定が異常です。' if par_item.nil? || par_item[:nkf].nil? || par_item[par_item[:nkf]].nil?
@@ -174,7 +175,7 @@ class Gwsub::Sb04CheckStafflist < Gwsub::GwsubPref
         file =  NKF::nkf(nkf_options,f)
         if file.blank?
         else
-          csv = FasterCSV.parse(file)
+          csv = CSV.parse(file)
 
           year_fiscal = Gw::YearFiscalJp.find_by_id(par_item[:fyed_id])
           csv.each_with_index do |row, i|
@@ -281,7 +282,7 @@ class Gwsub::Sb04CheckStafflist < Gwsub::GwsubPref
         item.multi_section_flg   = row[7]
         item.personal_state      = row[8]
         item.display_state       = row[9]
-        item.save(false)
+        item.save(:validate=>false)
       end
     else  # エラーあり
       check[:result] = false
@@ -317,11 +318,11 @@ class Gwsub::Sb04CheckStafflist < Gwsub::GwsubPref
     if check_1_count > 0
       check_1 = Gwsub::Sb04CheckOfficialtitle.check_fyear_id(fyear_id)
       if check_1 != true
-        msg << '10職名' + _msg
+        msg << '職名' + _msg
       end
     else
       check_1 = false
-      msg << '10職名' + _msg_count
+      msg << '職名' + _msg_count
     end
 
     check_2 = true
@@ -329,37 +330,37 @@ class Gwsub::Sb04CheckStafflist < Gwsub::GwsubPref
     if check_3_count > 0
       check_3 = Gwsub::Sb04CheckSection.check_fyear_id(fyear_id)
       if check_3 != true
-        msg << '30所属' + _msg
+        msg << '所属' + _msg
       end
     else
       check_3 = false
-      msg << '30所属' + _msg_count
+      msg << '所属' + _msg_count
     end
 
     check_4_count = Gwsub::Sb04CheckAssignedjob.count(:id)
     if check_4_count > 0
       check_4 = Gwsub::Sb04CheckAssignedjob.check_fyear_id(fyear_id)
       if check_4 != true
-        msg << '40担当' + _msg
+        msg << '担当' + _msg
       end
     else
       check_4 = false
-      msg << '40担当' + _msg_count
+      msg << '担当' + _msg_count
     end
 
     check_5_count = Gwsub::Sb04CheckStafflist.count(:id)
     if check_5_count > 0
       check_5 = Gwsub::Sb04CheckStafflist.check_fyear_id(fyear_id)
       if check_5 != true
-        msg << '50職員' + _msg
+        msg << '職員' + _msg
       end
     else
       check_5 = false
-      msg << '50職員' + _msg_count
+      msg << '職員' + _msg_count
     end
 
     check[:flg] = check_1 && check_2 && check_3 && check_4 && check_5
-    if check == true
+    if check[:flg] == true
       check[:msg] = ''
     else
       check[:msg] = Gw.join(msg, '<br />')
@@ -397,7 +398,7 @@ class Gwsub::Sb04CheckStafflist < Gwsub::GwsubPref
       fields.each do |field|
         eval("model.#{field} = nz(item.#{field}, nil)")
       end
-      model.save(false)
+      model.save(:validate=>false)
     end
   end
 end

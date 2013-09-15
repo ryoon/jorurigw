@@ -1,111 +1,100 @@
-class Gw::Admin::YearFiscalJpsController < ApplicationController
+# encoding: utf-8
+class Gw::Admin::YearFiscalJpsController < Gw::Controller::Admin::Base
   include System::Controller::Scaffold
+  layout "admin/template/admin"
 
   def initialize_scaffold
-
     return redirect_to(request.env['PATH_INFO']) if params[:reset]
-    _search_condition
-
-  end
-
-  def _search_condition
-
   end
 
   def index
-    params[:limit] = nz(params[:limit], 10)
-    @limit = params[:limit]
-    qsa = ['limit', 's_keyword']
-    @qs = qsa.delete_if{|x| nz(params[x],'')==''}.collect{|x| %Q(#{x}=#{params[x]})}.join('&')
+    init_params
+    return authentication_error(403) unless @is_admin==true
 
-    @sort_keys = nz(params[:sort_keys], 'start_at DESC')
-    item = Gw::YearFiscalJp.new #.readable
+    item = Gw::YearFiscalJp.new
     item.search params
     item.page   params[:page], params[:limit]
-    item.order  params[:id], @sort_keys
+    item.order "start_at DESC"
     @items = item.find(:all)
-    _index @items
   end
-
   def show
+    init_params
+    return authentication_error(403) unless @is_admin==true
+
     @item = Gw::YearFiscalJp.find(params[:id])
+    return http_error(404) if @item.blank?
   end
 
   def new
+    init_params
+    return authentication_error(403) unless @is_admin==true
+
     @item = Gw::YearFiscalJp.new
   end
   def create
+    init_params
+    return authentication_error(403) unless @is_admin==true
+
     @item = Gw::YearFiscalJp.new(params[:item])
-    _create @item
+
+    location  = "/gw/year_fiscal_jps?#{@qs}"
+    options={:success_redirect_uri=>location}
+    _create(@item,options)
   end
 
   def edit
-    @item = Gw::YearFiscalJp.find(params[:id])
-  end
+    init_params
+    return authentication_error(403) unless @is_admin==true
 
+    @item = Gw::YearFiscalJp.find(params[:id])
+    return http_error(404) if @item.blank?
+  end
   def update
+    init_params
+    return authentication_error(403) unless @is_admin==true
+
     @item = Gw::YearFiscalJp.new.find(params[:id])
     @item.attributes = params[:item]
-    _update @item
+
+    location  = "/gw/year_fiscal_jps/#{@item.id}?#{@qs}"
+    options={:success_redirect_uri=>location}
+    _update(@item,options)
   end
 
   def destroy
+    init_params
+    return authentication_error(403) unless @is_admin==true
+
     @item = Gw::YearFiscalJp.new.find(params[:id])
-    _destroy @item
+    return http_error(404) if @item.blank?
+
+
+    location  = "/gw/year_fiscal_jps?#{@qs}"
+    options={:success_redirect_uri=>location}
+    _destroy(@item,options)
   end
 
-  def csvput
-    case params[:csv]
-    when 'init'
-    when 'put'
-        items = Gw::YearFiscalJp.find(:all)
-  #      filename = "year_fiscal_jps.csv"
-        filename = "year_fiscal_jps_#{params[:nkf]}.csv"
-      if items.blank?
-      else
-        file = Gw::Script::Tool.ar_to_csv(items)
-        case params[:nkf]
-        when 'utf8'  # UTF8
-          send_download "#{filename}", NKF::nkf('-w',file)
-        when 'sjis'  # SJIS
-          send_download "#{filename}", NKF::nkf('-s',file)
-        else
-          raise TypeError, 'unknown character set'
-        end
-      end
-    else
-      redirect_to gw_year_fiscal_jps_path
-    end
+  def init_params
+#    @is_admin = Gw::AdminMessage.is_admin?( Site.user.id )
+    @role_developer  = Gw::YearMarkJp.is_dev?
+    @role_admin      = Gw::YearMarkJp.is_admin?
+    @u_role = @role_developer || @role_admin
+    @is_admin = @role_developer || @role_admin
+
+    params[:limit] = nz(params[:limit], 10)
+    @limit = params[:limit]
+
+    _search_condition
+
+    @css = %w(/layout/admin/style.css)
+    Page.title = "年度設定"
   end
 
-  def csvup
-    return if params[:item].nil?
-    par_item = params[:item]
-    case par_item[:csv]
-    when 'up'
-      if par_item.nil? || par_item[:nkf].nil? || par_item[:file].nil?
-        flash[:notice] = 'ファイル名を入力してください'
-      else
-        upload_data = par_item[:file]
-        f = upload_data.read
-        nkf_options = case par_item[:nkf]
-        when 'utf8'
-          '-w -W'
-        when 'sjis'
-          '-w -S'
-        end
-        file =  NKF::nkf(nkf_options,f)
-        if file.blank?
-        else
-          Gw::YearFiscalJp.drop_create_table
-          s_to = Gw::Script::Tool.import_csv(file, "gw_year_fiscal_jps")
-        end
+  def _search_condition
+#    params[:limit]        = nz(params[:limit],@limit)
 
-        redirect_to gw_year_fiscal_jps_path
-      end
-    else
-      redirect_to gw_year_fiscal_jps_path
-    end
-
+    qsa = ['limit', 's_keyword']
+    @qs = qsa.delete_if{|x| nz(params[x],'')==''}.collect{|x| %Q(#{x}=#{params[x]})}.join('&')
   end
+
 end

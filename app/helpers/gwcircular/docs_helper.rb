@@ -1,3 +1,4 @@
+#encoding:utf-8
 module Gwcircular::DocsHelper
 
   def gwcircular_attachments_form(form, item)

@@ -1,6 +1,7 @@
+# encoding: utf-8
 class Gw::PortalAdd  < Gw::Database
   include System::Model::Base
-  include Cms::Model::Base::Content
+  include System::Model::Base::Content
 
   before_create :set_creator
   before_update :set_updator

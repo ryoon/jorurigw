@@ -1,11 +1,11 @@
 module Gwboard::Model::AttachesFile
 
   def file_dir
-    return "#{RAILS_ROOT}/public#{self.file_base_path}"
+    return "#{Rails.root}/public#{self.file_base_path}"
   end
 
   def up_dir
-    return "#{RAILS_ROOT}/upload#{self.file_base_path}"
+    return "#{Rails.root}/upload#{self.file_base_path}"
   end
 
   def parent_name
@@ -46,7 +46,7 @@ module Gwboard::Model::AttachesFile
     ret = "/_admin/gwboard/receipts/#{self.id}/download_object?system=#{system_name}&title_id=#{self.title_id}" if self.content_id  == 2
 
     if self.content_id  == 3
-      ret = "/_admin/attaches/#{self.system_name}/#{sprintf('%06d',self.title_id)}/#{parent_name}/#{str}/#{URI.encode(self.filename)}"
+      ret = "/_admin/_attaches/#{self.system_name}/#{sprintf('%06d',self.title_id)}/#{parent_name}/#{str}/#{URI.encode(self.filename)}"
     end if self.width == 0
     return ret
   end

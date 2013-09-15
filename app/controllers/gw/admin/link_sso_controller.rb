@@ -1,6 +1,8 @@
-class Gw::Admin::LinkSsoController < ApplicationController
+# encoding: utf-8
+class Gw::Admin::LinkSsoController < Gw::Controller::Admin::Base
   include System::Controller::Scaffold
-
+  layout 'base'
+  
   def index
 
   end
@@ -38,15 +40,21 @@ function PostToAuth(){
 </body>
 </html>
 EOL
-    render :text => redirect_page, :layout => 'empty'
+    render :text => redirect_page
   end
 
   def redirect_pref_pieces
     id = params[:id]
     raise Gw::SystemError, '呼び出しが不正です。' if !Gw.int?(id)
+    
     id = id.to_i
-    item = Gw::EditLinkPiece.find_by_id(id)
+    if params[:src] == 'tab'
+      item = Gw::EditTab.find_by_id(id)
+    else
+      item = Gw::EditLinkPiece.find_by_id(id)
+    end
     raise Gw::SystemError, '呼び出しが不正です。' if item.blank?
+    
     if item.name=='メール' or  params[:id].to_i==64 or params[:id].to_i==65
       if request.mobile?
         mobile_uri = Gw::UserProperty.find(:first,
@@ -64,7 +72,7 @@ EOL
     else
       redirect_page = redirect_page_create(item.link_url, item.field_account, item.field_pass)
     end
-    render :text => redirect_page, :layout => 'empty'
+    render :text => redirect_page
   end
 
 private

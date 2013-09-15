@@ -1,13 +1,14 @@
+# encoding: utf-8
 module System::Model::Unid::Map
   def self.included(mod)
     mod.has_many :maps, :primary_key => 'unid', :foreign_key => 'unid', :class_name => 'System::Map',
       :dependent => :destroy
-      
+
     mod.after_save :save_maps
   end
-  
+
   attr_accessor :_maps
-  
+
   def find_map_by_name(name)
     return nil if maps.size == 0
     maps.each do |map|
@@ -15,17 +16,17 @@ module System::Model::Unid::Map
     end
     return nil
   end
-  
+
   def save_maps
     return true  unless _maps
     return false unless unid
     return false if @save_maps_callback_flag
-    
+
     @save_maps_callback_flag = true
-    
+
     _maps.each do |k, values|
       name  = k.to_s
-      
+
       if values == ''
         maps.each do |map|
           map.destroy if map.name == name
@@ -37,18 +38,18 @@ module System::Model::Unid::Map
             items << map
           end
         end
-        
+
         if items.size > 1
           items.each {|map| map.destroy}
           items = []
         end
-        
+
         if items.size == 0
           map = System::Map.new({:unid => unid, :name => name})
         else
           map = items[0]
         end
-        
+
         map.title       = values[:title]
         map.map_lat     = values[:map_lat]
         map.map_lng     = values[:map_lng]
@@ -68,11 +69,11 @@ module System::Model::Unid::Map
         map.point5_name = values[:point5_name]
         map.point5_lat  = values[:point5_lat]
         map.point5_lng  = values[:point5_lng]
-        
+
         map.save
       end
     end
-    
+
     maps(true)
     return true
   end
