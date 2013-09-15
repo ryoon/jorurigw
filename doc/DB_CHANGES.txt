@@ -1,3 +1,6 @@
+2.1.1
+ 変更なし
+
 2.1.0
 USE `xxxxxxx_jgw_gw`;
 CREATE TABLE IF NOT EXISTS `gw_prop_types` (

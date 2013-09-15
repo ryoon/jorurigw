@@ -1,4 +1,4 @@
-## Joruri Gw 2.1.0 インストールマニュアル                   2013.06.27
+## Joruri Gw 2.1.1 インストールマニュアル                   2013.08.09
 
 **********************************************************************
  1 想定環境
@@ -48,7 +48,7 @@ Joruri Gw の実行に必要なパッケージをインストールします。
 必要なパッケージをダウンロードします。
 
   # cd /usr/local/src/
-  # wget http://joruri.org/download/jorurigw/jorurigw-2.0.3.tar.gz
+  # wget http://joruri.org/download/jorurigw/jorurigw-2.1.1.tar.gz
   # wget ftp://ftp.ruby-lang.org/pub/ruby/1.9/ruby-1.9.3-p194.tar.gz
   # wget http://memcached.googlecode.com/files/memcached-1.4.13.tar.gz
   # wget http://pyyaml.org/download/libyaml/yaml-0.1.4.tar.gz
@@ -63,7 +63,7 @@ Joruriユーザを作成します。
 Joruri Gwソースコードを設置します。
 
   # mkdir /var/share
-  # tar xvzf jorurigw-2.0.3.tar.gz -C /var/share
+  # tar xvzf jorurigw-2.1.1.tar.gz -C /var/share
   # chown -R joruri:joruri /var/share/jorurigw
 
 **********************************************************************
@@ -220,6 +220,7 @@ LDAP接続情報
 SMTP接続情報
 
   $ vi config/environments/development.rb
+  ※ production環境の場合は $ vi config/environments/production.rb
 
   ※連絡メモの「携帯等メール転送設定」などメール機能を利用する場合はSMTPの設定が必要です。
 
@@ -253,12 +254,12 @@ SMTP接続情報
   $ /usr/bin/mysql -u root -p development_jgw_bbs_000001 < ./db/development_jgw_bbs_000001_init.sql
 
 ※Railsの実行環境がproductionの場合、データベース名は下記のようにしてください。
+  (.sqlファイルの名前はそのまま)
   production_jgw_core
   production_jgw_gw
   production_jgw_gw_pref
- production_jgw_bbs_000001
-
-さらに環境設定のために次のSQL文を実行してください。
+  production_jgw_bbs_000001
+  さらに環境設定のために次のSQL文を実行してください。
   $ /usr/bin/mysql -u root -p -e "UPDATE production_jgw_gw.gwbbs_controls SET dbname = 'production_jgw_bbs_000001' WHERE gwbbs_controls.id =1;"
 
 
