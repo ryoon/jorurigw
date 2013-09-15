@@ -11,8 +11,13 @@
     <%= form_tag '', :method => :get, :class => 'search' do %>
     <table>
       <tr>
-        <th>表示行数</th>
-        <td><%= select_tag( 'limit' ,options_for_select(Gw.limit_select, @limit.to_i) ) %></td>
+        <td colspan=2>
+        	表示行数<%= select_tag( 'limit' ,options_for_select(Gw.limit_select, @limit.to_i) ) %>
+        	LDAP<%= filter_select_tag :ldap, 'system_users_ldaps', params, :default => :all %>
+        	状態<%= filter_select_tag :state, 'system_states', params, :default => :enabled %>
+        </td>
+      </tr>
+      <tr>
         <th>検索条件 コード・名前・名前(英)・メールアドレス</th>
         <td><%= text_field_tag('s_keyword', params[:s_keyword] , :size => 50 ) %></td>
         <td class="submitters">

@@ -4,14 +4,18 @@ if @sp_mode == :prop
   raise ArgumentError, 'piece_header 呼び出し前に params[:s_genre] を設定してください。' if params[:s_genre].nil?
 end
 %>
-<%= raw(render(:partial => '/gw/admin/schedules/schedule_bt_box', :locals=>{:d=>d, :mode=>mode})) -%>
+<%
+if @sp_mode == :prop
+  bt_box = '/gw/admin/schedule_props/bt_box'
+else
+  bt_box = '/gw/admin/schedules/schedule_bt_box'
+end
+%>
+<%= raw(render(:partial => bt_box, :locals=>{:d=>d, :mode=>mode})) -%>
 
 <% if @custom_group -%>
 <div class="scheduleTableTitle"><%= @custom_group.name -%></div>
 <% end -%>
-
-<% other_group_select_flg = (params[:s_genre] == 'other' && mode != 'month' && params[:prop_id].blank? && @is_gw_admin) -%>
-<%= raw(render(:partial => '/gw/admin/schedule_props/other_group_select')) if other_group_select_flg -%>
 
 <% if @show_flg -%>
   <%= raw(render(:partial => '/gw/admin/schedules/schedule_line_box', :locals=>{:d=>d, :mode=>mode, :move_mode=>:header})) -%>

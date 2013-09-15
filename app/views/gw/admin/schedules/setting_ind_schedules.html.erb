@@ -36,6 +36,15 @@
         {:force_tag => 1, :selected => nz(@item[:view_place_display], 0).to_i})) -%>
             </td>
           </tr>
+          <tr>
+            <th>
+              ポータル表示設定
+            </th>
+            <td>
+              <%= raw(radio(f, :view_portal_schedule_display, {'0'=>'表示しない', '1'=>'表示する'},
+          {:force_tag => 1, :selected => @item[:view_portal_schedule_display].to_i})) -%>
+            </td>
+          </tr>
         </table>
         <%= raw(submit_for(f, {:caption => '保存',:id=>"item_submit_#{@key}"})) -%>
       <% end -%>

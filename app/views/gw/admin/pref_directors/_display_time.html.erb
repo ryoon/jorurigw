@@ -4,7 +4,5 @@
   else
     fyear = Gw::YearFiscalJp.get_record(Time.now)
   end
-#  fyear = Gw::YearFiscalJp.get_record(Time.now)
-  display_time  = '(' + fyear.namejp.to_s + '年' + Time.now.strftime('%m月%d日 %H:%M 現在') + ')'
 %>
-<%=display_time%>
+<%= '(' + fyear.namejp.to_s + '年' + Time.now.strftime('%m月%d日 %H:%M 現在') + ')' if fyear.present?  %>

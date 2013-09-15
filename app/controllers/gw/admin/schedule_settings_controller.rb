@@ -341,6 +341,40 @@ class Gw::Admin::ScheduleSettingsController  < Gw::Controller::Admin::Base
     end
   end
 
+  def potal_display
+    redirect_url = params[:url].to_s
+
+    key = 'schedules'
+    hu = nz(Gw::Model::UserProperty.get(key.singularize), nil)
+    if hu.blank?
+      hash = {key => {}}
+      trans_raw = Gw::NameValue.get('yaml', nil, "gw_#{key}_settings_ind")
+      cols = trans_raw['_cols'].split(":")
+
+      default = Gw::NameValue.get('yaml', nil, "gw_#{key}_settings_system_default")
+      cols.each do |col|
+        hash[key][col] = default[col].to_s
+      end
+      hu = hash
+    end
+
+    hu[key]['view_portal_schedule_display'] = '1' unless hu[key].key?('view_portal_schedule_display')
+
+    hu_update = hu[key]
+    if hu_update['view_portal_schedule_display'] == '1'
+      hu_update['view_portal_schedule_display'] = '0'
+    else
+      hu_update['view_portal_schedule_display'] = '1'
+    end
+
+    ret = Gw::Model::UserProperty.save(key.singularize, hu, {})
+
+    if ret == true
+      redirect_to redirect_url
+    else
+      redirect_to redirect_url
+    end
+  end
 protected
   
   def check_gw_system_admin

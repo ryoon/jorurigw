@@ -552,42 +552,9 @@ gw_prop_images_common:
   created_at: x
   updated_at: x
   _size: サイズ（幅x高さ）
-gw_prop_others:
-  _common:
-    id: x
-    sort_no: 表示順
-    name: 名称
-    type_id: r:種別:gw_prop_other_type_ids
-    delete_state: r:削除状態:gw_prop_delete_state
-    reserved_state: r:予約:gw_prop_other_reserved_states
-    comment: 備考
-    extra_flag: x
-    extra_data: x
-    _prop_stat: 設備の状態
-    _prop_owner_class: 管理区分
-    _prop_owner: 管理所属
-    _prop_owner_s: 管理所属
-    _admin: 施設管理所属
-    _editor: 予約可能所属
-    _reader: 照会可能所属
-    created_at: d:作成日
-    updated_at: d:更新日
-  form:
-    _cols: sort_no:name:type_id:comment
-    _required_cols: sort_no:name:type_id:_admin:_editor:_reader
-  index:
-    _cols: reserved_state:type_id:name:_admin:_editor:_reader
-  show:
-    _cols: reserved_state:sort_no:name:type_id:comment:created_at:updated_at:_prop_owner_class:_admin:_editor:_reader
-  show_in_schedule_show_one:
-    _cols: sort_no:name:type_id:comment:_prop_stat:_prop_owner
 gw_prop_other_reserved_states:
   1: 許可
   0: 不可
-gw_prop_other_type_ids:
-  100: 公用車
-  200: 会議室
-  300: 一般備品
 gw_prop_other_images:
   _base: gw_prop_images_common
 gw_schedule_props:
@@ -1310,7 +1277,7 @@ system_users_auth_nos:
 system_users_ldaps:
   0: 非同期
   1: 同期
-  2: LDAPのみ
+
 system_group_versions:
   id: ID
   created_at: x

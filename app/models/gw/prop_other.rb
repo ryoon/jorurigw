@@ -8,6 +8,7 @@ class Gw::PropOther < Gw::Database
   has_many :schedules, :through => :schedule_props
   has_many :images, :primary_key => 'id', :foreign_key => 'parent_id', :class_name => 'Gw::PropOtherImage', :order=>"gw_prop_other_images.id"
   has_many :prop_other_roles, :foreign_key => :prop_id, :class_name => 'Gw::PropOtherRole', :order=>"gw_prop_other_roles.id"
+  belongs_to :prop_type, :foreign_key => :type_id, :class_name => 'Gw::PropType'
 
   after_save :delete_cache_admin_first
   before_destroy :delete_cache_admin_first

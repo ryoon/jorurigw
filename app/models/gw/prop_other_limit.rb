@@ -9,10 +9,6 @@ class Gw::PropOtherLimit < Gw::Database
   validates_presence_of  :limit
   validates_numericality_of :limit , :greater_than_or_equal_to =>20 , :less_than_or_equal_to=> 100000
 
-  def self.is_admin?(uid=Site.user.id)
-    return System::Role.is_admin?(uid)
-  end
-
   def self.limit_count(gid = Site.user_group.id)
 
     limit = self.find(:first, :conditions=>"gid = #{gid}")

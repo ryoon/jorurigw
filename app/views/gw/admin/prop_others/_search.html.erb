@@ -7,7 +7,7 @@ grouplist = Gwsub.grouplist4(nil, 'all', true ,nil , nil, :return_pattern => 2)
 <table>
   <tr>
     <td>
-      種別 <%= select_tag('s_type_id' , options_for_select( Gw.yaml_to_array_for_select("gw_prop_other_type_ids", :include_blank=>['0','すべて'] ), @s_type_id), :onchange=>javascript_fname ) %>
+      種別 <%= select_tag(:s_type_id, options_from_collection_for_select(@prop_types, :id, :name, params[:s_type_id]), :prompt => "すべて", :onchange=>javascript_fname ) %>
     </td>
     <% if @is_gw_admin %>
     <td>

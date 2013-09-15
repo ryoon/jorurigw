@@ -10,6 +10,7 @@ class Gw::Admin::TabMainController < Gw::Controller::Admin::Base
   def init_params
     @css = %w(/layout/gw-tab-main/style.css /_common/themes/gw/css/portal_common.css)
     @is_gw_admin = Gw.is_admin_admin?
+    session[:request_fullpath] = request.fullpath
   end
 
   def show

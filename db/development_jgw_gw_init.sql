@@ -325,7 +325,8 @@ INSERT INTO `gw_edit_link_pieces` (`id`, `uid`, `class_created`, `published`, `s
 (1503, NULL, 1, 'opened', 'enabled', 4, 773, '研修等申込・受付システム', 30, 0, NULL, NULL, '', NULL, NULL, '/gwsub/sb01/sb01_training_entries', NULL, '', NULL, 1, NULL, 1, '', '', 0, NULL, NULL, NULL, '2012-05-11 14:04:47', NULL, NULL, '2012-05-11 14:04:47', 'システム管理者', '秘書広報課'),
 (1504, NULL, 1, 'opened', 'enabled', 3, 2, '職員名簿', 70, 0, NULL, NULL, '', 3, 9, '', NULL, '', NULL, 1, NULL, 1, '', '', 0, NULL, NULL, NULL, '2012-05-16 11:37:03', 'システム管理者', '秘書広報課', '2012-05-16 11:36:39', 'システム管理者', '秘書広報課'),
 (1505, NULL, 1, 'opened', 'enabled', 4, 1504, '電子職員録', 10, 0, NULL, NULL, '', NULL, NULL, '/gwsub/sb04/01/sb04stafflistview', NULL, '', NULL, 1, NULL, 1, '', '', 0, NULL, NULL, NULL, '2012-05-16 11:38:19', NULL, NULL, '2012-05-16 11:38:19', 'システム管理者', '秘書広報課'),
-(1506, NULL, 1, 'opened', 'enabled', 4, 1504, '電子事務分掌表', 20, 0, NULL, NULL, '', NULL, NULL, '/gwsub/sb04/02/sb04divideduties', NULL, '', NULL, 1, NULL, 1, '', '', 0, NULL, NULL, NULL, '2012-05-16 11:38:50', NULL, NULL, '2012-05-16 11:38:50', 'システム管理者', '秘書広報課');
+(1506, NULL, 1, 'opened', 'enabled', 4, 1504, '電子事務分掌表', 20, 0, NULL, NULL, '', NULL, NULL, '/gwsub/sb04/02/sb04divideduties', NULL, '', NULL, 1, NULL, 1, '', '', 0, NULL, NULL, NULL, '2012-05-16 11:38:50', NULL, NULL, '2012-05-16 11:38:50', 'システム管理者', '秘書広報課'),
+(1507, NULL, 1, 'opened', 'enabled', 4, 1485, 'ワークフロー',     10, 0, NULL, NULL, '', 2,    NULL, '/gwworkflow',                     NULL, '', NULL, 1, NULL, 1, '', '', 0, NULL, NULL, NULL, '2013-05-27 17:27:50', NULL, NULL, '2013-05-27 17:27:50', 'システム管理者', '秘書広報課');
 
 --
 -- テーブルのデータをダンプしています `gw_edit_link_piece_csses`
@@ -535,6 +536,17 @@ INSERT INTO `gw_prop_other_limits` (`id`, `sort_no`, `state`, `gid`, `limit`, `c
 --
 -- テーブルのデータをダンプしています `gw_prop_other_roles`
 --
+
+
+--
+-- テーブルのデータをダンプしています `gw_prop_types`
+--
+
+
+INSERT INTO `gw_prop_types` (`id`, `state`, `name`, `sort_no`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(100, 'public', '公用車', 100, NULL, NULL, NULL),
+(200, 'public', '会議室', 200, NULL, NULL, NULL),
+(300, 'public', '一般備品', 300, NULL, NULL, NULL);
 
 
 --
@@ -807,4 +819,11 @@ INSERT INTO `questionnaire_itemdeletes` (`id`, `content_id`, `created_at`, `upda
 --
 -- テーブルのデータをダンプしています `questionnaire_temporaries`
 --
+
+--
+-- テーブルのデータをダンプしています `gw_workflow_controls`
+--
+
+INSERT INTO `gw_workflow_controls` (`id`, `unid`, `content_id`, `state`, `created_at`, `updated_at`, `recognized_at`, `published_at`, `default_published`, `doc_body_size_capacity`, `doc_body_size_currently`, `upload_graphic_file_size_capacity`, `upload_graphic_file_size_capacity_unit`, `upload_document_file_size_capacity`, `upload_document_file_size_capacity_unit`, `upload_graphic_file_size_max`, `upload_document_file_size_max`, `upload_graphic_file_size_currently`, `upload_document_file_size_currently`, `commission_limit`, `create_section`, `create_section_flag`, `addnew_forbidden`, `edit_forbidden`, `draft_forbidden`, `delete_forbidden`, `attachfile_index_use`, `importance`, `form_name`, `banner`, `banner_position`, `left_banner`, `left_menu`, `left_index_use`, `left_index_pattern`, `left_index_bg_color`, `default_mode`, `other_system_link`, `preview_mode`, `wallpaper_id`, `wallpaper`, `css`, `font_color`, `icon_id`, `icon`, `sort_no`, `caption`, `view_hide`, `categoey_view`, `categoey_view_line`, `monthly_view`, `monthly_view_line`, `group_view`, `one_line_use`, `notification`, `restrict_access`, `upload_system`, `limit_date`, `name`, `title`, `category`, `category1_name`, `category2_name`, `category3_name`, `recognize`, `createdate`, `createrdivision_id`, `createrdivision`, `creater_id`, `creater`, `editdate`, `editordivision_id`, `editordivision`, `editor_id`, `editor`, `default_limit`, `dbname`, `admingrps`, `admingrps_json`, `adms`, `adms_json`, `dsp_admin_name`, `editors`, `editors_json`, `readers`, `readers_json`, `sueditors`, `sueditors_json`, `sureaders`, `sureaders_json`, `help_display`, `help_url`, `help_admin_url`, `notes_field01`, `notes_field02`, `notes_field03`, `notes_field04`, `notes_field05`, `notes_field06`, `notes_field07`, `notes_field08`, `notes_field09`, `notes_field10`, `docslast_updated_at`) VALUES
+(1, NULL, NULL, 'public', '2013-05-20 10:00:00', '2013-05-20 10:00:00', NULL, NULL, 7, 100, 0, 10, 'GB', 10, 'GB', 5, 5, 0, 0, 200, NULL, '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '1', NULL, NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '', 1, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, 3, 'use', NULL, 'ワークフロー', NULL, NULL, NULL, NULL, 0, '2010-11-19 10:55', '698', '秘書広報課', 'gwbbs', 'admin', '2010-11-25 17:13', '698', '秘書広報課', 'gwbbs', 'admin', 200, NULL, '--- !map:HashWithIndifferentAccess \ngid: "3"\n', '[]', '--- !map:HashWithIndifferentAccess \ngid: "36"\n', '[]', '', '--- !map:HashWithIndifferentAccess \ngid: "3"\n', '[["", "0", "制限なし"]]', '--- !map:HashWithIndifferentAccess \ngid: "0"\n', '[["", "0", "制限なし"]]', '--- !map:HashWithIndifferentAccess \ngid: "36"\n', '[]', '--- !map:HashWithIndifferentAccess \ngid: "36"\n', '[]', '1', '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 

@@ -1,27 +1,24 @@
 <div class="piece prop index">
 
-<div class="pieceHeader">
-  <%# 見出し置き場 %>
-  <%= render :partial=>'piece_header' %>
-</div>
+  <div class="pieceHeader">
+    <%= render :partial=>'piece_header' %>
+  </div>
 
-<div class="pieceBody">
+  <div class="pieceBody">
 
-<div class="pieceBodyHeader">
-  <%# メニュー 置き場 %>
-</div>
-<%= render :partial=>'piece_menu1' %>
+    <div class="pieceBodyHeader">
+    </div>
+    <%= render(:partial => '/gw/admin/prop_others/prop_master_menu') %>
+    <%= render(:partial => 'titleline') %>
+    <div class="pieceBodyBody">
 
-<div class="pieceBodyBody">
-
-<%= form_for :item, :url => "/gw/prop_other_limits/#{@item.id}", :html => {:method => :put} do |f| %>
-<%= render :partial => 'form', :locals => {:f => f} %>
-<div class="preserve">
-<%= f.submit '保存' %>
-</div>
-<% end %><%# form%>
-
-</div>
-</div>
+      <%= form_for :item, :url => "/gw/prop_other_limits", :html => {:method => :post} do |f| %>
+        <%= render :partial => 'form', :locals => {:f => f} %>
+        <div class="preserve">
+          <%= f.submit '保存' %>
+        </div>
+      <% end %><%# form%>
+    </div>
+  </div>
 
 </div>

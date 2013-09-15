@@ -32,9 +32,15 @@ protected
   end
 
   def _create(item, options = {})
+    ignore_validate = options[:ignore_validate] || false
+    failured_action = options[:failured_action] || nil
     respond_to do |format|
-      if item.creatable? && item.save
+      if item.creatable? && item.save(:validate => (!ignore_validate))
         options[:after_process].call if options[:after_process]
+        if options[:after_process_with_item]
+          item.reload
+          options[:after_process_with_item].call(item)
+        end
         #system_log.add(:item => item, :action => 'create')
         location = options[:success_redirect_uri] ||= url_for(:action => :index)
         #location = item.item_path
@@ -44,7 +50,7 @@ protected
         format.html { redirect_to location }
         format.xml  { render :xml => to_xml(item), :status => status, :location => location }
       else
-        format.html { render :action => "new" }
+        format.html { render :action => failured_action || "new" }
         format.xml  { render :xml => item.errors, :status => :unprocessable_entity }
       end
     end
@@ -109,6 +115,7 @@ protected
   end
 
   def _update(item, options = {})
+    failured_action = options[:failured_action] || nil
     respond_to do |format|
       if item.editable? && item.save
         options[:after_process].call if options[:after_process]
@@ -118,7 +125,7 @@ protected
         format.html { redirect_to location }
         format.xml  { head :ok }
       else
-        format.html { render :action => :edit }
+        format.html { render :action => failured_action || :edit }
         format.xml  { render :xml => item.errors, :status => :unprocessable_entity }
       end
     end

@@ -2,7 +2,7 @@
 #初期値設定
 
 gw_schedules_settings_ind:
-  _cols: month_view_leftest_weekday:view_place_display
+  _cols: month_view_leftest_weekday:view_place_display:view_portal_schedule_display
   month_view_leftest_weekday: 月表示左端曜日
   week_view_piecehead_format: 週表示ピースヘッダ日付書式指定子
   week_view_dayhead_format: 週表示日ヘッダ書式指定子
@@ -10,6 +10,7 @@ gw_schedules_settings_ind:
   month_view_dayhead_format: 月表示日ヘッダ書式指定子
   header_each: n行毎にヘッダを表示(0で最上部のみ)
   view_place_display: 場所表示
+  view_portal_schedule_display: ポータル画面のスケジューラー表示設定
 gw_schedules_settings_system_default:
   _cols: month_view_leftest_weekday:view_place_display
   month_view_leftest_weekday: 1
@@ -19,6 +20,7 @@ gw_schedules_settings_system_default:
   month_view_dayhead_format: "%_d"
   header_each: 5
   view_place_display: 0
+  view_portal_schedule_display: 1
   # 以下、画面からは設定させない項
   dayview_button_caption: 日表示
   weekview_button_caption: 週表示
@@ -71,12 +73,13 @@ gw_memos_admin_delete_term:
   3: ２０日
   4: ３０日
 gw_todos_settings_system_default:
-  _cols: read_memos_display:unread_memos_display:todos_admin_delete:todos_display_schedule
+  _cols: read_memos_display:unread_memos_display:todos_admin_delete:todos_display_schedule_done:todos_display_schedule_doing
   finish_todos_display: 0
   unfinish_todos_display_start: 4
   unfinish_todos_display_end: 4
   todos_admin_delete: 4
-  todos_display_schedule: 1
+  todos_display_schedule_done: 0
+  todos_display_schedule_doing: 1
 gw_todos_display_term:
   0: 表示しない
   1: 当日のみ表示する
@@ -103,7 +106,10 @@ gw_todos_display_end_term:
   6: ５日先までを表示する
   7: ６日先までを表示する
   8: ７日先までを表示する
-gw_todos_display_schedule:
+gw_todos_display_schedule_done:
+  0: 表示しない
+  1: 表示する
+gw_todos_display_schedule_doing:
   0: 表示しない
   1: 表示する
 gw_todos_admin_delete_term:
@@ -168,3 +174,6 @@ gw_event_master_range:
   2: 所属
 gw_schedule_pref_admin_default:
   pref_admin_code: 000001_0
+
+gw_workflow_settings_system_default:
+  admin_email_from: admin@192.168.3.129

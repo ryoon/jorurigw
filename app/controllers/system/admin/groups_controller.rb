@@ -4,6 +4,7 @@ class System::Admin::GroupsController < Gw::Controller::Admin::Base
   layout "admin/template/admin"
 
   def initialize_scaffold
+		@current_no = 2
     @action = params[:action]
     if params[:parent].blank? || params[:parent] == '0'
       parent_id = 1
@@ -18,7 +19,7 @@ class System::Admin::GroupsController < Gw::Controller::Admin::Base
   end
   
   def list
-    return authentication_error(403) unless @role_admin == true
+    return authentication_error(403) unless @role_admin == true 
     Page.title = "ユーザー・グループ 全一覧画面"
 
     @groups = System::Group.get_level2_groups
@@ -29,7 +30,12 @@ class System::Admin::GroupsController < Gw::Controller::Admin::Base
     item.parent_id = @parent.id
     item.page  params[:page], params[:limit]
     order = "state DESC,sort_no,code"
-    @items = item.find(:all,:order=>order)
+
+    cond = {}
+    cond[:ldap]  = params[:ldap] if params[:ldap] && params[:ldap] != 'all'
+    cond[:state] = params[:state] if params[:state] && params[:state] != 'all'
+    @items = item.find(:all, :order=>order, :conditions => cond)
+    
     _index @items
   end
 

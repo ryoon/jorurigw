@@ -129,7 +129,7 @@ class System::UsersGroupsCsvdata < ActiveRecord::Base
 
             # 管理権限チェック
             if hashed_row[:data_type] == "user" && hashed_row[:state] == "有効"
-              user = System::User.find(:first, :conditions => "code = '#{hashed_row[:code]}'")
+              user = System::User.find(:first, :conditions => ["code = ?",hashed_row[:code] ])
               if user.present? && System::User.is_admin?(user.id)
                 admin_user_check = true
               end
@@ -180,7 +180,7 @@ class System::UsersGroupsCsvdata < ActiveRecord::Base
             # コード
             if row[:code].blank?
               row[:error] << "「#{csv_header[:code]}」は必須です。"
-            elsif Gw.half_width_characters?(row[:code]) != true
+            elsif System::User.valid_user_code_characters?(row[:code]) != true
               row[:error] << "「#{csv_header[:code]}」は、#{hankaku_error_string}"
             else
               if row[:data_type] == "group" # グループ

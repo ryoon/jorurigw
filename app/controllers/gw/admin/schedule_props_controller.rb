@@ -5,7 +5,7 @@ class Gw::Admin::SchedulePropsController < Gw::Admin::SchedulesController
 
   def initialize_scaffold
     return redirect_to(request.env['PATH_INFO']) if params[:reset]
-    Page.title = "一般施設スケジュール"
+    Page.title = "施設予約スケジュール"
   end
 
   def init_params
@@ -23,7 +23,7 @@ class Gw::Admin::SchedulePropsController < Gw::Admin::SchedulesController
     end
     @title = "一般施設"
     @s_genre = "?s_genre=other"
-    @piece_head_title = '施設スケジュール'
+    @piece_head_title = '施設予約スケジュール'
     @index_order = 'extra_flag, sort_no, gid, name'
     @js= ['/_common/js/gw_schedules.js'] +
       %w(gw_schedules popup_calendar/popup_calendar dateformat).collect{|x| "/_common/js/#{x}.js"} +
@@ -51,6 +51,13 @@ class Gw::Admin::SchedulePropsController < Gw::Admin::SchedulesController
 
     @ie = Gw.ie?(request)
     @hedder2lnk = 7
+    
+    @prop_types = Gw::PropType.find(:all, :conditions => ["state = ?", "public"], :select => "id, name")
+    if params[:type_id].present?
+      @type_id = params[:type_id]
+    else
+      @type_id = @prop_types[0].id if @prop_types.present?
+    end
   end
 
   def show
@@ -144,7 +151,7 @@ class Gw::Admin::SchedulePropsController < Gw::Admin::SchedulesController
   end
 
   def _props
-    @props  =  Gw::Model::Schedule.get_props(params, @is_gw_admin, {:s_other_admin_gid=>@s_other_admin_gid})
+    @props  =  Gw::Model::Schedule.get_props(params, @is_gw_admin, {:s_other_admin_gid=>@s_other_admin_gid, :type_id => @type_id})
     @prop_ids = @props.map{|x| x.id}
     @prop_edit_ids = Gw::PropOtherRole.find(:all, :select => "id, prop_id",
       :conditions=>["prop_id in (?) and gid in (#{Site.user_group.id}, #{Site.user_group.parent_id}) and auth = 'edit'", @prop_ids] ).map{|x| x.prop_id}

@@ -45,8 +45,10 @@ JoruriGw::Application.routes.draw do
   admin_attaches('doclibrary')
   admin_attaches('digitallibrary')
   admin_attaches('gwcircular')
+  admin_attaches('gwworkflow')
   admin_attaches('gwmonitor')
   admin_attaches('gwmonitor_base')
+  admin_attaches('gwworkflow')
   
   ## Exception
   match '403.:format' => 'exception#index'

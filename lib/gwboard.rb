@@ -1,6 +1,6 @@
 #encoding:utf-8
 class Gwboard
-
+  
   def self.add_reminder_circular(uid, title, body, options={})
     fr_u = System::User.find(:first, :conditions=>"id=#{uid}") rescue Site.user
     fr_u = Site.user if fr_u.blank?

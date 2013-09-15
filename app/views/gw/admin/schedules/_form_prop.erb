@@ -16,7 +16,6 @@ else
   {:id=>Site.user.id, :displayname=>Site.user.display_name}
 end
 
-opt_prop_types = Gw::ScheduleProp.prop_types << ["すべて", 0]
 ucls = ''
 prop_id = ''
 prop_name = ''
@@ -39,7 +38,7 @@ end
 
 _params = params.dup
 if params[:s_genre].blank?
-    _params[:s_genre]='other:other'
+  _params[:s_genre]='other:other'
 elsif params[:s_genre] == 'other'
   _params[:s_genre]='other:other'
 end
@@ -62,9 +61,9 @@ defalut_props = _defalut_props.collect{|x| [x[2], x[1]]}
   <tr>
     <th></th>
     <td>
-<%= hidden_field_tag 'item[owner_uid]', owner_u[:id] %>
-<%= button_to_function '予約担当者に設定 →', 'set_owner()' %>
-<%= text_field_tag 'item[owner_udisplayname]', owner_u[:displayname], :readonly=>true %>
+      <%= hidden_field_tag 'item[owner_uid]', owner_u[:id] %>
+      <%= button_to_function '予約担当者に設定 →', 'set_owner()' %>
+      <%= text_field_tag 'item[owner_udisplayname]', owner_u[:displayname], :readonly=>true %>
     </td>
   </tr>
 </table>
@@ -76,23 +75,23 @@ defalut_props = _defalut_props.collect{|x| [x[2], x[1]]}
       <table border="0">
         <tr>
           <td>
-<%= select_tag("item[schedule_props][prop_type_id]", options_for_select(opt_prop_types, 100), :onchange=>'update_prop_cand();') %>
+            <%= select_tag("item[schedule_props][prop_type_id]", options_from_collection_for_select(@prop_types, :id, :name, 100), :onchange=>'update_prop_cand();') %>
             <br />
-<%= select_tag("item[schedule_props][prop_id]", Gw.options_for_select(defalut_props, nil, :title=>genre), :size=>10, :style => 'width:280px;', :ondblclick => 'add_prop()', :multiple => true) if !genre.blank? %>
-<%= select_tag("item[schedule_props][prop_id]", Gw.options_for_select(defalut_props, nil, :title=>'other'), :size=>10, :style => 'width:280px;', :ondblclick => 'add_prop()', :multiple => true) if genre.blank? %>
+            <%= select_tag("item[schedule_props][prop_id]", Gw.options_for_select(defalut_props, nil, :title=>genre), :size=>10, :style => 'width:280px;', :ondblclick => 'add_prop()', :multiple => true) if !genre.blank? %>
+            <%= select_tag("item[schedule_props][prop_id]", Gw.options_for_select(defalut_props, nil, :title=>'other'), :size=>10, :style => 'width:280px;', :ondblclick => 'add_prop()', :multiple => true) if genre.blank? %>
           </td>
           <td>
-<%= button_to_function '追加 →', 'add_prop()' %>
+            <%= button_to_function '追加 →', 'add_prop()' %>
             <br /><br />
-<%= button_to_function '← 削除', 'del_prop()' %>
+            <%= button_to_function '← 削除', 'del_prop()' %>
           </td>
           <td>
-<%= select_tag("item[schedule_props_add_buf]", '', :size=>10, :style => 'width:280px;', :ondblclick => 'del_prop()', :multiple => true) %>
-<%= hidden_field_tag 'item[schedule_props_json]', '' -%>
+            <%= select_tag("item[schedule_props_add_buf]", '', :size=>10, :style => 'width:280px;', :ondblclick => 'del_prop()', :multiple => true) %>
+            <%= hidden_field_tag 'item[schedule_props_json]', '' -%>
           </td>
         </tr>
       </table>
-<%= raw(Gw.div_notice '', :id=>'notice_ajax_prop') -%>
+      <%= raw(Gw.div_notice '', :id=>'notice_ajax_prop') -%>
     </td>
   </tr>
   <tr>

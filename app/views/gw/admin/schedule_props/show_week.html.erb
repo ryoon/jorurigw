@@ -13,6 +13,7 @@ show_week_header = render(:partial => '/gw/admin/schedules/show_week_header')
   <div class="pieceBody">
     <div class="pieceBodyHeader">
       <%= render(:partial => '/gw/admin/schedules/schedule_header', :locals=>{:d=>@st_date, :mode=>'week', :show_flg => @show_flg}) -%>
+      <%= render(:partial => '/gw/admin/schedule_props/other_group_select') -%>
     </div>
 
     <div class="pieceBodyBody">

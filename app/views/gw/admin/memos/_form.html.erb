@@ -5,13 +5,8 @@ suffixes_raw = Gw.yaml_to_array_for_select('gw_memos_categories')
 suffixes = Gw.options_for_select(suffixes_raw, nil)
 %>
 
-<% if params[:action] == 'new' then %>
-  <%= raw(%Q(<div class="formTitle new">新規作成</div>)) %>
-<% elsif params[:action] == 'quote' then%>
-  <%= raw(%Q(<div class="formTitle quote">引用作成</div>)) %>
-<% else %>
-  <%= raw(%Q(<div class="formTitle edit">編集</div>)) %>
-<% end %>
+
+<%= raw(get_form_title_div params) %>
 
 <span class="required">※は必須項目です。</span>
 <table class="show">

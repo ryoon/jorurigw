@@ -7,6 +7,6 @@ grouplist = Gwsub.grouplist4(nil, 'all', true ,nil , nil, :return_pattern => 2)
   <%= hidden_field_tag('s_date', params[:s_date]) unless params[:s_date].blank? -%>
   <%= hidden_field_tag('id', params[:id]) unless params[:id].blank? -%>
   <%= hidden_field_tag('cls', params[:cls]) unless params[:cls].blank? -%>
-  <%= hidden_field_tag('type_id', params[:type_id]) unless params[:type_id].blank? -%>
+種別 <%= select_tag('type_id' , options_from_collection_for_select(@prop_types, :id, :name, @type_id), :onchange=>javascript_fname ) -%>
 施設の管理所属 <%= select_tag('s_other_admin_gid' , options_for_select( grouplist, @s_other_admin_gid), :onchange=>javascript_fname ) -%>
 <% end -%>

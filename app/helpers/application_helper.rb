@@ -113,6 +113,10 @@ module ApplicationHelper
   def show_notice(str="表示する項目はありません。")
     div_notice(str)
   end
+  
+  def no_item_notice(str="表示する項目はありません。")
+    Gw.div_notice(str)
+  end
 
   def hbf_struct(prefix, options={})
     header, body, footer = options[:header], options[:body], options[:footer]
@@ -215,5 +219,13 @@ EOL
     Gw.required(str)
   end
 
+
+
+  def filter_select_tag(value, relation_name, params, options={})
+    before  = options[:before]  ? options[:before]  : [['全て', :all]]
+    after   = options[:after]   ? options[:after]   : []
+    default = options[:default] ? options[:default] : nil
+    select_tag( value ,options_for_select( Gw.yaml_to_array_for_select_with_additions(before, relation_name, after), params[value] ? params[value] : default) )
+  end
 
 end

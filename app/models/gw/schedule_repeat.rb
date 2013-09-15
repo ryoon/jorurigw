@@ -245,7 +245,7 @@ class Gw::ScheduleRepeat < Gw::Database
             }
           }
 
-          unless other_item_save_flg
+          if competition_prop_other_ids.present?
             competition_prop_other_ids = competition_prop_other_ids.uniq
             competition_prop_other_names = []
             competition_prop_other_ids.each do |competition_prop_other_id|

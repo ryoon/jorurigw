@@ -151,7 +151,8 @@ module GwHelper
   end
 
   def get_form_title(_params)
-    case _params[:action]
+    act = _params[:sender_action] ? _params[:sender_action] : _params[:action]
+    case act
     when 'new', 'create'
       '新規作成'
     when 'quote'
@@ -160,6 +161,11 @@ module GwHelper
       get_repeat_mode(_params) == 1 ? '編集' : '繰り返し編集'
     else
     end
+  end
+
+  def quote_attrs(_params)
+    return (hidden_field_tag :sender_action, (params[:sender_action] ? params[:sender_action] : params[:action])) + 
+      (hidden_field_tag :sender_id, params[:id])
   end
 
   def get_repeat_mode(_params)

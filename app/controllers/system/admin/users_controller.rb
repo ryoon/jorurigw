@@ -17,7 +17,12 @@ class System::Admin::UsersController < Gw::Controller::Admin::Base
     item.page   params[:page], nz(params[:limit], 30)
 
     item.order params[:sort], :code
-    @items = item.find(:all)
+    
+    cond = {}
+    cond[:ldap]  = params[:ldap] if params[:ldap] && params[:ldap] != 'all'
+    cond[:state] = params[:state] if params[:state] && params[:state] != 'all'
+    @items = item.find(:all, :conditions => cond)
+    
     _index @items
   end
 
@@ -62,7 +67,7 @@ class System::Admin::UsersController < Gw::Controller::Admin::Base
         format.xml  { render :xml => @item.to_xml(:dasherize => false), :status => status, :location => url_for(:action => :index) }
       end
     else
-      flash.now[:notice] = '登録処理に失敗しました。'
+      flash.now[:notice] = '登録処理に失敗しました。' + ' ' + ret[1]
       respond_to do |format|
         format.html { render :action => :new }
         format.xml  { render :xml => @item.errors, :status => :unprocessable_entity }
@@ -204,6 +209,7 @@ class System::Admin::UsersController < Gw::Controller::Admin::Base
   end
 
   def init_params
+		@current_no = 1
     @role_developer  = System::User.is_dev?
     @role_admin      = System::User.is_admin?
     @role_editor     = System::User.is_editor?

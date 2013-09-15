@@ -45,7 +45,7 @@ protected
 
         location = nz(options[:success_redirect_uri], url_for(:action => :index))
         location.sub!(/\[\[id\]\]/, "#{item.id}") if options[:no_update_id].nil?
-        status = params[:_created_status] || :created
+        #success_block.call item
         flash[:notice] = options[:notice] || '登録処理が完了しました'
         format.html { redirect_to location }
         format.xml  { render :xml => to_xml(item), :status => status, :location => location }
@@ -56,6 +56,19 @@ protected
     end
   end
 
+  # バリデーションの後も"引用作成"の状態を維持するため
+  alias quote__create _create unless method_defined? :quote__create
+  def _create(x,y = {})
+    if params[:sender_action] == 'quote' and @item.invalid?
+      flash.now[:notice] = '登録処理に失敗しました。'
+      respond_to do |format|
+        format.html { render :action => :new, :params => { :sender_action => 'quote' } }
+        format.xml  { render :xml => item.errors, :status => :unprocessable_entity }
+      end
+    else
+      quote__create(x,y)
+    end
+  end
   
   
   

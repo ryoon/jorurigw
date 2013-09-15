@@ -10,10 +10,12 @@
   # TODO
   ['todo','todo'],
   # JoruriPlus
-  ['plus_update','plus_update']
+  ['plus_update','plus_update'],
+  # ワークフロー
+  ['workflow','denshiKessai']
   ]
   remind = []
-  %w(todo memo circular monitor plus_update).each{|mod|
+  %w(todo memo circular monitor plus_update workflow).each{|mod|
     remind += eval("Gw::Model::#{mod.capitalize}.remind.collect{|x| x[:c]='#{mod}'; x}")
   }
 %>

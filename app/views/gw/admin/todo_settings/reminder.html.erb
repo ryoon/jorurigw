@@ -18,7 +18,7 @@
 <%=select_by_list(f, :finish_todos_display, Gw.yaml_to_array_for_select('gw_todos_display_term', :for_select_by_list=>1),
     {}, @item[:finish_todos_display].to_i)%>
 </td></tr>
-<tr><th>未完</th><td>
+<tr><th>未完了</th><td>
 <%=select_by_list(f, :unfinish_todos_display_start, Gw.yaml_to_array_for_select('gw_todos_display_start_term', :for_select_by_list=>1),
         {}, @item[:unfinish_todos_display_start].to_i)%>
 <%=select_by_list(f, :unfinish_todos_display_end, Gw.yaml_to_array_for_select('gw_todos_display_end_term', :for_select_by_list=>1),

@@ -4,6 +4,7 @@ class System::Admin::UsersGroupsController < Gw::Controller::Admin::Base
   layout "admin/template/admin"
 
   def initialize_scaffold
+		@current_no = 2
     id      = params[:parent] == '0' ? 1 : params[:parent]
     @parent = System::Group.find_by_id(id)
     return http_error(404) if @parent.blank?

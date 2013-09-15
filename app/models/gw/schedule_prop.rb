@@ -73,20 +73,18 @@ class Gw::ScheduleProp < Gw::Database
     end if params.size != 0
     return ret_a.collect{|x| "(#{x})"}.join(" and ")
   end
-  
-  def self.prop_types
-    [["公用車", 100], ["会議室", 200], ["一般備品", 300]]
-  end
 
   def self.get_genres
     ':other/一般施設'.split(':').map{|x| x.split('/')}
   end
 
   def self.get_genre_select(options={})
-    key_prefix = options[:key_prefix].nil? ? '' : options[:key_prefix]
-    [
-      [ '一般施設', "#{key_prefix}other:other" ]
-    ]
+    prop_types = Gw::PropType.find(:all, :conditions => ["state = ?", "public"], :select => "id, name")
+    types = []
+    prop_types.each do |prop_type|
+      types << [prop_type.name, "prop_other_#{prop_type.id}" ]
+    end
+    return types
   end
 
   def self.prop_conv(conv, val)

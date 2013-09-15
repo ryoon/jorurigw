@@ -1,9 +1,0 @@
-<% if @items %>
-<%= link_to '新規作成', sys_ldap_temporaries_path + '?do=create', :confirm => '中間データを作成します' %>
-<%= render :partial => 'list' %>
-<% end %>
-
-<% if params[:do] == 'preview' %>
-<p>通信テスト</p>
-<%= render :partial => 'preview' %>
-<% end %>

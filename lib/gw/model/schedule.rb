@@ -29,7 +29,7 @@ module Gw::Model::Schedule
   end
 
   def self.show_schedule_move_core(ab, my_url, qs)
-    ret = "" 
+    ret = ""
     ab.each_with_index do |x, id|
       href = my_url.sub('%d', "#{(x[0]).strftime('%Y%m%d')}").sub('%q', "#{qs}")
       ret.concat ' ' if id != 0
@@ -200,23 +200,23 @@ module Gw::Model::Schedule
     cond_type = ""
 
     if is_gw_admin
-      if params[:type_id].blank?
-        cond_type = " and type_id = 100"
+      if options[:type_id].blank?
+        cond_type = ""
       elsif params[:type_id] == '0'
       else
-        cond_type = " and type_id = #{params[:type_id]}"
+        cond_type = " and type_id = #{options[:type_id]}"
       end
     else
-      cond_type = " and type_id = #{params[:type_id]}" if params[:type_id].present? && params[:type_id] != '0'
+      cond_type = " and type_id = #{options[:type_id]}" if options[:type_id].present? && options[:type_id] != '0'
     end
     cond_other = "delete_state = 0 and (auth = 'read' or auth = 'edit') and ((gw_prop_other_roles.gid = #{group.id} or gw_prop_other_roles.gid = #{group.parent_id}) or (gw_prop_other_roles.gid = 0))"
     cond_other.concat cond_type
 
     cond_other_admin = ""
-    if is_gw_admin && s_other_admin_gid != 0 # 絞り込み
+    if s_other_admin_gid != 0 # 絞り込み
       s_other_admin_group = System::GroupHistory.find_by_id(s_other_admin_gid)
       s_other_admin_group
-      cond_other_admin = "  and auth = 'admin'"
+      cond_other_admin = "auth = 'admin'"
       if s_other_admin_group.level_no == 2 # 部局
         gids = Array.new
         gids << s_other_admin_gid
@@ -225,9 +225,15 @@ module Gw::Model::Schedule
           gids << parent_group.id
         end
         search_group_ids = Gw.join([gids], ',')
-        cond_other_admin.concat " and  gw_prop_other_roles.gid in (#{search_group_ids})"
+        cond_other_admin.concat " and gw_prop_other_roles.gid in (#{search_group_ids})"
       else # 所属
-        cond_other_admin.concat " and  gw_prop_other_roles.gid = #{s_other_admin_group.id}"
+        cond_other_admin.concat " and gw_prop_other_roles.gid = #{s_other_admin_group.id}"
+      end
+
+      if is_gw_admin
+        cond_other_admin = " and #{cond_other_admin}"
+      else
+        cond_other_admin = " and gw_prop_others.id in (select `prop_id` from `gw_prop_other_roles` where #{cond_other_admin})"
       end
     end
 
@@ -236,8 +242,9 @@ module Gw::Model::Schedule
         other_items = _mdl.find(:all, :conditions=>cond + cond_type + cond_other_admin, :order=>'type_id, gid, coalesce(sort_no, 0), name',
           :joins => :prop_other_roles, :group => "gw_prop_others.id")
       else
-        other_items = _mdl.find(:all, :conditions=>cond_other, :order=>'type_id, gid, coalesce(sort_no, 0), name, gw_prop_others.gid',
+        other_items = _mdl.find(:all, :conditions=>cond_other + cond_other_admin, :order=>'type_id, gid, coalesce(sort_no, 0), name, gw_prop_others.gid',
           :joins => :prop_other_roles, :group => "gw_prop_others.id")
+
       end
 
       parent_groups = Gw::PropOther.get_parent_groups

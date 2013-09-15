@@ -1,6 +1,5 @@
 <%
 reserved_state = Gw.yaml_to_array_for_select("t1f0_kyoka_fuka")
-type_ids = Gw.yaml_to_array_for_select("gw_prop_other_type_ids")
 parent_groups = Gw::PropOther.get_parent_groups
 @prop_master = @genre
 
@@ -16,12 +15,8 @@ params[:s_genre] = @genre
   </div>
   <div class="pieceBody">
   <div class="pieceBodyHeader">
-    <%= render(:partial => '/gw/admin/schedules/schedule_bt_box', :locals=>{:d=>Date.today, :mode=>'month'}) %>
-  <div class="titleLine">
-    <span class="title">主管課マスタ</span>
-    <span class="linkSpace">
-    </span><!--linkSpace-->
-  </div>
+    <%= render(:partial => '/gw/admin/prop_others/prop_master_menu') %>
+    <%= render(:partial => '/gw/admin/prop_others/titleline') %>
   </div>
   <div class="pieceBodyBody">
     <%=  render(:partial => 'search') -%>
@@ -41,12 +36,11 @@ params[:s_genre] = @genre
       </tr>
       <% @items.each do | item| -%>
       <%
-        type = type_ids.rassoc(item.type_id)
       -%>
       <tr class="<%= cycle '', 'cycle' -%>">
         <td><%= link_to('詳細', "/gw/prop_#{@genre}s/#{item.id}?cls=#{@cls}") -%></td>
         <td><%= reserved_state[item.reserved_state][0] -%></td>
-        <td><%= type[0] -%></td>
+        <td><%= safe{item.prop_type.name} -%></td>
         <td><%= item.name -%></td>
         <td><%= raw(Gw.join [item.admin(:show, parent_groups)], '<br />') -%></td>
         <td><%= raw(Gw.join [item.editor(:show, parent_groups)], '<br />') -%></td>

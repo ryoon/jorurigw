@@ -9,6 +9,22 @@
     <div class="editingBox">
       <span class="btNew"><%= link_to '新規作成', new_system_group_path %></span>
     </div>
+    
+    <%= form_tag '', :method => :get, :class => 'search' do %>
+    <table>
+      <tr>
+        <td>
+        	LDAP<%= filter_select_tag :ldap, 'system_users_ldaps', params, :default => :all %>
+        	状態<%= filter_select_tag :state, 'system_states', params, :default => :enabled %>
+		</td>
+        <td class="submitters">
+          <%= submit_tag '検索',     :name => :search %>
+        </td>
+      </tr>
+    </table>
+    <% end %>
+    
+    
     <% if @items.blank? %>
       <div class="notice">表示する項目はありません。</div>
     <% else %>

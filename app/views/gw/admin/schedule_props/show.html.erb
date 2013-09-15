@@ -41,7 +41,6 @@ prop_schedules = Hash::new
   end
 end
 show_day_header = render(:partial => '/gw/admin/schedules/show_day_header')
-
 %>
 
 <div class="piece schedulePiece dayview">
@@ -51,6 +50,7 @@ show_day_header = render(:partial => '/gw/admin/schedules/show_day_header')
   <div class="pieceBody">
     <div class="pieceBodyHeader">
       <%= render(:partial => '/gw/admin/schedules/schedule_header', :locals=>{:d=>@st_date, :mode=>'day', :show_flg => @show_flg}) -%>
+      <%= render(:partial => '/gw/admin/schedule_props/other_group_select') -%>
     </div>
 
     <div class="pieceBodyBody">

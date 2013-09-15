@@ -1,9 +1,9 @@
 # encoding: utf-8
 module Joruri
   def self.version
-    "2.0.3"
+    "2.1.0"
   end
-  
+
   def self.default_config
     { "application" => {
         "sys.login_footer"                       => "",
@@ -13,12 +13,12 @@ module Joruri
         "sys.force_site"                         => ""
     }}
   end
-  
+
   def self.config
     $joruri_config ||= {}
     Joruri::Config
   end
-  
+
   class Joruri::Config
     def self.application
       config = Joruri.default_config["application"]
@@ -33,19 +33,19 @@ module Joruri
       end
       $joruri_config[:application] = config
     end
-    
+
     def self.imap_settings
       $joruri_config[:imap_settings]
     end
-    
+
     def self.imap_settings=(config)
       $joruri_config[:imap_settings] = config
     end
-    
+
     def self.sso_settings
       $joruri_config[:sso_settings]
     end
-    
+
     def self.sso_settings=(config)
       $joruri_config[:sso_settings] = config
     end

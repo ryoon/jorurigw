@@ -41,38 +41,6 @@ var select_group_link = function(fr_id, s_date) {
       //oMenu.show();
       url = '/gw/schedules/search';
       break;
-    case 'prop_meetingroom':
-      url = '/gw/schedule_props/show_week?s_genre=meetingroom&s_date='+s_date;
-      break;
-    case 'prop_meetingroom:other':
-      url = '/gw/schedule_props/show_week?s_genre=meetingroom&cls=other&s_date='+s_date;
-      break;
-    case 'prop_meetingroom:pm':
-      // url = '/gw/schedule_props/'+s_date+'?s_genre=meetingroom&cls=pm';
-      url = '/gw/schedule_props/show_week?s_genre=meetingroom&cls=pm&s_date='+s_date;
-      break;
-    case 'prop_meetingroom:bs':
-      url = '/gw/schedule_props/show_week?s_genre=meetingroom&cls=bs&s_date='+s_date;
-      break;
-    case 'prop_rentcar':
-      url = '/gw/schedule_props/show_week?s_genre=rentcar&s_date='+s_date;
-      break;
-    case 'prop_rentcar:other':
-      url = '/gw/schedule_props/show_week?s_genre=rentcar&cls=other&s_date='+s_date;
-      break;
-    case 'prop_rentcar:pm':
-      // url = '/gw/schedule_props/'+s_date+'?s_genre=rentcar&cls=pm';
-      url = '/gw/schedule_props/show_week?s_genre=rentcar&cls=pm&s_date='+s_date;
-      break;
-    case 'prop_other':
-      url = '/gw/schedule_props/show_week?s_genre=other&s_date='+s_date;
-      break;
-    case 'prop_other:other':
-      url = '/gw/schedule_props/show_week?s_genre=other&cls=other&s_date='+s_date;
-      break;
-    case 'prop_other:other:other':
-      url = '/gw/schedule_props/show_week?s_genre=other&cls=other&be=other&s_date='+s_date;
-      break;
     case 'event_week':
       url = '/gw/schedules/event_week?s_date=' + event_week_day;
       break;
@@ -86,11 +54,14 @@ var select_group_link = function(fr_id, s_date) {
       url = '/gw/meetings/?s_date=' + s_date;
       break;
     default:
-	  if (match_result = genre.match(/^custom_group_(\d+)$/)) {
+      if (match_result = genre.match(/^custom_group_(\d+)$/)) {
         url = '/gw/schedules?cgid='+match_result[1]+'&s_date='+s_date;
         break;
-	  } else if (match_result = genre.match(/^group_(\d+)$/)) {
+      } else if (match_result = genre.match(/^group_(\d+)$/)) {
         url = '/gw/schedules?gid='+match_result[1]+'&s_date='+s_date;
+        break;
+      } else if (match_result = genre.match(/^prop_other_(\d+)$/)) {
+        url = '/gw/schedule_props/show_week?s_genre=other&cls=other&type_id='+match_result[1]+'&s_date='+s_date;
         break;
       } else {
         alert('実装されていません。')

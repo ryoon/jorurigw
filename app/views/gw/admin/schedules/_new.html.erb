@@ -1,4 +1,6 @@
 <%
+@quote = true
+
 if @quote == true || params[:quote].present?
   class_str = "schedule quote"
 else
@@ -21,6 +23,9 @@ end
       
       <%= f.error_messages %>
       <%= render(:partial => 'form', :locals => {:f => f}) %>
+
+      <%= quote_attrs(params) %>
+
       <%= raw(submit_for_create(f, :js_submitter => 'my_submit()', :class=>:mockblock)) %>
       <% end %>
     </div>

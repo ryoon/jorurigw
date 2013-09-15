@@ -109,6 +109,7 @@ JoruriGw::Application.routes.draw do
   namespace mod do
     scope :module => scp do
       resources :holidays
+      resources :prop_types
 
       resources :prop_others do
         member do
@@ -155,7 +156,7 @@ JoruriGw::Application.routes.draw do
       end
       resources :schedule_settings do
         collection do
-          get :admin_deletes, :export, :import
+          get :admin_deletes, :export, :import, :potal_display
           put :edit_admin_deletes
           post :import_file
         end

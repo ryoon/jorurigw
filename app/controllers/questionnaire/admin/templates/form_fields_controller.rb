@@ -21,6 +21,11 @@ class Questionnaire::Admin::Templates::FormFieldsController < Gw::Controller::Ad
   end
 
   def index
+    system_admin_flags
+    _item_show_flg
+    _item_edit_flg
+    return authentication_error(403) unless @item_show_flg
+
     item = Questionnaire::TemplateFormField.new
     item.and :parent_id, @title.id
     item.order :sort_no, :id
@@ -30,6 +35,11 @@ class Questionnaire::Admin::Templates::FormFieldsController < Gw::Controller::Ad
   end
 
   def new
+    system_admin_flags
+
+    _item_edit_flg
+    return authentication_error(403) unless @item_edit_flg
+
     options = []
     for i in 0..9
       options << Questionnaire::TemplateFieldOption.new
@@ -51,6 +61,11 @@ class Questionnaire::Admin::Templates::FormFieldsController < Gw::Controller::Ad
   end
 
   def create
+    system_admin_flags
+
+    _item_edit_flg
+    return authentication_error(403) unless @item_edit_flg
+
     @item = Questionnaire::TemplateFormField.new(params[:item])
     if params[:n_sort_no].blank?
       @item.sort_no = params[:g_sort_no]
@@ -65,14 +80,30 @@ class Questionnaire::Admin::Templates::FormFieldsController < Gw::Controller::Ad
   end
 
   def show
+    system_admin_flags
+
+    _item_show_flg
+    _item_edit_flg
+    return authentication_error(403) unless @item_show_flg
     @item = Questionnaire::TemplateFormField.find_by_id(params[:id])
   end
+
   def edit
+    system_admin_flags
+
+    _item_edit_flg
+    return authentication_error(403) unless @item_edit_flg
+    
     @item = Questionnaire::TemplateFormField.find_by_id(params[:id])
     permit_selection(@item.sort_no)
   end
 
   def update
+    system_admin_flags
+
+    _item_edit_flg
+    return authentication_error(403) unless @item_edit_flg
+
     @item = Questionnaire::TemplateFormField.find_by_id(params[:id])
     return http_error(404) unless @item
     @item.attributes = params[:item]
@@ -92,6 +123,11 @@ class Questionnaire::Admin::Templates::FormFieldsController < Gw::Controller::Ad
   end
 
   def destroy
+    system_admin_flags
+
+    _item_edit_flg
+    return authentication_error(403) unless @item_edit_flg
+
     @item = Questionnaire::TemplateFormField.find_by_id(params[:id])
     location = questionnaire_template_form_fields_path(@title)
     _destroy(@item, :success_redirect_uri=>location)
@@ -136,4 +172,14 @@ class Questionnaire::Admin::Templates::FormFieldsController < Gw::Controller::Ad
     end
   end
 
+  def _item_show_flg
+    if @is_sysadm || @title.admin_setting == 1 || (@title.admin_setting == 0 && @title.createrdivision_id == Site.user_group.code)
+      @item_show_flg = true
+    end
+  end
+  def _item_edit_flg
+    if @is_sysadm || (@title.admin_setting == 0 && @title.createrdivision_id == Site.user_group.code)
+      @item_edit_flg = true
+    end
+  end
 end

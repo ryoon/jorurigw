@@ -77,6 +77,8 @@ class Gw::Admin::SchedulesController < Gw::Controller::Admin::Base
     @ie = Gw.ie?(request)
     @hedder2lnk = 1
     @link_format = "%Y%m%d"
+
+    @prop_types = Gw::PropType.find(:all, :conditions => ["state = ?", "public"], :select => "id, name")
   end
 
   def index
@@ -147,24 +149,38 @@ class Gw::Admin::SchedulesController < Gw::Controller::Admin::Base
     end
 
     cond_date = "('#{@calendar_first_day.strftime('%Y-%m-%d 0:0:0')}' <= gw_schedules.ed_at" +
-          " and '#{@calendar_end_day.strftime('%Y-%m-%d 23:59:59')}' >= gw_schedules.st_at)"
+      " and '#{@calendar_end_day.strftime('%Y-%m-%d 23:59:59')}' >= gw_schedules.st_at)"
     cond = "gw_schedule_users.uid in (#{Gw.join(@uids, ',')})" +
-        " and #{cond_date}"
+      " and #{cond_date}"
 
     @schedules = Gw::Schedule.find(:all, :order => 'gw_schedules.allday DESC, gw_schedules.st_at, gw_schedules.ed_at, gw_schedules.id',
       :include => :schedule_users, :conditions => cond)
 
     @holidays = Gw::Holiday.find_by_range_cache(@calendar_first_day, @calendar_end_day)
 
-    todos_settings = Gw::Model::Schedule.get_settings 'todos',{:uid => @uid}
-    if @uid == Site.user.id && todos_settings['todos_display_schedule'].present? && todos_settings['todos_display_schedule'].to_i == 1
-      todos_cond = "class_id = 1 and uid = #{Site.user.id}" +
-        " and '#{@calendar_first_day.strftime('%Y-%m-%d 0:0:0')}' <= ed_at" +
-        " and '#{@calendar_end_day.strftime('%Y-%m-%d 23:59:59')}' >= ed_at"
-      @todos = Gw::Todo.find(:all, :conditions => todos_cond)
+    if @uid == Site.user.id
+      @todos = collect_todos(@uid, @calendar_first_day, @calendar_end_day)
     else
       @todos = []
     end
+  end
+
+  def collect_todos(uid, calendar_first_day, calendar_end_day)
+    doing = 'todos_display_schedule_doing'
+    done  = 'todos_display_schedule_done'
+
+    settings = Gw::Model::Schedule.get_settings 'todos', {:uid => uid}
+    display_doing = settings[doing].present? && settings[doing].to_i == 1
+    display_done  = settings[done].present?  && settings[done].to_i  == 1
+
+    cond = "class_id = 1 and uid = #{Site.user.id}" +
+      " and '#{calendar_first_day.strftime('%Y-%m-%d 0:0:0')}' <= ed_at" +
+      " and '#{calendar_end_day.strftime('%Y-%m-%d 23:59:59')}' >= ed_at"
+
+    cond += " and (is_finished is null or is_finished = '' or is_finished != '1')" unless display_done
+    cond += " and is_finished = '1'" unless display_doing
+    Gw::Todo.find(:all, :conditions => cond)
+
   end
 
   def _month_date
@@ -301,7 +317,7 @@ class Gw::Admin::SchedulesController < Gw::Controller::Admin::Base
     public_groups = Array.new
     @item.public_roles.each do |public_role|
       name = Gw.trim(public_role.class_id == 2 ? public_role.group.name :
-        public_role.user.name)
+          public_role.user.name)
       public_groups.push ["", public_role.uid, name]
     end
 
@@ -464,7 +480,7 @@ class Gw::Admin::SchedulesController < Gw::Controller::Admin::Base
 
     repeat_items = Gw::Schedule.new.find(:all, :conditions=>"schedule_repeat_id=#{schedule_repeat_id}")
     repeat_items.each { |repeat_item|
-        repeat_item.destroy
+      repeat_item.destroy
     }
 
     if otherlinkflg
@@ -618,7 +634,7 @@ class Gw::Admin::SchedulesController < Gw::Controller::Admin::Base
     @st_date = Gw.date8_to_date params[:s_date]
   end
 
-private
+  private
   def set_mobile_params(params_i)
     params_o = params_i.dup
     if params_o[:item][:allday] != "1"

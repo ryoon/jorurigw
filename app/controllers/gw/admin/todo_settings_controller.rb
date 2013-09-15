@@ -55,7 +55,8 @@ class Gw::Admin::TodoSettingsController < Gw::Controller::Admin::Base
     default = Gw::NameValue.get_cache('yaml', nil, "gw_#{key}_settings_system_default")
     hu[key] = {} if hu[key].nil?
     hu_update = hu[key]
-    hu_update['todos_display_schedule']   = _params['todos_display_schedule']
+    hu_update['todos_display_schedule_doing']   = _params['todos_display_schedule_doing']
+    hu_update['todos_display_schedule_done']    = _params['todos_display_schedule_done']
 
     options = {}
     ret = Gw::Model::UserProperty.save(key.singularize, hu, options)

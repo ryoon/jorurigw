@@ -7,7 +7,6 @@ images_s = ''
 images.each do |img|
   images_s += %Q(<img src="#{img.path}" alt="#{img.note}" />)
 end
-cls = Gw.yaml_to_array_for_select("gw_prop_other_type_ids").rassoc(@item.type_id)
 reserved_state = Gw.yaml_to_array_for_select("gw_prop_other_reserved_states")
 -%>
 
@@ -17,7 +16,8 @@ reserved_state = Gw.yaml_to_array_for_select("gw_prop_other_reserved_states")
   </div>
   <div class="pieceBody">
     <div class="pieceBodyHeader">
-      <%= render(:partial => '/gw/admin/schedules/schedule_bt_box', :locals=>{:d=>Date.today, :mode=>'month', :genre=>@genre}) -%>
+      <%= render(:partial => '/gw/admin/prop_others/prop_master_menu') %>
+      <%= render(:partial => '/gw/admin/prop_others/titleline') %>
     </div>
     <div class="pieceBodyBody">
       <%= div_notice -%>
@@ -51,7 +51,7 @@ reserved_state = Gw.yaml_to_array_for_select("gw_prop_other_reserved_states")
           </tr>
           <tr>
             <th>種別</th>
-            <td><%= cls[0] -%></td>
+            <td><%= safe{@item.prop_type.name} -%></td>
           </tr>
           <tr>
             <th>備考</th>

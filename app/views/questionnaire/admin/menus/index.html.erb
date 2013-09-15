@@ -64,7 +64,7 @@ end
 <td style="text-align: center;"><%= link_to "#{item.answer_count_name}", questionnaire_answers_path(item) %></td>
 <td style="text-align: center;"><%= link_to '集計', answer_to_details_questionnaire_results_path(item) %></td>
 <td style="text-align: center;"><%= link_to '出力', questionnaire_csv_exports_path(item) %></td>
-<td style="text-align: center;"><%= link_to '作成', new_base_questionnaire_menu_templates_path(item,{:admin_setting=>admin_setting}) %></td>
+<td style="text-align: center;"><%= link_to '作成', new_base_questionnaire_menu_templates_path(item) %></td>
 <td style="text-align: left;"><%=item.updated_at.strftime('%Y-%m-%d %H:%M')%></td>
 </tr>
 <%end %>

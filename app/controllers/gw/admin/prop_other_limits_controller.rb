@@ -6,10 +6,11 @@ class Gw::Admin::PropOtherLimitsController < Gw::Admin::PropGenreCommonControlle
   def initialize_scaffold
     @css = %w(/_common/themes/gw/css/prop_extra/schedule.css)
     Page.title = "一般施設マスタ件数制限"
+    @is_gw_admin = Gw.is_admin_admin?
   end
 
   def index
-    return authentication_error(403) unless Gw::PropOtherLimit.is_admin?(Site.user.id)==true
+    return authentication_error(403) unless @is_gw_admin
 
     item = Gw::PropOtherLimit.new
     item.page   params[:page], 20
@@ -18,12 +19,12 @@ class Gw::Admin::PropOtherLimitsController < Gw::Admin::PropGenreCommonControlle
   end
 
   def show
-    return authentication_error(403) unless Gw::PropOtherLimit.is_admin?(Site.user.id)==true
+    return authentication_error(403) unless @is_gw_admin
     @item = Gw::PropOtherLimit.new.find(params[:id])
   end
 
   def new
-    return authentication_error(403) unless Gw::PropOtherLimit.is_admin?(Site.user.id)==true
+    return authentication_error(403) unless @is_gw_admin
 
     flash[:notice] = "新規登録はできません。"
     location = "/gw/prop_other_limits"
@@ -32,7 +33,7 @@ class Gw::Admin::PropOtherLimitsController < Gw::Admin::PropGenreCommonControlle
   end
 
   def create
-    return authentication_error(403) unless Gw::PropOtherLimit.is_admin?(Site.user.id)==true
+    return authentication_error(403) unless @is_gw_admin
 
     @item = Gw::PropOtherLimit.new.find(params[:id])
     @item.attributes = params[:item]
@@ -44,13 +45,13 @@ class Gw::Admin::PropOtherLimitsController < Gw::Admin::PropGenreCommonControlle
   end
 
   def edit
-    return authentication_error(403) unless Gw::PropOtherLimit.is_admin?(Site.user.id)==true
+    return authentication_error(403) unless @is_gw_admin
 
     @item = Gw::PropOtherLimit.new.find(params[:id])
   end
 
   def update
-    return authentication_error(403) unless Gw::PropOtherLimit.is_admin?(Site.user.id)==true
+    return authentication_error(403) unless @is_gw_admin
 
     @item = Gw::PropOtherLimit.new.find(params[:id])
     @item.attributes = params[:item]
@@ -62,7 +63,7 @@ class Gw::Admin::PropOtherLimitsController < Gw::Admin::PropGenreCommonControlle
   end
 
   def destroy
-    return authentication_error(403) unless Gw::PropOtherLimit.is_admin?(Site.user.id)==true
+    return authentication_error(403) unless @is_gw_admin
 
     @item = Gw::PropOtherLimit.find(params[:id])
     location = "/gw/prop_other_limits"
@@ -72,7 +73,7 @@ class Gw::Admin::PropOtherLimitsController < Gw::Admin::PropGenreCommonControlle
   end
 
   def synchro
-    return authentication_error(403) unless Gw::PropOtherLimit.is_admin?(Site.user.id)==true
+    return authentication_error(403) unless @is_gw_admin
 
     items = Gw::PropOtherLimit.update_all("state = 'disabled'")
     groups = System::Group.find(:all, :conditions => "state = 'enabled' and level_no = 3", :order => "sort_no")

@@ -12,6 +12,7 @@ class Gw::Tool::Reminder
     xml_data = Gw::Model::Memo.remind_xml(uid,xml_data)
     xml_data = Gw::Model::Monitor.remind_xml(uid,xml_data )
     xml_data = Gw::Model::Circular.remind_xml(uid,xml_data)
+    xml_data = Gw::Model::Workflow.remind_xml(uid,xml_data)
     xml_data  << %Q(</feed>)
     #dump ["Gw::Tool::Reminder.checker_api",Time.now.strftime('%Y-%m-%d %H:%M:%S'),'return']
     return xml_data

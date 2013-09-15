@@ -1,4 +1,4 @@
-## Joruri Gw 2.0.3 インストールマニュアル                   2013.04.03
+## Joruri Gw 2.1.0 インストールマニュアル                   2013.06.27
 
 **********************************************************************
  1 想定環境
@@ -27,16 +27,16 @@ IPアドレス : 192.168.0.2
 
 CentOSをインストールします。
 
-※インストール完了後、ご利用になられる環境に合わせて適切なセキュリティ設定をお願いします。CentOSに関するセキュリティ設定については、本マニュアルの範囲外となります。
-
-rootユーザに変更します。
-
-  $ su -
-
+インストール完了後、ご利用の環境に合わせて適切なセキュリティ設定を行ってください。
+CentOSに関するセキュリティ設定については、本マニュアルの範囲外となります。
 
 **********************************************************************
  3 事前準備
 **********************************************************************
+
+rootユーザに変更します。
+
+  $ su -
 
 Joruri Gw の実行に必要なパッケージをインストールします。
 
@@ -97,13 +97,14 @@ MySQLの設定を行います。
   # vi /etc/my.cnf
   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   [mysqld]
-  default-character-set=utf8    #追加
-  max_allowed_packet=16M    #追加
-
-  [client]                      #追加（末尾に追加）
-  default-character-set=utf8    #追加
+  character-set-server=utf8
+  default-table-type=myisam
+  
+  [client]
+  default-character-set = utf8
   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
+  ## [mysqld]に設定を追加、[client]と設定を追加。
+  
 MySQLを起動します。
 
   # /usr/bin/mysql_install_db --user=mysql
@@ -333,126 +334,119 @@ Apache を再起動します。
 例）
 rails runner -e development 'Scriptname' → rails runner -e production 'Scriptname'
 
+　　# su - joruri
 
 削除期間が過ぎたスケジュールを削除します。
 
-  # su - joruri
   $ crontab -e
   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  00 3 * * * /usr/local/bin/ruby /var/share/jorurigw/script/rails runner \
-    -e development 'Gw::Script::Schedule.delete'
+  00 3 * * * /usr/local/bin/ruby /var/share/jorurigw/script/rails runner -e development 'Gw::Script::Schedule.delete'
   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 完了済みで削除期間が過ぎたTODOを削除します。
 
   $ crontab -e
   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  05 3 * * * /usr/local/bin/ruby /var/share/jorurigw/script/rails runner \
-    -e development 'Gw::Script::Todo.delete'
+  05 3 * * * /usr/local/bin/ruby /var/share/jorurigw/script/rails runner -e development 'Gw::Script::Todo.delete'
   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 既読で削除期間が過ぎた連絡メモを削除します。
 
   $ crontab -e
   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  10 3 * * * /usr/local/bin/ruby /var/share/jorurigw/script/rails runner \
-    -e development 'Gw::Script::Memo.delete'
+  10 3 * * * /usr/local/bin/ruby /var/share/jorurigw/script/rails runner -e development 'Gw::Script::Memo.delete'
   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 期限切れで削除期間が過ぎた掲示板を削除します。
 
   $ crontab -e
   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  15 3 * * * /usr/local/bin/ruby /var/share/jorurigw/script/rails runner \
-    -e development 'Gwbbs::Script::Task.delete'
+  15 3 * * * /usr/local/bin/ruby /var/share/jorurigw/script/rails runner -e development 'Gwbbs::Script::Task.delete'
   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 期限切れで削除期間が過ぎた回覧板を削除します。
 
   $ crontab -e
   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  20 3 * * * /usr/local/bin/ruby /var/share/jorurigw/script/rails runner \
-    -e development 'Gwcircular::Script::Task.delete'
+  20 3 * * * /usr/local/bin/ruby /var/share/jorurigw/script/rails runner -e development 'Gwcircular::Script::Task.delete'
   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-期限切れで削除期間が過ぎた照会回答を削除します。
+期限切れで削除期間が過ぎた稟議書を削除します。
 
   $ crontab -e
   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  25 3 * * * /usr/local/bin/ruby /var/share/jorurigw/script/rails runner \
-    -e development 'Gwmonitor::Script::Task.delete'
+  25 3 * * * /usr/local/bin/ruby /var/share/jorurigw/script/rails runner -e development 'GWworkflow::Script::Task.delete'
   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
+  
 削除期間が過ぎたアンケートを削除します。
 
   $ crontab -e
   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  30 3 * * * /usr/local/bin/ruby /var/share/jorurigw/script/rails runner \
-    -e development 'Questionnaire::Script::Task.delete'
+  30 3 * * * /usr/local/bin/ruby /var/share/jorurigw/script/rails runner -e development 'Questionnaire::Script::Task.delete'
   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 不要となったセッションのデータを削除します。
 
   $ crontab -e
   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  35 3 * * * /usr/local/bin/ruby /var/share/jorurigw/script/rails runner \
-    -e development 'System::Script::Session.delete_expired_sessions'
+  35 3 * * * /usr/local/bin/ruby /var/share/jorurigw/script/rails runner -e development 'System::Script::Session.delete_expired_sessions'
   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 不要となった掲示板のデータを削除します。
 
   $ crontab -e
   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  40 3 * * * /usr/local/bin/ruby /var/share/jorurigw/script/rails runner \
-    -e development 'Gwbbs::Script::Task.preparation_delete'
+  40 3 * * * /usr/local/bin/ruby /var/share/jorurigw/script/rails runner -e development 'Gwbbs::Script::Task.preparation_delete'
   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 不要となった電子図書のデータを削除します。
 
   $ crontab -e
   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  45 3 * * * /usr/local/bin/ruby /var/share/jorurigw/script/rails runner \
-    -e development 'Digitallibrary::Script::Task.preparation_delete'
+  45 3 * * * /usr/local/bin/ruby /var/share/jorurigw/script/rails runner -e development 'Digitallibrary::Script::Task.preparation_delete'
   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 不要となった書庫のデータを削除します。
 
   $ crontab -e
   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  50 3 * * * /usr/local/bin/ruby /var/share/jorurigw/script/rails runner \
-    -e development 'Doclibrary::Script::Task.preparation_delete'
+  50 3 * * * /usr/local/bin/ruby /var/share/jorurigw/script/rails runner -e development 'Doclibrary::Script::Task.preparation_delete'
   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 不要となったQ&Aのデータを削除します。
 
   $ crontab -e
   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  55 3 * * * /usr/local/bin/ruby /var/share/jorurigw/script/rails runner \
-    -e development 'Gwqa::Script::Task.preparation_delete'
+  55 3 * * * /usr/local/bin/ruby /var/share/jorurigw/script/rails runner -e development 'Gwqa::Script::Task.preparation_delete'
   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 不要となったFAQのデータを削除します。
 
   $ crontab -e
   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  00 4 * * * /usr/local/bin/ruby /var/share/jorurigw/script/rails runner \
-    -e development 'Gwfaq::Script::Task.preparation_delete'
+  00 4 * * * /usr/local/bin/ruby /var/share/jorurigw/script/rails runner -e development 'Gwfaq::Script::Task.preparation_delete'
   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 不要となった研修申込・受付のテンポラリファイルを削除します。
 
   $ crontab -e
   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  05 4 * * * /usr/local/bin/ruby /var/share/jorurigw/script/rails runner \
-    -e development 'Gwsub::Script::Sb01_training.delete_abandoned_files'
+  05 4 * * * /usr/local/bin/ruby /var/share/jorurigw/script/rails runner -e development 'Gwsub::Script::Sb01_training.delete_abandoned_files'
   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+期限切れで削除期間が過ぎた照会回答を削除します。
+
+  $ crontab -e
+  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  10 4 * * * /usr/local/bin/ruby /var/share/jorurigw/script/rails runner -e development 'Gwmonitor::Script::Task.delete'
+  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 
 幹部・部課長の在席表示を全てoffにします。
 
   $ crontab -e
   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  0 0 * * * /usr/local/bin/ruby /var/share/jorurigw/script/rails runner \
-    -e development 'Gw::Script::PrefExective.state_all_off'
+  0 0 * * * /usr/local/bin/ruby /var/share/jorurigw/script/rails runner -e development 'Gw::Script::PrefExective.state_all_off'
   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 **********************************************************************

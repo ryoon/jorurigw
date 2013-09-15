@@ -20,6 +20,8 @@ class Gw::UserProperty < Gw::Database
 
   def self.is_todos_display?
 
+    raise "Do not call the method!!"
+    
     todos_display = false
     todo_settings = Gw::Model::Schedule.get_settings 'todos', {}
     if todo_settings.key?(:todos_display_schedule)

@@ -146,7 +146,7 @@ class Questionnaire::Admin::Menus::TemplatesController < Gw::Controller::Admin::
       :able_date => Time.now.strftime("%Y-%m-%d"),
       #:expiry_date => 7.days.since.strftime("%Y-%m-%d %H:00"),
       :default_limit => 100,
-      :admin_setting => params[:admin]
+      :admin_setting => 1
     })
   end
 
@@ -163,6 +163,12 @@ class Questionnaire::Admin::Menus::TemplatesController < Gw::Controller::Admin::
     @item.creater = Site.user.name
     @item.createrdivision = Site.user_group.name
     @item.createrdivision_id = Site.user_group.code
+
+    if @is_sysadm
+    else
+      @item.admin_setting = 0
+    end
+
     if @item.save
       location = "/questionnaire/#{params[:parent_id]}/templates/#{@item.id}/copy_form_fields"
       return redirect_to location
@@ -182,7 +188,6 @@ class Questionnaire::Admin::Menus::TemplatesController < Gw::Controller::Admin::
     @template_title.save
 
     #Questionnaire::FormField.destroy_all("parent_id=#{@title.id}")
-    dump params[:parent_id]
     item = Questionnaire::FormField.new
     item.and :state, 'public'
     item.and :parent_id, params[:parent_id]

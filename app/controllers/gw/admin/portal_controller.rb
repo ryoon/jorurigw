@@ -8,6 +8,6 @@ class Gw::Admin::PortalController < Gw::Controller::Admin::Base
   end
 
   def index
-
+    session[:request_fullpath] = request.fullpath
   end
 end

@@ -6,7 +6,7 @@ class Gw
   end
 
   def self.version
-    "2.0.0"
+    return Joruri.version
   end
 
   def self.br(str)
@@ -868,6 +868,10 @@ class Gw
     end
   end
 
+  def self.yaml_to_array_for_select_with_additions(before_additions, relation_name, after_additions, options={})
+    before_additions + yaml_to_array_for_select(relation_name, options) + after_additions
+  end
+  
   def self.yaml_to_array_for_select(relation_name, options={})
     yaml = options[:yaml]
     hx = Gw::NameValue.get_cache('yaml', yaml, relation_name)

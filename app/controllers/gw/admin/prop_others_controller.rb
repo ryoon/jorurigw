@@ -11,6 +11,7 @@ class Gw::Admin::PropOthersController < Gw::Admin::PropGenreCommonController
     @uri_base = '/gw/prop_others'
     @item_name = '一般施設'
     Page.title = "一般施設マスタ"
+    @prop_types = Gw::PropType.find(:all, :conditions => ["state = ?", "public"], :select => "id, name")
   end
 
   def get_index_items

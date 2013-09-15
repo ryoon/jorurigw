@@ -1,4 +1,5 @@
 <%# app/views/gw/admin/memos/index.html.erb %>
+
 <%=render(:partial => '/gw/admin/memos/header')%>
 <div class="piece memo form">
 <%=render(:partial => '/gw/admin/memos/piece_header')%>
@@ -9,7 +10,7 @@
 <tbody>
 <tr>
 <td class="spaceLeft"></td>
-<td class="tab" id="tabBox_1"><a href="/gw/memos?s_send_cls=1">受信</a></td><td class="spaceCenter"></td><td class="tab" id="tabBox_2"><a href="/gw/memos?s_send_cls=2">送信</a></td><td class="spaceRight"></td>
+
 </tr>
 </tbody>
 </table>
@@ -20,6 +21,9 @@
 <%=f.error_messages%>
 <%=render(:partial => 'form', :locals => {:f => f})%>
 <%=raw(submit_for_create(f,:caption=>"送信する", :js_submitter => 'my_submit()'))%>
+
+<%= quote_attrs(params) %>
+
 <%end%>
 </div>
 </div>

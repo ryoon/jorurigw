@@ -3,7 +3,7 @@ module Gw::Model::Monitor
 
   def self.remind(uid = Site.user.id)
     item = Gw::MonitorReminder.new
-    remind_cond = "(state=1 AND g_code='#{Site.user_group.code}') OR (state=1 AND u_code='#{Site.user.code}')"
+    remind_cond = ["(state=1 AND g_code=?) OR (state=1 AND u_code=?)", Site.user_group.code, Site.user.code]
     items = item.find(:all, :conditions=>remind_cond ,  :order => 'ed_at')
     return items.collect{|x|
       delay_s = ''

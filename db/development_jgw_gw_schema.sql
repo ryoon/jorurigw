@@ -2479,6 +2479,26 @@ CREATE TABLE IF NOT EXISTS `gw_prop_other_roles` (
   KEY `prop_id` (`prop_id`)
 )   DEFAULT CHARSET=utf8;
 
+
+-- --------------------------------------------------------
+
+--
+-- テーブルの構造 `gw_prop_types`
+--
+
+DROP TABLE IF EXISTS `gw_prop_types`;
+CREATE TABLE IF NOT EXISTS `gw_prop_types` (
+`id` int(11) NOT NULL AUTO_INCREMENT,
+`state` varchar(255) DEFAULT NULL,
+`name` varchar(255) DEFAULT NULL,
+`sort_no` int(255) DEFAULT NULL,
+`created_at` datetime DEFAULT NULL,
+`updated_at` datetime DEFAULT NULL,
+`deleted_at` datetime DEFAULT NULL,
+PRIMARY KEY (`id`)
+) DEFAULT CHARSET=utf8;
+
+
 -- --------------------------------------------------------
 
 --
@@ -3331,4 +3351,332 @@ CREATE TABLE `gw_plus_updates` (
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) DEFAULT CHARSET=utf8;
+
+
+
+-- --------------------------------------------------------
+
+--
+-- テーブルの構造 `gw_workflow_controls`
+--
+
+DROP TABLE IF EXISTS `gw_workflow_controls`;
+CREATE TABLE IF NOT EXISTS `gw_workflow_controls` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `unid` int(11) DEFAULT NULL,
+  `content_id` int(11) DEFAULT NULL,
+  `state` text,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  `recognized_at` datetime DEFAULT NULL,
+  `published_at` datetime DEFAULT NULL,
+  `default_published` int(11) DEFAULT NULL,
+  `doc_body_size_capacity` int(11) DEFAULT NULL,
+  `doc_body_size_currently` int(11) DEFAULT NULL,
+  `upload_graphic_file_size_capacity` int(11) DEFAULT NULL,
+  `upload_graphic_file_size_capacity_unit` varchar(255) DEFAULT NULL,
+  `upload_document_file_size_capacity` int(11) DEFAULT NULL,
+  `upload_document_file_size_capacity_unit` varchar(255) DEFAULT NULL,
+  `upload_graphic_file_size_max` int(11) DEFAULT NULL,
+  `upload_document_file_size_max` int(11) DEFAULT NULL,
+  `upload_graphic_file_size_currently` decimal(17,0) DEFAULT NULL,
+  `upload_document_file_size_currently` decimal(17,0) DEFAULT NULL,
+  `commission_limit` int(11) DEFAULT NULL,
+  `create_section` varchar(255) DEFAULT NULL,
+  `create_section_flag` varchar(255) DEFAULT NULL,
+  `addnew_forbidden` tinyint(1) DEFAULT NULL,
+  `edit_forbidden` tinyint(1) DEFAULT NULL,
+  `draft_forbidden` tinyint(1) DEFAULT NULL,
+  `delete_forbidden` tinyint(1) DEFAULT NULL,
+  `attachfile_index_use` tinyint(1) DEFAULT NULL,
+  `importance` int(11) DEFAULT NULL,
+  `form_name` varchar(255) DEFAULT NULL,
+  `banner` text,
+  `banner_position` varchar(255) DEFAULT NULL,
+  `left_banner` text,
+  `left_menu` text,
+  `left_index_use` varchar(1) DEFAULT NULL,
+  `left_index_pattern` int(11) DEFAULT NULL,
+  `left_index_bg_color` varchar(255) DEFAULT NULL,
+  `default_mode` varchar(255) DEFAULT NULL,
+  `other_system_link` text,
+  `preview_mode` tinyint(1) DEFAULT NULL,
+  `wallpaper_id` int(11) DEFAULT NULL,
+  `wallpaper` text,
+  `css` text,
+  `font_color` text,
+  `icon_id` int(11) DEFAULT NULL,
+  `icon` text,
+  `sort_no` int(11) DEFAULT NULL,
+  `caption` text,
+  `view_hide` tinyint(1) DEFAULT NULL,
+  `categoey_view` tinyint(1) DEFAULT NULL,
+  `categoey_view_line` int(11) DEFAULT NULL,
+  `monthly_view` tinyint(1) DEFAULT NULL,
+  `monthly_view_line` int(11) DEFAULT NULL,
+  `group_view` tinyint(1) DEFAULT NULL,
+  `one_line_use` int(11) DEFAULT NULL,
+  `notification` int(11) DEFAULT NULL,
+  `restrict_access` tinyint(1) DEFAULT NULL,
+  `upload_system` int(11) DEFAULT NULL,
+  `limit_date` varchar(255) DEFAULT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `title` varchar(255) DEFAULT NULL,
+  `category` int(11) DEFAULT NULL,
+  `category1_name` varchar(255) DEFAULT NULL,
+  `category2_name` varchar(255) DEFAULT NULL,
+  `category3_name` varchar(255) DEFAULT NULL,
+  `recognize` int(11) DEFAULT NULL,
+  `createdate` text,
+  `createrdivision_id` varchar(20) DEFAULT NULL,
+  `createrdivision` text,
+  `creater_id` varchar(20) DEFAULT NULL,
+  `creater` text,
+  `editdate` text,
+  `editordivision_id` varchar(20) DEFAULT NULL,
+  `editordivision` text,
+  `editor_id` varchar(20) DEFAULT NULL,
+  `editor` text,
+  `default_limit` int(11) DEFAULT NULL,
+  `dbname` varchar(255) DEFAULT NULL,
+  `admingrps` text,
+  `admingrps_json` text,
+  `adms` text,
+  `adms_json` text,
+  `dsp_admin_name` text,
+  `editors` text,
+  `editors_json` text,
+  `readers` text,
+  `readers_json` text,
+  `sueditors` text,
+  `sueditors_json` text,
+  `sureaders` text,
+  `sureaders_json` text,
+  `help_display` text,
+  `help_url` text,
+  `help_admin_url` text,
+  `notes_field01` text,
+  `notes_field02` text,
+  `notes_field03` text,
+  `notes_field04` text,
+  `notes_field05` text,
+  `notes_field06` text,
+  `notes_field07` text,
+  `notes_field08` text,
+  `notes_field09` text,
+  `notes_field10` text,
+  `docslast_updated_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+)   DEFAULT CHARSET=utf8;
+
+
+-- --------------------------------------------------------
+
+--
+-- テーブルの構造 `gw_workflow_docs`
+--
+
+DROP TABLE IF EXISTS `gw_workflow_docs`;
+CREATE TABLE IF NOT EXISTS `gw_workflow_docs` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+
+  `state` text,
+  `title` text,
+  `body` mediumtext,
+  `expired_at` datetime DEFAULT NULL,
+  `applied_at` datetime DEFAULT NULL,
+
+  `creater_id` varchar(20) DEFAULT NULL,
+  `creater_name` varchar(20) DEFAULT NULL,
+  `creater_gname` varchar(20) DEFAULT NULL,
+
+  `attachmentfile` int(11) DEFAULT NULL,
+
+
+  PRIMARY KEY (`id`)
+) DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- テーブルの構造 `gw_workflow_route_steps`
+--
+
+DROP TABLE IF EXISTS `gw_workflow_route_steps`;
+CREATE TABLE IF NOT EXISTS `gw_workflow_route_steps` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  
+  `doc_id` int(11) DEFAULT NULL,
+  
+  `number` int(11) DEFAULT NULL,
+  
+  PRIMARY KEY (`id`)
+)   DEFAULT CHARSET=utf8;
+
+
+
+-- --------------------------------------------------------
+
+--
+-- テーブルの構造 `gw_workflow_route_users`
+--
+
+DROP TABLE IF EXISTS `gw_workflow_route_users`;
+CREATE TABLE IF NOT EXISTS `gw_workflow_route_users` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  
+  `step_id` int(11) DEFAULT NULL,
+  `decided_at` datetime DEFAULT NULL,
+  `state` varchar(255) DEFAULT NULL,
+  `comment` text,
+  
+  `user_id` int(11) DEFAULT NULL,
+  `user_name` text,
+  `user_gname` text,
+  
+  PRIMARY KEY (`id`)
+)   DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- テーブルの構造 `gw_workflow_custom_routes`
+--
+
+DROP TABLE IF EXISTS `gw_workflow_custom_routes`;
+CREATE TABLE IF NOT EXISTS `gw_workflow_custom_routes` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+
+  `owner_uid` int(11) DEFAULT NULL,
+
+  `sort_no` int(11) DEFAULT NULL,
+  `state` text,
+  `name` text,
+
+  PRIMARY KEY (`id`)
+)   DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- テーブルの構造 `gw_workflow_custom_route_steps`
+--
+
+DROP TABLE IF EXISTS `gw_workflow_custom_route_steps`;
+CREATE TABLE IF NOT EXISTS `gw_workflow_custom_route_steps` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  
+  `custom_route_id` int(11) DEFAULT NULL,
+  
+  `number` int(11) DEFAULT NULL,
+  
+  PRIMARY KEY (`id`)
+)   DEFAULT CHARSET=utf8;
+
+
+
+-- --------------------------------------------------------
+
+--
+-- テーブルの構造 `gw_workflow_custom_route_users`
+--
+
+DROP TABLE IF EXISTS `gw_workflow_custom_route_users`;
+CREATE TABLE IF NOT EXISTS `gw_workflow_custom_route_users` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  
+  `step_id` int(11) DEFAULT NULL,
+  
+  `user_id` int(11) DEFAULT NULL,
+  `user_name` text,
+  `user_gname` text,
+  
+  PRIMARY KEY (`id`)
+)   DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+
+
+
+--
+-- テーブルの構造 `gwworkflow_files`
+--
+
+DROP TABLE IF EXISTS `gwworkflow_files`;
+CREATE TABLE IF NOT EXISTS `gwworkflow_files` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `unid` int(11) DEFAULT NULL,
+  `content_id` int(11) DEFAULT NULL,
+  `state` text,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  `recognized_at` datetime DEFAULT NULL,
+  `published_at` datetime DEFAULT NULL,
+  `latest_updated_at` datetime DEFAULT NULL,
+  `parent_id` int(11) DEFAULT NULL,
+  `title_id` int(11) DEFAULT NULL,
+  `content_type` varchar(255) DEFAULT NULL,
+  `filename` text,
+  `memo` text,
+  `size` int(11) DEFAULT NULL,
+  `width` int(11) DEFAULT NULL,
+  `height` int(11) DEFAULT NULL,
+  `db_file_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+)   DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- テーブルの構造 `gw_workflow_itemdeletes`
+--
+
+DROP TABLE IF EXISTS `gw_workflow_itemdeletes`;
+CREATE TABLE IF NOT EXISTS `gw_workflow_itemdeletes` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `unid` int(11) DEFAULT NULL,
+  `content_id` int(11) DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  `admin_code` varchar(255) DEFAULT NULL,
+  `title_id` int(11) DEFAULT NULL,
+  `board_title` text,
+  `board_state` varchar(255) DEFAULT NULL,
+  `board_view_hide` varchar(255) DEFAULT NULL,
+  `board_sort_no` int(11) DEFAULT NULL,
+  `public_doc_count` int(11) DEFAULT NULL,
+  `void_doc_count` int(11) DEFAULT NULL,
+  `dbname` varchar(255) DEFAULT NULL,
+  `limit_date` varchar(255) DEFAULT NULL,
+  `board_limit_date` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+)   DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- テーブルの構造 `gw_workflow_mail_settings`
+--
+
+DROP TABLE IF EXISTS `gw_workflow_mail_settings`;
+CREATE TABLE IF NOT EXISTS `gw_workflow_mail_settings` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `unid` int(11) DEFAULT NULL,
+  `notifying` BOOLEAN,
+  PRIMARY KEY (`id`)
+)   DEFAULT CHARSET=utf8;
+
 

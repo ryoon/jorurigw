@@ -4,9 +4,11 @@
 <%=render(:partial => '/gw/admin/todos/piece_header')%>
 <div class="pieceBody"><div class="pieceBodyBody">
 <%=render(:partial => '/gw/admin/todos/search')%>
+
+
 <%=div_notice%>
 <%if @items.blank?%>
-<%=show_notice%>
+<%=no_item_notice%>
 <%else%>
 <table class="index">
   <tr>

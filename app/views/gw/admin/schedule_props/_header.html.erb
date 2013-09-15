@@ -27,9 +27,8 @@ lnks9 = (@hedder2lnk == 9 ? "#{link_s}一般施設マスタ件数制限#{link_s_
 
 %>
 <% if params[:controller] == "gw/admin/schedule_props" -%>
-  <a href="<%= "#{url}&type_id=0" -%>"><span<%= raw(type_id == 0 ? ' class="current_menu"': "") -%>>すべて</span></a>
-  <% Gw::ScheduleProp.prop_types.each do |k, v| -%>
-  <a href="<%= "#{url}&type_id=#{v}" -%>"><span<%= raw(type_id == v ? ' class="current_menu"': "") -%>><%= k -%></span></a>
+  <% @prop_types.each do |prop_type| -%>
+  <a href="<%= "#{url}&type_id=#{prop_type.id}" -%>"><span<%= raw(type_id == prop_type.id ? ' class="current_menu"': "") -%>><%= prop_type.name -%></span></a>
   <% end -%>
 <% end -%>
 

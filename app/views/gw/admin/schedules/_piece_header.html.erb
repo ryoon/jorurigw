@@ -18,7 +18,7 @@ end
 <% else -%>
 <h2 class="pieceTitle"><%= nz(@piece_head_title, 'スケジュール') -%></h2>
 <div class="btsHeaderLeft">
-<span class="btNew"><%= link_to '新規作成', "#{new_gw_schedule_path}#{s_genre}" -%></span>
+<span class="btNew"><%= link_to '新規作成', new_gw_schedule_path + s_genre -%></span>
 </div>
 <div class="btsHeaderRight">
 <span class="<%= class_tag -%>"><%= link_to '設定する', setting_url -%></span>

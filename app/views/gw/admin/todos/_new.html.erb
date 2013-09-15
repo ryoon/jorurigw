@@ -1,4 +1,5 @@
 <%# app/views/gw/admin/todos/index.html.erb %>
+
 <%=render(:partial => '/gw/admin/todos/header')%>
 <div class="piece todo form">
 <%=render(:partial => '/gw/admin/todos/piece_header')%>
@@ -7,6 +8,9 @@
 <%=form_for :item, :url => gw_todos_path, :html => {:multipart => true, :id => 'itemForm'} do |f|%>
 <%=f.error_messages%>
 <%=render(:partial => 'form', :locals => {:f => f})%>
+
+<%= quote_attrs(params) %>
+
 <%=raw(submit_for_create(f))%>
 <%end%>
 </div>

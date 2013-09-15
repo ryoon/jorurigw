@@ -73,9 +73,22 @@ class Gw::Admin::Piece::SchedulesController < Gw::Admin::SchedulesController
     @show_flg = true
     @edit = true
 
-    _schedule_data
-    if request.mobile? && !request.smart_phone?
+    if request.smart_phone?
+      # スマートフォン
+      _schedule_data
+    elsif request.mobile?
+      # 携帯
+      _schedule_data
       _schedule_user_data
+    elsif @schedule_settings.present? && @schedule_settings.key?(:view_portal_schedule_display) && 
+        nz(@schedule_settings[:view_portal_schedule_display], 1).to_i == 0
+
+      # PC
+      render :text => ""
+
+    else
+      # PC
+      _schedule_data
     end
   end
 end

@@ -29,6 +29,50 @@
   border: none;
 }
 
+/*  buttonSchedule
+------------------------------------------------*/
+#docTab .btSchedule {
+  position: absolute;
+  right: 10px;
+  top: 0;
+}
+#docTab .btSchedule a {
+  display: inline-block;
+  width: 112px;
+  height: 0;
+  margin-left: 10px;
+  padding-top: 19px;
+  overflow: hidden;
+  background-image: url("/_common/themes/gw/files/schedule/bt-sw-schedule-onoff.gif");
+  background-position: 0 -19px;
+  background-repeat: no-repeat;
+}
+#docTab .btSchedule a.off {
+  background-position: 0 0;
+}
+
+/*  tab
+------------------------------------------------*/
+#docTab {
+  position: relative;
+}
+#docTab a.button {
+  float: right;
+  position: absolute;
+  right: 10px;
+  top: 0;
+  width: auto;
+  height: auto;
+  line-height: 1.2;
+  margin-right: 13px;
+  padding: 1px 4px;
+  border-top: 1px solid #AAA;
+  border-right: 1px solid #666;
+  border-bottom: 1px solid #666;
+  border-left: 1px solid #AAA;
+  background: none;
+}
+
 /* �E�J�����@���}�C���_�[
 ----------------------------------------------- */
 .reminder {

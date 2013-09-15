@@ -71,6 +71,10 @@ class Questionnaire::Admin::TemplatesController < Gw::Controller::Admin::Base
     @item.creater = Site.user.name
     @item.createrdivision = Site.user_group.name
     @item.createrdivision_id = Site.user_group.code
+    if @is_sysadm
+    else
+      @item.admin_setting = 0
+    end
 
     _self_create(@item)
   end
@@ -81,6 +85,8 @@ class Questionnaire::Admin::TemplatesController < Gw::Controller::Admin::Base
 
     @item = Questionnaire::TemplateBase.find_by_id(params[:id])
     return http_error(404) unless @item
+    _item_show_flg
+    return authentication_error(403) unless @item_show_flg
 
     item = Questionnaire::FormField.new
     item.and :parent_id, @item.id
@@ -95,6 +101,8 @@ class Questionnaire::Admin::TemplatesController < Gw::Controller::Admin::Base
 
     @item = Questionnaire::TemplateBase.find_by_id(params[:id])
     return http_error(404) unless @item
+    _item_edit_flg
+    return authentication_error(403) unless @item_edit_flg
   end
 
   #
@@ -104,6 +112,8 @@ class Questionnaire::Admin::TemplatesController < Gw::Controller::Admin::Base
 
     @item = Questionnaire::TemplateBase.find_by_id(params[:id])
     return http_error(404) unless @item
+    _item_edit_flg
+    return authentication_error(403) unless @item_edit_flg
 
     @before_state = @item.state
 
@@ -117,8 +127,11 @@ class Questionnaire::Admin::TemplatesController < Gw::Controller::Admin::Base
     @item.editor = Site.user.name
     @item.editordivision = Site.user_group.name
     @item.editordivision_id = Site.user_group.code
+    if @is_sysadm
+    else
+      @item.admin_setting = 0
+    end
 
-    location = Site.current_node.public_uri
     _update(@item, :success_redirect_uri=>location)
   end
   #
@@ -128,8 +141,9 @@ class Questionnaire::Admin::TemplatesController < Gw::Controller::Admin::Base
 
     @item = Questionnaire::TemplateBase.find_by_id(params[:id])
     return http_error(404) unless @item
+    _item_edit_flg
+    return authentication_error(403) unless @item_edit_flg
 
-    location = Site.current_node.public_uri
     _destroy(@item, :success_redirect_uri=>location)
   end
 
@@ -151,19 +165,42 @@ class Questionnaire::Admin::TemplatesController < Gw::Controller::Admin::Base
       end
     end
   end
+  
+  def _item_show_flg
+    if @is_sysadm || @item.admin_setting == 1 || (@item.admin_setting == 0 && @item.createrdivision_id == Site.user_group.code)
+      @item_show_flg = true
+    end
+  end
+  def _item_edit_flg
+    if @is_sysadm || (@item.admin_setting == 0 && @item.createrdivision_id == Site.user_group.code)
+      @item_edit_flg = true
+    end
+  end
 
   def open
-    item = Questionnaire::TemplateBase.find_by_id(params[:id])
-    item.state = "public"
-    item.save(:validate=>false)
-    location = "/questionnaire/templates"
+    system_admin_flags
+    @item = Questionnaire::TemplateBase.find_by_id(params[:id])
+    return http_error(404) unless @item
+    _item_edit_flg
+    return authentication_error(403) unless @item_edit_flg
+
+    @item.state = "public"
+    @item.save(:validate=>false)
+    location = "/questionnaire/templates/#{params[:id]}"
+    flash[:notice] = '公開処理が完了しました。'
     return redirect_to location
   end
   def close
-    item = Questionnaire::TemplateBase.find_by_id(params[:id])
-    item.state = "draft"
-    item.save(:validate=>false)
-    location = "/questionnaire/templates"
+    system_admin_flags
+    @item = Questionnaire::TemplateBase.find_by_id(params[:id])
+    return http_error(404) unless @item
+    _item_edit_flg
+    return authentication_error(403) unless @item_edit_flg
+
+    @item.state = "draft"
+    @item.save(:validate=>false)
+    location = "/questionnaire/templates/#{params[:id]}"
+    flash[:notice] = '公開取り消し処理が完了しました。'
     return redirect_to location
   end
 end

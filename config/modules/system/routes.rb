@@ -5,6 +5,19 @@ JoruriGw::Application.routes.draw do
   namespace mod do
     scope :module => scp do
       ## admin
+      resources "ldap_groups",
+        :controller => "ldap_groups",
+        :path => ":parent/ldap_groups"
+      resources "ldap_temporaries",
+        :controller => "ldap_temporaries",
+        :path => "ldap_temporaries" do
+          member do
+            get :synchronize
+            post :synchronize
+            put :synchronize
+            delete :synchronize
+          end
+        end
       resources :users do
         collection do
           get :csv, :csvget, :csvup, :csvset, :list
@@ -46,6 +59,24 @@ JoruriGw::Application.routes.draw do
           post :get_users
         end
       end
+      resources :group_changes do
+        collection do
+          get :prepare, :reflects, :pickup, :fixed, :csv, :deletes, :prepare_run, :reflects_run, :pickup_run, :fixed_run, :csv_run, :deletes_run
+        end
+      end
+      resources :group_change_pickups
+      resources :group_updates do
+        collection do
+          get :csv
+          post :csvup
+        end
+      end
+      resources :group_nexts
+      resources :user_temporaries
+      resources :group_temporaries
+      resources :users_group_temporaries
+      resources :group_history_temporaries
+      resources :users_group_history_temporaries
     end
   end
   

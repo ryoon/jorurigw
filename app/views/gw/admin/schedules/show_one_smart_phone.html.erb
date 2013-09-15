@@ -1,6 +1,5 @@
 <%
 uid = Site.user.id
-type_ids = Gw.yaml_to_array_for_select("gw_prop_other_type_ids")
 link_params = Gw.a_to_qs(["gid=#{params[:gid]}", "uid=#{uid}", "cgid=#{params[:cgid]}","dis=#{@dis}"])
 if @item.st_at.blank?
   link_d = Time.now
@@ -14,149 +13,149 @@ dte = @item.ed_at.to_datetime
 %>
 <div id="schedule_part">
 
-<%=render(:partial => '/gw/admin/schedules/smartphone_header')%>
+  <%=render(:partial => '/gw/admin/schedules/smartphone_header')%>
 
-<table class="show">
-<tr><th class="date">
-<% unless @item.st_at.blank? -%>
-<%= @item.st_at.strftime('%Y年%m月%d日') %>(<%= Gw.weekday(@item.st_at.wday) -%>)
-<% end -%>
-</th>
-<th class="new">
-<%=link_to(image_tag('/_common/themes/gw/files/smartphone/other/ic_add.gif', { :border => '0', :alt => '新規作成', :title => '新規作成', :class=>'menu_new'}),
-   %Q(/gw/schedules/new?s_date=#{link_d.strftime('%Y%m%d')}#{link_params}&topdate=#{@topdate}))%>
-</th></tr>
-<%
-title_category = Gw.yaml_to_array_for_select('gw_schedules_title_categories', :include_blank=>1).to_a.rassoc(@item.title_category_id.to_i) # 件名カテゴリ
+  <table class="show">
+    <tr><th class="date">
+        <% unless @item.st_at.blank? -%>
+          <%= @item.st_at.strftime('%Y年%m月%d日') %>(<%= Gw.weekday(@item.st_at.wday) -%>)
+        <% end -%>
+      </th>
+      <th class="new">
+        <%=link_to(image_tag('/_common/themes/gw/files/smartphone/other/ic_add.gif', { :border => '0', :alt => '新規作成', :title => '新規作成', :class=>'menu_new'}),
+          %Q(/gw/schedules/new?s_date=#{link_d.strftime('%Y%m%d')}#{link_params}&topdate=#{@topdate}))%>
+      </th></tr>
+    <%
+    title_category = Gw.yaml_to_array_for_select('gw_schedules_title_categories', :include_blank=>1).to_a.rassoc(@item.title_category_id.to_i) # 件名カテゴリ
 
-# 開始日時、終了日時の文字列
-if @item.allday.blank?
-  st_at_s = dts.strftime('%H:%M')
-  ed_at_s = dte.strftime('%H:%M')
-  time_str =  "#{st_at_s}-#{ed_at_s}"
-  if dts.to_date != dte.to_date
-    time_str.concat "（終了日：#{@item.ed_at.strftime('%Y年%m月%d日')}）"
-  end
-elsif @item.allday == 1
-  st_at_s = "時間未定"
-  ed_at_s = "時間未定"
-  time_str = st_at_s
-elsif @item.allday == 2
-  st_at_s = "終日"
-  ed_at_s = "終日"
-  time_str = st_at_s
-end
-
-destroy_confirm_s = '削除してよろしいですか？'
-if @item.schedule_users.collect{|x|[x.class_id, x.uid]}.reject{|x| x[0] == 1 && x[1] == Site.user.id }.length > 0
-  destroy_confirm_s = "この予定は、複数の参加者が登録されています。この予定は、参加者全員のスケジューラーからも削除されます。#{destroy_confirm_s}"
-end
-if @repeated
-  destroy_confirm_repeated_s = "\nなお、繰り返し期間に属している場合、その繰り返しに属する全ての予定が削除されますので、ご注意ください。"
-else
-  destroy_confirm_repeated_s = ""
-end
-if title_category.blank?
-  cat_num = "0"
-else
-  cat_num = title_category[1]
-end
-%>
-<tr><td class="<%=%Q(category#{cat_num}) unless title_category.blank?%>" colspan="2">
-<%=h time_str %>
-
-</td></tr>
-<tr><td class="<%=%Q(category#{cat_num}) unless title_category.blank?%>" colspan="2">
-<%= "【#{title_category[0]}】　" unless title_category.blank? %><%=h @item.title %></td></tr>
-</table>
-<%
-is_pref_admin_users = @item.is_schedule_pref_admin_users? # 参加者に全庁ユーザーが存在するか？
-# 全庁ユーザーが存在した場合、全庁登録権限がないと引用ボタンを表示させないようにする。
-if is_pref_admin_users && @is_pref_admin
-  quote_flg = true
-elsif is_pref_admin_users && !@is_pref_admin
-  quote_flg = false
-elsif !is_pref_admin_users
-  quote_flg = true
-else
-  quote_flg = true
-end
-%>
-
-<div class="editingBox">
-<% if @use_prop %>
-<p class="textRed">施設を予約した予定は、編集・削除を行うことができません。</p>
-<% else %><%# if @use_prop %>
-
-<% if @auth_level[:edit_level] == 1 %>
-  <span class="btEdit"><%= link_to('編集', "/gw/schedules/#{@item.id}/edit") %></span>
-<% end %>
-  <span class="btQuote"><%= link_to '引用作成', "/gw/schedules/#{@item.id}/quote#{"?sh=sh" if !params[:sh].blank?}" if quote_flg && @prop_edit %></span>
-<% if @auth_level[:delete_level] == 1 %>
-  <span class="btDestroy"><%=link_to "削除",gw_schedule_path(@item,{:dis=>params[:dis],:gid=>params[:gid],:cgid=>params[:cgid],:s_date=>params[:s_date]}), :method=>:delete, :confirm=>destroy_confirm_s%></span>
-  <% if @repeated %>
-  <span class="btRDestroy"><%=link_to "繰返一括削除", destroy_repeat_gw_schedule_path(@item,{:dis=>params[:dis],:gid=>params[:gid],:cgid=>params[:cgid],:s_date=>params[:s_date]}), :method=>:get, :confirm=>destroy_confirm_s + destroy_confirm_repeated_s%></span>
-  <% end %>
-<% end %>
-<% end %><%# if @use_prop %>
-
-</div>
-
-  <%# if @auth_level[:delete_level] == 1 && @repeated %>
-  <%#=link_to "繰返一括削除", "/gw/schedules/#{@item.id}/destroy_repeat", :method=>:get, :confirm=>destroy_confirm_s + destroy_confirm_repeated_s%>
-  <%# end %>
-<table class="show">
-<tr><th>場所</th>
-<td><%=hbr @item.place%></td></tr>
-<tr><th>メモ</th><td><%=hbr @item.memo %></td></tr>
-<tr><th>公開</th><td><%= @public_show %></td></tr>
-<% if @item.is_public == 2 %>
-<tr><th>公開所属</th><td>
-<%=raw Gw.join([@item.public_groups_display], '<br />') %></td></tr>
-<% end %>
-</table>
-<%=render(:partial => '/gw/admin/schedules/show_participant', :locals => {:schedule_users => @item.schedule_users, :is_todo => false})%>
-
-<table class="show">
-  <tr>
-    <th colspan="2">
-      施設
-    </th>
-  </tr>
-
-<%
-@schedule_props.each do |schedule_prop|
-  prop = schedule_prop.prop
-  if prop.present?
-    type = type_ids.rassoc(prop.type_id)
-    if type.present?
-      type_name = type[0]
-    else
-      type_name == ""
+    # 開始日時、終了日時の文字列
+    if @item.allday.blank?
+      st_at_s = dts.strftime('%H:%M')
+      ed_at_s = dte.strftime('%H:%M')
+      time_str =  "#{st_at_s}-#{ed_at_s}"
+      if dts.to_date != dte.to_date
+        time_str.concat "（終了日：#{@item.ed_at.strftime('%Y年%m月%d日')}）"
+      end
+    elsif @item.allday == 1
+      st_at_s = "時間未定"
+      ed_at_s = "時間未定"
+      time_str = st_at_s
+    elsif @item.allday == 2
+      st_at_s = "終日"
+      ed_at_s = "終日"
+      time_str = st_at_s
     end
-%>
-  <tr>
-    <th><%= type_name -%></th>
-    <td><%= prop.name -%></td>
-  </tr>
+
+    destroy_confirm_s = '削除してよろしいですか？'
+    if @item.schedule_users.collect{|x|[x.class_id, x.uid]}.reject{|x| x[0] == 1 && x[1] == Site.user.id }.length > 0
+      destroy_confirm_s = "この予定は、複数の参加者が登録されています。この予定は、参加者全員のスケジューラーからも削除されます。#{destroy_confirm_s}"
+    end
+    if @repeated
+      destroy_confirm_repeated_s = "\nなお、繰り返し期間に属している場合、その繰り返しに属する全ての予定が削除されますので、ご注意ください。"
+    else
+      destroy_confirm_repeated_s = ""
+    end
+    if title_category.blank?
+      cat_num = "0"
+    else
+      cat_num = title_category[1]
+    end
+  %>
+    <tr><td class="<%=%Q(category#{cat_num}) unless title_category.blank?%>" colspan="2">
+        <%=h time_str %>
+
+      </td></tr>
+    <tr><td class="<%=%Q(category#{cat_num}) unless title_category.blank?%>" colspan="2">
+        <%= "【#{title_category[0]}】　" unless title_category.blank? %><%=h @item.title %></td></tr>
+  </table>
   <%
+  is_pref_admin_users = @item.is_schedule_pref_admin_users? # 参加者に全庁ユーザーが存在するか？
+  # 全庁ユーザーが存在した場合、全庁登録権限がないと引用ボタンを表示させないようにする。
+  if is_pref_admin_users && @is_pref_admin
+    quote_flg = true
+  elsif is_pref_admin_users && !@is_pref_admin
+    quote_flg = false
+  elsif !is_pref_admin_users
+    quote_flg = true
+  else
+    quote_flg = true
   end
-end
 %>
-</table>
 
-<%
-if params[:gid].blank?
-  link_str = %Q(/gw/schedules/#{@item.st_at.strftime('%Y%m%d')}#{link_params}&topdate=#{@topdate})
-else
-  link_str = %Q(/gw/schedules/#{@item.st_at.strftime('%Y%m%d')}#{link_params}&topdate=#{@topdate})
-end
+  <div class="editingBox">
+    <% if @use_prop %>
+      <p class="textRed">施設を予約した予定は、編集・削除を行うことができません。</p>
+    <% else %><%# if @use_prop %>
+
+      <% if @auth_level[:edit_level] == 1 %>
+        <span class="btEdit"><%= link_to('編集', "/gw/schedules/#{@item.id}/edit") %></span>
+      <% end %>
+      <span class="btQuote"><%= link_to '引用作成', "/gw/schedules/#{@item.id}/quote#{"?sh=sh" if !params[:sh].blank?}" if quote_flg && @prop_edit %></span>
+      <% if @auth_level[:delete_level] == 1 %>
+        <span class="btDestroy"><%=link_to "削除",gw_schedule_path(@item,{:dis=>params[:dis],:gid=>params[:gid],:cgid=>params[:cgid],:s_date=>params[:s_date]}), :method=>:delete, :confirm=>destroy_confirm_s%></span>
+        <% if @repeated %>
+          <span class="btRDestroy"><%=link_to "繰返一括削除", destroy_repeat_gw_schedule_path(@item,{:dis=>params[:dis],:gid=>params[:gid],:cgid=>params[:cgid],:s_date=>params[:s_date]}), :method=>:get, :confirm=>destroy_confirm_s + destroy_confirm_repeated_s%></span>
+        <% end %>
+      <% end %>
+    <% end %><%# if @use_prop %>
+
+  </div>
+
+<%# if @auth_level[:delete_level] == 1 && @repeated %>
+<%#=link_to "繰返一括削除", "/gw/schedules/#{@item.id}/destroy_repeat", :method=>:get, :confirm=>destroy_confirm_s + destroy_confirm_repeated_s%>
+<%# end %>
+  <table class="show">
+    <tr><th>場所</th>
+      <td><%=hbr @item.place%></td></tr>
+    <tr><th>メモ</th><td><%=hbr @item.memo %></td></tr>
+    <tr><th>公開</th><td><%= @public_show %></td></tr>
+    <% if @item.is_public == 2 %>
+      <tr><th>公開所属</th><td>
+          <%=raw Gw.join([@item.public_groups_display], '<br />') %></td></tr>
+    <% end %>
+  </table>
+  <%=render(:partial => '/gw/admin/schedules/show_participant', :locals => {:schedule_users => @item.schedule_users, :is_todo => false})%>
+
+  <table class="show">
+    <tr>
+      <th colspan="2">
+        施設
+      </th>
+    </tr>
+
+    <%
+    @schedule_props.each do |schedule_prop|
+      prop = schedule_prop.prop
+      if prop.present?
+        type = prop.prop_type
+        if type.present?
+          type_name = type.name
+        else
+          type_name == ""
+        end
+      %>
+        <tr>
+          <th><%= type_name -%></th>
+          <td><%= prop.name -%></td>
+        </tr>
+      <%
+      end
+    end
+  %>
+  </table>
+
+  <%
+  if params[:gid].blank?
+    link_str = %Q(/gw/schedules/#{@item.st_at.strftime('%Y%m%d')}#{link_params}&topdate=#{@topdate})
+  else
+    link_str = %Q(/gw/schedules/#{@item.st_at.strftime('%Y%m%d')}#{link_params}&topdate=#{@topdate})
+  end
 %>
-<p class="leftPad2"><%=link_to("<戻る", link_str)%></p>
+  <p class="leftPad2"><%=link_to("<戻る", link_str)%></p>
 
-<%if @dis=="week"%>
-<p class="leftPad2">
-<%=link_to("<<週表示へ", %Q(/gw/schedules/#{link_params}&st_date=#{@topdate}))%>
-</p>
-<%end%>
+  <%if @dis=="week"%>
+    <p class="leftPad2">
+      <%=link_to("<<週表示へ", %Q(/gw/schedules/#{link_params}&st_date=#{@topdate}))%>
+    </p>
+  <%end%>
 </div><!--schedule_part-->

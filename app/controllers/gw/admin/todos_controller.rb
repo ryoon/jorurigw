@@ -121,4 +121,39 @@ class Gw::Admin::TodosController < Gw::Controller::Admin::Base
     return params
   end
 
+
+
+
+
+  # 自分以外のTODOを見られないようにする
+  def auth_cndt(item_id)
+    if item_id
+      item = Gw::Todo.find(item_id)
+      return (Site.user.id != item[:uid])
+    end
+    return true
+  end
+  alias authcheck_show show
+  def show
+    return authentication_error(403) if auth_cndt(params[:id])
+    authcheck_show
+  end
+  alias authcheck_delete delete
+  def delete
+    return authentication_error(403) if auth_cndt(params[:id])
+    authcheck_delete
+  end
+  alias authcheck_update update
+  def update
+    return authentication_error(403) if auth_cndt(params[:id])
+    authcheck_update
+  end
+  alias authcheck_destroy destroy
+  def destroy
+    return authentication_error(403) if auth_cndt(params[:id])
+    authcheck_destroy
+  end
+
 end
+
+

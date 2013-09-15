@@ -1,0 +1,29 @@
+<div class="piece AdminSetting AdminUsers">
+<%= render :partial => 'header' %>
+  <div class="pieceBody">
+    <%= render :partial => '/system/admin/users/header_menu' %>
+
+<table class="index">
+  <tr>
+    <th style="width: 40%"><%= @parent ? @parent.ou : 'LDAP' %></th>
+    <th>Users</th>
+  </tr>
+  <tr>
+    <td style="vertical-align: top;">
+      <% @groups.each do |g| %>
+      <% next if (g.ou=="Groups" or g.ou=="People" or g.ou=~ /Special*/) %>
+      <%= link_to h(g.ou), url_for(:action => :index, :parent => g.ou) %><br />
+      <% end %>
+      <%= 'no groups' if @groups.size == 0 %>
+    </td>
+    <td style="vertical-align: top;">
+      <% @users.each do |u| %>
+        <%= u.get('cn') %>&nbsp;(<%= u.uid.to_s %>)&nbsp;<%= u.get('mail') %><br />
+      <% end %>
+      <%= 'no users' if @users.size == 0 %>
+    </td>
+  </tr>
+</table>
+
+  </div>
+</div>

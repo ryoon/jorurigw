@@ -38,7 +38,7 @@ parent_id = Site.user_group.parent_id
 </tr>
 <tr>
   <th>種別 <%= raw(required) %></th>
-  <td><%= f.select("type_id", Gw.yaml_to_array_for_select("gw_prop_other_type_ids"), :selected=>@item.type_id) %></td>
+  <td><%= f.select(:type_id, options_from_collection_for_select(@prop_types, :id, :name, @item.type_id)) %></td>
 </tr>
 <tr>
   <th>備考</th>

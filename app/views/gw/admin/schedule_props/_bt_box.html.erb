@@ -1,0 +1,13 @@
+<div class="btBox">
+  <div class="btEtc btHead currentHead">一般施設</div>
+  <div class="btDayLink btIndex<%= params[:action] == "show" ? ' current' : '' -%>">
+    <%= link_to '日表示', {:controller=> :schedule_props, :action => :show, :id => d.strftime("%Y%m%d"), :cls =>"other", :s_genre =>"other"} -%>
+  </div>
+  <div class="btWeekLink btIndex<%= params[:action] == "show_week" ? ' current' : '' -%>">
+    <%= link_to '週表示', {:controller=> :schedule_props, :action => :show_week, :s_data => d.strftime("%Y%m%d"), :cls =>"other", :s_genre =>"other"} -%>
+  </div>
+
+  <div class="btEtc btHead btRight">
+    <%= link_to '一般施設マスタ', {:controller=> :prop_others, :action => :index} -%>
+  </div>
+</div>
