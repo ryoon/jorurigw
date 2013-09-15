@@ -1,0 +1,8 @@
+<%
+  @groupselect = group_select_tree( nil )
+%>
+<% form_tag '', :method => :get, :class => 'index' do %>
+所属選択：<%= select_tag( 'groupselect',
+options_for_select( @groupselect ,@groupselected ),
+:onchange => 'submit()') %>
+<% end %>

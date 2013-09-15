@@ -50,7 +50,7 @@ class Gwqa::Public::DocsController < ApplicationController
     item = item.new
     item.and :title_id, params[:title_id]
     item.and :doc_type, 0
-    item.and "sql", gwboard_select_status(params)
+    item.and "sql", gwqa_select_status(params)
     item.search params
     item.order  gwboard_sort_key(params)
     item.page   params[:page], params[:limit]
@@ -62,7 +62,7 @@ class Gwqa::Public::DocsController < ApplicationController
     item = gwqa_db_alias(Gwqa::Doc)
     item = item.new
     item.and :title_id, params[:title_id]
-    item.and "sql", gwboard_select_status(params)
+    item.and "sql", gwqa_select_status(params)
     item.search params
     records = item.find(:all,:select=>'parent_id', :group=>'parent_id')
     unless records.blank?
@@ -83,7 +83,7 @@ class Gwqa::Public::DocsController < ApplicationController
     item.and :title_id, params[:title_id]
     item.and :doc_type, 0
     item.and "sql", strsql
-    item.and "sql", gwboard_select_status(params)
+    item.and "sql", gwqa_select_status(params)
     item.order  gwboard_sort_key(params)
     item.page   params[:page], params[:limit]
     @items = item.find(:all)
@@ -102,6 +102,9 @@ class Gwqa::Public::DocsController < ApplicationController
     return http_error(404) unless @item
 
     get_role_new
+    @is_editable = Gwqa::Model::DbnameAlias.get_editable_flag(@item, @is_admin, @is_writable)
+    
+    return http_error(404) if @item.state == "draft" unless @is_editable
 
     item = gwqa_db_alias(Gwqa::File)
     item = item.new
@@ -178,7 +181,7 @@ class Gwqa::Public::DocsController < ApplicationController
     Gwqa::Doc.remove_connection
     return http_error(404) unless @item
 
-    get_role_edit(@item)
+    @is_editable = Gwqa::Model::DbnameAlias.get_editable_flag(@item, @is_admin, @is_writable)
     return authentication_error(403) unless @is_editable
 
     reference_docs if @item.doc_type == 1
@@ -225,11 +228,12 @@ class Gwqa::Public::DocsController < ApplicationController
   end
 
   def destroy
+    get_role_new
 
     item = gwqa_db_alias(Gwqa::Doc)
     @item = item.new.find(params[:id])
 
-    get_role_edit(@item)
+    @is_editable = Gwqa::Model::DbnameAlias.get_editable_flag(@item, @is_admin, @is_writable)
     return authentication_error(403) unless @is_editable
 
     destroy_image_files
@@ -294,7 +298,7 @@ class Gwqa::Public::DocsController < ApplicationController
     @item = item.find(:first)
     Gwqa::Doc.remove_connection
     return http_error(404) unless @item
-    get_role_edit(@item)
+    @is_editable = Gwqa::Model::DbnameAlias.get_editable_flag(@item, @is_admin, @is_writable)
     return authentication_error(403) unless @is_editable
     @item.content_state = 'resolved'
     @item.save

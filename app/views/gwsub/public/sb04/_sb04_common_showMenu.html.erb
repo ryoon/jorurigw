@@ -1,0 +1,6 @@
+<%# app/views/gwsub/public/sb04/_sb04_common_showMenu.html.erb %>
+
+<div class="showMenu">
+<%= link_to '編集' , "#{Site.current_node.public_uri}#{@item.id}/edit#{@param}" %>
+<%= link_to '削除'  ,"#{Site.current_node.public_uri}#{@item.id}#{@param}" ,:confirm=>"削除してよろしいですか？" ,:method=>:delete if @role_admin==true or @role_developer==true %>
+</div>

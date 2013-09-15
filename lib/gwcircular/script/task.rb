@@ -2,7 +2,6 @@ class Gwcircular::Script::Task
 
   def self.delete
     dump "#{self}, 回覧板id, DB名, 回覧板タイトル,削除件数, (処理開始)"
-
     item = Gwcircular::Itemdelete.new
     item.and :content_id, 0
     item = item.find(:first)
@@ -10,7 +9,6 @@ class Gwcircular::Script::Task
     return if item.blank?
     dump "#{self}, 期間の設定がない　終了." if item.limit_date.blank?
     return if item.limit_date.blank?
-
     limit = get_limit_date(item.limit_date)
     return if limit.blank?
 
@@ -49,10 +47,14 @@ class Gwcircular::Script::Task
     @title = Gwcircular::Control.find_by_id(1)
     unless @title.blank?
       @img_path = "public/_attaches/#{@title.system_name}/"
+      preparation_limit = Gwbbs::Script::Task.preparation_get_limit_date
       item = Gwcircular::Doc
-
       doc_item = item.new
       doc_item.and :expiry_date, '<' , limit.strftime("%Y-%m-%d") + ' 00:00:00'
+      doc_item.or  {|d|
+        d.and :state, 'preparation'
+        d.and :created_at, '<', "#{preparation_limit.strftime("%Y-%m-%d")} 00:00:00"
+      }
       @items = doc_item.find(:all)
       del_count = 0
       for @item in @items
@@ -73,8 +75,10 @@ class Gwcircular::Script::Task
 
   def self.destroy_atacched_files
     item = Gwcircular::File
-    item.destroy_all(sql_where)
+    files = item.find(:all, :order=> 'id', :conditions=>sql_where)
+    files.each do |file|
+      file.destroy
+    end
   end
-
 
 end

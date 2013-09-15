@@ -1,0 +1,19 @@
+<%# app/views/gwsub/public/sb04/sb04helps/show %>
+<%
+options=   {
+  'table_name' => 'gwsub_sb04helps' ,
+  :action => 'show' 
+  }
+-%>
+<div class="gwsub sb04">
+<%= render :partial => 'gwsub/public/sb04/sb04_piece_header' %>
+<div class="pieceBanner">
+<%= render :partial => 'gwsub/public/sb04/sb04helps/menu' %>
+</div>
+<div class="pieceBody">
+<%= render :partial => 'gwsub/public/sb04/sb04_common_showMenu' %>
+<%= div_notice %>
+<%= table_to_show2(@item,options) %>
+</div>
+</div>
+

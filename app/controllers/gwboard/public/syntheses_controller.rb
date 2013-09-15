@@ -35,7 +35,6 @@ class Gwboard::Public::SynthesesController < ApplicationController
       index_gwqa
     when 'doclibrary'
       index_doclib
-      index_adminlib
     when 'digitallibrary'
       index_digitallib
     else
@@ -194,31 +193,6 @@ class Gwboard::Public::SynthesesController < ApplicationController
     item = Gwboard::Synthesis.new
     item.page   params[:page], params[:limit]
     @items = item.find(:all, :joins=>join, :conditions=>sql.where, :group => s_group,:select => 'gwboard_syntheses.*',:order=>'gwboard_syntheses.latest_updated_at DESC')
-  end
-
-  def index_adminlib
-    sql = Condition.new
-
-    sql.or {|d|
-      d.and :state, 'public'
-      d.and :system_name , 'adminlibrary'
-      d.and :latest_updated_at , '>=' , @date
-      d.and "sql", "adminlibrary_roles.role_code = 'r'"
-      d.and "sql", "adminlibrary_roles.group_code = '0'"
-    }
-
-    sql.or {|d|
-      d.and :state, 'public'
-      d.and :system_name , 'adminlibrary'
-      d.and :latest_updated_at , '>=' , @date
-      d.and "sql", "adminlibrary_roles.role_code = 'r'"
-      d.and "sql", "adminlibrary_roles.group_code = '#{Site.user_group.code}'"
-    }
-    join = "INNER JOIN adminlibrary_roles ON gwboard_syntheses.title_id = adminlibrary_roles.title_id"
-    s_group = 'gwboard_syntheses.id'
-    item = Gwboard::Synthesis.new
-    item.page   params[:page], params[:limit]
-    @admin_items = item.find(:all, :joins=>join, :conditions=>sql.where, :group => s_group,:select => 'gwboard_syntheses.*',:order=>'gwboard_syntheses.latest_updated_at DESC')
   end
 
   def index_digitallib

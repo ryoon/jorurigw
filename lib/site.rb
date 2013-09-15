@@ -158,7 +158,8 @@ class Site
   end
 
   def self.title
-    return 'ジョールリ市'
+    site = YAML.load_file('config/site.yml')
+    site['gw_information']['title']
   end
 
   def self.public_path

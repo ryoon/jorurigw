@@ -63,7 +63,6 @@ class Digitallibrary::Folder < Digitallibrary::Doc
 
   def show_folder_path
     return "#{item_home_path}folders/#{self.id}?title_id=#{self.title_id}&cat=#{self.parent_id}" unless self.doc_type == 1   #見出し
-    return ret
   end
 
   def docs_path

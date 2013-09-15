@@ -36,14 +36,14 @@ f.fields_for :schedule_admin_users do |schedule_user|
 <br />
 #{select_tag 'item[schedule_admin_users][uid]', Gw.options_for_select(
   System::User.get_user_select(Site.user_group.group_id), Site.user.id, :title=>1), :size=>10,
-  :style => 'width:300px;', :multiple => true}
+  :style => 'width:300px;', :multiple => true, :ondblclick => 'add_admin_users()'}
 </td>
 <td>
 #{button_to_function '追加 →', 'add_admin_users()'}<br /><br />
 #{button_to_function '← 削除', 'del_admin_users()'}
 </td>
 <td><br />
-#{select_tag 'item[schedule_admin_users_add_buf]', [], :size=>10, :style => 'width:300px;', :multiple => true}
+#{select_tag 'item[schedule_admin_users_add_buf]', [], :size=>10, :style => 'width:300px;', :multiple => true, :ondblclick => 'del_admin_users()'}
 #{hidden_field_tag 'item[schedule_admin_users_json]', ''}
 </td>
 </tr>

@@ -1,0 +1,17 @@
+<%display_supervise =  Gw::Controller::Mobile.get_board_system_items('gwbbs',48)%>
+<div class="piece gadget bbs">
+
+<div class="pieceHeader"><h3>掲示板</h3></div>
+
+<div class="pieceBody">
+<ul>
+<li><%= link_to "全庁掲示板","/gwbbs/docs?title_id=1&limit=10"  %></li>
+<li><%= link_to '災害対応用掲示板',"/gwbbs/docs?title_id=36&limit=10"  %></li>
+<% if display_supervise==true%>
+<li><%= link_to '主管課掲示板',"/gwbbs/docs?title_id=48&limit=10"  %></li>
+<%end%>
+<!--<li><%#= link_to '&gt;　掲示板一覧',"/gwbbs"  %></li>-->
+</ul>
+</div>
+
+</div>

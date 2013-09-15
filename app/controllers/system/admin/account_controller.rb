@@ -66,19 +66,6 @@ private
       return true
     end
 
-    if params['chgpw.x']
-      if params[:account].blank?
-        flash[:notice] = "IDを入力してください" if flash[:notice].nil?
-        respond_to do |format|
-          format.html { render }
-          format.xml  { render(:xml => '<errors />') }
-        end
-        return true
-      end
-      chgpw_uri = "http://10.1.9.77/dfs/password/index/#{params[:account]}"
-      return redirect_to(chgpw_uri)
-    end
-
     if params[:account].to_s == only_assembly_user_account.to_s
       if params[:url]=~ /\/gw\/pref_only_/
         admin_uri = params[:url]

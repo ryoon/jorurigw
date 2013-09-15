@@ -191,10 +191,10 @@ class Gw::Public::PrefDirectorAdminsController < ApplicationController
     @sort_keys = nz(params[:sort_keys], 'parent_g_order, u_order')
   end
 
+  #--------------CSV出力、登録----------------
   def csvput
     init_params
     return if params[:item].nil?
-    dump params[:g_cat]
     par_item = params[:item]
     nkf_options = case par_item[:nkf]
         when 'utf8'
@@ -209,13 +209,16 @@ class Gw::Public::PrefDirectorAdminsController < ApplicationController
         cond = ["deleted_at IS NULL"]
         order = "parent_g_order, g_order, u_order"
       else
+
         cond = ["deleted_at IS NULL AND parent_g_code = ?",params[:g_cat]]
         order = "g_order, u_order"
       end
       items = Gw::PrefDirector.find(:all,:conditions=>cond, :order=> order)
-      dump items.size
       if items.blank?
       else
+        if params[:g_cat] != "0"
+          filename = "#{items[0]. parent_g_name}_在庁表示管理_#{par_item[:nkf]}_#{Time.now.strftime('%Y%m%d_%H%M')}.csv"
+        end
         file = csv_output(items)
         send_download "#{filename}", NKF::nkf(nkf_options,file)
         return
@@ -227,8 +230,13 @@ class Gw::Public::PrefDirectorAdminsController < ApplicationController
   end
 
   def csv_output(items)
-    ret = %Q("部局","所属幹部表示順","役職","職員番号","氏名"\n)
+    ret = %Q("Gwに表示","部局","所属幹部表示順","役職","職員番号","氏名"\n)
     items.each do |u|
+      if u.is_governor_view == 1
+        ret += %Q("表示",)
+      else
+        ret += %Q("",)
+      end
       ret += %Q("#{u.parent_g_name}","#{u.u_order}",)
       ret += %Q("#{u.title}","#{u.u_code}","#{u.u_name}")
       ret += "\n"
@@ -242,6 +250,7 @@ class Gw::Public::PrefDirectorAdminsController < ApplicationController
     par_item = params[:item]
     case par_item[:csv]
     when 'up'
+#      raise ArgumentError, '入力指定が異常です。' if par_item.nil? || par_item[:nkf].nil? || par_item[par_item[:nkf]].nil?
       if par_item.nil? || par_item[:nkf].nil? || par_item[:file].nil?
         flash[:notice] = 'ファイル名を入力してください'
       else
@@ -258,6 +267,7 @@ class Gw::Public::PrefDirectorAdminsController < ApplicationController
         else
           s_to = Gw::Script::PrefTool.import_csv(file, "gw_pref_directors_csv",params[:g_cat])
         end
+        flash[:notice]= s_to unless s_to.blank?
         location = Gw.chop_with("#{Site.current_node.public_uri}",'/')
         redirect_to location
       end

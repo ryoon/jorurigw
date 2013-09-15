@@ -699,20 +699,20 @@ th.rangeOut span.nobr a {
   margin-right: 10px;
 }
 #page-gw-schedules-new table.show,
-#page-gw-maaSchedules-new table.show {
+#page-gw-maaSchedules-new table.show,
+form.edit table.show,
+form.quote table.show {
   width: 105%;
 }
-#page-gw-schedules-new table.tabtable td.tab {
-  width: 70px;
-  padding: 2px 10px;
+*html #page-gw-schedules-new table.show,
+*html form.edit table.show,
+*html form.quote table.show{
+  width: 110%;
 }
-.schedulePiece .pieceBodyBody {
-  padding-left: 1px;
-  padding-right: 1px;
-  margin-bottom: 0px;
-}
-*:first-child+html .schedulePiece .pieceBodyBody {
-  margin-bottom: 15px;
+*:first-child+html #page-gw-schedules-new table.show,
+*:first-child+html form.edit table.show,
+*:first-child+html form.quote table.show {
+  width: 110%;
 }
 .schedulePiece.form .pieceBodyBody {
   clear: both;

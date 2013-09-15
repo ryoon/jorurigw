@@ -271,7 +271,7 @@ class Doclibrary::Doc < Gwboard::CommonDb
     if self.state=='public'
       item = Doclibrary::Control.find(self.title_id)
       item.docslast_updated_at = Time.now
-      item.save
+      item.save(false)
       unless self.category1_id.blank? == 0
         sql = "UPDATE doclibrary_folders SET updated_at = '#{Time.now.strftime('%Y-%m-%d %H:%M:%S')}' WHERE id = '#{self.category1_id}'"
         self.connection.execute(sql)

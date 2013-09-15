@@ -1,98 +1,5 @@
 module GwHelper
 
-  def grouplist4(fyear_id=nil, all = nil, role = true ,top = nil ,parent_id=nil, options={})
-    # fyear_id 対象年度id
-    # all   選択リストに'すべて'を含む指定   'all':含む
-    # role : 権限
-    # top : true の時は、level_no =1 から表示
-    # parent_id : 指定があれば、上位部署で絞る
-    # 年度指定が無ければ、今日を含む年度
-    if fyear_id.to_i==0
-      fyear_target_id = Gw::YearFiscalJp.get_record(Time.now).id
-    else
-      fyear_target_id = fyear_id
-    end
-
-    start_at_fyear  = Gw::YearFiscalJp.find(fyear_target_id).start_at
-
-    if role != true
-      grp = Site.user_group
-      group_select = []
-      if options.has_key?(:code) and options[:code] == 'none'
-        group_select << [grp.name,grp.id]
-      else
-        group_select << ['('+grp.code+')'+grp.name,grp.id]
-      end
-      return group_select
-    end
-
-    current_time = Time.now
-    group_cond    = "state='enabled' and level_no=2 "
-
-    group_cond    << " and id=#{parent_id}"  unless parent_id.to_i==0
-    group_cond    << " and start_at <= '#{current_time.strftime("%Y-%m-%d 00:00:00")}'"
-
-    group_cond    << " and (end_at IS Null or end_at = '0000-00-00 00:00:00' or end_at > '#{current_time.strftime("%Y-%m-%d 23:59:59")}' ) "
-    group_order   = "code , sort_no , start_at DESC, end_at IS Null ,end_at DESC"
-    group_parents = System::GroupHistory.find(:all,:conditions=>group_cond,:order=>group_order)
-
-    group_select = []
-    if group_parents.blank?
-      group_select << ["所属未設定",0]
-      return group_select
-    end
-
-    group_select << ["すべて",0]  if all == 'all'
-
-    if top == true
-      top_g  = System::GroupHistory.find(1)
-      if options.has_key?(:code) and options[:code] == 'none'
-        group_select << [top_g.name,top_g.id]
-      else
-        group_select << ['('+top_g.code+')'+top_g.name,top_g.id]
-      end
-    end
-
-    l3_code_len = Site.code_length(3)
-    for group in group_parents
-      child_cond    = "state='enabled' and level_no=3 and parent_id=#{group.id}"
-      child_cond    << " and start_at <= '#{current_time.strftime("%Y-%m-%d 00:00:00")}'"
-
-      child_cond    << " and (end_at IS Null or end_at = '0000-00-00 00:00:00' or end_at > '#{current_time.strftime("%Y-%m-%d 23:59:59")}' ) "
-      child_order   = "code , sort_no , start_at DESC, end_at IS Null ,end_at DESC"
-      children = System::GroupHistory.find(:all,:conditions=>child_cond,:order=>child_order)
-
-      unless children.blank?
-        children.each_with_index do |child , i|
-          # level_no = 2
-          if i == 0 and options.has_key?(:code) and options[:code] == 'none'
-            group_select  << ["#{group.name}", group.id]
-          else
-            group_select << ["(#{group.code})#{group.name}" , child.id] if i == 0 && (options[:return_pattern].blank? || options[:return_pattern] == 0)
-            group_select << ["(#{group.code})#{group.name}", child.id, group ] if i == 0 && options[:return_pattern] == 1
-            group_select  << ["(#{group.code})#{group.name}", group.id] if i == 0 && options[:return_pattern] == 2
-          end
-          # level_no = 3
-          if options.has_key?(:code) and options[:code] == 'none'
-            group_select << ["　　 - #{child.name}" , child.id]
-          else
-            group_select << ["　　 - (#{child.code.to_s.rjust(l3_code_len.to_i,'0')})#{child.name}", child.id] if options[:return_pattern].blank? || options[:return_pattern] == 0
-            group_select << ["　　 - (#{child.code.to_s.rjust(l3_code_len.to_i,'0')})#{child.name}", child.id, child] if options[:return_pattern] == 1
-            group_select << ["　　 - (#{child.code.to_s.rjust(l3_code_len.to_i,'0')})#{child.name}", child.id] if options[:return_pattern] == 2
-            group_select << [child.name, "child_group_#{child.id}"] if options[:return_pattern] == 3 # スケジューラー登録画面での所属検索用
-            group_select << [child.name, "#{child.id}"] if options[:return_pattern] == 4 # スケジューラー登録画面での所属検索用
-          end
-#          if options[:value_str].blank?
-#            group_select << ["#{child.name}", "group_#{child.id}"]
-#          else
-#            group_select << ["#{child.name}", "#{options[:value_str]}_#{child.id}"]
-#          end
-        end
-      end
-    end
-    return group_select
-  end
-
   def newline_to_br(text)
     text.to_s.gsub(/\r\n|\r|\n/, "<br />")
   end
@@ -177,7 +84,7 @@ module GwHelper
       end
       include_blank=nil
     when :form_schedule_child
-      opt_user_types = grouplist4(nil, nil , true , nil, nil, {:return_pattern => 3})
+      opt_user_types = Gwsub.grouplist4(nil, nil , true , nil, nil, {:return_pattern => 3})
       options[:selected]="child_group_#{Site.user_group.id.to_s}"
       include_blank=nil
     else

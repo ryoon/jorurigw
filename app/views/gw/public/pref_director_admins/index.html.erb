@@ -10,6 +10,7 @@
 <div class="pieceBody">
   <%= render :partial => 'header_new_botton' %>
   <%= div_notice %>
+  <%= render :partial => 'display_config' %>
   <%= render :partial => 'tree_str' %>
   <% if @items.size == 0 -%>
   <%= Gw.div_notice '表示対象がありません。' -%>

@@ -1,0 +1,32 @@
+<%# app/views/gwsub/public/sb04/sb0404menu/index %>
+<% path_index  = "#{Site.current_node.public_uri}" %>
+
+<div class="gwsub sb04">
+<%= render :partial => 'gwsub/public/sb04/sb04_piece_header' %>
+<div class="pieceBanner">
+<%= render :partial => 'gwsub/public/sb04/sb04_submenu' %>
+</div>
+<div class="pieceBody">
+<%= div_notice %>
+<table class ="index">
+<tr>
+<th>表示</th>
+<th ><%= sort_link '選択データ名', @sort_keys, path_index, 'title'  %></th>
+<th>項目名</th>
+</tr>
+<% for item in @items %>
+<% if @u_role || (@role_sb04_dev && (item.name == 'sb04stafflists' || item.name == 'sb04assignedjobs')) -%>
+<% _columns = Gwsub.get_columns("gwsub_#{item.name}") %>
+<tr <%= cycle '', 'class="cycle"' %> >
+<td>
+  <%= link_to '一覧' , url_for("/gwsub/sb04/04/#{item.name}") -%>
+</td>
+<td><%=h item.title %></td>
+<td><%=h _columns %></td>
+<% end -%>
+</tr>
+<% end %>
+</table>
+<%= paginate @items %>
+</div>
+</div>

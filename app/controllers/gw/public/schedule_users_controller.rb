@@ -38,7 +38,7 @@
       nil
     when '_belong'
       cond = "state='enabled' and system_users_groups.group_id = #{g.id}"
-      @item = System::User.find(:all, :conditions=>cond, :order=>'code',
+      @item = System::User.find(:all, :conditions=>cond, :order=>'sort_no, code',
         :joins=>'left join system_users_groups on system_users.id = system_users_groups.user_id').collect{|x| [1, x.id, Gw.trim(x.display_name)]}
     when 'login'
       @item = System::User.find(:all, :conditions=>"id=#{u.id}").collect{|x| [1, x.id, Gw.trim(x.display_name)]}
@@ -46,14 +46,13 @@
       @item = System::Group.find(:all, :conditions=>"id=#{g.id}").collect{|x| [2, x.id, Gw.trim(x.name)]}
     when /^group_(\d+)$/
       cond = "state='enabled' and system_users_groups.group_id = #{$1}"
-      @item = System::User.find(:all, :conditions=>cond, :order=>'code',
+      @item = System::User.find(:all, :conditions=>cond, :order=>'sort_no, code',
         :joins=>'left join system_users_groups on system_users.id = system_users_groups.user_id').collect{|x| [1, x.id, Gw.trim(x.display_name)]}
     when /^memo_group_(\d+)$/
 #      f_ldap = '1'
-      f_ldap = '' if Site.user.code.length <= 3
-      cond = "state='enabled' and system_users_groups.group_id = #{$1}" if f_ldap.blank?
-      cond = "state='enabled' and system_users_groups.group_id = #{$1} and ldap = 1" unless f_ldap.blank?
-      @item = System::User.find(:all, :conditions=>cond, :order=>'code',
+#      f_ldap = '' if Site.user.code.length <= 3
+      cond = "state='enabled' and system_users_groups.group_id = #{$1}"
+      @item = System::User.find(:all, :conditions=>cond, :order=>'sort_no, code',
         :joins=>'left join system_users_groups on system_users.id = system_users_groups.user_id').collect{|x|
 
           property = Gw::UserProperty.new.find(:first, :conditions=>["uid = ? and class_id = 1 and name = 'mobile'", x.id])

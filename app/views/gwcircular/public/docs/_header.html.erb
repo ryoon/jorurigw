@@ -1,4 +1,5 @@
 <%
+url = "/gwcircular/"
 str_tab1_class = 'tab'
 str_tab2_class = 'tab'
 str_tab3_class = 'tab'
@@ -18,18 +19,14 @@ str_tab5_class += ' current' if params[:cond] == 'admin'
 <tbody>
 <tr>
 <td class="spaceLeft"></td>
-<td class="<%=str_tab1_class%>"><%=link_to "未読の回覧", "#{Site.current_node.public_uri}" %></td>
+<td class="<%=str_tab1_class%>"><%=link_to "未読の回覧", "#{url}" %></td>
 <td class="spaceCenter"></td>
-<td class="<%=str_tab2_class%>"><%=link_to "既読の回覧", "#{Site.current_node.public_uri}?cond=already" %></td>
+<td class="<%=str_tab2_class%>"><%=link_to "既読の回覧", "#{url}?cond=already" %></td>
 <td class="spaceCenter"></td>
-<td class="<%=str_tab3_class%>"><%=link_to "作成した回覧", "#{Site.current_node.public_uri}?cond=owner" %></td>
-<!--
-<td class="spaceCenter"></td>
-<td class="<%=str_tab4_class%>"><%=link_to "終了した回覧", "#{Site.current_node.public_uri}?cond=void" %></td>
--->
+<td class="<%=str_tab3_class%>"><%=link_to "作成した回覧", "#{url}?cond=owner" %></td>
 <%if @is_admin%>
 <td class="spaceCenter"></td>
-<td class="<%=str_tab5_class%>"><%=link_to "管理者", "#{Site.current_node.public_uri}?cond=admin" %></td>
+<td class="<%=str_tab5_class%>"><%=link_to "管理者", "#{url}?cond=admin" %></td>
 <%end%>
 <td class="spaceRight">
 </td></tr>

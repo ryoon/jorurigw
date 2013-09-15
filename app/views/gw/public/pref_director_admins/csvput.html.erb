@@ -1,7 +1,7 @@
 <%
 target_fyear_id = Gw::YearFiscalJp.get_record(Time.now).id
 target_start_at = Gw::YearFiscalJp.find(target_fyear_id).start_at.strftime("%Y-%m-%d 00:00:00")
-p_cond = ["deleted_at IS NULL"]
+p_cond = ["deleted_at IS NULL and parent_g_code not in ('551','552','553','554','555','556','557')"]
 p_order = "parent_g_order, g_order, u_order"
 p_groups = Gw::PrefDirector.find(:all,:conditions=>p_cond, :order=> p_order,:group=>"parent_g_code")
 groups = p_groups.collect{|x| ["(#{x.parent_g_code})#{x.parent_g_name}", x.parent_g_code]}

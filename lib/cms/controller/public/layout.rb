@@ -51,8 +51,6 @@ module Cms::Controller::Public::Layout
     end
     layout_data = Page.layout.body if layout_data.blank?
 
-
-
     layout_data = replace_piece(layout_data)
 
     content_data = public_show_path("#{params['controller']}/#{params['action']}") + content_data if PUBLIC_SHOW_PATH == 1

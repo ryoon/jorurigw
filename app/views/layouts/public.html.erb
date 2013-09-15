@@ -37,6 +37,15 @@ end
 <title><%= title %></title>
 <%
 if request.mobile?
+if request.mobile.smartphone?
+@js = %w(prototype prettyprint gw effects gw_schedules yui/build/yahoo-dom-event/yahoo-dom-event).collect{|x| "/_common/js/#{x}.js"} +
+  %w(yahoo connection treeview datasource dom event container menu).collect{|x| "/_common/js/yui/build/#{x}/#{x}-min.js"} +
+  %w(calendar_date_select format_db locale/ja).collect{|x| "/javascripts/calendar_date_select/#{x}.js"} +
+  nz(@js, [])
+concat <<-EOL
+#{ret='';@js.each{|x|ret+=javascript_include_tag(x)+"\n"};ret}
+EOL
+end
 concat <<-EOL
 #{Page.layout.head_tag(true,request.mobile.smartphone?)}
 EOL
@@ -57,7 +66,6 @@ else
 concat <<-EOL
 #{Page.layout.head_tag(false)}
 #{ret='';@meta_raw.each{|x|ret+=x+"\n"};ret}
-#{ret='';@js.each{|x|ret+=javascript_include_tag(x)+"\n"};ret}
 #{ret='';@js.each{|x|ret+=javascript_include_tag(x)+"\n"};ret}
 #{ret='';@css.each{|x|ret+=stylesheet_link_tag(x, :media=>:all)+"\n"};ret}
 #{@js_raw.nil? ? '' : %Q(<script type="text/javascript"><!--#{@js_raw}--></script>)}

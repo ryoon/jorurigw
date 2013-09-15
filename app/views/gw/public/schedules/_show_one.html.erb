@@ -1,5 +1,5 @@
 <%
-
+cnt = cnt
 wdays = ["日", "月", "火", "水", "木", "金", "土"]
 if params[:sh] == "sh"
   edit_params = '?sh=sh'
@@ -40,7 +40,6 @@ ref = 'show_one'
     end
   end
 
-  sid = item.id
   props.each do |prop|
     prop_stat = prop.prop_stat
     genre = prop.is_return_genre?
@@ -63,7 +62,7 @@ ref = 'show_one'
   destroy_confirm_repeated_s = "\nなお、繰り返し期間に属していても、すでに貸出・返却が行われている予定については削除されません。"
 %>
 
-<% if params[:action] == 'show_one' %>
+<% if params[:action] == 'show_one' && cnt < 1 %>
   <% link_date = Gw.datetime_to_date(item.st_at) %>
   <%= render(:partial => '/gw/public/schedules/schedule_bt_box' , :locals=>{:d=>link_date, :mode=>'form'}) %>
 <% end %>

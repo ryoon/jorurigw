@@ -1,0 +1,24 @@
+<%# ＮＮ事業要綱等文書掲示板　分類順 -%>
+<table class="index">
+<%
+  brk_code = ''
+  for item in @items
+    unless brk_code == item.category1_id.to_s
+      brk_code = item.category1_id.to_s
+%>
+  <tr class="subIndex">
+    <th><%=gwbd_category_name(@d_categories,item.category1_id)%></th>
+    <th>区分</th>
+  </tr>
+<%  end%>
+<tr class="article">
+<td class="leftLine docTitle">
+<%=link_to(item.inpfld_006, "#{item.show_path}#{gwbbs_params_set}")%></td>
+<td><%=link_to(item.inpfld_002, "#{item.show_path}#{gwbbs_params_set}")%></td>
+</tr>
+<tr>
+<td class="leftLine group" colspan="2">
+<span><%=link_to(item.title, "#{item.show_path}#{gwbbs_params_set}")%></span></td>
+</tr>
+<%end%>
+</table>

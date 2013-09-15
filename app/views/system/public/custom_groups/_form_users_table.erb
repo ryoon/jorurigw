@@ -15,13 +15,13 @@ function changeUserIcon(id) {
 	<th>削除</th>
 </tr>
 <%
-	if params[:item] && @users_json
-		users = ::JsonParser.new.parse(@users_json)
-		@users = []
-		users.each{|user|
-			@users.push [nil, user[1], user[2],params['title_'+user[1].to_s], params['icon_'+user[1].to_s], params['sort_no_'+user[1].to_s]]
-		}
-	end
+if params[:item] && @users_json
+  users = ::JsonParser.new.parse(@users_json)
+  @users = []
+  users.each{|user|
+    @users.push [nil, user[1], user[2],params['title_'+user[1].to_s], params['icon_'+user[1].to_s], params['sort_no_'+user[1].to_s]]
+  }
+end
 %>
 <% @users.each{|user|  %>
 <tr>

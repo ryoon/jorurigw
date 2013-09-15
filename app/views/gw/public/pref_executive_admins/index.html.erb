@@ -6,7 +6,8 @@ concat render(:partial => 'piece_header')
 <div class="pieceBody">
 <%= render :partial => 'menu' %>
 <%= render(:partial => 'search') %>
-
+<%= div_notice %>
+<%= render :partial => 'display_config' %>
 <%#if @is_gw_admin == true%>
 <div class="editingBox">
   <%if @items.blank?%>

@@ -206,7 +206,7 @@ class Gwfaq::Doc < Gwboard::CommonDb
     if self.state=='public'
       item = Gwfaq::Control.find(self.title_id)
       item.docslast_updated_at = Time.now
-      item.save
+      item.save(false)
     end
   end
 

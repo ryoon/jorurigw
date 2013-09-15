@@ -189,9 +189,7 @@ class System::User < ActiveRecord::Base
       return false unless conn = @@ldap_class.bind(in_account, in_password)
     end
 
-    user.password = in_password
     return user
-
   end
 
   def self.encrypt(in_password, salt)

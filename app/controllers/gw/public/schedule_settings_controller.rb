@@ -23,7 +23,7 @@ class Gw::Public::ScheduleSettingsController < ApplicationController
     options[:class_id] = 3
 
     _params = params[:item]
-    hu = nz(Gw::Model::UserProperty.get(key.singularize), {})
+    hu = nz(Gw::Model::UserProperty.get(key.singularize, options), {})
     default = Gw::NameValue.get_cache('yaml', nil, "gw_#{key}_settings_system_default")
 
     hu[key] = {} if hu[key].nil?
@@ -32,8 +32,8 @@ class Gw::Public::ScheduleSettingsController < ApplicationController
 
     ret = Gw::Model::UserProperty.save(key.singularize, hu, options)
     if ret == true
-      flash_notice('スケジュール削除設定処理', true)
-       redirect_to "/gw/admin_settings"
+       flash_notice('スケジュール削除設定処理', true)
+       redirect_to "/gw/config_settings?c1=1&c2=7"
     else
       respond_to do |format|
         format.html {
@@ -145,6 +145,7 @@ class Gw::Public::ScheduleSettingsController < ApplicationController
         _params[:item][:public_groups_json] = '["", "", ""]'
         _params[:item][:owner_uid] = "#{Site.user.id}"
         _params[:item][:creator_uid] = "#{Site.user.id}"
+        _params[:item][:creator_gid] = "#{Site.user_group.id}"
         _params[:item][:is_public] = "3"
         _params[:item][:st_at] = "#{dtstart.strftime('%Y-%m-%d %H:%M')}"
         event.categories_property.map{|category|
@@ -154,7 +155,8 @@ class Gw::Public::ScheduleSettingsController < ApplicationController
           _params[:item][:allday_radio_id] = '2'
           _params[:item][:repeat_allday_radio_id] = '2'
           _params[:item][:st_at] = DateTime.new(dtstart.year, dtstart.month, dtstart.day, 0, 0).strftime('%Y-%m-%d %H:%M')
-          _params[:item][:ed_at] = DateTime.new(dtstart.year, dtstart.month, dtstart.day, 23, 59).strftime('%Y-%m-%d %H:%M')
+          _dtend = dtend - 1
+          _params[:item][:ed_at] = DateTime.new(_dtend.year, _dtend.month, _dtend.day, 23, 59).strftime('%Y-%m-%d %H:%M')
         else
           _params[:item][:ed_at] = "#{dtend.strftime('%Y-%m-%d %H:%M')}"
         end
@@ -258,6 +260,7 @@ class Gw::Public::ScheduleSettingsController < ApplicationController
               _params[:item][:public_groups_json] = '["", "", ""]'
               _params[:item][:owner_uid] = "#{Site.user.id}"
               _params[:item][:creator_uid] = "#{Site.user.id}"
+              _params[:item][:creator_gid] = "#{Site.user_group.id}"
               _params[:item][:is_public] = "3"
               _params[:init][:repeat_mode] = "1"
 

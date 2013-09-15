@@ -45,4 +45,38 @@ module Gw::Model::MobileSchedule
     return value
   end
 
+  def self.show_schedule_move_core(ab, my_url, qs)
+    idx=0
+    ret = <<-EOL
+#{_ret='';ab.each {|x|
+  idx+=1
+  href = my_url.sub('%d', "#{(x[0]).strftime('%Y%m%d')}").sub('%q', "#{qs}")
+  #_ret += ' ' if idx != 1
+  if x[1] == '前週'
+    _ret += %Q(<a href="#{href}" class="last_week">#{x[1]}</a>)
+  elsif x[1] == '前日'
+    _ret += %Q(<a href="#{href}" class="yesterday">#{x[1]}</a>)
+  elsif x[1] == '今日'
+    _ret += %Q(<a href="#{href}" class="today">#{x[1]}</a>)
+  elsif x[1] == '翌日'
+    _ret += %Q(<a href="#{href}" class="tomorrow">#{x[1]}</a>)
+  elsif x[1] == '翌週'
+    _ret += %Q(<a href="#{href}" class="following_week">#{x[1]}</a>)
+  elsif x[1] == '前年'
+    _ret += %Q(<a href="#{href}" class="last_year">#{x[1]}</a>)
+  elsif x[1] == '前月'
+    _ret += %Q(<a href="#{href}" class="last_month">#{x[1]}</a>)
+  elsif x[1] == '今月'
+    _ret += %Q(<a href="#{href}" class="this_month">#{x[1]}</a>)
+  elsif x[1] == '翌月'
+    _ret += %Q(<a href="#{href}" class="following_month">#{x[1]}</a>)
+  elsif x[1] == '翌年'
+    _ret += %Q(<a href="#{href}" class="following_year">#{x[1]}</a>)
+  else
+    _ret += %Q(<a href="#{href}">#{x[1]}</a>)
+  end
+};_ret}
+EOL
+    ret
+  end
 end

@@ -8,14 +8,15 @@ class Gw::Public::MobileParticipantsController < ApplicationController
 
   def index
     if params[:group_id].blank? or params[:group_id].to_i == 0
-      @group_id = 0
-      @items = ""
-      @group = ""
+      @group_id = Site.user_group.id
+      @group = Site.user_group
     else
       @group_id = params[:group_id].to_i
-      @items = System::User.get_user_select(params[:group_id],nil,{:ldap => 1})
       @group = System::Group.find_by_id(params[:group_id])
     end
+    @items = System::User.get_user_select(@group_id,nil)
+    @groups  = System::Group.find(:all,
+      :conditions=>["parent_id = ? AND state = ?",@group.id,"enabled"],:order=>:sort_no)
   end
 
 end

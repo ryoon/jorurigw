@@ -1,7 +1,7 @@
 <%
 @num = 0
 @num += session[:mobile][:to].length if session[:mobile][:to] if session[:mobile]
-groups  = grouplist4(nil, nil , true , nil)
+groups  = Gwsub.grouplist4(nil, nil , true , nil)
 @edit_path = "/gw/mobile_participants/mobile_manage"
 if  params[:view] == "quote"
  @str = "作成"
@@ -20,7 +20,6 @@ end
   <%= hidden_field_tag :view, params[:view] %>
   <%= hidden_field_tag :memo_id, params[:memo_id] %>
   <%= submit_tag '検索', :class => 'menuItem', :name => 'select'%>
-  <%#= submit_tag 'リセット', :class => 'menuItem', :name => 'clear' %>
 <% end %>
 
 <%= %Q(<p class="bgAsh">#{@group.name}</p>) unless @group.blank?%>

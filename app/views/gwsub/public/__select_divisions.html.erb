@@ -1,0 +1,14 @@
+<%# form_tag('', :method => :get, :class => 'search', :name=>'frmSearch') do %>
+<% @division_select = Gwsub::Equipmentdivision.get_equipmentdivision_select %>
+<% form_tag('', :method => :get, :class => 'search' , :name=>'frmDivisions') do %>
+<table>
+  <tr>
+    <td>
+      機器区分
+    </td>
+    <td>
+       <%= select_tag( 'divisions',options_for_select( @division_select , @divisions ), :onchange => 'document.frmDivisions.submit()') %>
+    </td>
+  </tr>
+</table>
+<% end %>

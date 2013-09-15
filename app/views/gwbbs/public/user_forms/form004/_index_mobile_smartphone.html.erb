@@ -1,0 +1,17 @@
+<%# 環境マネジメントシステム（事務担当）-%>
+<table class="index">
+
+<%# i = 0 %>
+<% for item in @items%>
+  <%# i += 1 %>
+  <%#= (i%2 != 0) ? '<tr>' : '<tr class="cycle">' %>
+  <tr class="article"><td class="docTitle leftLine" colspan="2"><%= link_to item.section_name, %Q(#{item.show_path}#{gwbbs_params_set}) %>　
+  <%= link_to %Q(#{item.inpfld_001}　#{item.title}), %Q(#{item.show_path}#{gwbbs_params_set}) %>
+  </td>
+  </tr>
+  <tr class="article">
+  <td class="leftLine"><%= link_to item.body, %Q(#{item.show_path}#{gwbbs_params_set}) %></td>
+  <td><%= link_to item.inpfld_002, %Q(#{item.show_path}#{gwbbs_params_set}) %></td>
+  </tr>
+<%end%>
+</table>

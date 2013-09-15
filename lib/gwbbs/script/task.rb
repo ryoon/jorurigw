@@ -49,7 +49,7 @@ class Gwbbs::Script::Task
     end
     return limit
   end
-
+  #
   def self.make_target_record(limit_date)
     Gwbbs::Itemdelete.delete_all(["content_id = 1"])
 
@@ -92,7 +92,7 @@ class Gwbbs::Script::Task
   def self.destroy_record(id, limit)
     @title = Gwbbs::Control.find_by_id(id)
     unless @title.blank?
-      @img_path = "public/_common/modules/#{@title.system_name}/"
+      @img_path = "public/_common/modules/#{@title.system_name}/"   #画像path指定
       item = db_alias(Gwbbs::Doc)
       doc_item = item.new
       doc_item.and :state, 'preparation'
@@ -105,7 +105,6 @@ class Gwbbs::Script::Task
         destroy_files
         @item.destroy
       end
-
       doc_item = item.new
       doc_item.and :state, '!=' ,'preparation'
       doc_item.and :expiry_date, '<' , limit.strftime("%Y-%m-%d") + ' 00:00:00'
@@ -171,4 +170,61 @@ class Gwbbs::Script::Task
     Gwboard::CommonDb.establish_connection(cnn.spec)
     return item
   end
+
+  def self.preparation_delete
+    dump "#{self}, 不要データ削除処理開始：#{Time.now.strftime('%Y-%m-%d %H:%M:%S')}"
+    item = Gwbbs::Control.new
+    items = item.find(:all)
+    for rec_item in items
+      preparation_destroy_record(rec_item.id)
+    end
+    dump "#{self}, 不要データ削除処理終了：#{Time.now.strftime('%Y-%m-%d %H:%M:%S')}"
+  end
+
+  def self.preparation_destroy_record(id)
+    @title = Gwbbs::Control.find_by_id(id)
+    del_count = 0
+    message = "データベース名：#{@title.dbname}, 掲示板名：#{@title.title}"
+    unless @title.blank?
+      begin
+        @img_path = "public/_common/modules/#{@title.system_name}/"
+        item = db_alias(Gwbbs::Doc)
+        limit = preparation_get_limit_date
+        doc_item = item.new
+        doc_item.and :state, 'preparation'
+        doc_item.and :created_at, '<', "#{limit.strftime("%Y-%m-%d")} 00:00:00"
+        @items = doc_item.find(:all)
+        for @item in @items
+          destroy_files
+          destroy_image_files
+          preparation_destroy_atacched_files
+          @item.destroy
+          del_count += 1
+        end
+        Gwbbs::Doc.remove_connection
+        dump "#{message}, 削除記事件数：#{del_count}"
+      rescue => ex # エラー時
+        if ex.message=~/Unknown database/
+          dump "データベースが見つかりません。#{message}、エラーメッセージ：#{ex.message}"
+        elsif ex.message=~/Mysql::Error: Table/
+          dump "テーブルが見つかりません。#{message}、エラーメッセージ：#{ex.message}"
+        else
+          dump "エラーが発生しました。#{message}、エラーメッセージ：#{ex.message}"
+        end
+      end
+    end
+  end
+  def self.preparation_get_limit_date
+    limit = Date.today
+    limit.ago(1.day)
+  end
+  def self.preparation_destroy_atacched_files
+    item = db_alias(Gwbbs::File)
+    files = item.find(:all, :order=> 'id', :conditions=>sql_where)
+    files.each do |file|
+      file.destroy
+    end
+    Gwbbs::File.remove_connection
+  end
+
 end

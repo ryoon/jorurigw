@@ -5,7 +5,10 @@
   item.and :type_name, 'help_link'
   help = item.find(:first)
   array_help = Array.new(5, ['', '', '', '', ''])
-  array_help = JsonParser.new.parse(help.options) unless help.blank?
+  begin
+  array_help = JsonParser.new.parse(help.options) if help.present? && help.options.present?
+  rescue
+  end
 %>
 <div class="bbsDocList circular">
 <div class="pieceHeader">

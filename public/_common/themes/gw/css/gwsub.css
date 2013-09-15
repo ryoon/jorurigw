@@ -2,17 +2,21 @@
 /* =========================================================
    _common/themes/gw/css/gwsub.css
 ========================================================= */
-
-/*ミニアイコン
----------------------------------------------------------*/
+/* common
+------------------------------------------------------------------*/
 .gwsub {
   background-image: url("/_common/themes/gw/files/title/title_individual.gif");
+  background-repeat: no-repeat;
+  clear: both;
+  height: 1%;
+  margin-top: 10px;
 }
 .gwsub.sb11 {
   background-image: url("/_common/themes/gw/files/title/title_tect_new.gif");
-}
-.notification {
-  background-image: url("/_common/themes/gw/files/title/title_kyousai.gif");
+  background-repeat: no-repeat;
+  clear: both;
+  height: 1%;
+  margin-top: 10px;
 }
 .checkup {
   background-image: url("/_common/themes/gw/files/title/title_medical.gif");
@@ -20,71 +24,78 @@
   clear: both;
   height: 1%;
 }
+#content .pieceHeader {
+  background-image: url("/_common/themes/gw/files/title/title_re.gif");
+  background-repeat: repeat-x;
+  color: #FFFFFF;
+  height: 29px;
+  margin-left: 29px;
+}
+.pieceHeader h2 {
+  display: inline-block;
+  line-height: 1.8;
+  padding-left: 10px;
+  width: 90%;
+}
+#content .gwsub .pieceBody h4 {
+  margin: 0 15px 10px;
+  padding: 0;
+  background-color: #FFFFFF;
+  background-image: none;
+  font-size: 120%;
+  font-weight: nomal;
+}
 #contentBody .pieceBanner  {
   padding-bottom: 20px;
   padding-top: 10px;
   padding-left: 10px;
-  border-left: 1px solid #1E3B8C;
   border-right: 1px solid #1E3B8C;
+  border-left: 1px solid #1E3B8C;
 }
-
-/* 上部メニュー
----------------------------------------------------------*/
 .menu {
-  margin: 5px 0 0;
-  border-left: 1px solid #CCC;
-}
-.menu:after {
-  content: ".";
-  display: block;
-  visibility: hidden;
-  height: 0.1px;
-  font-size: 0.1em;
-  line-height: 0;
   clear: both;
+  height: 16px;
+  margin-top: 6px;
+  margin-left: 0px;
+  padding: 0;
+  border-bottom: none;
+  border-left: 1px solid #CCCCCC;
 }
-* html .menu             { zoom: 1; }
-*:first-child+html .menu { zoom: 1; }
+.menu p {
+  border-left: none;
+}
 .menu a {
   float: left;
   padding-left: 5px;
   padding-right: 5px;
-  border-right: 1px solid #999;
 }
-span.gwsub_current_menu {
-  display: block;
-  margin-left: -5px;
-  margin-right: -5px;
-  padding-left: 5px;
-  padding-right: 5px;
-  background-color: #FFF29E;
-  color: #000000;
-}
-
-/* 外大枠
----------------------------------------------------------*/
 #content .pieceBody {
   padding-bottom: 20px;
+  border-right: 1px solid #1E3B8C;
+  border-left: 1px solid #1E3B8C;
+  border-bottom: 1px solid #1E3B8C;
 }
-
-/* セレクトボックス周り
----------------------------------------------------------*/
 #content form.search {
-  width: 96%;
+  width: auto;
+  margin-top: 0;
+  margin-bottom: 20px;
+  border: none;
 }
-#content #contentBody .gwsub .search table {
-  margin: 0;
+#content .hit {
+  margin-left: 15px;
+  margin-bottom: 20px;
+  margin-top: -10px;
 }
-
-/* 入力ページ
----------------------------------------------------------*/
+.explain {
+  width: 800px;
+  margin: 0 auto;
+}
 #content form {
   width: auto;
-  margin: 0 auto 20px;
+  margin-bottom: 20px;
+  margin-left: auto;
+  margin-right: auto;
 }
-
-/* 保存ボタン
----------------------------------------------------------*/
 #content form .preserve {
   margin: 0 auto 20px;
   text-align: center;
@@ -92,17 +103,41 @@ span.gwsub_current_menu {
 #content form .preserve input {
   width: 90px;
 }
+#content form .output {
+  margin: 0 auto 20px;
+  text-align: center;
+}
+#content form .output input {
+  width: 130px;
+}
+#content form.search table select#grped_id {
+  font-size: 1.2em;
+}
+#content form.search table select#grped_id option {
 
-/* 入力ページ(研修申込)
----------------------------------------------------------*/
-#contentBody .gwsub form table.bbsImage,
-#contentBody .gwsub form table.bbsFile {
+}
+#content #contentBody .frame {
+  width: auto;
+  margin-right: auto;
+  margin-left: auto;
+  margin-bottom: 10px;
+  border: 2px solid #C5D1E7;
+}
+#content #contentBody table.show,
+#content #contentBody .gwsub form table.bbsImage,
+#content #contentBody .gwsub form table.bbsFile,
+#content #contentBody .sb06 table.show {
   width: 800px;
   margin: 0 auto 10px;
   border: 2px solid #C5D1E7;
 }
-#contentBody .gwsub form table.bbsImage th,
-#contentBody .gwsub form table.bbsFile th {
+#content #contentBody .gwsub form table.show,
+#content #contentBody .gwsub form table.bbsImage,
+#content #contentBody .gwsub form table.bbsFile {
+  margin-bottom: 10px;
+}
+#content #contentBody .gwsub form table.bbsImage th,
+#content #contentBody .gwsub form table.bbsFile th {
   width: 135px;
   background-color: #E3EFFF;
   border: 1px solid #CCCCCC;
@@ -111,17 +146,23 @@ span.gwsub_current_menu {
   text-align: left;
   vertical-align: top;
 }
-#contentBody .gwsub form table.bbsImage td,
-#contentBody .gwsub form table.bbsFile td {
+#content #contentBody .gwsub form table.bbsImage td,
+#content #contentBody .gwsub form table.bbsFile td {
   padding: 6px 7px;
 }
-
-/* table index
----------------------------------------------------------*/
-#content table.index {
-  width: 98%;
-  margin: 0 auto 20px;
-  margin: 0 auto;
+#content #contentBody form div.show {
+  width: auto;
+}
+table.index, table.kyosaiIndex {
+  width: 100%;  /*--最終的に最新用のgwsub.cssに移し変え予定--*/
+  margin: 10px 0 0;
+  border: 1px solid #CCCCCC;
+}
+#content .pieceBody table.index, 
+#content table.index,
+#content .pieceBody table.kyosaiIndex {
+/*  width: 98%;
+  margin: 0 auto 20px;*/
 }
 #content .pieceBody .noprint table.index {
   width: 800px;
@@ -133,6 +174,61 @@ span.gwsub_current_menu {
 #content table.index2 {
   margin-top: 0;
 }
+.noneLeft {
+  border-left: none;
+}
+.noneRight {
+  border-right: none;
+}
+#content td.noneTop {
+  border-top: none;
+}
+table.bdTop td {
+  border-top: 1px solid #CCCCCC;
+}
+div.showMenu {
+  width: 800px;
+  margin: 10px auto;
+}
+.gwsub .pieceBody .noprint {
+  width: 800px;
+  margin: 0 auto;
+}
+#content #contentBody .gwsub table {
+  width: 800px;
+  margin: 0 auto;
+}
+#content #contentBody .gwsub table td.mceEditor table {
+  width: auto;
+  margin: 0;
+}
+#content #contentBody .gwsub table.batchProcess {
+  width: auto;
+  margin: 0 0 0 10px;
+}
+#content #contentBody .gwsub table.index {
+  width: 98%;
+}
+#content #contentBody .gwsub .sb_form table.index {
+  width: 100%;
+}
+#content #contentBody .gwsub .search table {
+  width: auto;
+  margin: 0;
+}
+#content #contentBody .gwsub .search table .submitters {
+  text-align: left;
+}
+#content #contentBody .sb010 .frame {
+  border: none;
+}
+#content #contentBody .sb010 table,
+#content #contentBody .sb010 .frame #recognizer_list {
+  margin: 0 auto;
+}
+#content #contentBody .sb010 table.show div table {
+  width: auto;
+}
 #content #contentBody .gwsub table.index table.show {
   width: 100%;
   margin: 0;
@@ -143,148 +239,72 @@ span.gwsub_current_menu {
 #content #contentBody .gwsub table.index td span.notSettled {
   color: #FF0000;
 }
-.start_at, .end_at, .recognize_at {
-  width: auto;
+#content #contentBody .gwsub .leftSide {
+  margin-left: 15px;
 }
 
-/* table show
----------------------------------------------------------*/
-#content #contentBody table.show {
-  width: 800px;
-  margin: 0 auto 10px;
+/* calender button
+------------------------------------------------------------------*/
+#content .show_cal_bt {
+  width: 91px;
+  height: 15px;
+}
+#content .show_cal_bt, x:not(:target):-moz-broken {/* for fire fox */
+  position: relative;
+  top: -5px;
+}
+html>/* */body #content .show_cal_bt {/* for IE8 */
+  position: relative;
+  top: 2px;
+}
+*:first-child+html #content .show_cal_bt {/* for IE7 */
+  position: relative;
+  top: -2px;
+  margin-left: 3px;
+}
+*html #content .show_cal_bt {/* for IE6 */
+  position: relative;
+  top: -2px;
+  margin-left: 3px;
+}
+html:not(:target) #content .show_cal_bt {/* for Safari */
+  top: 0;
 }
 
-/* 編集・削除ボタン
----------------------------------------------------------*/
-div.showMenu {
-  width: 800px;
-  margin: 0 auto;
-  padding: 10px 0;
-}
-
-/* 詳細ページ
----------------------------------------------------------*/
-.gwsub .pieceBody .noprint {
-  width: 800px;
-  margin: 0 auto;
-}
-
-/* 注意書き
----------------------------------------------------------*/
+/* required
+------------------------------------------------------------------*/
 .gwsub form span.required {
   display: block;
   width: 800px;
   margin: 0 auto;
 }
+.gwsub.sb05 form span.required {
+  margin-top: 15px;
+}
 .gwsub form table span.required {
   display: inline;
 }
-.notice {
-  margin-left: 10px;
-}
 
-/* コード管理 選択データ名
----------------------------------------------------------*/
-.titleLine,
-.scheduleTableTitle {
-  clear: both;
-  position: relative;
-  margin-top: 0;
-  margin-bottom: 15px;
-  padding-top: 10px;
-  padding-bottom: 3px;
-  border-bottom: 1px solid #B1BEE3;
-}
-.titleLine .title,
-.scheduleTableTitle {
-  margin-left: 10px;
-  font-size: 130%;
-  font-weight: bold;
-}
-.titleLine .linkSpace {
-  position: absolute;
-  right: 0;
-  bottom: 2px;
-}
-.titleLine .linkSpace span {
-  border:1px solid #CCCCCC;
-}
-.scheduleTableTitle {
-  margin-left: 0px;
-  padding-left: 10px;
-}
-.titleLine .linkSpace span {
+/* gwsub surrent menu
+------------------------------------------------------------------*/
+span.gwsub_current_menu,
+span.current {
+  /* 県庁 個別業務系 共通 */ /* メニュー現在選択位置 */
   display: inline-block;
-  margin-right: 5px;
+  margin-left: -5px;
+  margin-right: -5px;
   padding-left: 5px;
   padding-right: 5px;
+  background-color: #FFF29E;   /* crimson */
+  color: #000000;   /* crimson */
 }
 
-/* 担当者管理　入力ページ
----------------------------------------------------------*/
-#content #contentBody form.sb_form {
-  width: 800px;
-}
-#content #contentBody form.sb_form .frame {
-  border: none;
-}
-#content #contentBody form.sb_form .frame table.index {
-  border: 1px solid #CCCCCC;
-}
-#content #contentBody form.sb_form .frame table.index select {
-  margin-bottom: 2px;
-}
-
-/* explanation
----------------------------------------------------------*/
-span.explanation {
-  display: block;
-  width: 800px;
-  margin: 0 auto;
-}
-
-/* 機能ボタン周り
----------------------------------------------------------*/
-.editingBox {
-  display: block;
-  width: 800px;
-}
-
-/* カレンダーボタン周り
----------------------------------------------------------*/
-#content .show_cal_bt {
-  width: 91px;
-  height: 15px;
-  position: relative;
-  top: -2px;
-  margin-left: 3px;
-}
-
-/* sb01 training
----------------------------------------------------------*/
-.titleLine .date_title{
-  margin-left: 10px;
-  font-size: 100%;
-  font-weight: bold;
-}
-.sb01 .pieceBody form table.bbsText th {
-  width: auto;
-}
-#page-gwsub-sb01-sb01TrainingPlans-new #content .sb01 .pieceBody form span.required,
-#page-gwsub-sb01-sb01TrainingPlans-new #content .sb01 .pieceBody form,
-#page-gwsub-sb01-sb01TrainingPlans-new #content .sb01 .pieceBody form table.show,
-#page-gwsub-sb01-sb01TrainingPlans-new #content .sb01 .pieceBody form table.bbsImage,
-#page-gwsub-sb01-sb01TrainingPlans-new #content .sb01 .pieceBody form table.bbsFile {
-  width: 876px;
-}
-#page-gwsub-sb01-sb01TrainingPlans-new #content .sb01 .pieceBody form table.bbsText {
-  width: 872px;
-}
 
 /* sb04_stafflist
----------------------------------------------------------*/
+------------------------------------------------------------------*/
 div.sb04_staff_assign_warning {
-  color: #DC143C;
+  /* 職員一覧 */ /* 担当未割当　警告 */
+  color: #DC143C;   /* crimson */
 }
 td.divide_duties textarea#item_divide_duties {
   width: 95%;
@@ -296,28 +316,32 @@ td.remarks input#item_remarks {
   width: 95%;
 }
 
-/* sb05
----------------------------------------------------------*/
-.sb05 span.explanation,
-.sb05 .editingBox {
-  width: auto;
-  margin-left: 10px;
-}
-
 /* sb06_assigned_conference
----------------------------------------------------------*/
+------------------------------------------------------------------*/
 div.sb06_assigned_conference_form101,
+  /* 担当者名管理　申請書　安全衛生推進者・安全管理者　*/
 div.sb06_assigned_conference_form103,
+  /* 担当者名管理　申請書　衛生管理者　*/
 div.sb06_assigned_conference_form104,
+  /* 担当者名管理　申請書　作業主任者　*/
 div.sb06_assigned_conference_form201,
+  /* 担当者名管理　申請書　交通安全推進員等報告　*/
 div.sb06_assigned_conference_form202,
+  /* 担当者名管理　申請書　次世代育成支援対策推進員　*/
 div.sb06_assigned_conference_form301,
+  /* 担当者名管理　申請書　自衛消防地区隊員　*/
 div.sb06_assigned_conference_form302,
+  /* 担当者名管理　申請書　火気取締責任者等　*/
 div.sb06_assigned_conference_form303,
+  /* 担当者名管理　申請書　管財事務主任者等　*/
 div.sb06_assigned_conference_form401,
+  /* 担当者名管理　申請書　情報化推進員・OA活用担当者　*/
 div.sb06_assigned_conference_form501,
+  /* 担当者名管理　申請書　エコ計画（代表）推進員・推進担当員　*/
 div.sb06_assigned_conference_form601,
+  /* 担当者名管理　申請書　資金管理担当者等　*/
 div.sb06_assigned_conference_form602
+  /* 担当者名管理　申請書　出納員等　*/
 {
   width: 800px;
   margin-right: auto;
@@ -342,29 +366,53 @@ div.sb06_assigned_conference_form602
   margin: 0;
   border: none;
 }
+#content .sb06_assigned_conference_form101 table.index td,
+#content .sb06_assigned_conference_form103 table.index td,
+#content .sb06_assigned_conference_form104 table.index td,
+#content .sb06_assigned_conference_form201 table.index td,
+#content .sb06_assigned_conference_form202 table.index td,
+#content .sb06_assigned_conference_form301 table.index td,
+#content .sb06_assigned_conference_form302 table.index td,
+#content .sb06_assigned_conference_form303 table.index td,
+#content .sb06_assigned_conference_form401 table.index td,
+#content .sb06_assigned_conference_form501 table.index td,
+#content .sb06_assigned_conference_form601 table.index td,
+#content .sb06_assigned_conference_form602 table.index td {
 
+}
+.left {
+  margin-left: 10px;
+}
+div.show .bottom {
+  margin-bottom: 10px;
+}
 div.sb06_assigned_conference_formStyleNo {
+  /* 申請書フォーム番号 */ /* 様式　第ｘ号 */
   margin-bottom: 10px;
   margin-right: 10px;
   margin-top: 10px;
   text-align: right;
 }
 div.sb06_assigned_conference_markNo {
+  /* 文書記号・番号 */ /* 情シ 第25号 */
   margin-bottom: 10px;
   margin-right: 10px;
   margin-top: 10px;
   text-align: right;
 }
 .sb06_assigned_conference_markNo_input {
+  /* 文書記号・番号 */ /* 情シ 第25号 */
   width: 5em;
 }
 div.sb06_assigned_conference_date {
+  /* 申請日 */ /* 平成yy年 m月 d日 */
   margin-right: 10px;
   margin-bottom: 10px;
   margin-top: 10px;
   text-align: right;
 }
 div.sb06_assigned_conference_group_to {
+  /* 申請書宛先 */ /* xxxxxxxx長 殿 */
   margin-top: 10px;
   margin-bottom: 10px;
   margin-left: 10px;
@@ -372,12 +420,14 @@ div.sb06_assigned_conference_group_to {
   text-align: left;
 }
 div.sb06_assigned_conference_group_from {
+  /* 申請書作成元 */ /* xxxxxxxx長 */
   margin-top: 10px;
   margin-right: 10px;
   margin-bottom: 10px;
   text-align: right;
 }
 div.sb06_assigned_conference_group_from_202 {
+  /* 申請書作成元 */ /* xxxxxxxx長 */ /* 下線付きは、_form202.html.erb 固定 */
   margin-top: 10px;
   margin-right: 10px;
   margin-bottom: 10px;
@@ -385,6 +435,7 @@ div.sb06_assigned_conference_group_from_202 {
   text-decoration:  underline;
 }
 div.sb06_assigned_conference_title {
+  /* 申請書見出し */ /* ＸＸＸＸ報告書 */
   text-align: center;
   margin-top: 20px;
   margin-bottom: 20px;
@@ -392,10 +443,35 @@ div.sb06_assigned_conference_title {
   font-weight: bold;
 }
 .sb06_assigned_conference_at {
+  /* 日付入力 */ /* 申請書見出し部 */
   width: 12em;
 }
 .sb06_assigned_conference_at2 {
+  /* 日付入力 */ /* table組の中 */
   width: 8em;
+}
+div.act_charge {
+  float: left;
+  margin-bottom: 10px;
+  margin-left: 15px;
+  margin-right: 5px;
+}
+*html div.act_charge {
+  margin-left: 7px;
+}
+.act_charge a {
+  display: inline-block;
+  width: 85px;
+  height: 0;
+  padding-top: 15px;
+  border: none;
+  background-image: url("/_common/themes/gw/files/ic_act_charge.gif");
+  background-repeat: no-repeat;
+  background-color: #FFFFFF;
+  overflow: hidden;
+}
+div.attention {
+  margin-bottom: 10px;
 }
 #page-gwsub-sb06-06-sb06AssignedConfKinds table.index .action {
   width: 45px;
@@ -410,17 +486,51 @@ div.sb06_assigned_conference_title {
   width: 80px;
 }
 
+/* sb06_assigned_conference
+------------------------------------------------------------------*/
+#content #contentBody form.sb_form {
+  width: 800px;
+  margin: 0 auto;
+}
+#content #contentBody form.sb_form .frame {
+  border: none;
+}
+#content #contentBody form.sb_form .frame table.index {
+  border: 1px solid #CCCCCC;
+}
+#content #contentBody form.sb_form .frame table.index select {
+  margin-bottom: 2px;
+}
+#content #contentBody .gwsub .sb06_assigned_conference_form101 table.index,
+#content #contentBody .gwsub .sb06_assigned_conference_form103 table.index,
+#content #contentBody .gwsub .sb06_assigned_conference_form104 table.index,
+#content #contentBody .gwsub .sb06_assigned_conference_form201 table.index,
+#content #contentBody .gwsub .sb06_assigned_conference_form202 table.index,
+#content #contentBody .gwsub .sb06_assigned_conference_form301 table.index,
+#content #contentBody .gwsub .sb06_assigned_conference_form302 table.index,
+#content #contentBody .gwsub .sb06_assigned_conference_form303 table.index,
+#content #contentBody .gwsub .sb06_assigned_conference_form401 table.index,
+#content #contentBody .gwsub .sb06_assigned_conference_form501 table.index,
+#content #contentBody .gwsub .sb06_assigned_conference_form601 table.index,
+#content #contentBody .gwsub .sb06_assigned_conference_form602 table.index {
+  width: 100%;
+  margin: 0;
+}
+
 /* sb09 共通
----------------------------------------------------------*/
+------------------------------------------------------------------*/
 .sb09_data_warning{
   color:red;
 }
 
 /* sb09_terminal_conferences 端末追加協議 table
----------------------------------------------------------*/
+------------------------------------------------------------------*/
 .sb09_terminal_conferences_table{
   width: 95%;
 }
+
+/* sb09_terminal_conferences 端末追加協議 td width
+------------------------------------------------------------------*/
 .sb09_terminal_conferences_width_l1{
   width: 12em;
 }
@@ -443,29 +553,57 @@ div.sb06_assigned_conference_title {
 .sb09_terminal_conference_answers_width_l4{
   width: 4em;
 }
+.sb09 .id {
+  width: 45px;
+}
+.sb09 .answer_at {
+  width: 150px;
+}
+.sb09 .conference_state {
+  width: 55px;
+}
+.sb09 .syorikubun_state {
+  width: 45px;
+}
+.sb09 .result_state {
+  width: 45px;
+}
+.sb09 .place_main {
+  width: 150px;
+}
+
 
 /* sb09_terminal_location_changes
----------------------------------------------------------*/
-.sb09_terminal_location_changes_old,
+------------------------------------------------------------------*/
 .sb09_terminal_location_changes table.index th._old_place_main,
 .sb09_terminal_location_changes table.index th._old_place_sub,
 .sb09_terminal_location_changes table.index th._old_user ,
 .sb09_terminal_location_changes table.index th.old_place_main_id,
 .sb09_terminal_location_changes table.index th.old_place_sub_id,
 .sb09_terminal_location_changes table.index th.old_user {
-  background-color: #FFC0CB;
+  /* 端末管理　年度末　保管転換 端末　余剰情報 */
+  background-color: #FFC0CB; /* pink */
 }
-.sb09_terminal_location_changes_new,
 .sb09_terminal_location_changes table.index th._new_place_main,
 .sb09_terminal_location_changes table.index th._new_place_sub,
 .sb09_terminal_location_changes table.index th._new_user ,
 .sb09_terminal_location_changes table.index th.new_place_main_id,
 .sb09_terminal_location_changes table.index th.new_place_sub_id,
 .sb09_terminal_location_changes table.index th._new_user {
-  background-color: #00FFFF;
+  /* 端末管理　年度末　保管転換 端末　不足情報 */
+  background-color: #00FFFF; /* cyan; */
+}
+.sb09_terminal_location_changes_old{
+  /* 端末管理　年度末　保管転換 端末　余剰情報 */
+  background-color: #FFC0CB; /* pink */
+}
+.sb09_terminal_location_changes_new{
+  /* 端末管理　年度末　保管転換 端末　不足情報 */
+  background-color: #00FFFF; /* cyan; */
 }
 .gwsub_sb09_diff_color{
-  background-color: #FFFF99;
+  /* 端末管理　新旧比較で変更箇所表示　 */
+  background-color: #FFFF99; /*  */
 }
 .sb09 table.show th {
   width: 145px;
@@ -473,47 +611,9 @@ div.sb06_assigned_conference_title {
 .sb09 table.index th.title {
   width: 145px;
 }
-#page-gwsub-sb09-01-terminalBases table.index th,
-#page-gwsub-sb09-01-terminalBases table.index td,
-#page-gwsub-sb09-01-sb09TerminalSearchDuplications table.index th,
-#page-gwsub-sb09-01-sb09TerminalSearchDuplications table.index td,
-#page-gwsub-sb09-01-sb09TerminalSearchDuplications-pcNames table.index th,
-#page-gwsub-sb09-01-sb09TerminalSearchDuplications-pcNames table.index td,
-#page-gwsub-sb09-01-sb09TerminalSearchDuplications-pcNumbers table.index th,
-#page-gwsub-sb09-01-sb09TerminalSearchDuplications-pcNumbers table.index td,
-#page-gwsub-sb09-01-sb09TerminalSearchDuplications-pcModels table.index th,
-#page-gwsub-sb09-01-sb09TerminalSearchDuplications-pcModels table.index td,
-#page-gwsub-sb09-01-sb09TerminalSearchDuplications-pcIpAddrs table.index th,
-#page-gwsub-sb09-01-sb09TerminalSearchDuplications-pcIpAddrs table.index td,
-#page-gwsub-sb09-01-sb09TerminalSearchDuplications-pcMoveAt table.index th,
-#page-gwsub-sb09-01-sb09TerminalSearchDuplications-pcMoveAt table.index td,
-#page-gwsub-sb09-01-sb09TerminalSearchDuplications-pcRentals table.index th,
-#page-gwsub-sb09-01-sb09TerminalSearchDuplications-pcRentals table.index td,
-#page-gwsub-sb09-01-sb09TerminalSearchDuplications-pcRentalsNil table.index th,
-#page-gwsub-sb09-01-sb09TerminalSearchDuplications-pcRentalsNil table.index td,
-#page-gwsub-sb09-01-sb09TerminalSearchDuplications2-pcUsers1 table.index th,
-#page-gwsub-sb09-01-sb09TerminalSearchDuplications2-pcUsers1 table.index td,
-#page-gwsub-sb09-01-sb09TerminalSearchDuplications2-pcUsers2 table.index th,
-#page-gwsub-sb09-01-sb09TerminalSearchDuplications2-pcUsers2 table.index td,
-#page-gwsub-sb09-01-sb09TerminalSearchDuplications2-pcUsers3 table.index th,
-#page-gwsub-sb09-01-sb09TerminalSearchDuplications2-pcUsers3 table.index td,
-#page-gwsub-sb09-01-sb09TerminalSearchDuplications2-pcUsersNil table.index th,
-#page-gwsub-sb09-01-sb09TerminalSearchDuplications2-pcUsersNil table.index td,
-#page-gwsub-sb09-04-sb09TerminalNetworkChanges table.index th,
-#page-gwsub-sb09-04-sb09TerminalNetworkChanges table.index td,
-#page-gwsub-sb09-04-sb09TerminalNetworkChanges-indexNew table.index th,
-#page-gwsub-sb09-04-sb09TerminalNetworkChanges-indexNew table.index td,
-#page-gwsub-sb09-04-sb09TerminalNetworkChanges-indexOld table.index th,
-#page-gwsub-sb09-04-sb09TerminalNetworkChanges-indexOld table.index td,
-#page-gwsub-sb09-03-sb09TerminalReplaceReflections table.index th,
-#page-gwsub-sb09-03-sb09TerminalReplaceReflections table.index td,
-#page-gwsub-sb09-03-sb09TerminalReplaces table.index th,
-#page-gwsub-sb09-03-sb09TerminalReplaces table.index td {
-  white-space: nowrap;
-}
 
 /* sb_form sb10_userids_form
----------------------------------------------------------*/
+------------------------------------------------------------------*/
 #content #contentBody .sb010 .sb10_userids_form #recognizer_list table.show table,
 #content #contentBody .sb010 .sb10_numberids_form #recognizer_list table.show table,
 #content #contentBody .sb10 .sb10_mailinglists_form #recognizer_list table.show table {
@@ -528,7 +628,8 @@ div.sb06_assigned_conference_title {
 #content #contentBody table.sb10 td.sb10_right_notice,
 #content #contentBody table.sb10 td.sb10_right_apply_mailinglist,
 #content #contentBody table.sb10 td.sb10_right_notice_mailinglist,
-#content #contentBody table.sb10 td.sb10_right_notice_software {
+
+#content #contentBody table.sb10 td.sb10_right_notice_software{
   width: 7em;
   vertical-align:top;
 }
@@ -561,24 +662,121 @@ div.sb06_assigned_conference_title {
 #content #contentBody table.sb10 td.file_left{
   width: 5em;
 }
-#content #contentBody .sb010 .frame {
-  border: none;
-}
-#content #contentBody .sb010 table,
-#content #contentBody .sb010 .frame #recognizer_list {
-  margin: 0 auto;
-}
-#content #contentBody .sb010 table.show div table {
-  width: auto;
-}
 
 /* sb11
----------------------------------------------------------*/
+-----------------------------------------------------------------*/
 #content #contentBody .gwsub table.experience {
   width: 800px;
 }
+
 .sb11 .experience th.date {
   width: 65px;
+}
+
+/*notification
+-----------------------------------------------------------------*/
+.notification {
+  background-image: url("/_common/themes/gw/files/title/title_kyousai.gif");
+  background-repeat: no-repeat;
+  clear: both;
+  height: 1%;
+  margin-top: 10px;
+}
+
+
+/* コード管理 選択データ名
+------------------------------------------------------------------*/
+.titleLine,
+.scheduleTableTitle {
+  clear: both;
+  position: relative;
+  margin-top: 10px;
+  margin-bottom: 15px;
+  padding-bottom: 3px;
+  border-bottom: 1px solid #B1BEE3;
+}
+.titleLine .title,
+.scheduleTableTitle {
+  margin-left: 10px;
+  font-size: 130%;
+  font-weight: bold;
+}
+.titleLine .linkSpace {
+  position: absolute;
+  right: 0;
+  bottom: 2px;
+}
+.titleLine .linkSpace span {
+  border:1px solid #CCCCCC;
+}
+.scheduleTableTitle {
+  margin-left: 0px;
+  padding-left: 10px;
+}
+.titleLine .linkSpace span {
+  display: inline-block;
+  margin-right: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+/* 新規作成
+------------------------------------------------------------------*/
+#content .sb01 .pieceBody form {
+  width: 800px;
+  margin: 0 auto;
+}
+
+/* explanation
+------------------------------------------------------------------*/
+span.explanation {
+  display: block;
+  width: 800px;
+  margin: 0 auto;
+}
+.sb05 span.explanation {
+  width: auto;
+  margin-left: 10px;
+}
+
+
+/* sb01 training
+------------------------------------------------------------------*/
+.titleLine .date_title{
+  margin-left: 10px;
+  font-size: 100%;
+  font-weight: bold;
+}
+.sb01 .pieceBody form table.bbsText th {
+  width: auto;
+}
+#page-gwsub-sb01-sb01TrainingPlans-new #content .sb01 .pieceBody form span.required,
+#page-gwsub-sb01-sb01TrainingPlans-new #content .sb01 .pieceBody form,
+#page-gwsub-sb01-sb01TrainingPlans-new #content .sb01 .pieceBody form table.show,
+#page-gwsub-sb01-sb01TrainingPlans-new #content .sb01 .pieceBody form table.bbsImage,
+#page-gwsub-sb01-sb01TrainingPlans-new #content .sb01 .pieceBody form table.bbsFile {
+  width: 876px;
+}
+#page-gwsub-sb01-sb01TrainingPlans-new #content .sb01 .pieceBody form table.bbsText {
+  width: 872px;
+}
+table.show td.mceEditor {
+  padding: 2px;
+}
+/* table
+------------------------------------------------------*/
+.start_at, .end_at, .recognize_at {
+  width: auto;
+}
+
+/* Button
+------------------------------------------------------*/
+.editingBox {
+  width: 800px;
+}
+.sb05 .editingBox {
+  width: auto;
+  margin-left: 10px;
 }
 
 /*hss
@@ -587,10 +785,13 @@ div.sb06_assigned_conference_title {
   padding-left: 10px;
   padding-right: 10px;
 }
+.notification .notificationBaseBenefits {
+
+}
 .notification .notificationBaseBenefits div {
   width: 97%;
 }
-.notification table.index {
+.notification table.index, .notification table.kyosaiIndex {
   margin-top: 3px;
   margin-bottom: 15px;
 }
@@ -627,9 +828,36 @@ div.sb06_assigned_conference_title {
 .notification table.noticeTable3 caption {
   text-align: right;
 }
-
+.notification .pageBreak {
+  margin-top: 10px;
+}
+.notification .pieceBody .certification table.index,
+.notification .pieceBody .certification table.kyosaiIndex {
+  border-left: 1px solid #CCC;
+  border-right: 1px solid #CCC;
+}
+.notification .notificationBaseBenefits table.noticeTable2 .cycle td {
+  background-color: #F7FBFF;
+}
+.notification .pieceBody table.kyosaiNoBorder td{
+  border: none;
+}
+table.kyosaiIndex th.jushin, table.kyosaiIndex th.kyuhu, 
+table.kyosaiIndex th.iryohi, table.kyosaiIndex th.hokenKyuhu, 
+table.kyosaiIndex th.gojokai {
+  width: 100px;
+  text-align: center;
+}
+table.kyosaiIndex th.jushinsya {
+  width: auto;
+  text-align: center;
+}
+table.kyosaiIndex th.kumiai {
+  width: 120px;
+  text-align: center;
+}
 /* print
----------------------------------------------------------*/
+------------------------------------------------------*/
 @media print {
   .gwsub {
     background-image: none;
@@ -646,68 +874,11 @@ div.sb06_assigned_conference_title {
   }
 }
 
-/*
----------------------------------------------------------*/
-#content #contentBody .gwsub table.batchProcess {
-  width: auto;
-  margin: 0 0 0 10px;
+
+
+.sb09 .div {
+  width: 50px;
 }
-#content #contentBody .gwsub .leftSide {
-  margin-left: 15px;
-}
-#content .hit {
-  margin-left: 15px;
-  margin-bottom: 20px;
-  margin-top: -10px;
-}
-.explain {
-  width: 800px;
-  margin: 0 auto;
-}
-#content #contentBody .frame {
-  width: auto;
-  margin-right: auto;
-  margin-left: auto;
-  margin-bottom: 10px;
-  border: 2px solid #C5D1E7;
-}
-#content form .output {
-  margin: 0 auto 20px;
-  text-align: center;
-}
-#content form .output input {
-  width: 130px;
-}
-#content form.search table select#grped_id {
-  font-size: 1.2em;
-}
-.left {
-  margin-left: 10px;
-}
-div.show .bottom {
-  margin-bottom: 10px;
-}
-div.act_charge {
-  float: left;
-  margin-bottom: 10px;
-  margin-left: 15px;
-  margin-right: 5px;
-}
-*html div.act_charge {
-  margin-left: 7px;
-}
-.act_charge a {
-  display: inline-block;
-  width: 85px;
-  height: 0;
-  padding-top: 15px;
-  border: none;
-  background-image: url("/_common/themes/gw/files/ic_act_charge.gif");
-  background-repeat: no-repeat;
-  background-color: #FFFFFF;
-  overflow: hidden;
-}
-div.attention {
-  margin-bottom: 10px;
-}
+
+
 

@@ -1,28 +1,39 @@
--- MySQL dump 10.13  Distrib 5.1.30, for pc-linux-gnu (i686)
---
--- Host: localhost    Database: development_jgw_core
--- ------------------------------------------------------
--- Server version	5.1.30
 
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
-/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
-/*!40103 SET TIME_ZONE='+00:00' */;
-/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
-/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
-/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
-/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 
 --
--- Table structure for table `cms_content_mappings`
+-- ÉfÅ[É^ÉxÅ[ÉX: `development_jgw_core`
+--
+
+-- --------------------------------------------------------
+
+--
+-- ÉeÅ[ÉuÉãÇÃç\ë¢ `cms_contents`
+--
+
+DROP TABLE IF EXISTS `cms_contents`;
+CREATE TABLE IF NOT EXISTS `cms_contents` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `unid` int(11) DEFAULT NULL,
+  `state` text,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  `module` text,
+  `controller` text,
+  `name` text,
+  `title` text,
+  `path` text,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- ÉeÅ[ÉuÉãÇÃç\ë¢ `cms_content_mappings`
 --
 
 DROP TABLE IF EXISTS `cms_content_mappings`;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
-CREATE TABLE `cms_content_mappings` (
+CREATE TABLE IF NOT EXISTS `cms_content_mappings` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `parent_id` int(11) DEFAULT NULL,
   `content_id` int(11) DEFAULT NULL,
@@ -38,16 +49,15 @@ CREATE TABLE `cms_content_mappings` (
   `title` text,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-SET character_set_client = @saved_cs_client;
+
+-- --------------------------------------------------------
 
 --
--- Table structure for table `cms_content_pages`
+-- ÉeÅ[ÉuÉãÇÃç\ë¢ `cms_content_pages`
 --
 
 DROP TABLE IF EXISTS `cms_content_pages`;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
-CREATE TABLE `cms_content_pages` (
+CREATE TABLE IF NOT EXISTS `cms_content_pages` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `content_id` int(11) DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
@@ -66,38 +76,15 @@ CREATE TABLE `cms_content_pages` (
   `body` mediumtext,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-SET character_set_client = @saved_cs_client;
+
+-- --------------------------------------------------------
 
 --
--- Table structure for table `cms_contents`
---
-
-DROP TABLE IF EXISTS `cms_contents`;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
-CREATE TABLE `cms_contents` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `unid` int(11) DEFAULT NULL,
-  `state` text,
-  `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL,
-  `module` text,
-  `controller` text,
-  `name` text,
-  `title` text,
-  `path` text,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=128 DEFAULT CHARSET=utf8;
-SET character_set_client = @saved_cs_client;
-
---
--- Table structure for table `cms_files`
+-- ÉeÅ[ÉuÉãÇÃç\ë¢ `cms_files`
 --
 
 DROP TABLE IF EXISTS `cms_files`;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
-CREATE TABLE `cms_files` (
+CREATE TABLE IF NOT EXISTS `cms_files` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `unid` int(11) DEFAULT NULL,
   `parent_unid` int(11) DEFAULT NULL,
@@ -112,16 +99,15 @@ CREATE TABLE `cms_files` (
   `image_height` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-SET character_set_client = @saved_cs_client;
+
+-- --------------------------------------------------------
 
 --
--- Table structure for table `cms_layouts`
+-- ÉeÅ[ÉuÉãÇÃç\ë¢ `cms_layouts`
 --
 
 DROP TABLE IF EXISTS `cms_layouts`;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
-CREATE TABLE `cms_layouts` (
+CREATE TABLE IF NOT EXISTS `cms_layouts` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `unid` int(11) DEFAULT NULL,
   `state` text,
@@ -141,17 +127,16 @@ CREATE TABLE `cms_layouts` (
   `s_mobile_body` mediumtext,
   `s_mobile_stylesheet` mediumtext,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=171 DEFAULT CHARSET=utf8;
-SET character_set_client = @saved_cs_client;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
 
 --
--- Table structure for table `cms_maps`
+-- ÉeÅ[ÉuÉãÇÃç\ë¢ `cms_maps`
 --
 
 DROP TABLE IF EXISTS `cms_maps`;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
-CREATE TABLE `cms_maps` (
+CREATE TABLE IF NOT EXISTS `cms_maps` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `unid` int(11) DEFAULT NULL,
   `state` text,
@@ -162,17 +147,16 @@ CREATE TABLE `cms_maps` (
   `node_id` int(11) DEFAULT NULL,
   `title` text,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=219 DEFAULT CHARSET=utf8;
-SET character_set_client = @saved_cs_client;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
 
 --
--- Table structure for table `cms_nodes`
+-- ÉeÅ[ÉuÉãÇÃç\ë¢ `cms_nodes`
 --
 
 DROP TABLE IF EXISTS `cms_nodes`;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
-CREATE TABLE `cms_nodes` (
+CREATE TABLE IF NOT EXISTS `cms_nodes` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `unid` int(11) DEFAULT NULL,
   `state` text,
@@ -188,17 +172,16 @@ CREATE TABLE `cms_nodes` (
   `title` text,
   PRIMARY KEY (`id`),
   KEY `parent_id` (`parent_id`,`name`(20))
-) ENGINE=MyISAM AUTO_INCREMENT=719 DEFAULT CHARSET=utf8;
-SET character_set_client = @saved_cs_client;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
 
 --
--- Table structure for table `cms_pages`
+-- ÉeÅ[ÉuÉãÇÃç\ë¢ `cms_pages`
 --
 
 DROP TABLE IF EXISTS `cms_pages`;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
-CREATE TABLE `cms_pages` (
+CREATE TABLE IF NOT EXISTS `cms_pages` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `unid` int(11) DEFAULT NULL,
   `state` text,
@@ -213,42 +196,16 @@ CREATE TABLE `cms_pages` (
   `head` mediumtext,
   `body` mediumtext,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=256 DEFAULT CHARSET=utf8;
-SET character_set_client = @saved_cs_client;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
 
 --
--- Table structure for table `cms_piece_links`
---
-
-DROP TABLE IF EXISTS `cms_piece_links`;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
-CREATE TABLE `cms_piece_links` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `unid` int(11) DEFAULT NULL,
-  `state` text,
-  `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL,
-  `recognized_at` datetime DEFAULT NULL,
-  `published_at` datetime DEFAULT NULL,
-  `piece_id` int(11) DEFAULT NULL,
-  `sort_no` int(11) DEFAULT NULL,
-  `title` text,
-  `body` mediumtext,
-  `url` text,
-  `target` text,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-SET character_set_client = @saved_cs_client;
-
---
--- Table structure for table `cms_pieces`
+-- ÉeÅ[ÉuÉãÇÃç\ë¢ `cms_pieces`
 --
 
 DROP TABLE IF EXISTS `cms_pieces`;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
-CREATE TABLE `cms_pieces` (
+CREATE TABLE IF NOT EXISTS `cms_pieces` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `unid` int(11) DEFAULT NULL,
   `state` text,
@@ -265,17 +222,40 @@ CREATE TABLE `cms_pieces` (
   `body` mediumtext,
   PRIMARY KEY (`id`),
   KEY `name` (`name`(50),`state`(10))
-) ENGINE=MyISAM AUTO_INCREMENT=187 DEFAULT CHARSET=utf8;
-SET character_set_client = @saved_cs_client;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
 
 --
--- Table structure for table `cms_routes`
+-- ÉeÅ[ÉuÉãÇÃç\ë¢ `cms_piece_links`
+--
+
+DROP TABLE IF EXISTS `cms_piece_links`;
+CREATE TABLE IF NOT EXISTS `cms_piece_links` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `unid` int(11) DEFAULT NULL,
+  `state` text,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  `recognized_at` datetime DEFAULT NULL,
+  `published_at` datetime DEFAULT NULL,
+  `piece_id` int(11) DEFAULT NULL,
+  `sort_no` int(11) DEFAULT NULL,
+  `title` text,
+  `body` mediumtext,
+  `url` text,
+  `target` text,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- ÉeÅ[ÉuÉãÇÃç\ë¢ `cms_routes`
 --
 
 DROP TABLE IF EXISTS `cms_routes`;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
-CREATE TABLE `cms_routes` (
+CREATE TABLE IF NOT EXISTS `cms_routes` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `unid` int(11) DEFAULT NULL,
   `state` text,
@@ -287,16 +267,15 @@ CREATE TABLE `cms_routes` (
   `title` text,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-SET character_set_client = @saved_cs_client;
+
+-- --------------------------------------------------------
 
 --
--- Table structure for table `cms_sites`
+-- ÉeÅ[ÉuÉãÇÃç\ë¢ `cms_sites`
 --
 
 DROP TABLE IF EXISTS `cms_sites`;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
-CREATE TABLE `cms_sites` (
+CREATE TABLE IF NOT EXISTS `cms_sites` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `unid` int(11) DEFAULT NULL,
   `state` text,
@@ -308,17 +287,16 @@ CREATE TABLE `cms_sites` (
   `mobile_is` int(11) DEFAULT NULL,
   `mobile_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
-SET character_set_client = @saved_cs_client;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
 
 --
--- Table structure for table `cms_texts`
+-- ÉeÅ[ÉuÉãÇÃç\ë¢ `cms_texts`
 --
 
 DROP TABLE IF EXISTS `cms_texts`;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
-CREATE TABLE `cms_texts` (
+CREATE TABLE IF NOT EXISTS `cms_texts` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `unid` int(11) DEFAULT NULL,
   `state` text,
@@ -332,34 +310,16 @@ CREATE TABLE `cms_texts` (
   `title` text,
   `body` mediumtext,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
-SET character_set_client = @saved_cs_client;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
 
 --
--- Table structure for table `cms_tmp_file_groups`
---
-
-DROP TABLE IF EXISTS `cms_tmp_file_groups`;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
-CREATE TABLE `cms_tmp_file_groups` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `tmp_id` int(11) DEFAULT NULL,
-  `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL,
-  `name` text,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-SET character_set_client = @saved_cs_client;
-
---
--- Table structure for table `cms_tmp_files`
+-- ÉeÅ[ÉuÉãÇÃç\ë¢ `cms_tmp_files`
 --
 
 DROP TABLE IF EXISTS `cms_tmp_files`;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
-CREATE TABLE `cms_tmp_files` (
+CREATE TABLE IF NOT EXISTS `cms_tmp_files` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `tmp_id` int(11) DEFAULT NULL,
   `group_id` int(11) DEFAULT NULL,
@@ -374,16 +334,31 @@ CREATE TABLE `cms_tmp_files` (
   `image_height` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-SET character_set_client = @saved_cs_client;
+
+-- --------------------------------------------------------
 
 --
--- Table structure for table `intra_maintenances`
+-- ÉeÅ[ÉuÉãÇÃç\ë¢ `cms_tmp_file_groups`
+--
+
+DROP TABLE IF EXISTS `cms_tmp_file_groups`;
+CREATE TABLE IF NOT EXISTS `cms_tmp_file_groups` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `tmp_id` int(11) DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  `name` text,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- ÉeÅ[ÉuÉãÇÃç\ë¢ `intra_maintenances`
 --
 
 DROP TABLE IF EXISTS `intra_maintenances`;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
-CREATE TABLE `intra_maintenances` (
+CREATE TABLE IF NOT EXISTS `intra_maintenances` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `unid` int(11) DEFAULT NULL,
   `state` text,
@@ -393,17 +368,16 @@ CREATE TABLE `intra_maintenances` (
   `title` text,
   `body` text,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
-SET character_set_client = @saved_cs_client;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
 
 --
--- Table structure for table `intra_messages`
+-- ÉeÅ[ÉuÉãÇÃç\ë¢ `intra_messages`
 --
 
 DROP TABLE IF EXISTS `intra_messages`;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
-CREATE TABLE `intra_messages` (
+CREATE TABLE IF NOT EXISTS `intra_messages` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `unid` int(11) DEFAULT NULL,
   `state` text,
@@ -413,17 +387,16 @@ CREATE TABLE `intra_messages` (
   `title` text,
   `body` text,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
-SET character_set_client = @saved_cs_client;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
 
 --
--- Table structure for table `sessions`
+-- ÉeÅ[ÉuÉãÇÃç\ë¢ `sessions`
 --
 
 DROP TABLE IF EXISTS `sessions`;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
-CREATE TABLE `sessions` (
+CREATE TABLE IF NOT EXISTS `sessions` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `session_id` varchar(255) NOT NULL,
   `data` text,
@@ -432,17 +405,16 @@ CREATE TABLE `sessions` (
   PRIMARY KEY (`id`),
   KEY `index_sessions_on_session_id` (`session_id`),
   KEY `index_sessions_on_updated_at` (`updated_at`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-SET character_set_client = @saved_cs_client;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
 
 --
--- Table structure for table `system_admin_logs`
+-- ÉeÅ[ÉuÉãÇÃç\ë¢ `system_admin_logs`
 --
 
 DROP TABLE IF EXISTS `system_admin_logs`;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
-CREATE TABLE `system_admin_logs` (
+CREATE TABLE IF NOT EXISTS `system_admin_logs` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `created_at` datetime DEFAULT NULL,
   `user_id` int(11) DEFAULT NULL,
@@ -450,42 +422,37 @@ CREATE TABLE `system_admin_logs` (
   `controller` text,
   `action` text,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-SET character_set_client = @saved_cs_client;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
 
 --
--- Temporary table structure for view `system_authorizations`
+-- ÉrÉÖÅ[ópÇÃë„ë÷ç\ë¢ `system_authorizations`
 --
-
-DROP TABLE IF EXISTS `system_authorizations`;
-/*!50001 DROP VIEW IF EXISTS `system_authorizations`*/;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
-/*!50001 CREATE TABLE `system_authorizations` (
-  `user_id` int(11),
-  `user_code` varchar(255),
-  `user_name` text,
-  `user_name_en` text,
-  `user_password` text,
-  `user_email` text,
-  `remember_token` text,
-  `remember_token_expires_at` datetime,
-  `group_id` int(11),
-  `group_code` varchar(255),
-  `group_name` text,
-  `group_name_en` text,
-  `group_email` text
-) ENGINE=MyISAM */;
-SET character_set_client = @saved_cs_client;
+DROP VIEW IF EXISTS `system_authorizations`;
+CREATE TABLE IF NOT EXISTS `system_authorizations` (
+`user_id` int(11)
+,`user_code` varchar(255)
+,`user_name` text
+,`user_name_en` text
+,`user_password` text
+,`user_email` text
+,`remember_token` text
+,`remember_token_expires_at` datetime
+,`group_id` int(11)
+,`group_code` varchar(255)
+,`group_name` text
+,`group_name_en` text
+,`group_email` text
+);
+-- --------------------------------------------------------
 
 --
--- Table structure for table `system_commitments`
+-- ÉeÅ[ÉuÉãÇÃç\ë¢ `system_commitments`
 --
 
 DROP TABLE IF EXISTS `system_commitments`;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
-CREATE TABLE `system_commitments` (
+CREATE TABLE IF NOT EXISTS `system_commitments` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `unid` int(11) DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
@@ -495,16 +462,15 @@ CREATE TABLE `system_commitments` (
   `value` longtext,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-SET character_set_client = @saved_cs_client;
+
+-- --------------------------------------------------------
 
 --
--- Table structure for table `system_creators`
+-- ÉeÅ[ÉuÉãÇÃç\ë¢ `system_creators`
 --
 
 DROP TABLE IF EXISTS `system_creators`;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
-CREATE TABLE `system_creators` (
+CREATE TABLE IF NOT EXISTS `system_creators` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
@@ -512,38 +478,16 @@ CREATE TABLE `system_creators` (
   `user_id` int(11) NOT NULL,
   `group_id` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=3522 DEFAULT CHARSET=utf8;
-SET character_set_client = @saved_cs_client;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
 
 --
--- Table structure for table `system_custom_group_roles`
---
-
-DROP TABLE IF EXISTS `system_custom_group_roles`;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
-CREATE TABLE `system_custom_group_roles` (
-  `rid` int(11) NOT NULL AUTO_INCREMENT,
-  `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL,
-  `group_id` int(11) DEFAULT NULL,
-  `custom_group_id` int(11) DEFAULT NULL,
-  `priv_name` text,
-  `user_id` int(11) DEFAULT NULL,
-  `class_id` int(11) DEFAULT NULL,
-  PRIMARY KEY (`rid`),
-  KEY `custom_group_id` (`custom_group_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=28241 DEFAULT CHARSET=utf8;
-SET character_set_client = @saved_cs_client;
-
---
--- Table structure for table `system_custom_groups`
+-- ÉeÅ[ÉuÉãÇÃç\ë¢ `system_custom_groups`
 --
 
 DROP TABLE IF EXISTS `system_custom_groups`;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
-CREATE TABLE `system_custom_groups` (
+CREATE TABLE IF NOT EXISTS `system_custom_groups` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `parent_id` int(11) DEFAULT NULL,
   `class_id` int(11) DEFAULT NULL,
@@ -561,50 +505,123 @@ CREATE TABLE `system_custom_groups` (
   `sort_prefix` text,
   `is_default` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
-SET character_set_client = @saved_cs_client;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
 
 --
--- Table structure for table `system_group_change_pickups`
+-- ÉeÅ[ÉuÉãÇÃç\ë¢ `system_custom_group_roles`
 --
 
-DROP TABLE IF EXISTS `system_group_change_pickups`;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
-CREATE TABLE `system_group_change_pickups` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `target_at` datetime DEFAULT NULL,
+DROP TABLE IF EXISTS `system_custom_group_roles`;
+CREATE TABLE IF NOT EXISTS `system_custom_group_roles` (
+  `rid` int(11) NOT NULL AUTO_INCREMENT,
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=11 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
-SET character_set_client = @saved_cs_client;
+  `group_id` int(11) DEFAULT NULL,
+  `custom_group_id` int(11) DEFAULT NULL,
+  `priv_name` text,
+  `user_id` int(11) DEFAULT NULL,
+  `class_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`rid`),
+  KEY `custom_group_id` (`custom_group_id`),
+  KEY `group_id` (`group_id`),
+  KEY `user_id` (`user_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
 
 --
--- Table structure for table `system_group_changes`
+-- ÉeÅ[ÉuÉãÇÃç\ë¢ `system_groups`
+--
+
+DROP TABLE IF EXISTS `system_groups`;
+CREATE TABLE IF NOT EXISTS `system_groups` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `parent_id` int(11) DEFAULT NULL,
+  `state` text,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  `level_no` int(11) DEFAULT NULL,
+  `version_id` int(11) DEFAULT NULL,
+  `code` varchar(255) DEFAULT NULL COMMENT 'group_code',
+  `name` text,
+  `name_en` text,
+  `email` text,
+  `start_at` datetime DEFAULT NULL,
+  `end_at` datetime DEFAULT NULL,
+  `sort_no` int(11) DEFAULT NULL,
+  `ldap_version` varchar(255) DEFAULT NULL,
+  `ldap` int(11) DEFAULT NULL COMMENT 'ldap_flg',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- ÉeÅ[ÉuÉãÇÃç\ë¢ `system_groups_back`
+--
+
+DROP TABLE IF EXISTS `system_groups_back`;
+CREATE TABLE IF NOT EXISTS `system_groups_back` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `parent_id` int(11) DEFAULT NULL,
+  `state` text,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  `level_no` int(11) DEFAULT NULL,
+  `version_id` int(11) DEFAULT NULL,
+  `code` varchar(255) DEFAULT NULL COMMENT 'group_code',
+  `name` text,
+  `name_en` text,
+  `email` text,
+  `start_at` datetime DEFAULT NULL,
+  `end_at` datetime DEFAULT NULL,
+  `sort_no` int(11) DEFAULT NULL,
+  `ldap_version` varchar(255) DEFAULT NULL,
+  `ldap` int(11) DEFAULT NULL COMMENT 'ldap_flg',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- ÉeÅ[ÉuÉãÇÃç\ë¢ `system_group_changes`
 --
 
 DROP TABLE IF EXISTS `system_group_changes`;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
-CREATE TABLE `system_group_changes` (
+CREATE TABLE IF NOT EXISTS `system_group_changes` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `state` text,
   `target_at` datetime DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
-SET character_set_client = @saved_cs_client;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+
+-- --------------------------------------------------------
 
 --
--- Table structure for table `system_group_histories`
+-- ÉeÅ[ÉuÉãÇÃç\ë¢ `system_group_change_pickups`
+--
+
+DROP TABLE IF EXISTS `system_group_change_pickups`;
+CREATE TABLE IF NOT EXISTS `system_group_change_pickups` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `target_at` datetime DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+
+-- --------------------------------------------------------
+
+--
+-- ÉeÅ[ÉuÉãÇÃç\ë¢ `system_group_histories`
 --
 
 DROP TABLE IF EXISTS `system_group_histories`;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
-CREATE TABLE `system_group_histories` (
+CREATE TABLE IF NOT EXISTS `system_group_histories` (
   `id` int(11) NOT NULL DEFAULT '0',
   `parent_id` int(11) DEFAULT NULL,
   `state` text,
@@ -622,16 +639,15 @@ CREATE TABLE `system_group_histories` (
   `ldap_version` varchar(255) DEFAULT NULL,
   `ldap` int(11) DEFAULT NULL COMMENT 'ldap_flg'
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-SET character_set_client = @saved_cs_client;
+
+-- --------------------------------------------------------
 
 --
--- Table structure for table `system_group_histories_back`
+-- ÉeÅ[ÉuÉãÇÃç\ë¢ `system_group_histories_back`
 --
 
 DROP TABLE IF EXISTS `system_group_histories_back`;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
-CREATE TABLE `system_group_histories_back` (
+CREATE TABLE IF NOT EXISTS `system_group_histories_back` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `parent_id` int(11) DEFAULT NULL,
   `state` text,
@@ -650,16 +666,15 @@ CREATE TABLE `system_group_histories_back` (
   `ldap` int(11) DEFAULT NULL COMMENT 'ldap_flg',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-SET character_set_client = @saved_cs_client;
+
+-- --------------------------------------------------------
 
 --
--- Table structure for table `system_group_history_temporaries`
+-- ÉeÅ[ÉuÉãÇÃç\ë¢ `system_group_history_temporaries`
 --
 
 DROP TABLE IF EXISTS `system_group_history_temporaries`;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
-CREATE TABLE `system_group_history_temporaries` (
+CREATE TABLE IF NOT EXISTS `system_group_history_temporaries` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `parent_id` int(11) DEFAULT NULL,
   `state` text,
@@ -678,16 +693,15 @@ CREATE TABLE `system_group_history_temporaries` (
   `ldap` int(11) DEFAULT NULL COMMENT 'ldap_flg',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-SET character_set_client = @saved_cs_client;
+
+-- --------------------------------------------------------
 
 --
--- Table structure for table `system_group_nexts`
+-- ÉeÅ[ÉuÉãÇÃç\ë¢ `system_group_nexts`
 --
 
 DROP TABLE IF EXISTS `system_group_nexts`;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
-CREATE TABLE `system_group_nexts` (
+CREATE TABLE IF NOT EXISTS `system_group_nexts` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `group_update_id` int(11) DEFAULT NULL,
   `operation` text,
@@ -699,16 +713,15 @@ CREATE TABLE `system_group_nexts` (
   `old_parent_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
-SET character_set_client = @saved_cs_client;
+
+-- --------------------------------------------------------
 
 --
--- Table structure for table `system_group_temporaries`
+-- ÉeÅ[ÉuÉãÇÃç\ë¢ `system_group_temporaries`
 --
 
 DROP TABLE IF EXISTS `system_group_temporaries`;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
-CREATE TABLE `system_group_temporaries` (
+CREATE TABLE IF NOT EXISTS `system_group_temporaries` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `parent_id` int(11) DEFAULT NULL,
   `state` text,
@@ -727,16 +740,15 @@ CREATE TABLE `system_group_temporaries` (
   `ldap` int(11) DEFAULT NULL COMMENT 'ldap_flg',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-SET character_set_client = @saved_cs_client;
+
+-- --------------------------------------------------------
 
 --
--- Table structure for table `system_group_updates`
+-- ÉeÅ[ÉuÉãÇÃç\ë¢ `system_group_updates`
 --
 
 DROP TABLE IF EXISTS `system_group_updates`;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
-CREATE TABLE `system_group_updates` (
+CREATE TABLE IF NOT EXISTS `system_group_updates` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `parent_code` text,
   `parent_name` text,
@@ -751,16 +763,15 @@ CREATE TABLE `system_group_updates` (
   `parent_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
-SET character_set_client = @saved_cs_client;
+
+-- --------------------------------------------------------
 
 --
--- Table structure for table `system_group_versions`
+-- ÉeÅ[ÉuÉãÇÃç\ë¢ `system_group_versions`
 --
 
 DROP TABLE IF EXISTS `system_group_versions`;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
-CREATE TABLE `system_group_versions` (
+CREATE TABLE IF NOT EXISTS `system_group_versions` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
@@ -768,72 +779,15 @@ CREATE TABLE `system_group_versions` (
   `start_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-SET character_set_client = @saved_cs_client;
+
+-- --------------------------------------------------------
 
 --
--- Table structure for table `system_groups`
---
-
-DROP TABLE IF EXISTS `system_groups`;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
-CREATE TABLE `system_groups` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `parent_id` int(11) DEFAULT NULL,
-  `state` text,
-  `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL,
-  `level_no` int(11) DEFAULT NULL,
-  `version_id` int(11) DEFAULT NULL,
-  `code` varchar(255) DEFAULT NULL COMMENT 'group_code',
-  `name` text,
-  `name_en` text,
-  `email` text,
-  `start_at` datetime DEFAULT NULL,
-  `end_at` datetime DEFAULT NULL,
-  `sort_no` int(11) DEFAULT NULL,
-  `ldap_version` varchar(255) DEFAULT NULL,
-  `ldap` int(11) DEFAULT NULL COMMENT 'ldap_flg',
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=727 DEFAULT CHARSET=utf8;
-SET character_set_client = @saved_cs_client;
-
---
--- Table structure for table `system_groups_back`
---
-
-DROP TABLE IF EXISTS `system_groups_back`;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
-CREATE TABLE `system_groups_back` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `parent_id` int(11) DEFAULT NULL,
-  `state` text,
-  `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL,
-  `level_no` int(11) DEFAULT NULL,
-  `version_id` int(11) DEFAULT NULL,
-  `code` varchar(255) DEFAULT NULL COMMENT 'group_code',
-  `name` text,
-  `name_en` text,
-  `email` text,
-  `start_at` datetime DEFAULT NULL,
-  `end_at` datetime DEFAULT NULL,
-  `sort_no` int(11) DEFAULT NULL,
-  `ldap_version` varchar(255) DEFAULT NULL,
-  `ldap` int(11) DEFAULT NULL COMMENT 'ldap_flg',
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-SET character_set_client = @saved_cs_client;
-
---
--- Table structure for table `system_idconversions`
+-- ÉeÅ[ÉuÉãÇÃç\ë¢ `system_idconversions`
 --
 
 DROP TABLE IF EXISTS `system_idconversions`;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
-CREATE TABLE `system_idconversions` (
+CREATE TABLE IF NOT EXISTS `system_idconversions` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
@@ -842,16 +796,15 @@ CREATE TABLE `system_idconversions` (
   `converted_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-SET character_set_client = @saved_cs_client;
+
+-- --------------------------------------------------------
 
 --
--- Table structure for table `system_inquiries`
+-- ÉeÅ[ÉuÉãÇÃç\ë¢ `system_inquiries`
 --
 
 DROP TABLE IF EXISTS `system_inquiries`;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
-CREATE TABLE `system_inquiries` (
+CREATE TABLE IF NOT EXISTS `system_inquiries` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `unid` int(11) DEFAULT NULL,
   `state` text NOT NULL,
@@ -864,17 +817,16 @@ CREATE TABLE `system_inquiries` (
   `fax` text,
   `email` text,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=278 DEFAULT CHARSET=utf8;
-SET character_set_client = @saved_cs_client;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
 
 --
--- Table structure for table `system_languages`
+-- ÉeÅ[ÉuÉãÇÃç\ë¢ `system_languages`
 --
 
 DROP TABLE IF EXISTS `system_languages`;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
-CREATE TABLE `system_languages` (
+CREATE TABLE IF NOT EXISTS `system_languages` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `state` text,
   `created_at` datetime DEFAULT NULL,
@@ -883,17 +835,16 @@ CREATE TABLE `system_languages` (
   `name` text,
   `title` text,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
-SET character_set_client = @saved_cs_client;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
 
 --
--- Table structure for table `system_ldap_temporaries`
+-- ÉeÅ[ÉuÉãÇÃç\ë¢ `system_ldap_temporaries`
 --
 
 DROP TABLE IF EXISTS `system_ldap_temporaries`;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
-CREATE TABLE `system_ldap_temporaries` (
+CREATE TABLE IF NOT EXISTS `system_ldap_temporaries` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `parent_id` int(11) DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
@@ -912,32 +863,30 @@ CREATE TABLE `system_ldap_temporaries` (
   PRIMARY KEY (`id`),
   KEY `version` (`version`(20),`parent_id`,`data_type`(20),`sort_no`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-SET character_set_client = @saved_cs_client;
+
+-- --------------------------------------------------------
 
 --
--- Table structure for table `system_login_logs`
+-- ÉeÅ[ÉuÉãÇÃç\ë¢ `system_login_logs`
 --
 
 DROP TABLE IF EXISTS `system_login_logs`;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
-CREATE TABLE `system_login_logs` (
+CREATE TABLE IF NOT EXISTS `system_login_logs` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-SET character_set_client = @saved_cs_client;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
 
 --
--- Table structure for table `system_maps`
+-- ÉeÅ[ÉuÉãÇÃç\ë¢ `system_maps`
 --
 
 DROP TABLE IF EXISTS `system_maps`;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
-CREATE TABLE `system_maps` (
+CREATE TABLE IF NOT EXISTS `system_maps` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `unid` int(11) DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
@@ -964,16 +913,15 @@ CREATE TABLE `system_maps` (
   `point5_lng` text,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-SET character_set_client = @saved_cs_client;
+
+-- --------------------------------------------------------
 
 --
--- Table structure for table `system_priv_names`
+-- ÉeÅ[ÉuÉãÇÃç\ë¢ `system_priv_names`
 --
 
 DROP TABLE IF EXISTS `system_priv_names`;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
-CREATE TABLE `system_priv_names` (
+CREATE TABLE IF NOT EXISTS `system_priv_names` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `unid` int(11) DEFAULT NULL,
   `state` text,
@@ -984,17 +932,16 @@ CREATE TABLE `system_priv_names` (
   `priv_name` text,
   `sort_no` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
-SET character_set_client = @saved_cs_client;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
 
 --
--- Table structure for table `system_public_logs`
+-- ÉeÅ[ÉuÉãÇÃç\ë¢ `system_public_logs`
 --
 
 DROP TABLE IF EXISTS `system_public_logs`;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
-CREATE TABLE `system_public_logs` (
+CREATE TABLE IF NOT EXISTS `system_public_logs` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `created_at` datetime DEFAULT NULL,
   `user_id` int(11) DEFAULT NULL,
@@ -1002,17 +949,16 @@ CREATE TABLE `system_public_logs` (
   `controller` text,
   `action` text,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
-SET character_set_client = @saved_cs_client;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
 
 --
--- Table structure for table `system_publishers`
+-- ÉeÅ[ÉuÉãÇÃç\ë¢ `system_publishers`
 --
 
 DROP TABLE IF EXISTS `system_publishers`;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
-CREATE TABLE `system_publishers` (
+CREATE TABLE IF NOT EXISTS `system_publishers` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `unid` int(11) DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
@@ -1024,16 +970,15 @@ CREATE TABLE `system_publishers` (
   `content_length` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-SET character_set_client = @saved_cs_client;
+
+-- --------------------------------------------------------
 
 --
--- Table structure for table `system_recognitions`
+-- ÉeÅ[ÉuÉãÇÃç\ë¢ `system_recognitions`
 --
 
 DROP TABLE IF EXISTS `system_recognitions`;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
-CREATE TABLE `system_recognitions` (
+CREATE TABLE IF NOT EXISTS `system_recognitions` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `unid` int(11) DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
@@ -1041,16 +986,15 @@ CREATE TABLE `system_recognitions` (
   `after_process` text,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-SET character_set_client = @saved_cs_client;
+
+-- --------------------------------------------------------
 
 --
--- Table structure for table `system_recognizers`
+-- ÉeÅ[ÉuÉãÇÃç\ë¢ `system_recognizers`
 --
 
 DROP TABLE IF EXISTS `system_recognizers`;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
-CREATE TABLE `system_recognizers` (
+CREATE TABLE IF NOT EXISTS `system_recognizers` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `unid` int(11) DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
@@ -1060,77 +1004,15 @@ CREATE TABLE `system_recognizers` (
   `recognized_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-SET character_set_client = @saved_cs_client;
+
+-- --------------------------------------------------------
 
 --
--- Table structure for table `system_role_developers`
---
-
-DROP TABLE IF EXISTS `system_role_developers`;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
-CREATE TABLE `system_role_developers` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `idx` int(11) DEFAULT NULL,
-  `class_id` int(11) DEFAULT NULL,
-  `uid` varchar(255) DEFAULT NULL,
-  `priv` int(11) DEFAULT NULL,
-  `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL,
-  `role_name_id` int(11) DEFAULT NULL,
-  `table_name` text,
-  `priv_name` text,
-  `priv_user_id` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-SET character_set_client = @saved_cs_client;
-
---
--- Table structure for table `system_role_name_privs`
---
-
-DROP TABLE IF EXISTS `system_role_name_privs`;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
-CREATE TABLE `system_role_name_privs` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `role_id` int(11) DEFAULT NULL,
-  `priv_id` int(11) DEFAULT NULL,
-  `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=209 DEFAULT CHARSET=utf8;
-SET character_set_client = @saved_cs_client;
-
---
--- Table structure for table `system_role_names`
---
-
-DROP TABLE IF EXISTS `system_role_names`;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
-CREATE TABLE `system_role_names` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `unid` int(11) DEFAULT NULL,
-  `state` text,
-  `content_id` int(11) DEFAULT NULL,
-  `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL,
-  `display_name` text,
-  `table_name` text,
-  `sort_no` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=56 DEFAULT CHARSET=utf8;
-SET character_set_client = @saved_cs_client;
-
---
--- Table structure for table `system_roles`
+-- ÉeÅ[ÉuÉãÇÃç\ë¢ `system_roles`
 --
 
 DROP TABLE IF EXISTS `system_roles`;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
-CREATE TABLE `system_roles` (
+CREATE TABLE IF NOT EXISTS `system_roles` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `table_name` varchar(255) DEFAULT NULL,
   `priv_name` varchar(255) DEFAULT NULL,
@@ -1144,17 +1026,74 @@ CREATE TABLE `system_roles` (
   `priv_user_id` int(11) DEFAULT NULL,
   `group_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
-SET character_set_client = @saved_cs_client;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
 
 --
--- Table structure for table `system_sequences`
+-- ÉeÅ[ÉuÉãÇÃç\ë¢ `system_role_developers`
+--
+
+DROP TABLE IF EXISTS `system_role_developers`;
+CREATE TABLE IF NOT EXISTS `system_role_developers` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `idx` int(11) DEFAULT NULL,
+  `class_id` int(11) DEFAULT NULL,
+  `uid` varchar(255) DEFAULT NULL,
+  `priv` int(11) DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  `role_name_id` int(11) DEFAULT NULL,
+  `table_name` text,
+  `priv_name` text,
+  `priv_user_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- ÉeÅ[ÉuÉãÇÃç\ë¢ `system_role_names`
+--
+
+DROP TABLE IF EXISTS `system_role_names`;
+CREATE TABLE IF NOT EXISTS `system_role_names` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `unid` int(11) DEFAULT NULL,
+  `state` text,
+  `content_id` int(11) DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  `display_name` text,
+  `table_name` text,
+  `sort_no` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- ÉeÅ[ÉuÉãÇÃç\ë¢ `system_role_name_privs`
+--
+
+DROP TABLE IF EXISTS `system_role_name_privs`;
+CREATE TABLE IF NOT EXISTS `system_role_name_privs` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `role_id` int(11) DEFAULT NULL,
+  `priv_id` int(11) DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- ÉeÅ[ÉuÉãÇÃç\ë¢ `system_sequences`
 --
 
 DROP TABLE IF EXISTS `system_sequences`;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
-CREATE TABLE `system_sequences` (
+CREATE TABLE IF NOT EXISTS `system_sequences` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
@@ -1163,16 +1102,15 @@ CREATE TABLE `system_sequences` (
   `value` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-SET character_set_client = @saved_cs_client;
+
+-- --------------------------------------------------------
 
 --
--- Table structure for table `system_tags`
+-- ÉeÅ[ÉuÉãÇÃç\ë¢ `system_tags`
 --
 
 DROP TABLE IF EXISTS `system_tags`;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
-CREATE TABLE `system_tags` (
+CREATE TABLE IF NOT EXISTS `system_tags` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `unid` int(11) DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
@@ -1180,17 +1118,16 @@ CREATE TABLE `system_tags` (
   `name` text,
   `word` text,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
-SET character_set_client = @saved_cs_client;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
 
 --
--- Table structure for table `system_tasks`
+-- ÉeÅ[ÉuÉãÇÃç\ë¢ `system_tasks`
 --
 
 DROP TABLE IF EXISTS `system_tasks`;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
-CREATE TABLE `system_tasks` (
+CREATE TABLE IF NOT EXISTS `system_tasks` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `unid` int(11) DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
@@ -1199,16 +1136,15 @@ CREATE TABLE `system_tasks` (
   `name` text,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-SET character_set_client = @saved_cs_client;
+
+-- --------------------------------------------------------
 
 --
--- Table structure for table `system_unids`
+-- ÉeÅ[ÉuÉãÇÃç\ë¢ `system_unids`
 --
 
 DROP TABLE IF EXISTS `system_unids`;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
-CREATE TABLE `system_unids` (
+CREATE TABLE IF NOT EXISTS `system_unids` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
@@ -1216,52 +1152,16 @@ CREATE TABLE `system_unids` (
   `item_type` text,
   `item_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=3446 DEFAULT CHARSET=utf8;
-SET character_set_client = @saved_cs_client;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
 
 --
--- Table structure for table `system_user_temporaries`
---
-
-DROP TABLE IF EXISTS `system_user_temporaries`;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
-CREATE TABLE `system_user_temporaries` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `air_login_id` varchar(255) DEFAULT NULL,
-  `state` text,
-  `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL,
-  `code` varchar(255) NOT NULL,
-  `ldap` int(11) NOT NULL,
-  `ldap_version` int(11) DEFAULT NULL,
-  `auth_no` text,
-  `sort_no` varchar(255) DEFAULT NULL,
-  `name` text,
-  `name_en` text,
-  `kana` text,
-  `password` text,
-  `mobile_access` int(11) DEFAULT NULL,
-  `mobile_password` varchar(255) DEFAULT NULL,
-  `email` text,
-  `offitial_position` varchar(255) DEFAULT NULL,
-  `assigned_job` varchar(255) DEFAULT NULL,
-  `remember_token` text,
-  `remember_token_expires_at` datetime DEFAULT NULL,
-  `air_token` text,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `unique_user_code` (`code`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-SET character_set_client = @saved_cs_client;
-
---
--- Table structure for table `system_users`
+-- ÉeÅ[ÉuÉãÇÃç\ë¢ `system_users`
 --
 
 DROP TABLE IF EXISTS `system_users`;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
-CREATE TABLE `system_users` (
+CREATE TABLE IF NOT EXISTS `system_users` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `air_login_id` varchar(255) DEFAULT NULL,
   `state` text,
@@ -1286,17 +1186,16 @@ CREATE TABLE `system_users` (
   `air_token` text,
   PRIMARY KEY (`id`),
   UNIQUE KEY `unique_user_code` (`code`)
-) ENGINE=MyISAM AUTO_INCREMENT=5478 DEFAULT CHARSET=utf8;
-SET character_set_client = @saved_cs_client;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
 
 --
--- Table structure for table `system_users_back`
+-- ÉeÅ[ÉuÉãÇÃç\ë¢ `system_users_back`
 --
 
 DROP TABLE IF EXISTS `system_users_back`;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
-CREATE TABLE `system_users_back` (
+CREATE TABLE IF NOT EXISTS `system_users_back` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `air_login_id` varchar(255) DEFAULT NULL,
   `state` text,
@@ -1322,16 +1221,15 @@ CREATE TABLE `system_users_back` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `unique_user_code` (`code`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-SET character_set_client = @saved_cs_client;
+
+-- --------------------------------------------------------
 
 --
--- Table structure for table `system_users_custom_groups`
+-- ÉeÅ[ÉuÉãÇÃç\ë¢ `system_users_custom_groups`
 --
 
 DROP TABLE IF EXISTS `system_users_custom_groups`;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
-CREATE TABLE `system_users_custom_groups` (
+CREATE TABLE IF NOT EXISTS `system_users_custom_groups` (
   `rid` int(11) NOT NULL AUTO_INCREMENT,
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
@@ -1343,166 +1241,173 @@ CREATE TABLE `system_users_custom_groups` (
   `icon` text,
   PRIMARY KEY (`rid`),
   KEY `custom_group_id` (`custom_group_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=38 DEFAULT CHARSET=utf8;
-SET character_set_client = @saved_cs_client;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
 
 --
--- Table structure for table `system_users_group_histories`
---
-
-DROP TABLE IF EXISTS `system_users_group_histories`;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
-CREATE TABLE `system_users_group_histories` (
-  `rid` int(11) NOT NULL AUTO_INCREMENT,
-  `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL,
-  `user_id` int(11) DEFAULT NULL,
-  `group_id` int(11) DEFAULT NULL,
-  `job_order` int(11) DEFAULT NULL COMMENT 'Êú¨Âãô0„ÉªÂÖºÂãô1',
-  `start_at` datetime DEFAULT NULL COMMENT 'ÈÅ©Áî®ÈñãÂßãÊó•',
-  `end_at` datetime DEFAULT NULL,
-  `user_code` varchar(255) DEFAULT NULL,
-  `group_code` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`rid`)
-) ENGINE=MyISAM AUTO_INCREMENT=23 DEFAULT CHARSET=utf8;
-SET character_set_client = @saved_cs_client;
-
---
--- Table structure for table `system_users_group_histories_back`
---
-
-DROP TABLE IF EXISTS `system_users_group_histories_back`;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
-CREATE TABLE `system_users_group_histories_back` (
-  `rid` int(11) NOT NULL AUTO_INCREMENT,
-  `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL,
-  `user_id` int(11) DEFAULT NULL,
-  `group_id` int(11) DEFAULT NULL,
-  `job_order` int(11) DEFAULT NULL COMMENT 'Êú¨Âãô0„ÉªÂÖºÂãô1',
-  `start_at` datetime DEFAULT NULL COMMENT 'ÈÅ©Áî®ÈñãÂßãÊó•',
-  `end_at` datetime DEFAULT NULL,
-  `user_code` varchar(255) DEFAULT NULL,
-  `group_code` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`rid`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-SET character_set_client = @saved_cs_client;
-
---
--- Table structure for table `system_users_group_history_temporaries`
---
-
-DROP TABLE IF EXISTS `system_users_group_history_temporaries`;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
-CREATE TABLE `system_users_group_history_temporaries` (
-  `rid` int(11) NOT NULL AUTO_INCREMENT,
-  `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL,
-  `user_id` int(11) DEFAULT NULL,
-  `group_id` int(11) DEFAULT NULL,
-  `job_order` int(11) DEFAULT NULL COMMENT 'Êú¨Âãô0„ÉªÂÖºÂãô1',
-  `start_at` datetime DEFAULT NULL COMMENT 'ÈÅ©Áî®ÈñãÂßãÊó•',
-  `end_at` datetime DEFAULT NULL,
-  `user_code` varchar(255) DEFAULT NULL,
-  `group_code` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`rid`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-SET character_set_client = @saved_cs_client;
-
---
--- Table structure for table `system_users_group_temporaries`
---
-
-DROP TABLE IF EXISTS `system_users_group_temporaries`;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
-CREATE TABLE `system_users_group_temporaries` (
-  `rid` int(11) NOT NULL AUTO_INCREMENT,
-  `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL,
-  `user_id` int(11) DEFAULT NULL,
-  `group_id` int(11) DEFAULT NULL,
-  `job_order` int(11) DEFAULT NULL COMMENT 'Êú¨Âãô0„ÉªÂÖºÂãô1',
-  `start_at` datetime DEFAULT NULL COMMENT 'ÈÅ©Áî®ÈñãÂßãÊó•',
-  `end_at` datetime DEFAULT NULL,
-  `user_code` varchar(255) DEFAULT NULL,
-  `group_code` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`rid`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-SET character_set_client = @saved_cs_client;
-
---
--- Table structure for table `system_users_groups`
+-- ÉeÅ[ÉuÉãÇÃç\ë¢ `system_users_groups`
 --
 
 DROP TABLE IF EXISTS `system_users_groups`;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
-CREATE TABLE `system_users_groups` (
+CREATE TABLE IF NOT EXISTS `system_users_groups` (
   `rid` int(11) NOT NULL AUTO_INCREMENT,
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   `user_id` int(11) DEFAULT NULL,
   `group_id` int(11) DEFAULT NULL,
-  `job_order` int(11) DEFAULT NULL COMMENT 'Êú¨Âãô0„ÉªÂÖºÂãô1',
-  `start_at` datetime DEFAULT NULL COMMENT 'ÈÅ©Áî®ÈñãÂßãÊó•',
+  `job_order` int(11) DEFAULT NULL COMMENT 'ñ{ñ±0ÅEåìñ±1',
+  `start_at` datetime DEFAULT NULL COMMENT 'ìKópäJénì˙',
   `end_at` datetime DEFAULT NULL,
   `user_code` varchar(255) DEFAULT NULL,
   `group_code` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`rid`)
-) ENGINE=MyISAM AUTO_INCREMENT=11865 DEFAULT CHARSET=utf8;
-SET character_set_client = @saved_cs_client;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
 
 --
--- Table structure for table `system_users_groups_back`
+-- ÉeÅ[ÉuÉãÇÃç\ë¢ `system_users_groups_back`
 --
 
 DROP TABLE IF EXISTS `system_users_groups_back`;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
-CREATE TABLE `system_users_groups_back` (
+CREATE TABLE IF NOT EXISTS `system_users_groups_back` (
   `rid` int(11) NOT NULL AUTO_INCREMENT,
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   `user_id` int(11) DEFAULT NULL,
   `group_id` int(11) DEFAULT NULL,
-  `job_order` int(11) DEFAULT NULL COMMENT 'Êú¨Âãô0„ÉªÂÖºÂãô1',
-  `start_at` datetime DEFAULT NULL COMMENT 'ÈÅ©Áî®ÈñãÂßãÊó•',
+  `job_order` int(11) DEFAULT NULL COMMENT 'ñ{ñ±0ÅEåìñ±1',
+  `start_at` datetime DEFAULT NULL COMMENT 'ìKópäJénì˙',
   `end_at` datetime DEFAULT NULL,
   `user_code` varchar(255) DEFAULT NULL,
   `group_code` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`rid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-SET character_set_client = @saved_cs_client;
+
+-- --------------------------------------------------------
 
 --
--- Final view structure for view `system_authorizations`
+-- ÉeÅ[ÉuÉãÇÃç\ë¢ `system_users_group_histories`
 --
 
-/*!50001 DROP TABLE `system_authorizations`*/;
-/*!50001 DROP VIEW IF EXISTS `system_authorizations`*/;
-/*!50001 SET @saved_cs_client          = @@character_set_client */;
-/*!50001 SET @saved_cs_results         = @@character_set_results */;
-/*!50001 SET @saved_col_connection     = @@collation_connection */;
-/*!50001 SET character_set_client      = utf8 */;
-/*!50001 SET character_set_results     = utf8 */;
-/*!50001 SET collation_connection      = utf8_general_ci */;
-/*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50001 VIEW `system_authorizations` AS (select `users`.`id` AS `user_id`,`users`.`code` AS `user_code`,`users`.`name` AS `user_name`,`users`.`name_en` AS `user_name_en`,`users`.`password` AS `user_password`,`users`.`email` AS `user_email`,`users`.`remember_token` AS `remember_token`,`users`.`remember_token_expires_at` AS `remember_token_expires_at`,`groups`.`id` AS `group_id`,`groups`.`code` AS `group_code`,`groups`.`name` AS `group_name`,`groups`.`name_en` AS `group_name_en`,`groups`.`email` AS `group_email` from ((`system_users` `users` join `system_users_groups` `sug` on((`sug`.`user_id` = `users`.`id`))) join `system_groups` `groups` on((`groups`.`id` = `sug`.`group_id`))) where (`users`.`ldap` = 0)) */;
-/*!50001 SET character_set_client      = @saved_cs_client */;
-/*!50001 SET character_set_results     = @saved_cs_results */;
-/*!50001 SET collation_connection      = @saved_col_connection */;
-/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+DROP TABLE IF EXISTS `system_users_group_histories`;
+CREATE TABLE IF NOT EXISTS `system_users_group_histories` (
+  `rid` int(11) NOT NULL AUTO_INCREMENT,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  `group_id` int(11) DEFAULT NULL,
+  `job_order` int(11) DEFAULT NULL COMMENT 'ñ{ñ±0ÅEåìñ±1',
+  `start_at` datetime DEFAULT NULL COMMENT 'ìKópäJénì˙',
+  `end_at` datetime DEFAULT NULL,
+  `user_code` varchar(255) DEFAULT NULL,
+  `group_code` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`rid`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
-/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
-/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
-/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+-- --------------------------------------------------------
 
--- Dump completed on 2011-05-23  3:01:49
+--
+-- ÉeÅ[ÉuÉãÇÃç\ë¢ `system_users_group_histories_back`
+--
+
+DROP TABLE IF EXISTS `system_users_group_histories_back`;
+CREATE TABLE IF NOT EXISTS `system_users_group_histories_back` (
+  `rid` int(11) NOT NULL AUTO_INCREMENT,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  `group_id` int(11) DEFAULT NULL,
+  `job_order` int(11) DEFAULT NULL COMMENT 'ñ{ñ±0ÅEåìñ±1',
+  `start_at` datetime DEFAULT NULL COMMENT 'ìKópäJénì˙',
+  `end_at` datetime DEFAULT NULL,
+  `user_code` varchar(255) DEFAULT NULL,
+  `group_code` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`rid`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- ÉeÅ[ÉuÉãÇÃç\ë¢ `system_users_group_history_temporaries`
+--
+
+DROP TABLE IF EXISTS `system_users_group_history_temporaries`;
+CREATE TABLE IF NOT EXISTS `system_users_group_history_temporaries` (
+  `rid` int(11) NOT NULL AUTO_INCREMENT,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  `group_id` int(11) DEFAULT NULL,
+  `job_order` int(11) DEFAULT NULL COMMENT 'ñ{ñ±0ÅEåìñ±1',
+  `start_at` datetime DEFAULT NULL COMMENT 'ìKópäJénì˙',
+  `end_at` datetime DEFAULT NULL,
+  `user_code` varchar(255) DEFAULT NULL,
+  `group_code` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`rid`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- ÉeÅ[ÉuÉãÇÃç\ë¢ `system_users_group_temporaries`
+--
+
+DROP TABLE IF EXISTS `system_users_group_temporaries`;
+CREATE TABLE IF NOT EXISTS `system_users_group_temporaries` (
+  `rid` int(11) NOT NULL AUTO_INCREMENT,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  `group_id` int(11) DEFAULT NULL,
+  `job_order` int(11) DEFAULT NULL COMMENT 'ñ{ñ±0ÅEåìñ±1',
+  `start_at` datetime DEFAULT NULL COMMENT 'ìKópäJénì˙',
+  `end_at` datetime DEFAULT NULL,
+  `user_code` varchar(255) DEFAULT NULL,
+  `group_code` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`rid`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- ÉeÅ[ÉuÉãÇÃç\ë¢ `system_user_temporaries`
+--
+
+DROP TABLE IF EXISTS `system_user_temporaries`;
+CREATE TABLE IF NOT EXISTS `system_user_temporaries` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `air_login_id` varchar(255) DEFAULT NULL,
+  `state` text,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  `code` varchar(255) NOT NULL,
+  `ldap` int(11) NOT NULL,
+  `ldap_version` int(11) DEFAULT NULL,
+  `auth_no` text,
+  `sort_no` varchar(255) DEFAULT NULL,
+  `name` text,
+  `name_en` text,
+  `kana` text,
+  `password` text,
+  `mobile_access` int(11) DEFAULT NULL,
+  `mobile_password` varchar(255) DEFAULT NULL,
+  `email` text,
+  `offitial_position` varchar(255) DEFAULT NULL,
+  `assigned_job` varchar(255) DEFAULT NULL,
+  `remember_token` text,
+  `remember_token_expires_at` datetime DEFAULT NULL,
+  `air_token` text,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `unique_user_code` (`code`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- ÉrÉÖÅ[ópÇÃç\ë¢ `system_authorizations`
+--
+DROP TABLE IF EXISTS `system_authorizations`;
+
+CREATE ALGORITHM=UNDEFINED VIEW `system_authorizations` AS (select `users`.`id` AS `user_id`,`users`.`code` AS `user_code`,`users`.`name` AS `user_name`,`users`.`name_en` AS `user_name_en`,`users`.`password` AS `user_password`,`users`.`email` AS `user_email`,`users`.`remember_token` AS `remember_token`,`users`.`remember_token_expires_at` AS `remember_token_expires_at`,`groups`.`id` AS `group_id`,`groups`.`code` AS `group_code`,`groups`.`name` AS `group_name`,`groups`.`name_en` AS `group_name_en`,`groups`.`email` AS `group_email` from ((`system_users` `users` join `system_users_groups` `sug` on((`sug`.`user_id` = `users`.`id`))) join `system_groups` `groups` on((`groups`.`id` = `sug`.`group_id`))) where (`users`.`ldap` = 0));

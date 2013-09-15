@@ -125,6 +125,34 @@ module Gwboard::Controller::Common
     end
     return str
   end
+  def gwqa_select_status(params)
+    str = ''
+    case params[:state]
+    when "DRAFT"
+      str = "state = 'draft'"
+      str += " AND (section_code = '#{Site.user_group.code}' or creater_id = '#{Site.user.code}')" unless @is_admin  #管理者なら全記事対象
+    when "RECOGNIZE"
+      str = "state = 'recognize'"
+    when "PUBLISH"
+      str = "state = 'recognized'"
+    when "TODAY"
+      str = "state = 'public' AND latest_updated_at >= '" + Date.today.strftime("%Y/%m/%d") + " 00:00:00'"
+    else
+      str = "state = 'public'"
+    end
+
+    unless params[:mm].blank?
+      from_date = Date.new(params[:yyyy].to_i, params[:mm].to_i, 1)
+      to_date = Date.new(params[:yyyy].to_i, params[:mm].to_i, -1)
+      str += " AND latest_updated_at between '#{from_date.strftime("%Y/%m/%d")} 00:00:00' and '#{to_date.strftime("%Y/%m/%d")} 23:59:59'" if from_date if to_date
+    end unless params[:yyyy].blank?
+
+    unless params[:grp].blank?
+      sectioncode = params[:grp]
+      str += " AND section_code like '#{sectioncode}'"
+    end
+    return str
+  end
 
   def gwbbs_params_set
     str = ''
@@ -183,8 +211,6 @@ module Gwboard::Controller::Common
     else
       @css = ["/_common/themes/gw/css/#{@title.system_name}_standard.css", "/_common/themes/gw/css/doc_2column_dl.css"]
     end
-
-    @css = ["/_common/themes/gw/css/#{@title.system_name}_standard.css", "/_common/themes/gw/css/doc_2column_dl.css"] if Site.request_path.index("adminlibrary")
 
     @img_path = "public/_common/modules/#{@title.system_name}/"
   end
@@ -283,7 +309,6 @@ module Gwboard::Controller::Common
     end
     @users_collection = []
     sql = Condition.new
-    sql.and "sql", "system_users.ldap = 1" unless is_vender_user
     sql.and "sql", "system_users_groups.group_id = #{Site.user_group.id}"
     join = "INNER JOIN system_users_groups ON system_users.id = system_users_groups.user_id"
 

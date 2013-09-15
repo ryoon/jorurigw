@@ -1,0 +1,18 @@
+<%# app/views/gwsub/public/sb04/sb04officialtitles/show %>
+
+<div class="gwsub sb04">
+<%= render :partial => 'gwsub/public/sb04/sb04_piece_header' %>
+<div class="pieceBanner">
+<%= render :partial => 'gwsub/public/sb04/sb04_subfunction_select_menu' %>
+<%= render :partial => 'gwsub/public/sb04/sb04_level3menu_header' %>
+</div>
+<div class="pieceBody">
+<%= render :partial => 'gwsub/public/sb04/sb04officialtitles/display_name' %>
+<%= div_notice %>
+<% @action = "create" %>
+<% @create_path = "#{Site.current_node.public_uri}" %>
+<% form_for :item, :url => @create_path ,:action=>:create ,:method=>:post , :html => {:multipart => true} do |f| %>
+  <%= render :partial => 'form', :locals => {:f => f} %>
+<% end  %>
+</div>
+</div>

@@ -1,0 +1,18 @@
+<%# app/views/gwsub/public/sb04/sb04helps/edit %>
+<div class="gwsub sb04">
+<%= render :partial => 'gwsub/public/sb04/sb04_piece_header' %>
+<div class="pieceBanner">
+<%= render :partial => 'gwsub/public/sb04/sb04helps/menu' %>
+</div>
+<div class="pieceBody">
+<div class="showMenu">
+<%= link_to_show @item.id %>
+</div>
+<%= div_notice %>
+<% @edit_path = "#{Site.current_node.public_uri}#{@item.id}" %>
+<% @action = "edit" %>
+<% form_for :item, :url => @edit_path ,:action=>:update, :html => {:method => :put, :multipart => true} do |f| %>
+  <%= render :partial => 'form', :locals => {:f => f} %>
+<% end %>
+</div>
+</div>

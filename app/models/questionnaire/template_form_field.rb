@@ -90,7 +90,7 @@ class Questionnaire::TemplateFormField < Gw::Database
   def question_type_name
     return self.question_types[self.question_type]
   end
-  #
+
   def post_permit_base_states
     return [
       ['使用しない', false],
@@ -103,7 +103,7 @@ class Questionnaire::TemplateFormField < Gw::Database
     ret = '使用する' if self.post_permit_base
     return ret
   end
-  #
+
   def required_entry_states
     return [
       ['入力チェックしない', 0],
@@ -123,7 +123,6 @@ class Questionnaire::TemplateFormField < Gw::Database
     return ret
   end
 
-  #
   def auto_number_states
     return [
       ['使用する', true],
@@ -343,12 +342,10 @@ class Questionnaire::TemplateFormField < Gw::Database
     end
   end
 
-  #
   def field_option_destroy
     Questionnaire::TemplateFieldOption.destroy_all("field_id=#{self.id}")
   end
 
-  #http://doruby.kbmj.com/honda_on_rails/20080131/1
   def cut_off(text, len)
     if text != nil
       if text.jlength < len

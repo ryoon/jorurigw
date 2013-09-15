@@ -48,6 +48,16 @@ gw:
   host: 127.0.0.1
 #  socket  : /tmp/mysql.sock
 
+gwsub:
+  adapter : mysql
+  database: <%= env_prefix %>_jgw_gw_pref
+  username: joruri
+  password: pass
+  timeout : 5000
+  encoding: utf8
+  host: 127.0.0.1
+#  socket  : /tmp/mysql.sock
+
 mailcore:
   adapter : mysql
   database: webmail

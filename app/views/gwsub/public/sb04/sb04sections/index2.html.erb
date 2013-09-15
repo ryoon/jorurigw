@@ -1,0 +1,46 @@
+<%# app/views/gwsub/public/sb04/sb04sections/index2 %>
+<%# 担当未設定一覧  %>
+
+<div class="gwsub sb04">
+<%= render :partial => 'gwsub/public/sb04/sb04_piece_header' %>
+<div class="pieceBanner">
+<%= render :partial => 'gwsub/public/sb04/sb04_subfunction_select_menu' %>
+<%= render :partial => 'gwsub/public/sb04/sb04_level3menu_header' %>
+</div>
+<div class="pieceBody">
+<%= render :partial => 'gwsub/public/sb04/sb04sections/display_name2' %>
+<%#= render :partial => 'gwsub/public/sb04/search_with_fyear' %>
+<%= div_notice %>
+<%#= render :partial => 'gwsub/public/sb04/sb04_common_index_view' , :locals => {:link_to_action => nil,:link_to_show => 1} %>
+<div style="margin-left:15px; margin-bottom:10px; font-size:12pt;"><%= "#{@items[0].fyear_markjp}年度 #{@items.size}件" unless @items.blank? %></div>
+<% if @items.blank? %>
+<div></div>
+<% else %>
+<table class="index">
+  <tr>
+    <th></th>
+    <th>年度</th>
+    <th>所属コード</th>
+    <th>所属名称</th>
+    <th>備考</th>
+    <th>座席表所属記事URL</th>
+    <th>所属コード(システム)</th>
+    <th>所属名称(システム)</th>
+  </tr>
+  <% @items.each do |item|  %>
+  <tr <%= cycle '', 'class="cycle"' %>>
+    <td><%= link_to '詳細' , "#{Site.current_node.public_uri}#{item.id}?#{@qs}" %></td>
+    <td><%= item.fyear_markjp %></td>
+    <td><%= item.code %></td>
+    <td><%= item.name %></td>
+    <td><%= item.remarks %></td>
+    <td><%= item.bbs_url %></td>
+    <td><%= item.ldap_code %></td>
+    <td><%= item.ldap_name %></td>
+  </tr>
+  <% end %>
+</table>
+<% end %>
+<%#= paginate @items %>
+</div>
+</div>

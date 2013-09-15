@@ -1,0 +1,27 @@
+<% # 
+%>
+<div class="gwsub sb04">
+<div class="pieceHeader">
+<%= render :partial => 'piece_header' %>
+</div>
+<div class="pieceBanner">
+<%= render :partial => 'gwsub/public/sb04/sb04_submenu' %>
+</div>
+<div class="pieceBody">
+<%= div_notice %>
+<div class="pieceBodyHeader">
+  <div class="titleLine">
+    <span class="title">新規作成</span>
+    <span class="linkSpace">
+
+    </span><!--linkSpace-->
+  </div>
+</div>
+<% @action = "create" %>
+<% form_for :item, :url => "#{@public_uri}#{@params_set}", :html => {:multipart => true, :id => 'itemForm'} do |f| %>
+  <%= f.error_messages %>
+  <%= render :partial => 'form', :locals => {:f => f} %>
+<%= submit_for_create f, :caption => '保存' %>
+<% end  %>
+</div>
+</div>

@@ -1,14 +1,13 @@
 <div class="bbsDocList circular setting">
 <div class="pieceHeader">
 <h2 class="pieceTitle"><%=@system_title%> 削除設定</h2>
-</div><!--pieceHeader-->
-<!--カラム用タグ-->
-<div class="pieceBanner">
 </div>
-<div class="pieceBody">
 
-  <div class="titleLine">
+<div class="pieceBody">
+<div class="pieceBodyHeader">
+<div class="titleLine">
 <span class="title"><%=@system_title%> 削除設定</span>
+</div>
 </div>
 
 <% form_for :item, :url => @item.update_path ,:html => {:method=>:put , :multipart => true, :id => 'itemForm'} do |f| %>
@@ -24,8 +23,7 @@
 <% end %>
 
 </div><!--pieceBody-->
-<!--戻るボタン-->
 <div class="btReturn">
-  <%=link_to '管理者設定へ戻る', '/gw/admin_settings' %>
+  <%=link_to '管理者設定へ戻る', '/gw/config_settings' %>
 </div>
 </div><!--piece gwbbs-->

@@ -1,7 +1,11 @@
 <br />
 <br />
 <center>
-平成２３年度の在庁表示は現在準備中です。<br />
+<%if view_str.blank?%>
+在庁表示は現在準備中です。
+<%else%>
+<%=hbr view_str%>
+<%end%>
 </center>
 <br />
 <br />

@@ -299,9 +299,10 @@ class Gwmonitor::Control < Gw::Database
   def get_user_items(uid)
     item = System::User.new
     item.and "sql", "system_users.state = 'enabled'"
-    item.and "sql", "system_users.ldap = 1" unless is_vender_user
     item.and "sql", "system_users_groups.user_id = #{uid}"
-    return item.find(:all,:select=>'system_users.id, system_users.code, system_users.name, system_users.email',:joins=>['inner join system_users_groups on system_users.id = system_users_groups.user_id'],:order=>'system_users.code')
+    return item.find(:all,:select=>'system_users.id, system_users.code, system_users.name, system_users.email',
+      :joins=>['inner join system_users_groups on system_users.id = system_users_groups.user_id'],
+      :order=>'system_users.sort_no, system_users.code')
   end
 
   def create_user_record(user)

@@ -440,7 +440,7 @@ class Gwbbs::Doc < Gwboard::CommonDb
     item = Gwbbs::Control.find(self.title_id)
     item.doc_body_size_currently  = total_size
     item.docslast_updated_at = Time.now if self.state=='public'   #記事の最終更新日時設定
-    item.save
+    item.save(false)
   end
 
   #記事削除時に記事本文のサイズを集計

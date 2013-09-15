@@ -53,7 +53,17 @@ module Gw::Controller::Image
     redirect_uri = "/#{module_name}/#{("#{[genre_name_prefix,genre_name].delete_if{|x| x.nil?}.join('_')}").pluralize}/#{item.parent_id}/upload#{qs}"
     _destroy item, :success_redirect_uri => redirect_uri, :notice => "#{image_name}の削除に成功しました"
   end
-
+  def _prop_image_destroy(model_image, image_name, module_name, genre_name, params, options={})
+    _img_id = params[:id]
+    item = model_image.find_by_id(_img_id)
+    path = "#{RAILS_ROOT}/public#{item.path}"
+    File.delete(path) if File.exist?(path)
+    genre_name_prefix = nz(options[:genre_name_prefix])
+    qs = Gw.join(@image_upload_qsa, '&amp;')
+    qs = qs.blank? ? '' : "?#{qs}"
+    redirect_uri = "/#{module_name}/#{("#{[genre_name_prefix,genre_name].delete_if{|x| x.nil?}.join('_')}").pluralize}/#{item.parent_id}/upload#{qs}"
+    _destroy item, :success_redirect_uri => redirect_uri, :notice => "#{image_name}の削除に成功しました"
+  end
 private
   def get_redirect_uri_for_image(model_image, image_name, module_name, genre_name, params, options={})
 

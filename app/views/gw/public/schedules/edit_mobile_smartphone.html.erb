@@ -1,0 +1,24 @@
+<%
+u = Site.user
+uid = u.id
+link_params = Gw.a_to_qs(["gid=#{params[:gid]}", "uid=#{uid}", "cgid=#{params[:cgid]}","dis=#{@dis}"])
+@edit_path = "/gw/schedules/#{@item.id}#{link_params}"
+@edit_path += "?sh=sh" if !params[:sh].blank?
+s_date = nil
+s_date = Gw.date8_to_date params['s_date'] unless params['s_date'].blank?
+@st_date = nz(s_date, Time.now)
+%>
+<div id="schedule_part">
+<%=render(:partial => '/gw/public/schedules/smartphone_header')%>
+<%form_for :item, :url => @edit_path, :html => {:method => :put, :id => 'itemForm'} do |f|%>
+<%=f.error_messages%>
+
+<div class="userSelect">
+<%=link_to %Q(<img src="/_common/themes/gw/files/smartphone/btn/ic_act_sanka-userchoice.gif">), "/gw/mobile_schedules/list#{link_params}&memo_id=#{@item.id}&view=edit&link=#{params[:link]}"%>
+<span class="textRed">最低1人、10人まで</span>
+</div>
+<%=render(:partial => 'form_mobile_smartphone', :locals => {:f => f})%>
+<%=submit_for_update f, :caption=>"確定する"%>
+<%end%>
+<p class="leftPad2"><%=link_to("&lt;戻る", %Q(/gw/schedules/#{@item.id}/show_one#{link_params}&topdate=#{@topdate}))%></p>
+</div><!--schedule_part-->

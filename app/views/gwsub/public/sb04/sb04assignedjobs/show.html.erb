@@ -1,0 +1,43 @@
+<%# app/views/gwsub/public/sb04/sb04assignedjobs/show %>
+<%
+edit_linhk = link_to('編集' , "#{Site.current_node.public_uri}#{@item.id}/edit#{@param}")
+
+
+stafflists = Gwsub::Sb04stafflist.find(:all, :conditions=>"section_id = #{@item.section_id} and assignedjobs_id = #{@item.id}")
+if stafflists.empty?
+  confirm = "削除してよろしいですか？"
+else
+  confirm1 = "担当コードを削除した場合、この担当コードを利用している職員が有している担当情報は残ることになります。\n必要に応じて、職員の担当の割り当てを変更してください。\n\n"
+  stafflist_names = stafflists.collect{|x| x.name}.join('、')
+  confirm2 = "この担当コードを使用している職員は、#{stafflist_names}となります。\n削除してよろしいですか？"
+  confirm = confirm1 + confirm2
+end
+delete_link = link_to('削除'  ,"#{Site.current_node.public_uri}#{@item.id}#{@param}" ,:confirm=>confirm ,:method=>:delete)
+%>
+
+<!-- コード管理 -->
+<div class="gwsub sb04">
+<%= render :partial => 'gwsub/public/sb04/sb04_piece_header' %>
+<div class="pieceBanner">
+<%= render :partial => 'gwsub/public/sb04/sb04_subfunction_select_menu' %>
+<%= render :partial => 'gwsub/public/sb04/sb04_level3menu_header' %>
+</div>
+<div class="pieceBody">
+<%= render :partial => 'gwsub/public/sb04/sb04assignedjobs/display_name' %>
+<%= div_notice %>
+<div class="showMenu">
+<%#= render :partial => 'gwsub/public/sb04/sb04_common_showMenu' %>
+<% if @role_sb04_dev && Gwsub::Sb04stafflistviewMaster.is_sb04_dev_group_role(@item.fyear_id, @item.section_code) %>
+  <%= edit_linhk %>
+  <%= delete_link %>
+<% elsif @u_role %>
+  <%= edit_linhk %>
+  <%= delete_link if @role_admin==true or @role_developer==true %>
+<% end %>
+</div>
+<%= table_to_show2 @item, { 'table_name' => 'gwsub_sb04assignedjobs_show' } %>
+  <div class="btReturn">
+  <%= link_to '一覧に戻る',"#{Gw.chop_with(Site.current_node.public_uri,'/')}#{@param}" %>
+  </div>
+</div>
+</div>

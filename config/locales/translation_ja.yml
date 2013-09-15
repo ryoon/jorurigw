@@ -138,6 +138,10 @@ ja:
         code: "コード"
         start_at: "適用開始日"
         end_at: "適用終了日"
+      system/custom_group:
+        state: "状態"
+        name: "名称"
+        name_en: "名称（英語）"
       system/group_version:
         created_at: "で作成"
         updated_at: "で更新"
@@ -626,12 +630,6 @@ ja:
         section_code: ""
         title: ""
         body: ""
-      adminlibrary/doc:
-        state: 状態
-        section_code: "記事管理課"
-        datum_name: ""
-        category_kind_1: ""
-        category_kind_2: ""
       digitallibrary/control:
         title: 図書名タイトル
         sort_no: 並び順

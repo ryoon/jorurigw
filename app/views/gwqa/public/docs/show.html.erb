@@ -27,10 +27,10 @@
 <%end %>
 </div>
 </div>
-<%if is_qa_editable(@is_admin,@item)%>
+<% if @is_editable %>
  <div class="questionPerson">
  <div>
-  <% if is_qa_editable(@is_admin,@item) %>
+  <% if @is_editable  %>
    <%= link_to('削除', @item.delete_path, :confirm => '削除をすると元に戻せません。削除しますか', :method => :delete) %>
   <%end%>
   <span class="questionDay"><%=@item.latest_updated_at.strftime('%Y-%m-%d %H:%M')%></span>
@@ -55,7 +55,7 @@
   end
 %>
 </span>
-<%if is_qa_editable(@is_admin,@item)%>
+<%if @is_editable %>
   <a href="<%=@item.gwqa_edit_path%>" title="この質問の内容を修正します。">質問者 : <%=@item.editordivision || @item.createrdivision%> <%=@item.editor || @item.creater%></a>
 <%else %>
  質問者 : <%=@item.editordivision || @item.createrdivision%> <%=@item.editor || @item.creater%>
@@ -99,7 +99,7 @@
  <tbody>
  <tr><th>
      <div class="answerTitle"><span>回答</span>
- <% if is_qa_editable(@is_admin,@answer) %>
+ <% if @is_editable %>
   <a href="<%=@answer.gwqa_edit_path%>" title="この回答の内容を修正します"> 回答者 : <%=@answer.editordivision || @answer.createrdivision%> <%=@answer.editor || @answer.creater%></a>
  <%else%>
   回答者 : <%=@answer.editordivision || @answer.createrdivision%> <%=@answer.editor || @answer.creater%>

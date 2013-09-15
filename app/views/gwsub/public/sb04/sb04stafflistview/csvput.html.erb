@@ -1,0 +1,93 @@
+<%#*<p>Find me in app/views/gwsub/public/sb04/sb04stafflistview/csvput.html.erb</p>%>
+<%
+fyear_order = "published_at DESC"
+fyears = Gwsub::Sb04EditableDate.find(:all,:order=>fyear_order).collect{|x| [x.fy_rel.markjp,x.fyear_id]}
+groups = Gwsub::Sb04section.sb04_group_select(fyears[0][1].to_i , nil)
+location = "#{Site.current_node.public_uri}csvput"
+%>
+<div class="gwsub sb04">
+<%= render :partial => 'gwsub/public/sb04/sb04_piece_header' %>
+<div class="pieceBanner">
+<%= render :partial => 'gwsub/public/sb04/sb04_submenu' %>
+</div>
+<div class="pieceBody">
+<div class="titleLine">
+ <p class="title">項目指定 ＣＳＶ 出力</p>
+</div>
+<%= div_notice %>
+<div>
+<span class="explanation">
+職員一覧から指定項目のデータを、指定の文字コードで出力します。（「全項目データ出力」「検索用データ出力」に相当します。）
+<br />保存先は、ダウンロード時に指定できます。
+</span>
+</div>
+<br />
+<% form_tag location, {:method=>:get , :multipart => true} do %>
+<%= hidden_field_tag('item[csv]','put') %>
+<table class="show">
+<tr><th></th><td>出力条件を選択して実行してください</td></tr>
+<tr><th>年度</th><td><%= select_tag( 'item[fyed_id]',options_for_select( fyears ,@fyed_id.to_i ) ) %></td></tr>
+<tr><th>所属</th><td><%= select_tag( 'item[grped_id]',options_for_select( groups ,@grped_id.to_i )) %></td></tr>
+<tr>
+<th>出力項目</th>
+<td>
+<div>
+<%= radio_button_tag('item[select]', 'all',true , :onclick => 'set_cols();' ) %><label for="item_select_all">全項目</label>
+<%= radio_button_tag('item[select]', 'sel',false , :onclick => 'set_cols();' ) %><label for="item_select_sel">指定項目</label>
+</div>
+<div id="select_cols">
+<br />
+※所属コード、所属名、担当名、担当電話、職員番号、職名、区分、氏名（変換後）は必須で出力されます。<br />
+<%= check_boxes 'item', 'chks', Gw.yaml_to_array_for_select('gwsub_sb04_stafflists_checkboxes', :sort_by => nil), :form_type=>:name %>
+</div>
+</td>
+</tr>
+<tr>
+<th>文字コード</th>
+<td>
+<%= radio_button_tag('item[nkf]', 'sjis',true) %><label for="item_nkf_sjis">SJIS</label>
+<%= radio_button_tag('item[nkf]', 'utf8',false) %><label for="item_nkf_utf8">UTF8</label>
+</td>
+</tr>
+</table>
+<div class="preserve">
+<%= submit_tag '項目指定出力' %>
+</div>
+<% end %>
+</div>
+</div>
+
+<%= observe_field "item_fyed_id", :function => "get_selects();" %>
+<script language = "JavaScript" type="text/javascript">
+//<![CDATA[
+  var end_cnt = -1;
+  function get_selects() {
+    // start_at
+    fyed_id    = $("item_fyed_id").value
+    if (end_cnt == -1) {
+      document.body.style.cursor = 'wait';
+      end_cnt = 0;
+    }
+    new Ajax.Request("<%= Site.current_node.public_uri%>section_fields.csv?fyed_id=" + fyed_id, {method:'get', onComplete: function(x){
+      $('item_grped_id').update(x.responseText);
+      end_cnt = end_cnt + 1;
+      if (end_cnt == 1) {
+        document.body.style.cursor = 'default';
+      }
+    }})
+  }
+// 使用者　設定欄
+  var set_cols = function() {
+    idx =  radio_selected('item[select]')
+    switch (idx) {
+    case 0:
+      $('select_cols').setStyle("display : none;");
+      break;
+    case 1:
+      $('select_cols').setStyle("display : inline;");
+      break;
+    }
+  }
+  set_cols();
+//]]>
+</script>

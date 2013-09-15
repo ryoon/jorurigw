@@ -1,28 +1,18 @@
--- MySQL dump 10.13  Distrib 5.1.30, for pc-linux-gnu (i686)
---
--- Host: localhost    Database: development_jgw_bbs_000001
--- ------------------------------------------------------
--- Server version	5.1.30
 
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
-/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
-/*!40103 SET TIME_ZONE='+00:00' */;
-/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
-/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
-/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
-/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 
 --
--- Table structure for table `gwbbs_categories`
+-- データベース: `development_jgw_bbs_000001`
+--
+
+-- --------------------------------------------------------
+
+--
+-- テーブルの構造 `gwbbs_categories`
 --
 
 DROP TABLE IF EXISTS `gwbbs_categories`;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
-CREATE TABLE `gwbbs_categories` (
+CREATE TABLE IF NOT EXISTS `gwbbs_categories` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `unid` int(11) DEFAULT NULL,
   `parent_id` int(11) DEFAULT NULL,
@@ -34,17 +24,16 @@ CREATE TABLE `gwbbs_categories` (
   `level_no` int(11) DEFAULT NULL,
   `name` text,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-SET character_set_client = @saved_cs_client;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
 
 --
--- Table structure for table `gwbbs_comments`
+-- テーブルの構造 `gwbbs_comments`
 --
 
 DROP TABLE IF EXISTS `gwbbs_comments`;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
-CREATE TABLE `gwbbs_comments` (
+CREATE TABLE IF NOT EXISTS `gwbbs_comments` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `unid` int(11) DEFAULT NULL,
   `content_id` int(11) DEFAULT NULL,
@@ -87,32 +76,30 @@ CREATE TABLE `gwbbs_comments` (
   `inpfld_002` text,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-SET character_set_client = @saved_cs_client;
+
+-- --------------------------------------------------------
 
 --
--- Table structure for table `gwbbs_db_files`
+-- テーブルの構造 `gwbbs_db_files`
 --
 
 DROP TABLE IF EXISTS `gwbbs_db_files`;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
-CREATE TABLE `gwbbs_db_files` (
+CREATE TABLE IF NOT EXISTS `gwbbs_db_files` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `title_id` int(11) DEFAULT NULL,
   `parent_id` int(11) DEFAULT NULL,
   `data` longblob,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-SET character_set_client = @saved_cs_client;
+
+-- --------------------------------------------------------
 
 --
--- Table structure for table `gwbbs_docs`
+-- テーブルの構造 `gwbbs_docs`
 --
 
 DROP TABLE IF EXISTS `gwbbs_docs`;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
-CREATE TABLE `gwbbs_docs` (
+CREATE TABLE IF NOT EXISTS `gwbbs_docs` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `unid` int(11) DEFAULT NULL,
   `content_id` int(11) DEFAULT NULL,
@@ -186,17 +173,16 @@ CREATE TABLE `gwbbs_docs` (
   `inpfld_024` text,
   `inpfld_025` text,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-SET character_set_client = @saved_cs_client;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
 
 --
--- Table structure for table `gwbbs_files`
+-- テーブルの構造 `gwbbs_files`
 --
 
 DROP TABLE IF EXISTS `gwbbs_files`;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
-CREATE TABLE `gwbbs_files` (
+CREATE TABLE IF NOT EXISTS `gwbbs_files` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `unid` int(11) DEFAULT NULL,
   `content_id` int(11) DEFAULT NULL,
@@ -216,17 +202,16 @@ CREATE TABLE `gwbbs_files` (
   `height` int(11) DEFAULT NULL,
   `db_file_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-SET character_set_client = @saved_cs_client;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
 
 --
--- Table structure for table `gwbbs_images`
+-- テーブルの構造 `gwbbs_images`
 --
 
 DROP TABLE IF EXISTS `gwbbs_images`;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
-CREATE TABLE `gwbbs_images` (
+CREATE TABLE IF NOT EXISTS `gwbbs_images` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `unid` int(11) DEFAULT NULL,
   `content_id` int(11) DEFAULT NULL,
@@ -248,16 +233,15 @@ CREATE TABLE `gwbbs_images` (
   `db_file_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-SET character_set_client = @saved_cs_client;
+
+-- --------------------------------------------------------
 
 --
--- Table structure for table `gwbbs_recognizers`
+-- テーブルの構造 `gwbbs_recognizers`
 --
 
 DROP TABLE IF EXISTS `gwbbs_recognizers`;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
-CREATE TABLE `gwbbs_recognizers` (
+CREATE TABLE IF NOT EXISTS `gwbbs_recognizers` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `unid` int(11) DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
@@ -270,15 +254,3 @@ CREATE TABLE `gwbbs_recognizers` (
   `recognized_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-SET character_set_client = @saved_cs_client;
-/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
-
-/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
-/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
-/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
-
--- Dump completed on 2011-05-22 15:02:52

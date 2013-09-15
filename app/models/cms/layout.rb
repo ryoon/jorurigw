@@ -22,10 +22,11 @@ class Cms::Layout < ActiveRecord::Base
       if smartphone == true
         _tag += self.s_mobile_head if self.s_mobile_head
         _tag += %Q(<meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>\n)
+        _css = File.join(Site.uri, 'layout', name, 'smartphone.css')
       else
         _tag += self.mobile_head if self.mobile_head
+        _css = File.join(Site.uri, 'layout', name, 'mobile.css')
       end
-      _css = File.join(Site.uri, 'layout', name, 'mobile.css')
       _tag += '<link rel="stylesheet" type="text/css" href="' + _css + '" />' + "\n"
     else
       _css = File.join(Site.uri, 'layout', name, 'style.css')

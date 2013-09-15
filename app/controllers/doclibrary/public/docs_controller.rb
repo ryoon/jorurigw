@@ -251,6 +251,14 @@ class Doclibrary::Public::DocsController < ApplicationController
 
     return authentication_error(403) unless is_i_have_readable(@item.category1_id)
 
+    unless @is_admin
+      if @item.state=='draft'
+        if @item.section_code != Site.user_group.code
+          return http_error(404)
+        end
+      end
+    end
+
     @is_recognize = false unless @item.state == 'recognize'
 
     get_role_show(@item)

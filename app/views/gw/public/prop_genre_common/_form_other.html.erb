@@ -64,7 +64,7 @@ concat hidden_readers_json_s
     <table border="0"><tr>
     <td class="userChange">
     <%= select_tag('item[admin][gid]', options_for_select(admin_groups, parent_id), :onchange=>'update_admin_cand();' ) %><br />
-    <%= select_tag('item[admin][uid]', options_for_select(grouplist4(nil, nil , true , nil, parent_id, {:return_pattern => 4})), :size=>5, :style => box_width, :ondblclick => 'add_admin()', :multiple => true) %>
+    <%= select_tag('item[admin][uid]', options_for_select(Gwsub.grouplist4(nil, nil , true , nil, parent_id, {:return_pattern => 4})), :size=>5, :style => box_width, :ondblclick => 'add_admin()', :multiple => true) %>
     </td>
     <td>
     <%= button_to_function '追加 →', 'add_admin()' %><br /><br />
@@ -119,9 +119,7 @@ concat hidden_readers_json_s
 
 <%
 concat <<-EOL
-#{
-#table_to_form(f, @item, options)
-}
+
 #{hidden_field_tag("item[sub][extra_flag]", @cls)}
 #{hidden_field_tag("item[sub][gid]", g.id)}
 #{hidden_field_tag("item[sub][uid]", u.id)}

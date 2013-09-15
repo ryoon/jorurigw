@@ -69,8 +69,6 @@ class Gw::Public::ScheduleListsController < ApplicationController
       @uid_equal = true
     end
 
-    cond += " and coalesce(#{@db_name}.todo, 0) = 0"
-
     @first_day = "#{@s_year}-01-01"
     @this_month = "#{@s_year}-#{now.month}-01"
     @end_day = "#{@s_year}-12-31"
@@ -151,7 +149,7 @@ class Gw::Public::ScheduleListsController < ApplicationController
       else
         ed_at_day = (st_at.to_date + 1).strftime("%Y-%m-%d")
         st_at_time = "00:00"
-        ed_at_time = "00:00"
+        ed_at_time = "23:59"
         allday = "TRUE"
       end
       memo = item.memo
@@ -165,13 +163,13 @@ class Gw::Public::ScheduleListsController < ApplicationController
     }
 
     if params[:nkf].blank?
-      nkf_options = '-s'
+      nkf_options = '-Lws'
     else
       nkf_options = case params[:nkf]
       when 'utf8'
         '-w'
       when 'sjis'
-        '-s'
+        '-Lws'
       end
     end
 
@@ -316,8 +314,6 @@ class Gw::Public::ScheduleListsController < ApplicationController
           schedule_user_item.ed_at       = _item.ed_at
           schedule_user_item.save(false)
 
-          Gw::ScheduleUserMoveLog.save_data('copy', _item.id, add_user.id)
-
           _item.updater_uid   = Site.user.id
           _item.updater_ucode = Site.user.code
           _item.updater_uname = Site.user.name
@@ -424,7 +420,6 @@ class Gw::Public::ScheduleListsController < ApplicationController
             :conditions => "schedule_id = #{_item.id} and class_id = 1 and uid = #{delete_user.id}", :order => "id")
           delete_user_items.each do | delete_user_item |
             delete_user_item.destroy
-            Gw::ScheduleUserMoveLog.save_data('delete', _item.id, delete_user.id)
             _delete = true
           end
 

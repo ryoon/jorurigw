@@ -1,5 +1,5 @@
 <%
-grouplist4 = grouplist4(nil, nil , true , nil)
+grouplist4 = Gwsub.grouplist4(nil, nil , true , nil)
 userlist = System::User.get_user_select(params[:gid], nil, {})
 %>
 <% form_for :item, :url => "#{Site.current_node.public_uri}user_add#{@params_set}" ,:action=>:search ,:method=>:post ,

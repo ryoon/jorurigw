@@ -1,7 +1,7 @@
 <%
 @num = 0
 @num += session[:mobile][:to].length if session[:mobile][:to] if session[:mobile]
-groups  = grouplist4(nil, nil , true , nil)
+groups  = Gwsub.grouplist4(nil, nil , true , nil)
 @edit_path = "/gw/mobile_schedules/mobile_manage"
 if  params[:view] == "quote"
  @str = "作成"

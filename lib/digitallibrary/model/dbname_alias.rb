@@ -281,8 +281,22 @@ module Digitallibrary::Model::DbnameAlias
     end
   end
 
+  def self.get_editable_flag(item, is_admin, is_writable)
+    is_editable = false
+    is_editable = true if is_admin
+    unless is_editable
+      if is_writable
+        for group in Site.user.groups
+          is_editable = true if item.section_code == group.code
+          is_editable = true if item.section_code == group.parent.code unless group.parent.blank?
+          is_editable = true if item.creater_id == Site.user.code
+          break if is_editable
+        end
+      end
+    end
+    return is_editable
+  end
 
-  #
   def digitallib_db_alias(item)
 
     title_id = params[:title_id]

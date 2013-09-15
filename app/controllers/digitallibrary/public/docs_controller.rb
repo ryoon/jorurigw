@@ -75,7 +75,12 @@ class Digitallibrary::Public::DocsController < ApplicationController
 
     get_role_show(@item)
     @is_readable = true if @is_recognize_readable
+    @is_editable = Digitallibrary::Model::DbnameAlias.get_editable_flag(@item, @is_admin, @is_writable)
     return authentication_error(403) unless @is_readable
+
+    if @item.state == 'draft' && !@is_editable
+      return http_error(404)
+    end
 
     Page.title = @item.title
 
@@ -152,6 +157,7 @@ class Digitallibrary::Public::DocsController < ApplicationController
     return http_error(404) unless @item
 
     get_role_edit(@item)
+    @is_editable = Digitallibrary::Model::DbnameAlias.get_editable_flag(@item, @is_admin, @is_writable)
     return authentication_error(403) unless @is_editable
 
     @item.section_code = Site.user_group.code if @item.section_code.blank?
@@ -208,7 +214,7 @@ class Digitallibrary::Public::DocsController < ApplicationController
     @item.section_name  = @item.section_code.to_s + @item.get_section_name(@item.section_code).to_s
 
     update_creater_editor
-
+    @item._doc_update = true
     @item.save
 
     flg_sno = true
@@ -294,7 +300,11 @@ class Digitallibrary::Public::DocsController < ApplicationController
       item.and :state, param_state
       item.and :doc_type, 0
       item.and :title_id, params[:title_id]
-      unless state == 'draft'
+      if state == 'draft'
+        unless @is_admin
+          item.and "sql", "(creater_id = '#{Site.user.code}' or section_code = '#{Site.user_group.code}')"
+        end
+      else
         item.and :level_no, level_no
         item.and :parent_id, parent_id
       end
@@ -307,6 +317,9 @@ class Digitallibrary::Public::DocsController < ApplicationController
     item.and :state, state
     item.and :doc_type, 1 if params[:state] == 'DATE'
     item.and :title_id, params[:title_id]
+    if state == 'draft' && !@is_admin
+      item.and "sql", "(creater_id = '#{Site.user.code}' or section_code = '#{Site.user_group.code}')"
+    end
     item.and :parent_id, parent_id if state == 'public' unless params[:state] == 'DATE'
     item.page   params[:page], params[:limit]
     str_order = "level_no, display_order , sort_no, id"
@@ -365,6 +378,9 @@ class Digitallibrary::Public::DocsController < ApplicationController
     item = search_item.new
     item.and :state, state
     item.and :title_id, params[:title_id]
+    if state == 'draft' && !@is_admin
+      item.and "sql", "(creater_id = '#{Site.user.code}' or section_code = '#{Site.user_group.code}')"
+    end
     item.search params
     item.page   params[:page], params[:limit]
     @items = item.find(:all, :order=>"level_no, sort_no, id")

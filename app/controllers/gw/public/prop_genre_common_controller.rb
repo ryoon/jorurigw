@@ -109,7 +109,7 @@ class Gw::Public::PropGenreCommonController < ApplicationController
     end
     raise '管理者権限がありません。' if !@is_admin
     @image_upload_qsa = ["cls=#{@cls}"]
-    _image_destroy @model_image, @item_image_name, 'gw', @genre, params, :genre_name_prefix=>'prop'
+    _prop_image_destroy @model_image, @item_image_name, 'gw', @genre, params, :genre_name_prefix=>'prop'
   end
 
 private

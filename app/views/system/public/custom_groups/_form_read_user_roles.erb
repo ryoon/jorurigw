@@ -38,14 +38,14 @@ f.fields_for :schedule_read_users do |schedule_user|
 <br />
 #{select_tag 'item[schedule_read_users][uid]', Gw.options_for_select(
   System::User.get_user_select(Site.user_group.group_id), Site.user.id, :title=>1), :size=>10,
-  :style => 'width:300px;', :multiple => true}
+  :style => 'width:300px;', :multiple => true, :ondblclick => 'add_read_users()'}
 </td>
 <td>
 #{button_to_function '追加 →', 'add_read_users()'}<br /><br />
 #{button_to_function '← 削除', 'del_read_users()'}
 </td>
 <td><br />
-#{select_tag 'item[schedule_read_users_add_buf]', [], :size=>10, :style => 'width:300px;', :multiple => true}
+#{select_tag 'item[schedule_read_users_add_buf]', [], :size=>10, :style => 'width:300px;', :multiple => true, :ondblclick => 'del_read_users()'}
 #{hidden_field_tag 'item[schedule_read_users_json]', ''}
 </td>
 </tr>

@@ -21,6 +21,7 @@ class Digitallibrary::Doc < Gwboard::CommonDb
   attr_accessor :_notification
   attr_accessor :_bbs_title_name
   attr_accessor :_note_section
+  attr_accessor :_doc_update
 
   def validate_title
     if self.title.blank?
@@ -239,10 +240,11 @@ class Digitallibrary::Doc < Gwboard::CommonDb
 
 
   def title_update_save
+    return unless self._doc_update
     if self.state=='public'
       item = Digitallibrary::Control.find(self.title_id)
       item.docslast_updated_at = Time.now
-      item.save
+      item.save(false)
     end
   end
 

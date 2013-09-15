@@ -17,8 +17,8 @@ class Gw::ScheduleList < Gw::Database
   def self.get_users(gid = Site.user_group.id)
     join = "inner join system_users_groups on system_users.id = system_users_groups.user_id"
     join += " inner join system_users_custom_groups on system_users.id = system_users_custom_groups.user_id"
-    cond = "system_users.state='enabled' and system_users.ldap = 1 and system_users_groups.group_id = #{gid}"
-    users = System::User.find(:all, :conditions=>cond, :order=>'code',
+    cond = "system_users.state='enabled' and system_users_groups.group_id = #{gid}"
+    users = System::User.find(:all, :conditions=>cond, :order=>'sort_no, code',
         :joins=>join, :group => 'system_users.id')
 
     return users

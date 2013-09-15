@@ -1,1 +1,578 @@
+1.1.0
+
+ USE `xxxxxxx_jgw_core`;
+
+ UPDATE cms_layouts SET s_mobile_head = '<link rel="stylesheet" type="text/css" href="/_common/themes/gw/css/print.css" media="print"/>' WHERE name = "gwbbs";
+ UPDATE cms_layouts SET s_mobile_body = '<div id="header">\n<div id="headerBody">\n[[piece/gw-header]]\n</div>\n</div>\n<div id="banner">\n<div id="bannerBody">\n[[piece/gw-header-menu-icons 61]]\n</div>\n\n\n</div>\n<div id="navi2">\n<div id="navi2Body">\n\n</div>\n</div>\n\n<div id="main">\n<div id="wrapper">\n<div id="content">\n<div id="contentContainer">\n<div id="contentBody">\n[[content]]\n</div>\n</div>\n</div>\n\n\n\n<div id="footer">\n<div id="footerContainer">\n\n\n<div id="footerHeader">\n</div>\n<div id="footerBody">\n[[piece/gw-mobile-top-footer]]\n\n</div>\n<div id="footerFooter"></div>\n</div>\n</div>' WHERE name = "gwbbs";
+ UPDATE cms_layouts SET s_mobile_head = '<script src="/_common/js/gw_schedules.js" type="text/javascript"></script>\n<script src="/_common/js/yui/build/yahoo/yahoo-min.js" type="text/javascript"></script>\n<script src="/_common/js/yui/build/dom/dom-min.js" type="text/javascript"></script>\n<script src="/_common/js/yui/build/event/event-min.js" type="text/javascript"></script>\n<script src="/_common/js/yui/build/container/container-min.js" type="text/javascript"></script>\n<script src="/_common/js/yui/build/menu/menu-min.js" type="text/javascript"></script>\n<script src="/_common/js/popup_calendar/popup_calendar.js" type="text/javascript"></script>\n<script src="/_common/js/yui/build/calendar/calendar.js" type="text/javascript"></script>\n<script src="/_common/js/dateformat.js" type="text/javascript"></script>\n<link href="/_common/js/yui/build/menu/assets/menu.css" media="screen" rel="stylesheet" type="text/css" />' WHERE name = "portal";
+ UPDATE cms_layouts SET s_mobile_body = '<div id="header">\n<div id="headerBody">[[piece/gw-header]]\n</div>\n</div>\n<div id="banner">\n<div id="bannerBody">\n[[piece/gw-header-menu-icons 61]]\n</div>\n</div>\n\n<div id="navi2">\n<div id="navi2Body">\n\n</div>\n</div>\n\n<div id="main">\n<div id="wrapper">\n<div id="content">\n<div id="contentContainer">\n<div id="contentBody">\n[[piece/smartphone_tab_up]]\n[[piece/gw-schedules]]\n[[piece/gw-reminder]]\n[[piece/gw-bbs-news gwbbs_1_10]]\n[[piece/smartphone_tab]]\n[[piece/gwbbs-mobile-portals]]\n</div>\n</div>\n</div>\n\n<div id="footer">\n<div id="footerContainer">\n\n<div id="footerHeader">\n</div>\n<div id="footerBody">\n[[piece/gw-mobile-top-footer]]\n\n</div>\n<div id="footerFooter"></div>\n</div>\n</div>' WHERE name = "portal";
+ UPDATE cms_layouts SET s_mobile_head = '<link rel="stylesheet" type="text/css" href="/_common/themes/gw/css/print.css" media="print"/> ' WHERE name = "portal_1column ";
+ UPDATE cms_layouts SET s_mobile_body = '<div id="header">\n<div id="headerBody">\n[[piece/gw-header]]\n</div>\n</div>\n<div id="banner">\n<div id="bannerBody">\n[[piece/gw-header-menu-icons 61]]\n</div>\n</div>\n\n<div id="navi2">\n<div id="navi2Body">\n\n</div>\n</div>\n\n<div id="main">\n<div id="wrapper">\n<div id="content">\n<div id="contentContainer">\n<div id="contentBody">\n[[content]]\n</div>\n</div>\n</div>\n\n\n\n<div id="footer">\n<div id="footerContainer">\n\n<div id="footerHeader">\n</div>\n<div id="footerBody">\n[[piece/gw-mobile-top-footer]]\n\n</div>\n<div id="footerFooter"></div>\n</div>\n</div> ' WHERE name = "portal_1column ";
+ UPDATE cms_layouts SET s_mobile_head = '<link rel="stylesheet" type="text/css" href="/_common/themes/gw/css/print_schedule.css" media="print"/> ' WHERE name = "schedule";
+ UPDATE cms_layouts SET s_mobile_body = '<div id="header">\n<div id="headerBody">\n[[piece/gw-header]]\n</div>\n</div>\n<div id="banner">\n<div id="bannerBody">\n[[piece/gw-header-menu-icons 61]]\n</div>\n</div>\n\n<div id="navi2">\n<div id="navi2Body">\n</div>\n</div>\n\n<div id="main">\n<div id="wrapper">\n<div id="content">\n<div id="contentContainer">\n<div id="contentBody">\n\n[[content]]\n\n</div>\n</div>\n</div>\n\n<div id="footer">\n<div id="footerContainer">\n\n<div id="footerHeader">\n</div>\n<div id="footerBody">\n[[piece/gw-mobile-top-footer]]\n\n</div>\n<div id="footerFooter"></div>\n</div>\n</div>' WHERE name = "schedule";
+
+ USE `xxxxxxx_jgw_gw`;
+
+ CREATE TABLE IF NOT EXISTS `questionnaire_itemdeletes` (
+   `id` int(11) NOT NULL AUTO_INCREMENT,
+   `content_id` int(11) DEFAULT NULL,
+   `created_at` datetime DEFAULT NULL,
+   `updated_at` datetime DEFAULT NULL,
+   `admin_code` varchar(255) DEFAULT NULL,
+   `limit_date` varchar(255) DEFAULT NULL,
+   PRIMARY KEY (`id`)
+ ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 ;
+
+ INSERT INTO `questionnaire_itemdeletes` (`id`, `content_id`, `created_at`, `updated_at`, `admin_code`, `limit_date`) VALUES
+ (1, 0, '2010-11-22 11:22:42', '2011-10-03 20:47:58', 'admin', '1.month');
+
+ CREATE DATABASE `xxxxxxx_jgw_gw_pref`;
+
+ USE  `xxxxxxx_jgw_gw_pref`;
+
+ CREATE TABLE IF NOT EXISTS `gwsub_sb01_trainings` (
+   `id` int(11) NOT NULL auto_increment,
+   `categories` text,
+   `fyear_id` int(11) default NULL,
+   `fyear_markjp` text,
+   `title` text,
+   `bbs_url` text,
+   `body` text,
+   `created_at` datetime default NULL,
+   `created_user` text,
+   `created_group` text,
+   `updated_at` datetime default NULL,
+   `updated_user` text,
+   `updated_group` text,
+   `state` text,
+   `member_id` int(11) default NULL,
+   `group_id` int(11) default NULL,
+   `member_max` int(11) default NULL,
+   `group_code` text,
+   `group_name` text,
+   `member_code` text,
+   `member_name` text,
+   `member_tel` text,
+   `bbs_doc_id` int(11) default NULL,
+   PRIMARY KEY  (`id`)
+ ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC ;
+
+
+ CREATE TABLE IF NOT EXISTS `gwsub_sb01_training_guides` (
+   `id` int(11) NOT NULL auto_increment,
+   `categories` text,
+   `fyear_id` int(11) default NULL,
+   `fyear_markjp` text,
+   `title` text,
+   `bbs_url` text,
+   `remarks` text,
+   `created_at` datetime default NULL,
+   `created_user` text,
+   `created_group` text,
+   `updated_at` datetime default NULL,
+   `updated_user` text,
+   `updated_group` text,
+   `state` text,
+   `member_id` int(11) default NULL,
+   `group_id` int(11) default NULL,
+   PRIMARY KEY  (`id`)
+ ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC ;
+
+ CREATE TABLE IF NOT EXISTS `gwsub_sb01_training_schedules` (
+   `id` int(11) NOT NULL auto_increment,
+   `schedule_id` int(11) default NULL,
+   `training_id` int(11) default NULL,
+   `condition_id` int(11) default NULL,
+   `created_at` datetime default NULL,
+   `created_user` text,
+   `created_group` text,
+   `updated_at` datetime default NULL,
+   `updated_user` text,
+   `updated_group` text,
+   `members_max` int(11) default NULL,
+   `members_current` int(11) default NULL,
+   `state` text,
+   `from_start` datetime default NULL,
+   `from_end` datetime default NULL,
+   `prop_name` text,
+   PRIMARY KEY  (`id`)
+ ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 ;
+
+ CREATE TABLE IF NOT EXISTS `gwsub_sb01_training_schedule_conditions` (
+   `id` int(11) NOT NULL auto_increment,
+   `training_id` int(11) default NULL,
+   `members_max` int(11) default NULL,
+   `title` text,
+   `from_start` text,
+   `from_start_min` text,
+   `from_end` text,
+   `from_end_min` text,
+   `member_id` int(11) default NULL,
+   `prop_id` int(11) default NULL,
+   `repeat_flg` text,
+   `repeat_monthly` text,
+   `repeat_weekday` text,
+   `from_at` datetime default NULL,
+   `to_at` datetime default NULL,
+   `created_at` datetime default NULL,
+   `created_user` text,
+   `created_group` text,
+   `updated_at` datetime default NULL,
+   `updated_user` text,
+   `updated_group` text,
+   `state` text,
+   `group_id` int(11) default NULL,
+   `extension` text,
+   `prop_kind` int(11) default NULL,
+   `prop_name` text,
+   `repeat_class_id` int(11) default NULL,
+   PRIMARY KEY  (`id`)
+ ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC ;
+
+ CREATE TABLE IF NOT EXISTS `gwsub_sb01_training_schedule_members` (
+   `id` int(11) NOT NULL auto_increment,
+   `training_id` int(11) default NULL,
+   `schedule_id` int(11) default NULL,
+   `condition_id` int(11) default NULL,
+   `training_schedule_id` int(11) default NULL,
+   `training_user_id` int(11) default NULL,
+   `training_group_id` int(11) default NULL,
+   `entry_user_id` int(11) default NULL,
+   `entry_group_id` int(11) default NULL,
+   `created_at` datetime default NULL,
+   `created_user` text,
+   `created_group` text,
+   `updated_at` datetime default NULL,
+   `updated_user` text,
+   `updated_group` text,
+   `training_user_tel` text,
+   `entry_user_tel` text,
+   PRIMARY KEY  (`id`)
+ ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC ;
+
+ CREATE TABLE IF NOT EXISTS `gwsub_sb01_training_schedule_props` (
+   `id` int(11) NOT NULL auto_increment,
+   `training_id` int(11) default NULL,
+   `schedule_id` int(11) default NULL,
+   `prop_id` int(11) default NULL,
+   `members_max` int(11) default NULL,
+   `members_current` int(11) default NULL,
+   `member_id` int(11) default NULL,
+   `created_at` datetime default NULL,
+   `created_user` text,
+   `created_group` text,
+   `updated_at` datetime default NULL,
+   `updated_user` text,
+   `updated_group` text,
+   `condition_id` int(11) default NULL,
+   `from_start` text,
+   `from_end` text,
+   `state` text,
+   `group_id` int(11) default NULL,
+   PRIMARY KEY  (`id`)
+ ) ENGINE=MyISAM DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+
+ CREATE TABLE IF NOT EXISTS `gwsub_sb01_training_files` (
+   `id` int(11) NOT NULL auto_increment,
+   `unid` int(11) default NULL,
+   `content_id` int(11) default NULL,
+   `state` text,
+   `created_at` datetime default NULL,
+   `updated_at` datetime default NULL,
+   `recognized_at` datetime default NULL,
+   `published_at` datetime default NULL,
+   `latest_updated_at` datetime default NULL,
+   `parent_id` int(11) default NULL,
+   `title_id` int(11) default NULL,
+   `content_type` varchar(255) default NULL,
+   `filename` text,
+   `memo` text,
+   `size` int(11) default NULL,
+   `width` int(11) default NULL,
+   `height` int(11) default NULL,
+   `db_file_id` int(11) default NULL,
+   PRIMARY KEY  (`id`)
+ ) ENGINE=MyISAM DEFAULT CHARSET=utf8 ;
+
+ USE xxxxxxx_jgw_gw;
+
+ CREATE TABLE IF NOT EXISTS `gw_admin_check_extensions` (
+   `id` int(11) NOT NULL AUTO_INCREMENT,
+   `state` varchar(255) DEFAULT NULL,
+   `sort_no` int(11) DEFAULT NULL,
+   `extension` varchar(255) DEFAULT NULL,
+   `remark` text,
+   `deleted_at` datetime DEFAULT NULL,
+   `deleted_uid` int(11) DEFAULT NULL,
+   `deleted_gid` int(11) DEFAULT NULL,
+   `updated_at` datetime DEFAULT NULL,
+   `updated_uid` int(11) DEFAULT NULL,
+   `updated_gid` int(11) DEFAULT NULL,
+   `created_at` datetime DEFAULT NULL,
+   `created_uid` int(11) DEFAULT NULL,
+   `created_gid` int(11) DEFAULT NULL,
+   PRIMARY KEY (`id`)
+ ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+
+ INSERT INTO `gw_admin_check_extensions` (`id`, `state`, `sort_no`, `extension`, `remark`, `deleted_at`, `deleted_uid`, `deleted_gid`, `updated_at`, `updated_uid`, `updated_gid`, `created_at`, `created_uid`, `created_gid`) VALUES
+ (1, 'enabled', 10, 'jtd', '一太郎', NULL, NULL, NULL, '2011-08-19 10:32:08', NULL, NULL, '2011-08-19 10:32:08', NULL, NULL),
+ (2, 'enabled', 20, 'xls', 'Excel', NULL, NULL, NULL, '2011-08-19 10:32:17', NULL, NULL, '2011-08-19 10:32:17', NULL, NULL),
+ (3, 'enabled', 30, 'xlsx', 'Excel 2007', NULL, NULL, NULL, '2011-08-19 10:32:26', NULL, NULL, '2011-08-19 10:32:26', NULL, NULL),
+ (4, 'enabled', 40, 'doc', 'Word', NULL, NULL, NULL, '2011-08-19 10:32:33', NULL, NULL, '2011-08-19 10:32:33', NULL, NULL),
+ (5, 'enabled', 50, 'docx', 'Word 2007', NULL, NULL, NULL, '2011-08-19 10:33:10', NULL, NULL, '2011-08-19 10:33:10', NULL, NULL),
+ (6, 'enabled', 60, 'ppt', 'PowerPoint', NULL, NULL, NULL, '2011-08-19 10:33:19', NULL, NULL, '2011-08-19 10:33:19', NULL, NULL),
+ (7, 'enabled', 70, 'pptx', 'PowerPoint 2007', NULL, NULL, NULL, '2011-08-19 10:33:28', NULL, NULL, '2011-08-19 10:33:28', NULL, NULL),
+ (8, 'enabled', 80, 'jac', '三四郎', NULL, NULL, NULL, '2011-08-19 10:33:36', NULL, NULL, '2011-08-19 10:33:36', NULL, NULL),
+ (9, 'enabled', 90, 'jsd', '三四郎', NULL, NULL, NULL, '2011-08-19 10:33:43', NULL, NULL, '2011-08-19 10:33:43', NULL, NULL),
+ (10, 'deleted', NULL, 'odt', 'オープンオフィス 文書', '2011-08-24 11:52:08', 8, 36, '2011-08-24 11:52:08', 8, 36, '2011-08-24 10:58:05', 8, 36),
+ (11, 'deleted', NULL, 'odg', 'オープンオフィス 図形', '2011-08-24 11:19:57', 8, 36, '2011-08-24 11:19:57', NULL, NULL, '2011-08-24 11:19:20', 8, 36);
+
+
+ use xxxxxxx_jgw_gw;
+
+ CREATE TABLE IF NOT EXISTS `gw_section_admin_masters` (
+   `id` int(11) NOT NULL AUTO_INCREMENT,
+   `func_name` text,
+   `state` varchar(255) DEFAULT NULL COMMENT '状態',
+   `edit_auth` int(11) DEFAULT NULL,
+   `management_parent_gid` int(11) DEFAULT NULL COMMENT '主管課',
+   `management_gid` int(11) DEFAULT NULL COMMENT '主管課',
+   `management_uid` int(11) DEFAULT NULL COMMENT '主管課',
+   `range_class_id` int(11) DEFAULT NULL COMMENT '範囲',
+   `division_parent_gid` int(11) DEFAULT NULL COMMENT '原課（部局）',
+   `division_gid` int(11) DEFAULT NULL COMMENT '原課（諸課）',
+   `management_ucode` varchar(255) DEFAULT NULL COMMENT '電子職員録用',
+   `fyear_id_sb04` int(11) DEFAULT NULL COMMENT '年度（電子職員録）',
+   `management_gcode` varchar(255) DEFAULT NULL COMMENT '電子職員録用',
+   `division_gcode` varchar(255) DEFAULT NULL COMMENT '電子職員録用',
+   `management_uid_sb04` int(11) DEFAULT NULL COMMENT '電子職員録用',
+   `management_gid_sb04` int(11) DEFAULT NULL COMMENT '電子職員録用',
+   `division_gid_sb04` int(11) DEFAULT NULL COMMENT '電子職員録用',
+   `creator_uid` int(11) DEFAULT NULL,
+   `creator_gid` int(11) DEFAULT NULL,
+   `updator_uid` int(11) DEFAULT NULL,
+   `updator_gid` int(11) DEFAULT NULL,
+   `deleted_uid` int(11) DEFAULT NULL,
+   `deleted_gid` int(11) DEFAULT NULL,
+   `created_at` datetime DEFAULT NULL,
+   `updated_at` datetime DEFAULT NULL,
+   `deleted_at` datetime DEFAULT NULL,
+   PRIMARY KEY (`id`)
+ ) ENGINE=MyISAM  DEFAULT CHARSET=utf8
+
+ USE xxxxxxx_jgw_gw_pref;
+
+ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
+
+ CREATE TABLE IF NOT EXISTS `gwsub_sb04assignedjobs` (
+   `id` int(11) NOT NULL AUTO_INCREMENT,
+   `fyear_id` int(11) DEFAULT NULL,
+   `fyear_markjp` text,
+   `section_id` int(11) DEFAULT NULL,
+   `section_code` text,
+   `section_name` text,
+   `code_int` int(11) DEFAULT NULL,
+   `code` text,
+   `name` text,
+   `tel` text,
+   `address` text,
+   `remarks` text,
+   `updated_at` datetime DEFAULT NULL,
+   `updated_user` text,
+   `updated_group` text,
+   `created_at` datetime DEFAULT NULL,
+   `created_user` text,
+   `created_group` text,
+   PRIMARY KEY (`id`)
+ ) ENGINE=MyISAM DEFAULT CHARSET=utf8  ;
+
+ CREATE TABLE IF NOT EXISTS `gwsub_sb04helps` (
+   `id` int(11) NOT NULL AUTO_INCREMENT,
+   `categories` int(11) DEFAULT NULL,
+   `title` text,
+   `bbs_url` text,
+   `remarks` text,
+   `updated_at` datetime DEFAULT NULL,
+   `updated_user` text,
+   `updated_group` text,
+   `created_at` datetime DEFAULT NULL,
+   `created_user` text,
+   `created_group` text,
+   PRIMARY KEY (`id`)
+ ) ENGINE=MyISAM DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC  ;
+
+ CREATE TABLE IF NOT EXISTS `gwsub_sb04officialtitles` (
+   `id` int(11) NOT NULL AUTO_INCREMENT,
+   `fyear_id` int(11) DEFAULT NULL,
+   `fyear_markjp` text,
+   `code_int` int(11) DEFAULT NULL,
+   `code` text,
+   `name` text,
+   `remarks` text,
+   `updated_at` datetime DEFAULT NULL,
+   `updated_user` text,
+   `updated_group` text,
+   `created_at` datetime DEFAULT NULL,
+   `created_user` text,
+   `created_group` text,
+   PRIMARY KEY (`id`)
+ ) ENGINE=MyISAM DEFAULT CHARSET=utf8  ;
+
+ CREATE TABLE IF NOT EXISTS `gwsub_sb04sections` (
+   `id` int(11) NOT NULL AUTO_INCREMENT,
+   `fyear_id` int(11) DEFAULT NULL,
+   `fyear_markjp` text,
+   `code` text,
+   `name` text,
+   `remarks` text,
+   `bbs_url` text,
+   `ldap_code` text,
+   `ldap_name` text,
+   `updated_at` datetime DEFAULT NULL,
+   `updated_user` text,
+   `updated_group` text,
+   `created_at` datetime DEFAULT NULL,
+   `created_user` text,
+   `created_group` text,
+   PRIMARY KEY (`id`)
+ ) ENGINE=MyISAM DEFAULT CHARSET=utf8  ;
+
+ CREATE TABLE IF NOT EXISTS `gwsub_sb04stafflists` (
+   `id` int(11) NOT NULL AUTO_INCREMENT,
+   `fyear_id` int(11) DEFAULT NULL,
+   `fyear_markjp` text,
+   `staff_no` text,
+   `multi_section_flg` text,
+   `name` text,
+   `name_print` text,
+   `kana` text,
+   `section_id` int(11) DEFAULT NULL,
+   `section_code` text,
+   `section_name` text,
+   `assignedjobs_id` int(11) DEFAULT NULL,
+   `assignedjobs_code_int` int(11) DEFAULT NULL,
+   `assignedjobs_code` text,
+   `assignedjobs_name` text,
+   `assignedjobs_tel` text,
+   `assignedjobs_address` text,
+   `official_title_id` int(11) DEFAULT NULL,
+   `official_title_code` text,
+   `official_title_code_int` int(11) DEFAULT NULL,
+   `official_title_name` text,
+   `categories_id` int(11) DEFAULT NULL,
+   `categories_code` text,
+   `categories_name` text,
+   `extension` text,
+   `divide_duties` text,
+   `divide_duties_order` text,
+   `divide_duties_order_int` int(11) DEFAULT NULL,
+   `remarks` text,
+   `personal_state` text,
+   `display_state` text,
+   `updated_at` datetime DEFAULT NULL,
+   `updated_user` text,
+   `updated_group` text,
+   `created_at` datetime DEFAULT NULL,
+   `created_user` text,
+   `created_group` text,
+   PRIMARY KEY (`id`)
+ ) ENGINE=MyISAM DEFAULT CHARSET=utf8  ;
+
+ CREATE TABLE IF NOT EXISTS `gwsub_sb04_check_assignedjobs` (
+   `id` int(11) NOT NULL AUTO_INCREMENT,
+   `fyear_id` int(11) DEFAULT NULL,
+   `fyear_markjp` text,
+   `section_id` int(11) DEFAULT NULL,
+   `section_code` text,
+   `section_name` text,
+   `code_int` int(11) DEFAULT NULL,
+   `code` text,
+   `name` text,
+   `tel` text,
+   `address` text,
+   `remarks` text,
+   `updated_at` datetime DEFAULT NULL,
+   `updated_user` text,
+   `updated_group` text,
+   `created_at` datetime DEFAULT NULL,
+   `created_user` text,
+   `created_group` text,
+   PRIMARY KEY (`id`)
+ ) ENGINE=MyISAM DEFAULT CHARSET=utf8  ;
+
+ CREATE TABLE IF NOT EXISTS `gwsub_sb04_check_officialtitles` (
+   `id` int(11) NOT NULL AUTO_INCREMENT,
+   `fyear_id` int(11) DEFAULT NULL,
+   `fyear_markjp` text,
+   `code_int` int(11) DEFAULT NULL,
+   `code` text,
+   `name` text,
+   `remarks` text,
+   `updated_at` datetime DEFAULT NULL,
+   `updated_user` text,
+   `updated_group` text,
+   `created_at` datetime DEFAULT NULL,
+   `created_user` text,
+   `created_group` text,
+   PRIMARY KEY (`id`)
+ ) ENGINE=MyISAM DEFAULT CHARSET=utf8  ;
+
+ CREATE TABLE IF NOT EXISTS `gwsub_sb04_check_sections` (
+   `id` int(11) NOT NULL AUTO_INCREMENT,
+   `fyear_id` int(11) DEFAULT NULL,
+   `fyear_markjp` text,
+   `code` text,
+   `name` text,
+   `remarks` text,
+   `bbs_url` text,
+   `ldap_code` text,
+   `ldap_name` text,
+   `updated_at` datetime DEFAULT NULL,
+   `updated_user` text,
+   `updated_group` text,
+   `created_at` datetime DEFAULT NULL,
+   `created_user` text,
+   `created_group` text,
+   PRIMARY KEY (`id`)
+ ) ENGINE=MyISAM DEFAULT CHARSET=utf8  ;
+
+ CREATE TABLE IF NOT EXISTS `gwsub_sb04_check_stafflists` (
+   `id` int(11) NOT NULL AUTO_INCREMENT,
+   `fyear_id` int(11) DEFAULT NULL,
+   `fyear_markjp` text,
+   `staff_no` text,
+   `multi_section_flg` text,
+   `name` text,
+   `name_print` text,
+   `kana` text,
+   `section_id` int(11) DEFAULT NULL,
+   `section_code` text,
+   `section_name` text,
+   `assignedjobs_id` int(11) DEFAULT NULL,
+   `assignedjobs_code_int` int(11) DEFAULT NULL,
+   `assignedjobs_code` text,
+   `assignedjobs_name` text,
+   `assignedjobs_tel` text,
+   `assignedjobs_address` text,
+   `official_title_id` int(11) DEFAULT NULL,
+   `official_title_code` text,
+   `official_title_code_int` int(11) DEFAULT NULL,
+   `official_title_name` text,
+   `categories_id` int(11) DEFAULT NULL,
+   `categories_code` text,
+   `categories_name` text,
+   `extension` text,
+   `divide_duties` text,
+   `divide_duties_order` text,
+   `divide_duties_order_int` int(11) DEFAULT NULL,
+   `remarks` text,
+   `personal_state` text,
+   `display_state` text,
+   `updated_at` datetime DEFAULT NULL,
+   `updated_user` text,
+   `updated_group` text,
+   `created_at` datetime DEFAULT NULL,
+   `created_user` text,
+   `created_group` text,
+   PRIMARY KEY (`id`)
+ ) ENGINE=MyISAM DEFAULT CHARSET=utf8  ;
+
+ CREATE TABLE IF NOT EXISTS `gwsub_sb04_editable_dates` (
+   `id` int(11) NOT NULL AUTO_INCREMENT,
+   `fyear_id` int(11) DEFAULT NULL,
+   `fyear_markjp` text,
+   `published_at` datetime DEFAULT NULL,
+   `start_at` datetime DEFAULT NULL,
+   `end_at` datetime DEFAULT NULL,
+   `headline_at` datetime DEFAULT NULL,
+   `created_at` datetime DEFAULT NULL,
+   `created_user` text,
+   `created_group` text,
+   `updated_at` datetime DEFAULT NULL,
+   `updated_user` text,
+   `updated_group` text,
+   PRIMARY KEY (`id`)
+ ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC AUTO_INCREMENT=9 ;
+
+ INSERT INTO `gwsub_sb04_editable_dates` (`id`, `fyear_id`, `fyear_markjp`, `published_at`, `start_at`, `end_at`, `headline_at`, `created_at`, `created_user`, `created_group`, `updated_at`, `updated_user`, `updated_group`) VALUES
+ (1, 141, 'H21', '2009-04-01 00:00:00', '2009-04-02 00:00:00', '2009-04-25 23:59:59', '2009-04-01 00:00:00', '2009-12-09 12:57:56', NULL, NULL, '2010-03-09 18:30:17', NULL, NULL),
+ (2, 140, 'H20', '2008-04-01 00:00:00', '2008-04-02 00:00:00', '2008-04-30 23:59:59', '2008-04-01 00:00:00', '2009-12-09 12:58:26', NULL, NULL, '2009-12-09 12:58:26', NULL, NULL),
+ (3, 139, 'H19', '2007-04-01 00:00:00', '2007-04-02 00:00:00', '2007-04-30 23:59:59', '2007-04-01 00:00:00', '2009-12-09 12:58:46', NULL, NULL, '2009-12-09 12:58:46', NULL, NULL),
+ (4, 142, 'H22', '2010-04-05 00:00:00', '2010-04-06 00:00:00', '2010-04-12 23:59:59', '2010-04-01 00:00:00', '2010-03-11 13:22:51', NULL, NULL, '2010-04-12 11:36:01', NULL, NULL),
+ (5, 143, 'H23', '2011-05-01 00:00:00', '2011-05-02 00:00:00', '2011-05-08 23:59:59', '2011-05-01 00:00:00', '2011-03-29 19:59:49', NULL, NULL, '2011-05-09 17:09:28', NULL, NULL);
+
+ CREATE TABLE IF NOT EXISTS `gwsub_sb04_limit_settings` (
+   `id` int(11) NOT NULL AUTO_INCREMENT,
+   `type_name` varchar(255) DEFAULT NULL,
+   `limit` int(11) DEFAULT NULL,
+   `created_at` datetime DEFAULT NULL,
+   `updated_at` datetime DEFAULT NULL,
+   `updated_user` text,
+   `updated_group` text,
+   PRIMARY KEY (`id`)
+ ) ENGINE=MyISAM DEFAULT CHARSET=utf8  ;
+
+ CREATE TABLE IF NOT EXISTS `gwsub_sb04_seating_lists` (
+   `id` int(11) NOT NULL AUTO_INCREMENT,
+   `fyear_id` int(11) DEFAULT NULL,
+   `fyear_markjp` text,
+   `title` text,
+   `bbs_url` text,
+   `remarks` text,
+   `created_at` datetime DEFAULT NULL,
+   `created_user` text,
+   `created_group` text,
+   `updated_at` datetime DEFAULT NULL,
+   `updated_user` text,
+   `updated_group` text,
+   PRIMARY KEY (`id`)
+ ) ENGINE=MyISAM DEFAULT CHARSET=utf8  ;
+
+ INSERT INTO `gwsub_sb04_limit_settings` (`id`, `type_name`, `limit`, `created_at`, `updated_at`, `updated_user`, `updated_group`) VALUES
+ (1, 'stafflistview_limit', 100, '2011-07-07 14:36:44', '2012-05-15 16:02:12', 'システム管理者', '秘書広報課'),
+ (2, 'divideduties_limit', 50, '2011-07-07 14:36:44', '2011-07-12 18:25:15', 'システム管理者', '秘書広報課');
+
+ CREATE TABLE IF NOT EXISTS `gwsub_sb04_year_copy_logs` (
+   `id` int(11) NOT NULL AUTO_INCREMENT,
+   `type` varchar(255) DEFAULT NULL,
+   `origin_fyear_id` int(11) DEFAULT NULL,
+   `origin_section_id` int(11) DEFAULT NULL,
+   `origin_section_code` varchar(255) DEFAULT NULL,
+   `origin_section_name` text,
+   `destination_fyear_id` int(11) DEFAULT NULL,
+   `destination_section_id` int(11) DEFAULT NULL,
+   `destination_section_code` varchar(255) DEFAULT NULL,
+   `destination_section_name` text,
+   `created_at` datetime DEFAULT NULL,
+   `created_user` text,
+   `created_group` text,
+   PRIMARY KEY (`id`)
+ ) ENGINE=MyISAM DEFAULT CHARSET=utf8  ;
+
+
+ use xxxxxxx_jgw_core;
+
+ ALTER TABLE system_custom_group_roles ADD INDEX group_id(group_id);
+
+ ALTER TABLE system_custom_group_roles ADD INDEX user_id(user_id);
+
+ use xxxxxxx_jgw_gw;
+
+ ALTER TABLE gw_schedule_users ADD INDEX uid(uid);
+
+ ALTER TABLE gw_schedules ADD INDEX schedule_repeat_id(schedule_repeat_id);
+
+ ALTER TABLE gw_prop_other_roles ADD INDEX prop_id(prop_id);
+
+ ALTER TABLE gw_schedule_props ADD INDEX prop_id(prop_id);
+
+ use xxxxxxx_jgw_gw_pref;
+
+ ALTER TABLE gwsub_sb04sections ADD INDEX fyear_id(fyear_id);
+
+ ALTER TABLE gwsub_sb04sections ADD INDEX code(code(10));
+
+ use xxxxxxx_jgw_gw;
+
+ DROP TABLE `gw_schedule_user_move_logs`;
 

@@ -1,0 +1,22 @@
+<%#*<p>Find me in app/views/gwsub/public/sb04/sb04_seating_lists/show.html.erb</p>%>
+
+<div class="gwsub sb04">
+<%= render :partial => 'gwsub/public/sb04/sb04_piece_header' %>
+<div class="pieceBanner">
+<%# コード管理メニュー %>
+<%= render :partial => 'gwsub/public/sb04/sb04_subfunction_select_menu' %>
+<%= render :partial => 'gwsub/public/sb04/sb04_level3menu_header' %>
+</div>
+<div class="pieceBody">
+<%= render :partial => 'gwsub/public/sb04/sb04_seating_lists/display_name' -%>
+<%= div_notice %>
+<div class="showMenu">
+<%= link_to_show @item.id %>
+</div>
+<% @edit_path = "#{Site.current_node.public_uri}#{@item.id}" %>
+<% @action = "edit" %>
+<% form_for :item, :url => @edit_path ,:action=>:update, :html => {:method => :put, :multipart => true} do |f| %>
+  <%= render :partial => 'form', :locals => {:f => f} %>
+<% end %>
+</div>
+</div>

@@ -3,10 +3,7 @@
 <%
   # 議員控え室専用は、on/off 抑止
 
-  title_str = "ジョールリ市議会議員在庁表示"
-  fyear = Gw::YearFiscalJp.get_record(Time.now)
-#  display_time  = '(' + fyear.namejp.to_s + '年' + Time.now.strftime('%m月%d日 %H:%M 現在') + ')'
-  display_time  = '(' + fyear.namejp.to_s + '年' + Date.today.month.to_s + '月' + Date.today.day.to_s + '日' + Time.now.strftime(' %H:%M 現在') + ')'
+  title_str = "#{Site.title}議会議員在庁表示"
   # スケジュラーメニューのパラメーター
   d=Time.now
   @st_date=Time.now.strftime('%Y%m%%d')
@@ -25,7 +22,7 @@
 
 <div class="pieceBodyHeader">
 <%= render :partial => "gw/public/schedules/schedule_bt_box"  ,:locals=>{:d=>d , :mode=>mode} %>
-<span class="presentTime assembly"><%= display_time %></span>
+<span class="presentTime assembly"><%= render :partial => "gw/public/pref_directors/display_time"   %></span>
 </div><!--pieceBodyHeader-->
 
 <div class="pieceBodyBody assembly">

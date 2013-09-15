@@ -299,7 +299,7 @@ class Gwqa::Doc < Gwboard::CommonDb
     if self.state=='public'
       item = Gwqa::Control.find(self.title_id)
       item.docslast_updated_at = Time.now
-      item.save
+      item.save(false)
     end
   end
 

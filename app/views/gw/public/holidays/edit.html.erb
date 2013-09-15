@@ -1,25 +1,21 @@
 <% # app/views/gw/public/holidays/edit.html.erb
-#concat render(:partial => '/gw/public/holidays/header_common_local')
-header = <<-EOL
-#{render :partial => '/gw/public/schedules/piece_header'}
-EOL
-@content_for_form = ''
-content_for :form do
-  form_for :item, :url => "/gw/holidays/#{@item.id}", :html => {:method => :put, :multipart => true, :id => 'itemForm'} do |f|
-    concat <<-EOL
-#{f.error_messages}
-#{render(:partial => 'form', :locals => {:f => f})}
-#{submit_for(f, {:caption => '保存'})}
-EOL
-  end
-end
-body = { :body => <<-EOL
-<div class="titleLine">
-<span class="title">休日管理</span>
-</div>
-#{show_notice}
-#{@content_for_form}
-EOL
-  }
-concat hhbff_struct(:schedulePiece, :form, :header=>header, :body=>body)
 %>
+
+<div class="piece schedulePiece form">
+  <div class="pieceHeader">
+    <%= render :partial => '/gw/public/schedules/piece_header' %>
+  </div>
+  <div class="pieceBody">
+    <div class="pieceBodyBody">
+      <div class="titleLine">
+        <span class="title">休日管理</span>
+      </div>
+      <%= show_notice %>
+      <% form_for :item, :url => "/gw/holidays/#{@item.id}", :html => {:method => :put, :multipart => true, :id => 'itemForm'} do |f| %>
+      <%= f.error_messages %>
+      <%= render(:partial => 'form', :locals => {:f => f}) %>
+      <%= submit_for(f, {:caption => '保存'}) %>
+      <% end %>
+    </div>
+  </div>
+</div>

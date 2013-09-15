@@ -86,7 +86,7 @@ module Gw::Controller::Mobile
     return true if uri =~ /download_object/i
     if uri =~ /^\/$|gw\/memos|\/schedules|gw\/schedule_todos|gwbbs\/docs/
       return false if uri =~ /month|new|edit/
-      return false unless uri =~ /title_id=1|title_id=36|title_id=48/ if uri =~ /^gwbbs\/docs/
+      return false unless uri =~ /title_id=1/ if uri =~ /^gwbbs\/docs/
       return true
     else
       return false

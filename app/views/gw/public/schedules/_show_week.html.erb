@@ -13,15 +13,14 @@ table_summary = '<table summary="スケジュール詳細" class="scheduleTable'
 table_summary+= ' '+ @custom_group.name_en.gsub(" ", "_").camelize(:lower) if @custom_group && !@custom_group.name_en.blank?
 table_summary+= '">'
 
-header_str = ""
 show_flg = true
 case @sp_mode
 when :schedule
-
+  show_flg = false if @users.length == 0
 when :prop
   props = Gw::Model::Schedule.get_props(params, @is_gw_admin, {:s_other_admin_gid=>@s_other_admin_gid})
   show_flg = false if props.length == 0
-  if !params[:prop_id].blank?
+  if params[:prop_id].present?
     _mdl = Gw::Model::Schedule.get_prop_model(params)
     prop = _mdl.find_by_id(params[:prop_id])
     show_flg = prop.delete_state == 0 ? true : false
@@ -32,36 +31,38 @@ when :prop
     end
   end
 end
-header_str = header_str.gsub(/\r\n|\r|\n/, "")
 
-body_str = if show_flg
-  render :partial => '/gw/public/schedules/show_week_part', :locals=>{:d=>d, :mode=>'week'}
-else
-   Gw.div_notice('表示する項目はありません。')
-end
+%>
+<div class="piece schedulePiece weekview">
+  <div class="pieceHeader">
+    <%= render(:partial => '/gw/public/schedules/piece_header', :locals=>{:piece_head_title => @piece_head_title}) -%>
+  </div>
+  <div class="pieceBody">
+    <div class="pieceBodyHeader">
+      <%= render(:partial => '/gw/public/schedules/schedule_header', :locals=>{:d=>d, :mode=>'week', :show_flg => show_flg}) -%>
+      <%= show_notice -%>
+    </div>
+    <div class="pieceBodyBody">
+      <table class="scheduleTable <%= @custom_group.name_en.gsub(" ", "_").camelize(:lower) if @custom_group && !@custom_group.name_en.blank? -%>"
+             summary="スケジュール詳細">
+        
+        <tbody>
+          <% if show_flg %>
+          <%= render :partial => '/gw/public/schedules/show_week_part', :locals=>{:d=>d, :mode=>'week'} -%>
+          <% else -%>
+          <%= Gw.div_notice('表示する項目はありません。') -%>
+          <% end %>
+          
+        </tbody>
+      </table>
+    </div>
+    <div class="pieceBodyFooter">
+      <%= render(:partial => '/gw/public/schedules/schedule_footer', :locals=>{:d=>d, :mode=>'week', :show_flg => show_flg}) -%>
+    </div>
+  </div>
+</div>
 
-header = <<-EOL
-#{render :partial => '/gw/public/schedules/piece_header', :locals=>{:piece_head_title => @piece_head_title}}
-EOL
-body = {
-  :header =>  <<-EOL,
-#{header_str}
-#{render(:partial => '/gw/public/schedules/schedule_header', :locals=>{:d=>d, :mode=>'week', :show_flg => show_flg})}
-#{show_notice}
-EOL
-  :body => <<-EOL,
-#{table_summary}
-#{body_str}
-</table>
-EOL
-  :footer => render(:partial => '/gw/public/schedules/schedule_footer', :locals=>{:d=>d, :mode=>'week', :show_flg => show_flg})
-}
-
-
-concat <<-EOL
-
-#{hhbff_struct(:schedulePiece, :weekview, :header=>header, :body=>body)}
-#{gw_js_ind_popup}
+<%= gw_js_ind_popup -%>
 <script type="text/javascript">
 //<![CDATA[
   var my_load = function() {
@@ -70,5 +71,3 @@ concat <<-EOL
   window.onload = my_load;
 //]]>
 </script>
-EOL
-%>

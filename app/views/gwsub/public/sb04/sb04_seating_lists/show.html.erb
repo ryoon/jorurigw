@@ -1,0 +1,24 @@
+<%#*<p>Find me in app/views/gwsub/public/sb04/sb04_seating_lists/show.html.erb</p>%>
+
+<div class="gwsub sb04">
+<%= render :partial => 'gwsub/public/sb04/sb04_piece_header' %>
+<div class="pieceBanner">
+<%# コード管理メニュー %>
+<%= render :partial => 'gwsub/public/sb04/sb04_subfunction_select_menu' %>
+<%= render :partial => 'gwsub/public/sb04/sb04_level3menu_header' %>
+</div>
+<div class="pieceBody">
+<%= render :partial => 'gwsub/public/sb04/sb04_seating_lists/display_name' -%>
+<%= div_notice %>
+<div class="showMenu">
+<%= link_to_edit(@item.id) %>
+<%= link_to_destroy(@item.id) if @u_role==true %>
+<%= link_to '記事一括登録',url_for("#{Site.current_node.public_uri}#{@item.id}?docs=create"),:confirm=>'座席表掲示板を初期化します。よろしいですか？'  if @u_role==true %>
+<%= link_to '記事一括取得',url_for("#{Site.current_node.public_uri}#{@item.id}?docs=geturl"),:confirm=>'座席表記事の所属別urlを再取得します。よろしいですか？'  if @u_role==true %>
+</div>
+<%= table_to_show2 @item, { 'table_name' => 'gwsub_sb04_seating_lists' } %>
+  <div class="btReturn">
+  <%= link_to '一覧に戻る',"#{Gw.chop_with(Site.current_node.public_uri,'/')}" %>
+  </div>
+</div>
+</div>

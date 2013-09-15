@@ -1,126 +1,44 @@
-<%#*<h1>Gw::Public::PrefOnlyExecutives#index</h1>%>
-<%#*<p>Find me in app/views/gw/public/pref_only_executives/index.html.erb</p>%>
 <%
-  # 議員控え室専用は、on/off 抑止
 
-  title_str = "Joruri市幹部在庁表示"
-  fyear = Gw::YearFiscalJp.get_record(Time.now)
-#  display_time  = '(' + fyear.namejp.to_s + '年' + Time.now.strftime('%m月%d日 %H:%M 現在') + ')'
-  display_time  = '(' + fyear.namejp.to_s + '年' + Date.today.month.to_s + '月' + Date.today.day.to_s + '日' + Time.now.strftime(' %H:%M 現在') + ')'
+  title_str = "#{Site.title}幹部在庁表示"
   # スケジュラーメニューのパラメーター
   d=Time.now
   @st_date=Time.now.strftime('%Y%m%%d')
   mode='only_executives'
+  view_mode="normal"
+  view_state = Gw::UserProperty.find(:first,
+  :conditions=>["name = ? and type_name = ?","pref_executives","admin"])
+  if view_state.blank?
+    view_mode="normal"
+    view_str = ""
+  else
+    view_mode="admin"
+    view_str = view_state.options
+  end
+
 %>
 <div id="contentBody">
 <div class="piece schedulePiece assembly">
 <div class="pieceHeader"><h2 class="pieceTitle">在庁表示</h2>
-<!--
-<div class="btsHeaderLeft">
-<span class="btNew"><a href="/gw/schedules/new">新規作成</a></span>
-</div>
--->
 </div>
 <div class="pieceBody">
 
 <div class="pieceBodyHeader">
 <%= render :partial => "gw/public/schedules/schedule_bt_box"  ,:locals=>{:d=>d , :mode=>mode} %>
-<span class="presentTime assembly"><%= display_time %></span>
+<span class="presentTime assembly"><%= render :partial => "gw/public/pref_directors/display_time"   %></span>
 </div><!--pieceBodyHeader-->
 
 <div class="pieceBodyBody">
-
-<% if @items1.size > 0 %>
-<%# 知事・副知事・政策監・政策監補　の４名分までの予定 %>
-<div class="unit">
-<% @items1.each do |item| %>
-<div class="scheduleUser <%= item.state if item.state=='off'%> ">
-<div class="leftHeader userIcon1  ">
-<%
-swith_enable = false
-#swith_enable = true if @u_role == true
-#swith_enable = true if Site.user_group.id == item.gid
-%>
-<%if swith_enable == true%>
-  <%#*<a class="userIcon" href="<%= %Q(/gw/pref_executives/#{item.uid}/state_change?p_state=#{item.state}) %>">%>
-  <%#=Gw::PrefExecutive.state_show(item.state)%>
-  <%#*</a>%>
-<span class="userIcon"><%=Gw::PrefExecutive.state_show(item.state)%></span>
+<%if view_mode == "normal"%>
+<%=render(:partial => 'index' ,:locals=>{:d=>d , :mode=>mode} )%>
 <%else%>
-<span class="userIcon"><%=Gw::PrefExecutive.state_show(item.state)%></span>
-<%end%>
-<div class="title"><%= item.title %></div>
-<div class="username">
-<span><%= item.u_name %></span>
-<%
-  td_s = d.strftime("%Y%m%d")
-  td_s = params[:s_date] if !params[:s_date].blank?
-  td1 = Date.new(d.year, d.month, 1)
-  td1_s = td1.strftime("%Y%m%d")
-  link_uid = item.uid
-  day   = "/gw/schedules/#{td_s}?uid=#{link_uid}"
-  week  = "/gw/schedules/?s_date=#{td_s}&amp;uid=#{link_uid}"
-  month = "/gw/schedules/show_month?s_date=#{td1_s}&amp;uid=#{link_uid}"
-%>
-<!--
-<span class="linkBox">
-<%#*<a href="<%= day %>" class="dayLink">日表示</a>%>
-<%#*<a href="<%= week %>" class="weekLink">週表示</a>%>
-<%#*<a href="<%= month %>" class="monthLink">月表示</a>%>
-</span>
--->
-</div><!--username-->
-</div><!--leftHeader-->
-</div><!--scheduleUser-->
-<% end %>
-</div><!--unit-->
-<% end %>
-
-<% if @items2.size > 0 %>
-<div class="unit">
-<% @items2.each do |item| %>
-<div class="scheduleUser <%= item.state if item.state=='off'%>">
-<div class="leftHeader userIcon2  ">
-<%
-swith_enable = false
-#swith_enable = true if @u_role == true
-#swith_enable = true if Site.user_group.id == item.gid
-%>
-<%if swith_enable == true %>
-  <%#*<a class="userIcon" href="<%= %Q(/gw/pref_executives/#{item.uid}/state_change?p_state=#{item.state}) %>">%>
-  <%#=Gw::PrefExecutive.state_show(item.state)%>
-  <%#*</a>%>
-<span class="userIcon"><%=Gw::PrefExecutive.state_show(item.state)%></span>
+<%if @u_role==true%>
+<%=render(:partial => 'index_prepare' ,:locals=>{:d=>d , :mode=>mode, :view_str => "現在工事中表示になっています。"} )%>
+<%=render(:partial => 'index' ,:locals=>{:d=>d , :mode=>mode} )%>
 <%else%>
-<span class="userIcon"><%=Gw::PrefExecutive.state_show(item.state)%></span>
+<%=render(:partial => 'index_prepare' ,:locals=>{:d=>d , :mode=>mode, :view_str => view_str} )%>
 <%end%>
-<div class="title"><%= item.title %></div>
-<div class="username">
-<span><%= item.u_name %></span>
-<%
-  td_s = d.strftime("%Y%m%d")
-  td_s = params[:s_date] if !params[:s_date].blank?
-  td1 = Date.new(d.year, d.month, 1)
-  td1_s = td1.strftime("%Y%m%d")
-  link_uid = item.uid
-  day   = "/gw/schedules/#{td_s}?uid=#{link_uid}"
-  week  = "/gw/schedules/?s_date=#{td_s}&amp;uid=#{link_uid}"
-  month = "/gw/schedules/show_month?s_date=#{td1_s}&amp;uid=#{link_uid}"
-%>
-<!--
-<span class="linkBox">
-<a href="<%#= day %>" class="dayLink">日表示</a>
-<a href="<%#= week %>" class="weekLink">週表示</a>
-<a href="<%#= month %>" class="monthLink">月表示</a>
-</span>
--->
-</div><!--username-->
-</div><!--leftHeader-->
-</div><!--scheduleUser-->
-<% end %>
-</div><!--unit-->
-<% end %>
-
+<%end%>
 </div><!--pieceBodyBody-->
 </div><!--pieceBody-->
 </div><!--schedulePiece-->

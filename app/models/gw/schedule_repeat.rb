@@ -221,8 +221,7 @@ class Gw::ScheduleRepeat < Gw::Database
 
           competition_str = "終了日は他の予定と競合しています。また、繰り返し編集の場合、同じ予定でもすでに貸出・返却されている日時を入力することはできません。別の予定時間を入力してください。"
           item.errors.add :repeat_st_date_at, "、#{competition_str}（一般施設）" unless other_item_flg
-
-          item.errors.add :repeat_st_time_at, ': 繰り返し回数は2～55回のみ許されます。' if dates.length < 2 || 55 < dates.length
+          item.errors.add :repeat_st_date_at, "、終了日の間の期間、条件に当てはまる日は#{dates.length}日となります。繰り返し回数は2～55回のみ許されます。開始日、終了日、規則などを見直し、再度登録してください。" if dates.length < 2 || 55 < dates.length
 
         end
       end

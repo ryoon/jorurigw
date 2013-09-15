@@ -38,6 +38,23 @@ module Gwbbs::Public::IndicesHelper
     return ret
   end
 
+  def gwbbs_smartphone_form_indices
+    ret = ""
+    case params[:state]
+    when "TODAY"
+      ret = gwbbs_form_indices_date_smartphone
+    when "DATE"
+      ret = gwbbs_form_indices_date_smartphone
+    when "GROUP"
+      ret = gwbbs_form_indices_group_smartphone
+    when "CATEGORY"
+      ret = gwbbs_form_indices_category_smartphone
+    else
+      ret = gwbbs_form_indices_date_smartphone
+    end
+    return ret
+  end
+
   def gwbbs_start_line
     l_limit = is_integer(params[:limit])
     l_limit = 30 unless l_limit
@@ -308,4 +325,177 @@ module Gwbbs::Public::IndicesHelper
     ret = Gw::Controller::Mobile.convert_for_mobile_body(body, sid)
     return ret
   end
+
+
+  def gwbbs_form_indices_date_smartphone
+    i = 0
+    brk_key = nil
+    ret = ""
+    ret += '<table class="index">'
+    for item in @items
+      unless brk_key == item.latest_updated_at.strftime('%Y-%m-%d').to_s
+        i = 0
+        ret += '<tr class="subIndex">'
+        ret += '<th colspan="2" class="docTitle">' + item.latest_updated_at.strftime('%Y-%m-%d').to_s  + "</th>" if @title.importance.to_s == '1'
+        ret += '<th colspan="1" class="docTitle">' + item.latest_updated_at.strftime('%Y-%m-%d').to_s  + "</th>" unless @title.importance.to_s == '1'
+        ret += "</tr>"
+      end
+
+      new_mark_str = ''
+      if @title.id == 1
+        if item.new_mark_flg
+          new_mark_str  = %Q(<span class="new">new</span>)
+        else
+          #
+        end
+      else
+      end
+
+      i += 1
+      tr = (i%2 != 0) ? '<tr class="article">' : '<tr class="article cycle">'
+      ret += tr.to_s
+      title_class=""
+      if @title.importance.to_s == '1'
+        ret += '<td class="bbsImportant leftLine" style="text-align: center;" rowspan="2">' + retstr_important_span(item.importance) + "</td>"
+      else
+        title_class = " leftLine"
+      end
+      doc_title_line = %Q(#{hbr(item.title)}#{new_mark_str})
+      ret += %Q(<td class="docTitle#{title_class}">) + link_to(doc_title_line, item.show_path  + gwbbs_params_set) + "</td>"
+      ret += "</tr><tr>"
+      disp_section_name = item.section_name.to_s.sub(/([0-9]*)(.*)/i, '\2')
+      grp_docs_lnk = "#{@title.docs_path}&state=GROUP&grp=#{item.section_code}" + gwbbs_params_set
+      ret += %Q(<td class="group#{title_class}"><span>) + link_to(disp_section_name, grp_docs_lnk) + "</span></td>"
+      ret += "</tr>"
+      brk_key = item.latest_updated_at.strftime('%Y-%m-%d').to_s
+    end
+    ret += "</table>"
+    return ret
+  end
+
+  def gwbbs_form_indices_group_smartphone
+    mode = ''
+    mode = 'date' unless @title.categoey_view
+    mode = 'date' if @title.category == 0
+    i = 0
+    brk_key = nil
+    ret = ""
+    ret += '<table class="index">'
+    for item in @items
+      unless brk_key == item.section_code.to_s
+        i = 0
+        ret += '<tr class="subIndex">'
+        ret += '<th colspan="2" class="docTitle">' + item.section_name.to_s + "</th>" if @title.importance.to_s == '1'
+        ret += '<th colspan="1" class="docTitle">' + item.section_name.to_s + "</th>" unless @title.importance.to_s == '1'
+        ret += "</tr>"
+      end
+
+      new_mark_str = ''
+      if @title.id == 1
+        if item.new_mark_flg
+          new_mark_str  = %Q(<span class="new">new</span>)
+        else
+          #
+        end
+      else
+      end
+
+      i += 1
+      tr = (i%2 != 0) ? '<tr class="article">' : '<tr class="article cycle">'
+      ret += tr.to_s
+      title_class=""
+      if @title.importance.to_s == '1'
+        ret += '<td class="bbsImportant leftLine" style="text-align: center;" rowspan="2">' + retstr_important_span(item.importance) + "</td>"
+      else
+        title_class = " leftLine"
+      end
+      doc_title_line = %Q(#{hbr(item.title)}#{new_mark_str})
+      ret += %Q(<td class="docTitle#{title_class}">) + link_to(doc_title_line, item.show_path  + gwbbs_params_set)+ "</td>"
+      ret += "</tr><tr>"
+      if mode.blank?
+        ret += %Q(<td class="category group#{title_class}"><span>) + gwbd_category_name(@d_categories,item.category1_id) + "</span></td>"
+      else
+        ret += %Q(<td class="update group#{title_class}"><span>) + item.created_at.strftime('%Y-%m-%d %H:%M').to_s + "</span></td>"
+      end
+      ret += "</tr>"
+      brk_key = item.section_code.to_s
+    end
+    ret += "</table>"
+    return ret
+  end
+
+
+  def gwbbs_form_indices_category_smartphone
+    i = 0
+    brk_key = nil
+    ret = ""
+    ret += '<table class="index">' + ""
+    ret += "</tr>"
+    for item in @items
+      category_name = gwbd_category_name(@d_categories,item.category1_id)
+      unless brk_key == item.category1_id.to_s
+        i = 0
+        ret += '<tr class="subIndex">'
+        ret += '<th colspan="2" class="docTitle">' + category_name + "</th>" if @title.importance.to_s == '1'
+        ret += '<th colspan="1" class="docTitle">' + category_name + "</th>" unless @title.importance.to_s == '1'
+        ret += "</tr>"
+      end
+
+      new_mark_str = ''
+      if @title.id == 1
+        if item.new_mark_flg
+          new_mark_str  = %Q(<span class="new">new</span>)
+        else
+          #
+        end
+      else
+      end
+
+      i += 1
+      tr = (i%2 != 0) ? '<tr class="article">' : '<tr class="article cycle">'
+      ret += tr.to_s
+      title_class=""
+      if @title.importance.to_s == '1'
+        ret += '<td class="bbsImportant leftLine" style="text-align: center;" rowspan="2">' + retstr_important_span(item.importance) + "</td>"
+      else
+        title_class = " leftLine"
+      end
+      doc_title_line = %Q(#{hbr(item.title)}#{new_mark_str})
+      ret += %Q(<td class="docTitle#{title_class}">) + link_to(doc_title_line, item.show_path  + gwbbs_params_set) + "</td>"
+      ret += "</tr><tr>"
+      ret += %Q(<td class="group#{title_class}"><span>) + item.section_name.to_s + "</span></td>"
+      ret += "</tr>"
+      brk_key = item.category1_id.to_s
+    end
+    ret += "</table>"
+    return ret
+  end
+
+  def gwbbs_admin_form_indices_date_smartphone
+    i = 0
+    ret = ""
+    ret += '<table class="index">' + ""
+    ret += "<tr>"
+    ret += '<th class="state">状態' + "</th>"
+    ret += '<th class="doctitle">件名</th>'
+    ret += '<th class="group">所属' + "</th>"
+    ret += "</tr>"
+    for item in @items
+      i += 1
+      tr = (i%2 != 0) ? '<tr class="article">' : '<tr class="article cycle">'
+      ret += tr.to_s
+      ret += '<td class="state leftLine">' + link_to(item.ststus_name, item.show_path  + gwbbs_params_set) + "</td>"
+      ret += '<td class="update">' + item.latest_updated_at.strftime('%Y-%m-%d %H:%M').to_s + "</td>"
+      if item.title.blank?
+        ret += '<td class="docTitle ">' + link_to('タイトルが登録されていません', item.show_path  + gwbbs_params_set) + "</td>"
+      else
+        ret += '<td class="docTitle ">' + link_to(hbr(item.title), item.show_path  + gwbbs_params_set) + "</td>"
+      end
+      ret += '<td class="group">' + item.section_name.to_s + "</td>"
+      ret += "</tr>"
+    end
+    ret += "</table>"
+    return ret
+  end
+
 end

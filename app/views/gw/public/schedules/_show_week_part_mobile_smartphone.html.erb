@@ -1,0 +1,189 @@
+<% # app/views/gw/public/schedules/_show_week_part_mobile.html.erb
+
+@total_out_count = nz(@total_out_count,0)
+
+dv = nz(dv, d)
+
+# tr_header: 見出し行、week と month で見た目上出している部分が大きく異なることに注意すること
+
+@format ||= schedule_settings["#{mode}_view_dayhead_format"]
+
+d1 = d
+d2 = d+6
+#cond_date = "!('#{d1.strftime('%Y-%m-%d 0:0:0')}' > ed_at" +
+#     " or '#{d2.strftime('%Y-%m-%d 23:59:59')}' < st_at)"
+#@holidays = Gw::Holiday.find(:all, :order => 'st_at', :conditions => cond_date)
+@holidays = Gw::Holiday.find_by_range_cache(d1,d2)
+
+uid = nz(params[:uid], Site.user.id)
+link_params = "&gid=#{params[:gid]}&uid=#{uid}&cgid=#{params[:cgid]}&dis=#{@dis}"
+# note/100223/nkoshiba: 0 の場合 => 一番上だけ出す。1以上の場合 => 指定行おきに出す他一番下にも出す
+#@header_each ||= schedule_settings[:header_each] rescue 5
+schedules = []
+captions_hash = Gw::NameValue.get_cache('yaml', nil, 'gw_schedules_settings_system_default')
+if @sp_mode == :schedule
+
+        # Todoの表示設定
+  todo = false
+        todo = true if params[:gid].blank? && params[:cgid].blank?
+
+        todos_display = Gw::UserProperty.is_todos_display?
+
+  users = @users ? @users :  Gw::Model::Schedule.get_users(params)
+  lns = 0
+  users.each_with_index{|user, ln|
+
+          hash = { :dv => dv, :hide_user_col => @hide_user_col, :count => @total_out_count,
+      :request => request, :sp_mode => @sp_mode, :mode => mode, :user => user, :lns=>lns,
+            :holidays=>@holidays, :captions_hash => captions_hash, :schedule_settings => @schedule_settings,
+            :todo => todo, :todos_display => todos_display, :is_pm_admin => @is_pm_admin, :is_gw_admin => @is_gw_admin}
+
+          schedules[user.id] = Gw::Model::MobileSchedule.create_user_prop_view(d,d+6, user.id, params,hash)
+    #@total_out_count += count
+    lns += 1
+  }
+
+else
+  props  =  Gw::Model::Schedule.get_props(params, @is_pm_admin, @is_gw_admin, {:s_other_admin_gid=>@s_other_admin_gid})
+        lns = 0
+  props.each_with_index{|prop, ln|
+
+          is_prop_edit = Gw::ScheduleProp.is_prop_edit?(prop.id, @genre, {:prop => prop, :is_pm_admin => @is_pm_admin, :is_gw_admin => @is_gw_admin}) # 権限があるかどうか確認
+
+          hash = {:dv => dv, :hide_user_col => @hide_user_col, :count => @total_out_count,
+      :request => request, :sp_mode => @sp_mode, :mode => mode, :lns=>lns,
+            :holidays=>@holidays, :captions_hash => captions_hash, :schedule_settings => @schedule_settings,
+            :delete_state => prop.delete_state, :reserved_state => prop.reserved_state,
+            :type_id => prop.type_id, :prop => prop, :is_prop_edit => is_prop_edit,
+            :is_pm_admin => @is_pm_admin, :is_gw_admin => @is_gw_admin, :s_genre=>params[:s_genre], :s_other_admin_gid=>@s_other_admin_gid}
+
+          if params[:s_genre] == 'other'
+            schedules[prop.id] = Gw::Model::MobileSchedule.create_user_prop_view(d,d+6, prop.id, params, hash)
+          else
+            schedules[prop.id] = Gw::Model::MobileSchedule.create_user_prop_view_cache(d,d+6, prop.id, params, hash)
+          end
+
+    #@total_out_count += count
+    lns += 1
+  }
+end
+%>
+<%
+mode = 'week'
+uid = nz(params[:uid], Site.user.id)
+link_params = Gw.a_to_qs(["gid=#{params[:gid]}", "uid=#{uid}", "cgid=#{params[:cgid]}","dis=#{@dis}"])
+@format = "%Y年%m月%d日（%_wd）"
+
+@day_format= "%Y-%m-%d"
+@link_format = "%Y%m%d"
+%>
+<div class="pieceBodyBody"><table summary="スケジュール詳細" class="scheduleTable">
+<%7.times { |i|
+items = []
+td_date = d+i
+st_at_str = date_format(@day_format, td_date)
+#日付表示用のクラス
+# 祝日
+j = @holidays.select{|holiday| holiday.st_at.strftime('%Y-%m-%d') == st_at_str}
+if j.count > 0
+  holiday_class = "holiday"
+else
+  holiday_class = ""
+end
+if holiday_class.blank?
+if td_date.wday == 6
+  date_class = "saturday"
+elsif  td_date.wday == 0
+  date_class = "sunday"
+else
+  date_class = "weekday"
+end
+else
+if td_date.wday == 6
+  date_class = holiday_class
+elsif  td_date.wday == 0
+  date_class = holiday_class
+else
+  date_class = "weekday #{holiday_class}"
+end
+end
+if Time.now.strftime('%Y-%m-%d') == st_at_str
+  date_class = "today"
+end
+%>
+<tr>
+  <th class="date <%=date_class%>">
+<%=link_to(%Q(#{date_format(@format, d+i)}), %Q(/gw/schedules/#{(d+i).strftime('%Y%m%d')}#{link_params}&topdate=#{@topdate}))%>
+</th>
+<th class="new <%=date_class%>">
+<%=link_to(image_tag('/_common/themes/gw/files/smartphone/other/ic_add.gif', { :border => '0', :alt => '新規作成', :title => '新規作成', :class=>'menu_new'}),
+   %Q(/gw/schedules/new?s_date=#{(d+i).strftime('%Y%m%d')}#{link_params}&topdate=#{@topdate}))%>
+</th>
+</tr>
+<%for user in users%>
+  <%
+  next if schedules[user.id].blank?
+  for shcedule in schedules[user.id]
+    if shcedule[:date].to_s == %Q(#{date_format(@day_format, d+i)})
+    items << shcedule
+%>
+    <%end%><%#if shcedule[:date]%>
+  <%end%><%#for shcedule in schedules[user.id]%>
+  <%if items.blank?%>
+  <%else%>
+  <%= %Q(#{user.name}(#{user.code})<br />) if (!params[:gid].blank? && !items.blank?)%>
+    <% for item in items%>
+<%title_raw = "#{item[:title_raw]}"
+  time_str = "true"
+  todo_lim = ""
+%>
+<%  #TODO表示・非表示、タイトル整形
+    if item[:item].is_a?(Gw::Schedule) && nz(item[:item].todo , 0).to_i == 1 && !item[:item].schedule_todo.blank?  # 新Todo
+      if mode != 'day' && (!item[:date].blank? && item[:date].class.name == 'Date' &&
+            item[:item].ed_at.strftime("%Y-%m-%d") == item[:date].strftime("%Y-%m-%d"))
+        if nz(item[:item].schedule_todo.todo_ed_at_id, 0 ) == 0
+          time_str = "todo"
+          todo_lim = item[:item].ed_at.strftime("%H:%M")
+        elsif nz(item[:item].schedule_todo.todo_ed_at_id, 0 ) == 1
+          time_str = "false"
+        elsif nz(item[:item].schedule_todo.todo_ed_at_id, 0 ) == 2
+          #TODO表示なし
+          next
+        end
+      end
+    end%>
+    <tr>
+    <td class="<%=item[:class]%> <%=date_class%>" colspan="2">
+      <%if (item[:genre]==:holiday || item[:genre] == :todo)%>
+      <span class="<%= %Q(textRed)  if item[:genre]==:holiday %>"><%=item[:title_raw]%></span>
+      <%else%>
+<%if item[:allday].to_i==1
+  lnk_time_str = "時間未定"
+elsif item[:allday].to_i==2
+  lnk_time_str = "終日"
+else
+if time_str == "true"
+  lnk_time_str = item[:time_str]
+else
+  lnk_time_str = todo_lim
+end
+end%>
+        <%if item[:title_raw] == "[非公開予定]"%>
+        <font style="color: #999999;"><%= item[:title_raw] -%></font>
+        <%else%>
+        <%if time_str != "false"
+            title_raw = %Q(#{lnk_time_str}<br />#{title_raw})
+          end
+        %>
+        <%= link_to title_raw ,%Q(#{item[:title_link].to_s}#{link_params}&topdate=#{@topdate}) -%>
+        <%end%>
+      <%end%>
+      </td>
+      </tr>
+    <%end%>
+  <%end%>
+<%end%>
+
+<%}%>
+</table>
+</div>

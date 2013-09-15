@@ -28,8 +28,9 @@ CSVファイルのインポートでは、エラー結果をCSVで出力しま�
 <tr>
   <th>ファイル形式</th>
   <td>
-    <%= radio_button_tag('item[file_type]', 'csv',false   ) %><label for="item_file_type_csv" >CSV (MS Outlook)形式</label>
-    <%= radio_button_tag('item[file_type]', 'ical',true  ) %><label for="item_file_type_ical" >iCal形式</label>
+    <%= radio_button_tag('item[file_type]', 'csv',false   ) %><label for="item_file_type_csv" >CSV形式</label>
+    <%= radio_button_tag('item[file_type]', 'ical',true  ) %><label for="item_file_type_ical" >iCal形式</label><br />
+    <%= Gw.required("「CSV形式」は、スケジュール一覧画面の「CSV (MS Outlook)形式エクスポート」および、Yahoo!カレンダーのCSVエクスポートで取得したCSVにのみ対応しています。") -%>
   </td>
 </tr>
 </table>

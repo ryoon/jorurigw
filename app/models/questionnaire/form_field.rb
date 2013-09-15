@@ -343,12 +343,10 @@ class Questionnaire::FormField < Gw::Database
     end
   end
 
-  #
   def field_option_destroy
     Questionnaire::FieldOption.destroy_all("field_id=#{self.id}")
   end
 
-  #http://doruby.kbmj.com/honda_on_rails/20080131/1
   def cut_off(text, len)
     if text != nil
       if text.jlength < len

@@ -90,7 +90,7 @@ class Questionnaire::Public::Menus::FormFieldsController < ApplicationController
     @item = Questionnaire::FormField.find_by_id(params[:id])
     permit_selection(@item.sort_no)
   end
-  #
+
   def update
     return authentication_error(403) unless is_creator
 
@@ -113,7 +113,6 @@ class Questionnaire::Public::Menus::FormFieldsController < ApplicationController
     _update(@item, :success_redirect_uri=>location)
   end
 
-  #
   def destroy
     return authentication_error(403) unless is_creator
 
@@ -122,7 +121,6 @@ class Questionnaire::Public::Menus::FormFieldsController < ApplicationController
     _destroy(@item, :success_redirect_uri=>location)
   end
 
-  #
   def permit_selection(sort_no=nil)
     sql = Condition.new
     sql.or {|d|
@@ -150,7 +148,6 @@ class Questionnaire::Public::Menus::FormFieldsController < ApplicationController
     @permit_select = item.find(:all, :conditions=>sql.where, :order=>'sort_no, id').collect{ |i| [cut_off(i.title,40), i.id]}
   end
 
-  #http://doruby.kbmj.com/honda_on_rails/20080131/1
   def cut_off(text, len)
     if text != nil
       if text.jlength < len

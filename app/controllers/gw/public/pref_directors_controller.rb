@@ -15,7 +15,7 @@ class Gw::Public::PrefDirectorsController < ApplicationController
     item = Gw::PrefDirector.new #.readable
     dept    =  "parent_g_code"
     g_order = "parent_g_order"
-    @item_links  = item.find(:all ,:group=>dept , :order=>g_order)
+    @item_links  = item.find(:all ,:conditions=>"deleted_at IS NULL",:group=>dept , :order=>g_order)
   end
 
 

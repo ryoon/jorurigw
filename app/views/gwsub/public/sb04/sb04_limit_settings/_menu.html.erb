@@ -1,0 +1,15 @@
+<%
+link_str1 = %Q(<span>表示行数</span>)
+link_url1 = Gw.chop_with("#{Site.current_node.public_uri}","/")
+
+case @l2_current
+when '01'
+  link_str1 = %Q(<span class="gwsub_current_menu">表示行数</span>)
+end
+%>
+<%= render :partial => 'gwsub/public/sb04/sb04_subfunction_select_menu' %>
+<% unless link_str1.blank? %>
+<div class="menu">
+<%= link_to link_str1 , url_for(link_url1)  unless link_str1.blank? %>
+</div>
+<% end %>

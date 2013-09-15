@@ -1,36 +1,31 @@
 <% # app/views/gw/public/schedules/search.html.erb
-concat <<-EOL
-#{
-#render :partial => '/gw/public/schedules/header'
-}
-EOL
-header = <<-EOL
-#{show_notice}
-#{render :partial => '/gw/public/schedules/piece_header'}
-EOL
-
 d = @st_date # 初期化処理
 #concat show_all_groups_hidden_popups(d)
-a_g = grouplist4(nil, nil, true ,nil , nil, :return_pattern => 1)
 d8_s = Gw.date8_str(d)
-bodybody = <<-EOL
-<div><table class="index">
-#{ret=''; a_g.each {|g|
-  c_s_a = []
-  c_s_a.push cycle('', 'cycle')
-  c_s = Gw.join(c_s_a, ' ')
-  c_s = %Q( class="#{c_s}") if !c_s.blank?
-  ret += %Q(<tr#{c_s}><td>#{g[0]}</td><td>)
-#  ret += %Q(<a href="/gw/schedules/#{d8_s}?gid=#{g[2].id}">日表示</a>) if g[2].code != "300" && g[2].code != "165"
-  ret += %Q(<a href="/gw/schedules/#{d8_s}?gid=#{g[2].id}">日表示</a>) if g[2].level_no != 2
-  ret += %Q(</td><td>)
-#  ret += %Q(<a href="/gw/schedules/?s_date=#{d8_s}&amp;gid=#{g[2].id}">週表示</a>) if g[2].code != "300" && g[2].code != "165"
-  ret += %Q(<a href="/gw/schedules/?s_date=#{d8_s}&amp;gid=#{g[2].id}">週表示</a>) if g[2].level_no != 2
-  ret += %Q(</td></tr>)
-}; ret}
-</table></div>
-EOL
-body = {  :header => render(:partial => '/gw/public/schedules/schedule_bt_box', :locals=>{:d=>Date.today, :mode=>'form'}),
-  :body => bodybody }
-concat hhbff_struct(:schedulePiece, :setting, :header=>header, :body=>body)
 %>
+
+<div class="piece schedulePiece setting">
+  <div class="pieceHeader">
+    <%= show_notice -%>
+    <%= render(:partial => '/gw/public/schedules/piece_header') -%>
+  </div>
+  <div class="pieceBody">
+    <div class="pieceBodyHeader">
+      <%= render(:partial => '/gw/public/schedules/schedule_bt_box', :locals=>{:d=>Date.today, :mode=>'form'}) -%>
+    <div class="pieceBodyBody">
+      <div>
+        <table class="index">
+          <tbody>
+            <% @items.each do |item| %>
+            <tr <%= cycle '', 'class="cycle"' %> >
+              <td><%= item[0] %></td>
+              <td><%= %Q(<a href="/gw/schedules/#{d8_s}?gid=#{item[2].id}">日表示</a>) if item[2].level_no != 2 %></td>
+              <td><%= %Q(<a href="/gw/schedules/?s_date=#{d8_s}&amp;gid=#{item[2].id}">週表示</a>) if item[2].level_no != 2 %></td>
+            </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

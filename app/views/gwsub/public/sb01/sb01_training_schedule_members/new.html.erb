@@ -1,0 +1,32 @@
+<%#*<p>Find me in app/views/gwsub/public/sb01/sb01_training_schedule_members/new.html.erb</p>%>
+<%
+show_path1 = "/gwsub/sb01/sb01_training_entries/#{@item1.id}"
+show_path2 = "/gwsub/sb01/sb01_training_schedules/#{@p_id}?t_id=#{@item1.id}&t_menu=#{@top_menu}"
+@action = "create"
+@create_path = "#{Site.current_node.public_uri}"
+-%>
+<div class="gwsub sb01">
+<div class="pieceHeader">
+<h2>研修申込・受付</h2>
+</div>
+<div class="pieceBanner">
+<%= render :partial => 'gwsub/public/sb01/sb01_training_entries/menu' %>
+</div>
+<div class="pieceBody">
+<br/>
+<%#= table_to_show2 @item1,options1 %>
+<%= render :partial => 'training_show' %>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+<%= div_notice %>
+<% form_for :item, :url => @create_path ,:action=>:create ,:method=>:post , :html => {:multipart => true, :class => "leftSide"} do |f| %>
+  <%= render :partial => 'form', :locals => {:f => f} %>
+<% end  %>
+<div class="btReturn">
+  <%= link_to '開催日程一覧に戻る' ,url_for(show_path1)  -%> ｜<%= link_to '開催予定に戻る' ,url_for(show_path2)  -%>
+</div>
+</div>
+</div>

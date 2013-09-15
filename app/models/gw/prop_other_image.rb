@@ -22,4 +22,25 @@ class Gw::PropOtherImage < Gw::Database
     _connect.execute(_create_query)
     return
   end
+  
+  def _size
+    path = "public#{self.path}"
+    size = ''
+    if File.exists?(path) && File.stat(path).ftype == 'file'
+      s = File.stat path
+      siz = s.size.to_f
+      case
+      when siz > 1.kilobytes
+        size += "#{(siz / 1.kilobytes).round 1}KB"
+      when siz > 1.megabytes
+        size += "#{(siz / 1.megabytes).round 1}MB"
+      else
+        size += "#{siz}"
+      end
+      require 'RMagick'
+      img = Magick::ImageList.new(path) rescue nil
+      size += !img.nil? ? "(#{img.columns}x#{img.rows})" : ''
+    end
+    nz(size)
+  end
 end

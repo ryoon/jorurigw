@@ -1,0 +1,723 @@
+1.1.0
+
+－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－
+ * ピースの追加　管理者でログイン後/_admin/cms/piecesへアクセス）
+－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－
+
+■デザイン－ピース－新規登録
+状態：公開
+コンテンツ：
+コントローラ名：frees
+概略：smartphone_tab_up
+内部名称：smartphone_tab_up
+表示名称：smartphone_tab_up
+ヘッダー：
+本文：
+<div id="javascript_tab">
+<ul id="tab">
+<li class="selected"><a href="#portal_reminder_part">リマインダー</a></li>
+<li><a href="#portal_schedule_part">スケジュール</a></li>
+<li><a href="#portal_bbs_par">全庁掲示板</a></li>
+</ul>
+
+■デザイン－ピース－新規登録
+状態：公開
+コンテンツ：
+コントローラ名：frees
+概略：smartphone_tab
+内部名称：smartphone_tab
+表示名称：smartphone_tab
+本文：
+</div>
+<script type="text/javascript">
+//<![CDATA[
+/*--setup--*/
+window.onload=function() {
+tab.setup = {
+tabs: document.getElementById('tab').getElementsByTagName('li'),
+pages: [
+document.getElementById('portal_reminder_part'),
+document.getElementById('schedule_part'),
+document.getElementById('portal_bbs_part')
+]
+}
+tab.init();
+}
+/*--setup end--*/
+
+var tab = {
+init: function(){
+var tabs = this.setup.tabs;
+var pages = this.setup.pages;
+
+for(i=0; i<pages.length; i++) {
+if(i !== 0) pages[i].style.display = 'none';
+tabs[i].onclick = function(){ tab.showpage(this); return false; };
+}
+},
+
+showpage: function(obj){
+var tabs = this.setup.tabs;
+var pages = this.setup.pages;
+var num;
+
+for(num=0; num<tabs.length; num++) {
+if(tabs[num] === obj) break;
+}
+
+for(var i=0; i<pages.length; i++) {
+if(i == num) {
+pages[num].style.display = 'block';
+tabs[num].className = 'selected';
+}
+else{
+pages[i].style.display = 'none';
+tabs[i].className = null;
+}
+}
+}
+}
+
+//]]>
+</script>
+
+
+
+－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－
+ * テンプレート設定　管理者でログイン後、/_admin/cms/layoutsへアクセス
+－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－
+
+■デザイン－テンプレート－新規登録
+【状態】
+公開
+
+【内部名称】
+portal_1column_gwsub
+
+【表示名称】
+portal_1column_gwsub
+
+【ヘッダー】
+<link rel="stylesheet" type="text/css" href="/_common/themes/gw/css/print_gwsub.css" media="print"/>
+
+【本文】
+<div id="container">
+
+
+<!--ここからヘッダー-->
+<div id="header">
+<div id="headerBody">
+[[piece/gw-header]]
+</div>
+</div>
+<!--ここまでヘッダー-->
+
+<!--ここからバナー-->
+<div id="banner">
+<div id="bannerBody">
+[[piece/gw-header-menu-icons 61]]
+</div>
+</div>
+<!--ここまでバナー-->
+
+<!--ここからナビ2-->
+<div id="navi2">
+<div id="navi2Body">
+</div>
+</div>
+<!--ここまでナビ-->
+
+<!--ここからメインコンテンツ-->
+<div id="main">
+<div id="wrapper">
+<!--ここからコンテンツ-->
+<div id="content">
+<div id="contentContainer">
+<div id="contentHeader"></div>
+<div id="contentBody">
+[[content]]
+</div>
+<div id="contentFooter"></div>
+</div>
+</div>
+<!--ここまでコンテンツ-->
+<!--ここから左サイド-->
+<div id="menu">
+<div id="menuContainer">
+<div id="menuHeader"></div>
+<div id="menuBody">
+</div>
+<div id="menuFooter"></div>
+</div>
+</div>
+<!--ここまで左サイド-->
+</div>
+<!--ここから右サイド-->
+<div id="links">
+<div id="linksContainer">
+
+<div id="linksHeader"></div>
+<div id="linksBody">右サイド</div>
+<div id="linksFooter"></div>
+
+</div>
+</div>
+<!--ここまで右サイド-->
+</div>
+<!--ここまでメインコンテンツ-->
+
+<!--ここからフッター-->
+<div id="footer">
+<div id="footerContainer">
+
+<div id="footerHeader"></div>
+<div id="footerBody">
+[[piece/copyright2]]
+</div>
+<div id="footerFooter"></div>
+</div>
+</div>
+<!--ここまでフッター-->
+</div>
+
+
+【スタイルシート】
+@charset "UTF-8";
+@import "/_common/themes/gw/css/portal_1column.css";
+@import "/_common/themes/gw/css/gwboard/iconfile.css";
+
+
+【携帯ヘッダー】
+
+
+【携帯本文】
+[[piece/gw-mobile-common-header]]
+
+
+
+[[content]]
+
+<hr class="borderDouble"/>
+
+[[piece/gw-mobile-footer]]
+[[piece/mobile-copyright]]
+
+
+【携帯スタイルシート】
+
+
+【スマートフォンヘッダー】
+<link rel="stylesheet" type="text/css" href="/_common/themes/gw/css/print_gwsub.css" media="print"/>
+
+
+【スマートフォン本文】
+<div id="header">
+<div id="headerBody">
+[[piece/gw-header]]
+</div>
+</div>
+<div id="banner">
+<div id="bannerBody">
+[[piece/gw-header-menu-icons 61]]
+</div>
+</div>
+
+<div id="navi2">
+<div id="navi2Body">
+
+</div>
+</div>
+
+<div id="main">
+<div id="wrapper">
+<div id="content">
+<div id="contentContainer">
+<div id="contentBody">
+[[content]]
+</div>
+</div>
+</div>
+
+
+
+<div id="footer">
+<div id="footerContainer">
+
+<div id="footerHeader">
+</div>
+<div id="footerBody">
+[[piece/gw-mobile-top-footer]]
+
+</div>
+<div id="footerFooter"></div>
+</div>
+</div>
+
+
+【スマートフォンスタイルシート】
+
+
+
+－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－
+ * コンテンツの追加　管理者でログイン後/_admin/cms/contentsにアクセス）
+－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－
+
+■コンテンツ－新規作成
+状態：公開
+モジュール名：gwsub
+コントローラ名：gwsub
+内部名称：gwsub
+表示名称：gwsub
+ディレクトリパス：gwsub
+
+－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－
+ * ディレクトリの追加　管理者でログイン後/_admin/cms/0/nodesにアクセス）
+－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－
+
+■サイト構成－ディレクトリ－アンケート管理を展開－新規登録
+状態：公開
+コンテンツ：アンケート設問管理
+レイアウト：portal_1column
+アイテム種別：itemdeletes
+内部名称：itemdeletes
+表示名称：アンケート 削除設定
+
+■サイト構成－ディレクトリ－新規登録
+状態：公開
+親ノード：/
+コンテンツ：空白
+レイアウト：空白
+アイテム種別：nodes
+内部名称：gwsub
+表示名称：GW補完機能(gwsub)
+
+■サイト構成－ディレクトリ－gwsubを展開－新規登録
+状態：公開
+親ノード：gwsub
+コンテンツ：空白
+レイアウト：空白
+アイテム種別：nodes
+内部名称：sb01
+表示名称：研修申込・受付(sb01)
+
+■サイト構成－ディレクトリ－gwsubを展開－sb01を展開－新規登録
+状態：公開
+親ノード：sb01
+コンテンツgwsub
+レイアウト：portal_1column_gwsub
+アイテム種別：sb01/sb01_trainings
+内部名称：sb01_trainings
+表示名称：管理者
+
+■サイト構成－ディレクトリ－gwsubを展開－sb01を展開－新規登録
+状態：公開
+親ノード：sb01
+コンテンツgwsub
+レイアウト：portal_1column_gwsub
+アイテム種別：sb01/sb01_training_boards
+内部名称：sb01_training_boards
+表示名称：記事管理
+
+■サイト構成－ディレクトリ－gwsubを展開－sb01を展開－新規登録
+状態：公開
+親ノード：sb01
+コンテンツgwsub
+レイアウト：portal_1column_gwsub
+アイテム種別：sb01/sb01_training_entries
+内部名称：sb01_training_entries
+表示名称：検索･申込
+
+■サイト構成－ディレクトリ－gwsubを展開－sb01を展開－新規登録
+状態：公開
+親ノード：sb01
+コンテンツgwsub
+レイアウト：portal_1column_gwsub
+アイテム種別：sb01/sb01_training_guides
+内部名称：sb01_training_guides
+表示名称：利用の手引き
+
+■サイト構成－ディレクトリ－gwsubを展開－sb01を展開－新規登録
+状態：公開
+親ノード：sb01
+コンテンツgwsub
+レイアウト：portal_1column_gwsub
+アイテム種別：sb01/sb01_training_helps
+内部名称：sb01_training_helps
+表示名称：利用の手引き
+
+■サイト構成－ディレクトリ－gwsubを展開－sb01を展開－新規登録
+状態：公開
+親ノード：sb01
+コンテンツgwsub
+レイアウト：portal_1column_gwsub
+アイテム種別：sb01/sb01_training_plans
+内部名称：sb01_training_plans
+表示名称：企画・設定
+
+■サイト構成－ディレクトリ－gwsubを展開－sb01を展開－新規登録
+状態：公開
+親ノード：sb01
+コンテンツgwsub
+レイアウト：portal_1column_gwsub
+アイテム種別：sb01/sb01_training_schedules
+内部名称：sb01_training_schedules
+表示名称：開催予定
+
+■サイト構成－ディレクトリ－gwsubを展開－sb01を展開－新規登録
+状態：公開
+親ノード：sb01
+コンテンツgwsub
+レイアウト：portal_1column_gwsub
+アイテム種別：sb01/sb01_training_schedule_conditions
+内部名称：sb01_training_schedule_conditions
+表示名称：施設予約条件
+
+■サイト構成－ディレクトリ－gwsubを展開－sb01を展開－新規登録
+状態：公開
+親ノード：sb01
+コンテンツgwsub
+レイアウト：portal_1column_gwsub
+アイテム種別：sb01/sb01_training_schedule_members
+内部名称：sb01_training_schedule_members
+表示名称：受講者設定
+
+■サイト構成－ディレクトリ－gwsubを展開－sb01を展開－新規登録
+状態：公開
+親ノード：sb01
+コンテンツgwsub
+レイアウト：portal_1column_gwsub
+アイテム種別：sb01/sb01_training_schedule_props
+内部名称：sb01_training_schedule_props
+表示名称：開催予定
+
+
+■サイト構成－ディレクトリ－gwsubを展開－新規登録
+状態：公開
+親ノード：gwsub
+コンテンツ：空白
+レイアウト：空白
+アイテム種別：nodes
+内部名称：sb04
+表示名称：職員名簿(sb04)
+
+■サイト構成－ディレクトリ－gwsubを展開－sb04を展開－新規登録
+状態：公開
+親ノード：sb04
+コンテンツ：空白
+レイアウト：空白
+アイテム種別：nodes
+内部名称：01
+表示名称：職員録(01)
+
+■サイト構成－ディレクトリ－gwsubを展開－sb04を展開－新規登録
+状態：公開
+親ノード：sb04
+コンテンツ：空白
+レイアウト：空白
+アイテム種別：nodes
+内部名称：02
+表示名称：事務分掌(02)
+
+■サイト構成－ディレクトリ－gwsubを展開－sb04を展開－新規登録
+状態：公開
+親ノード：sb04
+コンテンツ：空白
+レイアウト：空白
+アイテム種別：nodes
+内部名称：04
+表示名称：コード管理(04)
+
+■サイト構成－ディレクトリ－gwsubを展開－sb04を展開－新規登録
+状態：公開
+親ノード：sb04
+コンテンツ：空白
+レイアウト：空白
+アイテム種別：nodes
+内部名称：05
+表示名称：ヘルプ(05)
+
+■サイト構成－ディレクトリ－gwsubを展開－sb04を展開－新規登録
+状態：公開
+親ノード：sb04
+コンテンツ：空白
+レイアウト：空白
+アイテム種別：nodes
+内部名称：06
+表示名称：座席表(06)
+
+■サイト構成－ディレクトリ－gwsubを展開－sb04を展開－新規登録
+状態：公開
+親ノード：sb04
+コンテンツ：空白
+レイアウト：空白
+アイテム種別：nodes
+内部名称：09
+表示名称：設定(09)
+
+■サイト構成－ディレクトリ－gwsubを展開－sb04を展開－01を展開－新規登録
+状態：公開
+親ノード：01
+コンテンツ：gwsub
+レイアウト：portal_1column_gwsub
+アイテム種別：sb04/sb04stafflistview
+内部名称：sb04stafflistview
+表示名称：職員録
+
+■サイト構成－ディレクトリ－gwsubを展開－sb04を展開－01を展開－新規登録
+状態：公開
+親ノード：01
+コンテンツ：gwsub
+レイアウト：portal_1column_gwsub
+アイテム種別：sb04/sb04stafflistview_masters
+内部名称：sb04stafflistview_masters
+表示名称：電子職員録 主管課マスタ
+
+■サイト構成－ディレクトリ－gwsubを展開－sb04を展開－02を展開－新規登録
+状態：公開
+親ノード：02
+コンテンツ：gwsub
+レイアウト：portal_1column_gwsub
+アイテム種別：sb04/sb04divideduties
+内部名称：sb04divideduties
+表示名称：事務分掌
+
+■サイト構成－ディレクトリ－gwsubを展開－sb04を展開－04を展開－新規登録
+状態：公開
+親ノード：04
+コンテンツ：gwsub
+レイアウト：portal_1column_gwsub
+アイテム種別：sb04/sb0404menu
+内部名称：sb0404menu
+表示名称：管理対象一覧
+
+■サイト構成－ディレクトリ－gwsubを展開－sb04を展開－04を展開－新規登録
+状態：公開
+親ノード：04
+コンテンツ：gwsub
+レイアウト：portal_1column_gwsub
+アイテム種別：sb04/sb04_editable_dates
+内部名称：sb04_editable_dates
+表示名称：00期限設定
+
+■サイト構成－ディレクトリ－gwsubを展開－sb04を展開－04を展開－新規登録
+状態：公開
+親ノード：04
+コンテンツ：gwsub
+レイアウト：portal_1column_gwsub
+アイテム種別：sb04/sb04officialtitles
+内部名称：sb04officialtitles
+表示名称：10職名一覧
+
+■サイト構成－ディレクトリ－gwsubを展開－sb04を展開－04を展開－新規登録
+状態：公開
+親ノード：04
+コンテンツ：gwsub
+レイアウト：portal_1column_gwsub
+アイテム種別：sb04/sb04sections
+内部名称：sb04sections
+表示名称：20所属一覧
+
+■サイト構成－ディレクトリ－gwsubを展開－sb04を展開－04を展開－新規登録
+状態：公開
+親ノード：04
+コンテンツ：gwsub
+レイアウト：portal_1column_gwsub
+アイテム種別：sb04/sb04assignedjobs
+内部名称：sb04assignedjobs
+表示名称：30担当一覧
+
+
+■サイト構成－ディレクトリ－gwsubを展開－sb04を展開－04を展開－新規登録
+状態：公開
+親ノード：04
+コンテンツ：gwsub
+レイアウト：portal_1column_gwsub
+アイテム種別：sb04/sb04stafflists
+内部名称：sb04stafflists
+表示名称：40職員一覧
+
+
+■サイト構成－ディレクトリ－gwsubを展開－sb04を展開－04を展開－新規登録
+状態：公開
+親ノード：04
+コンテンツ：gwsub
+レイアウト：portal_1column_gwsub
+アイテム種別：sb04/sb04_seating_lists
+内部名称：sb04_seating_lists
+表示名称：90座席表設定
+
+■サイト構成－ディレクトリ－gwsubを展開－sb04を展開－05を展開－新規登録
+状態：公開
+親ノード：05
+コンテンツ：gwsub
+レイアウト：portal_1column_gwsub
+アイテム種別：sb04/sb04helps
+内部名称：sb04helps
+表示名称：ヘルプ
+
+■サイト構成－ディレクトリ－gwsubを展開－sb04を展開－06を展開－新規登録
+状態：公開
+親ノード：06
+コンテンツ：gwsub
+レイアウト：portal_1column_gwsub
+アイテム種別：sb04/sb04_seating_lists
+内部名称：sb04_seating_lists
+表示名称：座席表
+
+■サイト構成－ディレクトリ－gwsubを展開－sb04を展開－09を展開－新規登録
+状態：公開
+親ノード：09
+コンテンツ：gwsub
+レイアウト：portal_1column_gwsub
+アイテム種別：sb04/sb04_limit_settings
+内部名称：sb04_limit_settings
+表示名称：表示行数 設定
+
+■サイト構成－ディレクトリ－gwを展開－新規登録
+状態：公開
+親ノード：gw
+コンテンツ：gw
+レイアウト：admin
+アイテム種別：pref_configs
+内部名称：pref_configs
+表示名称：在庁表示管理
+
+
+－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－
+ * 権限設定の追加　管理者でログイン後、ポータル－設定へアクセス
+－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－
+
+■ポータル－設定
+・基本設定タブ－権限設定－機能名設定－新規追加
+機能名：研修申込・受付
+機能コード：sb01
+表示順：※任意
+
+■ポータル－設定
+・基本設定タブ－権限設定－機能権限設定－新規追加
+機能名：研修申込・受付
+権限名：管理者
+
+■ポータル－設定
+基本設定タブ－権限設定－管理者権限設定－新規追加
+機能名：研修申込・受付
+対象権限：管理者
+優先順位：１
+種別：ユーザ
+グループ：※任意
+ユーザ：※任意
+許可：許可
+
+■ポータル－設定
+・基本設定タブ－権限設定－機能名設定－新規追加
+機能名：職員名簿
+機能コード：s04b
+表示順：※任意
+
+■ポータル－設定
+・基本設定タブ－権限設定－機能権限設定－新規追加
+機能名：職員名簿
+権限名：管理者
+
+－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－
+ * 年度の追加　管理者でログイン後、ポータル－設定へアクセス
+－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－
+
+■ポータル－設定
+・基本設定タブ－年度設定－新規追加
+西暦年度：2012
+
+－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－
+ * ポータルリンクピース設定　管理者でログイン後、ポータル－設定へアクセス
+－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－
+
+■管理者設定－ポータルリンクピース編集－ポータル左　リンクピース－新規作成
+公開：公開
+状態：有効
+表示名：研修等申込・受付システム
+CSS(アイコン)：総務事務システム(soumu)
+CSS：繰り返し１件目(head2)
+権限判定関数：
+リンク先URL：/gwsub/sb01/sb01_training_entries
+接続先区分：内部
+SSO利用：しない
+アカウント項目名：
+パスワード項目名：
+リンク用アイコンパス：
+
+■管理者設定－ポータルリンクピース編集－ポータル左　リンクピース－新規作成
+公開：公開
+状態：有効
+表示名：職員名簿
+CSS（アイコン）：職員名簿(directory)
+CSS：繰返し２件目以降(head)
+権限判定関数：
+リンク先URL：
+接続先区分：内部
+SSO利用：しない
+アカウント項目名：
+パスワード項目名：
+リンク用アイコンパス：
+
+■管理者設定－ポータルリンクピース編集－ポータル左　リンクピース－職員名簿－新規作成
+公開：公開
+状態：有効
+表示名：電子職員録
+CSS（アイコン）：
+CSS：
+権限判定関数：
+リンク先URL：/gwsub/sb04/01/sb04stafflistview
+接続先区分：内部
+SSO利用：しない
+アカウント項目名：
+パスワード項目名：
+リンク用アイコンパス：
+
+■管理者設定－ポータルリンクピース編集－ポータル左　リンクピース－職員名簿－新規作成
+公開：公開
+状態：有効
+表示名：電子事務分掌表
+CSS（アイコン）：
+CSS：
+権限判定関数：
+リンク先URL：/gwsub/sb04/02/sb04divideduties
+接続先区分：内部
+SSO利用：しない
+アカウント項目名：
+パスワード項目名：
+リンク用アイコンパス：
+
+
+－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－
+ * 定期実行設定の追加
+－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－
+ $ crontab -e
+
+ #削除期間が過ぎたアンケートを削除します。
+ 30 3 * * * /usr/local/bin/ruby /var/share/jorurigw/script/runner \
+ -e development 'Questionnaire::Script::Task.delete'
+
+ #不要となったセッションのデータを削除します。
+ 35 3 * * * /usr/local/bin/ruby /var/share/jorurigw/script/runner \
+ -e development 'System::Script::Session.delete_expired_sessions'
+
+ #不要となった掲示板のデータを削除します。
+ 40 3 * * * /usr/local/bin/ruby /var/share/jorurigw/script/runner \
+ -e development 'Gwbbs::Script::Task.preparation_delete'
+
+ #不要となった電子図書のデータを削除します。
+ 45 3 * * * /usr/local/bin/ruby /var/share/jorurigw/script/runner \
+ -e development 'Digitallibrary::Script::Task.preparation_delete'
+
+ #不要となった書庫のデータを削除します。
+ 50 3 * * * /usr/local/bin/ruby /var/share/jorurigw/script/runner \
+ -e development 'Doclibrary::Script::Task.preparation_delete'
+
+ #不要となったQ&Aのデータを削除します。
+ 55 3 * * * /usr/local/bin/ruby /var/share/jorurigw/script/runner \
+ -e development 'Gwqa::Script::Task.preparation_delete'
+
+ #不要となったFAQのデータを削除します。
+ 00 4 * * * /usr/local/bin/ruby /var/share/jorurigw/script/runner \
+ -e development 'Gwfaq::Script::Task.preparation_delete'
+

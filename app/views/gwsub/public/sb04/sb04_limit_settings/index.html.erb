@@ -1,0 +1,55 @@
+<div class="gwsub sb04">
+  <div class="pieceHeader">
+  <%= render :partial => 'piece_header' -%>
+  </div>
+  <div class="pieceBanner">
+    <%= render :partial => 'menu' -%>
+  </div>
+  <div class="pieceBody">
+  <div class="pieceBodyHeader">
+  <div class="titleLine">
+    <span class="title">管理者設定</span>
+    <span class="linkSpace">
+    </span><!--linkSpace-->
+  </div>
+  </div>
+  <div class="pieceBodyBody">
+    <%= @content_for_search -%>
+    <% if @items.blank? -%>
+      <%= Gw.div_notice('表示する項目はありません。') -%>
+    <% else -%>
+    <%= div_notice -%>
+
+    <table class="index">
+      <tr>
+      <th></th>
+      <th>種別</th>
+      <th>表示行数</th>
+      <th>更新日</th>
+      </tr>
+      <% @items.each do | item| -%>
+      <%
+
+      %>
+      <tr<%= cycle '', ' class="cycle"' -%>>
+        <td><%= link_to '詳細' , "#{Site.current_node.public_uri}#{item.id}" -%></td>
+        <td><%= item.get_type_name -%></td>
+        <td><%= item.limit -%> 行</td>
+        <td><%= item.updated_at.strftime('%Y-%m-%d %H:%M') -%></td>
+      </tr>
+      <% end %>
+    </table>
+    <% end -%>
+  </div>
+    <%= paginate @items -%>
+  </div>
+</div>
+
+<script language = "JavaScript" type="text/javascript">
+//<![CDATA[
+
+var search_submit = function () {
+  document.forms['search'].submit();
+}
+//]]>
+</script>

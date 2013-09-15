@@ -145,9 +145,9 @@ gw_pref_assembly_members:
 gw_pref_executive_csv:
   model: Gwsub::PrefExecutive
   fields:
-    全庁幹部表示順: u_order
-    Gwに表示: is_other_view
-    AIRに表示: is_governor_view
+    県幹部表示順: u_order
+    Gw及び議会表示: is_other_view
+    県三役表示: is_governor_view
     役職: title
     職員番号: u_code
     氏名: u_name
@@ -155,7 +155,8 @@ gw_pref_directors_csv:
   model: Gwsub::PrefExecutive
   fields:
     所属幹部表示順: u_order
-    部局: g_name
     役職: title
     職員番号: u_code
     氏名: u_name
+    Gwに表示: is_other_view
+    部局: parent_group

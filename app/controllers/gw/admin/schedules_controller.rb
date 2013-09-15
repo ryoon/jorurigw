@@ -21,7 +21,7 @@ class Gw::Admin::SchedulesController < ApplicationController
 
     if params[:cgid].blank? && @gid != 'me'
       x = System::CustomGroup.get_my_view( {:is_default=>1,:first=>1})
-      if !x.blank?
+      if x.present?
         @cgid = x.id
       end
     else
@@ -47,11 +47,9 @@ class Gw::Admin::SchedulesController < ApplicationController
 
     @is_gw_admin = Gw.is_admin_admin?
 
-    @is_kauser = @kucode == @ucode ? true : false
-
-    unless params[:cgid].blank?
+    if params[:cgid].present?
       @custom_group = System::CustomGroup.find(:first, :conditions=>"id=#{params[:cgid]}")
-      if !@custom_group.blank?
+      if @custom_group.present?
         Page.title = @custom_group.name
       end
     end
@@ -154,7 +152,7 @@ class Gw::Admin::SchedulesController < ApplicationController
     end
     @users_json = users.to_json
     if request.mobile?
-      unless flash[:mail_to].blank?
+      if flash[:mail_to].present?
         @users_json = set_participants(flash[:mail_to]).to_json
       end
     end
@@ -449,6 +447,7 @@ class Gw::Admin::SchedulesController < ApplicationController
   def search
     init_params
     @group_selected = 'all_group'
+    @items = Gwsub.grouplist4(nil, nil, true ,nil , nil, :return_pattern => 1)
     @st_date = Gw.date8_to_date params['s_date']
   end
 
@@ -498,7 +497,6 @@ private
       params_o[:init][:public_groups_json] = public_groups_json.to_json
     end
     params_o[:item][:public_groups][:gid] = Site.user_group.parent_id
-    dump params_o
     return params_o
   end
 

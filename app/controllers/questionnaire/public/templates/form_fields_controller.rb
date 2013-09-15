@@ -68,7 +68,7 @@ class Questionnaire::Public::Templates::FormFieldsController < ApplicationContro
     @item = Questionnaire::TemplateFormField.find_by_id(params[:id])
     permit_selection(@item.sort_no)
   end
-  #
+
   def update
     @item = Questionnaire::TemplateFormField.find_by_id(params[:id])
     return http_error(404) unless @item
@@ -88,14 +88,12 @@ class Questionnaire::Public::Templates::FormFieldsController < ApplicationContro
     _update(@item, :success_redirect_uri=>location)
   end
 
-  #
   def destroy
     @item = Questionnaire::TemplateFormField.find_by_id(params[:id])
     location = @title.form_field_path
     _destroy(@item, :success_redirect_uri=>location)
   end
 
-  #
   def permit_selection(sort_no=nil)
     sql = Condition.new
     sql.or {|d|
@@ -123,7 +121,6 @@ class Questionnaire::Public::Templates::FormFieldsController < ApplicationContro
     @permit_select = item.find(:all, :conditions=>sql.where, :order=>'sort_no, id').collect{ |i| [cut_off(i.title,40), i.id]}
   end
 
-  #http://doruby.kbmj.com/honda_on_rails/20080131/1
   def cut_off(text, len)
     if text != nil
       if text.jlength < len

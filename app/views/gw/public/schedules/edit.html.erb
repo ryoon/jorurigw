@@ -5,7 +5,9 @@ header = <<-EOL
 #{render :partial => '/gw/public/schedules/piece_header'}
 EOL
 content_for :form do
-  form_for :item, :url => "/gw/schedules/#{@item.id}#{"?sh=sh" if !params[:sh].blank?}", :html => {:method => :put, :multipart => true, :id => 'itemForm'} do |f|
+  form_for :item, :url => "/gw/schedules/#{@item.id}#{"?sh=sh" if !params[:sh].blank?}",
+    :html => {:class => 'schedule edit',:method => :put, :multipart => true, :id => 'itemForm'} do |f|
+
     concat <<-EOL
 #{f.error_messages}
 #{render(:partial => 'form', :locals => {:f => f})}

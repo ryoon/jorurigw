@@ -19,11 +19,11 @@ class Questionnaire::Script::Task
     return if item.limit_date.blank?
     #削除対象日付取得
     limit = self.get_limit_date(item.limit_date)
+    dump "#{self}, 期間の設定が異常です。データ：#{item.limit_date}　終了." if limit.blank?
     return if limit.blank?
 
     self.destroy_record(limit)
 
-    
     dump "#{self}, アンケート集計システム記事削除(処理終了)"
 
   end
@@ -53,6 +53,7 @@ class Questionnaire::Script::Task
     else
       limit = ''
     end
+    dump "削除基準日：#{limit}"
     return limit
   end
 

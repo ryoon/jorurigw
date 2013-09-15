@@ -542,6 +542,77 @@ EOL
     ret
   end
 
+
+  def date_picker_smartphone(f, name, _options={})
+    options_org = HashWithIndifferentAccess.new(_options)
+    options = options_org
+    value = nz(options[:value], Time.now)
+    value = Gw.to_time(value) if value.is_a?(String)
+    mode = nz(options[:mode], :datetime).to_s
+    object_name = f.is_a?(ActionView::Helpers::FormBuilder) ? f.object_name : f.to_s
+    tag_name = "#{object_name}[#{name}]" rescue name
+    tag_id = Gw.idize(tag_name)
+    tag_id_ed = if tag_id == 'item_st_at'
+        "item_ed_at"
+      elsif tag_id == 'item_st_at_noprop'
+        "item_ed_at_noprop"
+      elsif tag_id == 'item_repeat_st_date_at'
+        "item_repeat_ed_date_at"
+      elsif tag_id == 'item_repeat_st_date_at_noprop'
+        "item_repeat_ed_date_at_noprop"
+      elsif tag_id == 'item_repeat_st_date_at'
+        'item_repeat_ed_date_at'
+      elsif tag_id == 'item_repeat_ed_date_at_noprop'
+        'item_repeat_ed_date_at_noprop'
+      end
+    this_year = Date.today.year
+    years_a = nz(options[:years_range], ((this_year - 5)..(this_year + 5))).to_a
+    err_flg = options[:errors].nil? ? nil : options[:errors].on(name)
+    options.delete :errors
+    minute_interval = nz(options[:minute_interval], 15).to_i rescue 15
+    minute_interval = 15 if minute_interval <= 0
+    captions_default = ['','年','月','日','<br />','時','分', '']
+    captions = options[:captions].nil? ? captions_default :
+      Array.new(6){|i| options[:captions][i].nil? ? captions_default[i] : options[:captions][i]}
+    captions_ind = captions[1,3] + captions[5,2]               # 個別枠後挿入文字列
+    captions_caption = [captions[0], captions[4], captions[7]] # 全体枠挿入文字列(日時の前、日時の間、日時の後)
+    ret = ''
+    datetime_part = lambda{|idx, _select_options_a, selected|
+      select_options_a = _select_options_a.is_a?(Array) ? _select_options_a : _select_options_a.to_a
+      _name = "#{object_name}[#{name}(#{idx}i)]"
+      select_tag(_name, mock_for_select(select_options_a, :value_as_label=>1, :to_s=>1, :selected=>selected),
+          :id=>Gw.idize(_name), :onchange=> "update_#{tag_id}();") +
+        captions_ind[idx - 1]
+    }
+    init_tag_name = "init[#{name}][mode]"
+    ret += <<-EOL
+#{hidden_field_tag(init_tag_name, "#{mode}")}
+EOL
+    if !%w(date datetime).index(mode).nil?
+      ret += datetime_part.call 1, years_a, value.year
+      ret += datetime_part.call 2, 1..12, value.month
+      ret += datetime_part.call 3, 1..31, value.day
+    end
+    ret += captions_caption[1] if !%w(datetime).index(mode).nil?
+    if !%w(time datetime).index(mode).nil?
+      ret += datetime_part.call 4, 0..23, value.hour
+      _selected_min_flg = false
+      _selected_min = value.min
+      minute_array = []
+      _min_cnt = 0
+      while _min_cnt < 60
+        _selected_min_flg = true if _min_cnt == _selected_min
+        minute_array << _min_cnt
+        _min_cnt += minute_interval
+      end
+      ret += datetime_part.call 5, minute_array, _selected_min
+
+    end
+    ret += captions_caption[2]
+    ret = %Q(<span class="fieldWithErrors">#{ret}</span>) if !err_flg.nil?
+    ret
+  end
+
   def date_picker_prop(f, name, _options={})
     options_org = HashWithIndifferentAccess.new(_options)
     options = options_org

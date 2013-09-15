@@ -1,0 +1,50 @@
+<%
+link_str1 = %Q(<span>一覧</span>)
+link_url1 = Gw.chop_with("#{Site.current_node.public_uri}","/")
+link_str2 = nil
+link_str3 = nil
+case @menu_header3
+when 'sb0404menu'
+  link_str1 = %Q(<span class="gwsub_current_menu">一覧</span>)
+  link_url1 = '/gwsub/sb04/04/sb0404menu'
+when 'sb04_seatlng_lists'
+  link_str1 = ''
+  link_url1 = ''
+when 'sb04divideduties'
+      link_str1 = %Q(<span class="gwsub_current_menu">一覧</span>)
+when 'sb04stafflistview'
+  if @u_role==true
+    link_str2 = %Q(<span>電子職員録 出力</span>)
+    link_str3 = %Q(<span>項目指定CSV</span>)
+    link_url2 = "#{Site.current_node.public_uri}csvview"
+    link_url3 = "#{Site.current_node.public_uri}csvput"
+    case @l2_current
+    when '01'
+      link_str1 = %Q(<span class="gwsub_current_menu">一覧</span>)
+    when '02'
+      link_str2 = %Q(<span class="gwsub_current_menu">電子職員録 出力</span>)
+    when '03'
+      link_str3 = %Q(<span class="gwsub_current_menu">項目指定CSV</span>)
+    else
+    end
+  end
+when 'sb04stafflistview_masters'
+    link_str2 = %Q(<span>登録</span>)
+    link_url2 = "#{Site.current_node.public_uri}new#{@params_set}"
+    case @l2_current
+    when '01'
+      link_str1 = %Q(<span class="gwsub_current_menu">一覧</span>)
+    when '02'
+      link_str2 = %Q(<span class="gwsub_current_menu">登録</span>)
+    end
+else
+end
+%>
+<%= render :partial => 'gwsub/public/sb04/sb04_subfunction_select_menu' %>
+<% unless link_str1.blank? %>
+<div class="menu">
+<%= link_to link_str1 , url_for(link_url1)  unless link_str1.blank? %>
+<%= link_to link_str2 , url_for(link_url2)  unless link_str2.blank? %>
+<%= link_to link_str3 , url_for(link_url3)  unless link_str3.blank? %>
+</div>
+<% end %>

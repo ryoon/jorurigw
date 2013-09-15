@@ -1,0 +1,24 @@
+<%
+link_str1 = %Q(<span>一覧</span>)
+link_str2 = %Q(<span>登録</span>)
+link_url1 = Gw.chop_with("#{Site.current_node.public_uri}","/")
+link_url2 = "#{Site.current_node.public_uri}new"
+case @l2_current
+when '01'
+  link_str1 = %Q(<span class="gwsub_current_menu">一覧</span>)
+when '02'
+  link_str2 = %Q(<span class="gwsub_current_menu">登録</span>)
+else
+end
+if  @u_role==true
+else
+  link_str2 =nil
+end
+%>
+<%= render :partial => 'gwsub/public/sb04/sb04_subfunction_select_menu' %>
+<% unless link_str1.blank? %>
+<div class="menu">
+<%= link_to link_str1 , url_for(link_url1)  unless link_str1.blank? %>
+<%= link_to link_str2 , url_for(link_url2)  unless link_str2.blank? %>
+</div>
+<% end %>

@@ -1,10 +1,6 @@
 class Gw
   $KCODE = "UTF8"
 
-  def self.version
-    "1.0.3"
-  end
-
   def self.br(str)
     str.to_s.gsub(/\r\n|\r|\n/, '<br />')
   end

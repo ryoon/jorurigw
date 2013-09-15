@@ -9,24 +9,38 @@ class Gw::Public::HolidaysController < ApplicationController
     @category_title = @hcs.rassoc(@category_id)[0]
   end
 
+  def init_params
+    @is_gw_admin = Gw.is_admin_admin?
+  end
+
   def index
+    init_params
+    return authentication_error(403) unless @is_gw_admin
     order = "DATE_FORMAT( st_at, '%Y' ) DESC,st_at"
     @items = Gw::Holiday.find(:all, :conditions=>"coalesce(title_category_id,1)=#{@category_id}", :order=>order)
   end
 
   def show
+    init_params
+    return authentication_error(403) unless @is_gw_admin
     @item = Gw::Holiday.new.find(params[:id])
   end
 
   def new
+    init_params
+    return authentication_error(403) unless @is_gw_admin
     @item = Gw::Holiday.new({})
   end
 
   def edit
+    init_params
+    return authentication_error(403) unless @is_gw_admin
     @item = Gw::Holiday.new.find(params[:id])
   end
 
   def create
+    init_params
+    return authentication_error(403) unless @is_gw_admin
     u = Site.user; g = u.groups[0]
     params[:item][:st_at] = params[:item][:st_at] + " 00:00:00"
     item = params[:item].merge({
@@ -46,6 +60,8 @@ class Gw::Public::HolidaysController < ApplicationController
   end
 
   def update
+    init_params
+    return authentication_error(403) unless @is_gw_admin
     @item = Gw::Holiday.find(params[:id])
     params[:item][:st_at] = params[:item][:st_at] + " 00:00:00"
 
@@ -56,6 +72,8 @@ class Gw::Public::HolidaysController < ApplicationController
   end
 
   def destroy
+    init_params
+    return authentication_error(403) unless @is_gw_admin
     @item = Gw::Holiday.find(params[:id])
     location = Gw.chop_with("#{Site.current_node.public_uri}",'/')
     _destroy(@item,:success_redirect_uri=>location)

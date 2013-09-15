@@ -7,8 +7,11 @@ class System::Admin::CustomGroupsController < ApplicationController
     @parent = System::CustomGroup.new.find(:first,:conditions=>{:id=>id})
   end
 
-  def init_index
+  def init_params
     @is_gw_admin = Gw.is_admin_admin?
+  end
+
+  def init_index
     item = System::CustomGroup.new
     item.parent_id = @parent.id if @parent
     item.page  params[:page], params[:limit]
@@ -32,16 +35,19 @@ class System::Admin::CustomGroupsController < ApplicationController
   end
 
   def index
+    init_params
     init_index
     _index @items
   end
 
   def show
+    init_params
     @item = System::CustomGroup.new.find(params[:id])
     _show @item
   end
 
   def new
+    init_params
     @is_gw_admin = Gw.is_admin_admin?
     @item = System::CustomGroup.new({
         :state        =>  'enabled',
@@ -50,12 +56,15 @@ class System::Admin::CustomGroupsController < ApplicationController
   end
 
   def create
+    init_params
     @item = System::CustomGroup.new
     if @item.save_with_rels params, :create
       flash_notice 'カスタムグループの作成', true
       redirect_to '/system/custom_groups'
     else
-      @users = []
+      users = System::CustomGroup.get_error_users(params)
+      @users_json = users.to_json
+      @users = ::JsonParser.new.parse(@users_json)
       respond_to do |format|
         format.html { render :action => "new" }
         format.xml  { render :xml => @item.errors, :status => :unprocessable_entity }
@@ -68,24 +77,25 @@ class System::Admin::CustomGroupsController < ApplicationController
   end
 
   def get_users
-       @users = ::JsonParser.new.parse(params[:item]['schedule_users_json'])
-       @users.each_with_index {|user, i|
-        @users[i][3] = params["title_#{user[1]}"]
-        @users[i][4] = params["icon_#{user[1]}"]
-        @users[i][5] = params["sort_no_#{user[1]}"]
-       }
-       respond_to do |format|
-         format.xml { render :layout => false}
-       end
+    @users = ::JsonParser.new.parse(params[:item]['schedule_users_json'])
+    @users.each_with_index {|user, i|
+      @users[i][3] = params["title_#{user[1]}"]
+      @users[i][4] = params["icon_#{user[1]}"]
+      @users[i][5] = params["sort_no_#{user[1]}"]
+    }
+    respond_to do |format|
+      format.xml { render :layout => false}
+    end
   end
 
   def edit
+    init_params
     @is_gw_admin = Gw.is_admin_admin?
     @item = System::CustomGroup.new.find(params[:id])
-    init_edit
+    init_edit(:edit)
   end
 
-  def init_edit
+  def init_edit(mode)
     users = []
     @item.custom_group_role.each do |custom_group|
       if custom_group.priv_name == 'admin' && custom_group.class_id == 1 && !custom_group.user.blank?
@@ -138,16 +148,23 @@ class System::Admin::CustomGroupsController < ApplicationController
     end
     @read_users_json = users.to_json
 
-    users = []
-    @item.user_custom_group.each do |user|
-      next if user.user.blank?
-      users.push [nil, user.user.id, user.user.display_name, user.title, user.icon, user.sort_no]
+    if mode == :edit
+      users = []
+      @item.user_custom_group.each do |user|
+        next if user.user.blank?
+        users.push [1, user.user.id, user.user.display_name, user.title, user.icon, user.sort_no]
+      end
+      users = users.sort{|a,b|
+        a[5] <=> b[5]
+      }
+      @users_json = users.to_json
+      @users = ::JsonParser.new.parse(@users_json)
+    else
+      # エラー発生時、ユーザーの情報を保持する
+      users = System::CustomGroup.get_error_users(params)
+      @users_json = users.to_json
+      @users = ::JsonParser.new.parse(@users_json)
     end
-    users = users.sort{|a,b|
-      a[5] <=> b[5]
-    }
-    @users_json = users.to_json
-    @users = ::JsonParser.new.parse(@users_json)
   end
 
   def edit_users
@@ -155,12 +172,13 @@ class System::Admin::CustomGroupsController < ApplicationController
   end
 
   def update
+    init_params
     @item = System::CustomGroup.find(params[:id])
     if @item.save_with_rels params, :update
       flash_notice 'カスタムグループの編集', true
       redirect_to '/system/custom_groups'
     else
-      init_edit
+      init_edit(:update)
       respond_to do |format|
         format.html { render :action => "edit" }
         format.xml  { render :xml => @item.errors, :status => :unprocessable_entity }
@@ -202,6 +220,7 @@ class System::Admin::CustomGroupsController < ApplicationController
 
 
   def destroy
+    init_params
     @item = System::CustomGroup.find(params[:id])
     if @item.destroy
       flash_notice 'カスタムグループの削除', true
@@ -271,7 +290,7 @@ class System::Admin::CustomGroupsController < ApplicationController
       users = Array.new
       unless user_ids.empty?
         user_ids_str = Gw.join(user_ids, ',')
-        users = System::User.find(:all, :conditions=>"id in (#{user_ids_str}) and ldap = 1 and state = 'enabled'", :order => 'name')
+        users = System::User.find(:all, :conditions=>"id in (#{user_ids_str}) and state = 'enabled'", :order => 'name')
       end
 
       sort_no = 5

@@ -1,0 +1,38 @@
+<%#*<h1>Gwsub::Public::Sb01::Sb01TrainingGuides#index</h1>%>
+<%#*<p>Find me in app/views/gwsub/public/sb01/sb01_training_guides/index.html.erb</p>%>
+<%
+options =  {
+  'table_name'      => 'gwsub_sb01_training_guides',
+  :action=>'bbs',
+  'link_to_show'    => 0
+}
+options['field_td_criteria'] = {
+  'title' => Proc.new{|item|
+#  %Q(<a href="#{h item.bbs_url}" target="_blank" title="#{@bbs_link_title}">#{item.title}</a>)}
+    #doc_check = Gwsub::Sb01TrainingGuide.bbs_docs_link_check(item.bbs_url)
+    #if doc_check == true
+      %Q(<a href="#{h item.bbs_url}" target="_blank" title="#{@bbs_link_title}" >#{item.title}</a>)
+    #else
+    #  %Q(#{item.title})
+    #end
+    }
+}
+%>
+<div class="gwsub sb01">
+<div class="pieceHeader">
+<h2>研修申込・受付</h2>
+</div>
+<div class="pieceBanner">
+<%= render :partial => 'gwsub/public/sb01/sb01_level1_menu' %>
+<%= render :partial => 'gwsub/public/sb01/sb01_training_plans/level2_menu_header' %>
+
+<%#= render :partial => 'gwsub/public/sb01/sb01_training_guides/menu' %>
+</div>
+<div class="pieceBody">
+<%= div_notice %>
+<%= table_to_index2 @items,options %>
+<br/>
+<%= paginate @items %>
+<br/>
+</div>
+</div>

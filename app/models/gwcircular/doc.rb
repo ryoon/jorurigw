@@ -484,4 +484,13 @@ class Gwcircular::Doc < Gw::Database
     end
     return true
   end
+
+  def self.json_array_select_trim(datas)
+    return [] if datas.blank?
+    datas.each do |data|
+      data.delete_at(0)
+      data.reverse!
+    end
+    return datas
+  end
 end

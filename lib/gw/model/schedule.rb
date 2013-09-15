@@ -1,45 +1,5 @@
 module Gw::Model::Schedule
 
-  def self.timeout_cancelled
-    daytime = Time.now
-    daytime_time = daytime - 30 * 60
-    daytime_str = daytime_time.strftime("%Y-%m-%d %H:%M:%S")
-
-    cond = "prop_type = 'Gw::PropRentcar' and extra_data is null" +
-      " and ((st_at > updated_at and st_at < '#{daytime_str}') or (st_at <= updated_at and updated_at < '#{daytime_str}'))"
-
-    items = Gw::ScheduleProp.new.find(:all, :conditions=>cond, :order=>"st_at, prop_id")
-
-    items.each do |item|
-
-      cond_sub = "prop_type = 'Gw::PropRentcar' and prop_id = #{item.prop_id}" +
-        " and st_at < '#{item.st_at.strftime("%Y-%m-%d %H:%M:%S")}' and (extra_data not like '%\"cancelled\":1%' or extra_data is null)"
-      item_sub = Gw::ScheduleProp.new.find(:first, :conditions=>cond_sub, :order=>"st_at desc")
-
-      cancel_flg = false
-      if item_sub.blank?
-        cancel_flg = true
-      else
-        if item_sub.prop_stat.to_i > 3
-          cancel_flg = true
-        elsif item_sub.prop_stat.to_i == 3
-          if item_sub.ed_at < daytime_time
-            cancel_flg = true
-          end
-        else
-          cancel_flg = false
-        end
-
-        if cancel_flg
-          item.cancel
-          item.save
-        end
-      end
-
-    end
-
-  end
-
   def self.remind
     item = Gw::Schedule.new
     d = Date.today
@@ -90,13 +50,13 @@ module Gw::Model::Schedule
         if Gw::Schedule.is_schedule_pref_admin?
          caption_main_s += "#{Gw::Model::Schedule.show_schedule_edit_icon(d, :uid=>uid)}"
         end
-     elsif options[:view] == :day
-       if ( params[:cgid].blank? ||
+      elsif options[:view] == :day
+        if ( params[:cgid].blank? ||
           ( !params[:cgid].blank? && System::CustomGroupRole.new.editable?( params[:cgid], Site.user_group.group_id, Site.user.id ) ) )
-         caption_main_s += "#{Gw::Model::Schedule.show_schedule_edit_icon(d, :uid=>uid)}"
-       end
-     end
-   end
+          caption_main_s += "#{Gw::Model::Schedule.show_schedule_edit_icon(d, :uid=>uid)}"
+        end
+      end
+    end
 
     day_or_week_link = if options[:view] == :day
       "<a class=\"weekLink\" href=\"/gw/schedules/?s_date=#{td_s}&amp;uid=#{uid}\">#{captions_hash['weekview_button_caption']}</a>"
@@ -654,11 +614,13 @@ EOL
 
   def self.get_users_id_in_group(gid)
     return [] unless System::Group.find(:first, :conditions => "id=#{gid}")
-    return System::UsersGroup.find(:all, :conditions => "group_id=#{gid}", :joins => :user, :order => "code").reject{|x| x.user.state != 'enabled'}.collect{|x| x.user_id }
+    return System::UsersGroup.find(:all, :conditions => "group_id=#{gid}", 
+      :joins => :user, 
+      :order => "code").reject{|x| x.user.state != 'enabled'}.collect{|x| x.user_id }
   end
 
   def self.get_uids(params)
-    if !params[:gid].blank?
+    if params[:gid].present?
       gid = params[:gid]
       if gid =='me'
         gid = Site.user.groups[0].id
@@ -667,8 +629,7 @@ EOL
       end
       uids = get_users_id_in_group(gid)
       uids = [Site.user.id] if uids.length == 0
-
-    elsif !params[:cgid].blank?
+    elsif params[:cgid].present?
       cgid = params[:cgid]
       uids = System::UsersCustomGroup.find(:all,
         :conditions => "custom_group_id = #{cgid}",
@@ -688,7 +649,7 @@ EOL
   end
 
   def self.get_users(params)
-    if !params[:gid].blank?
+    if params[:gid].present?
 
       gid = params[:gid]
       if gid =='me'
@@ -698,13 +659,11 @@ EOL
       end
 
       users =  System::User.find(:all,
-        :conditions => "system_users_groups.group_id=#{gid} AND system_users.state = 'enabled' and system_users.ldap = 1",
+        :conditions => "system_users_groups.group_id=#{gid} AND system_users.state = 'enabled'",
         :joins => :user_groups,
-      	:include => :user_groups,
-        :order => "system_users.code")
-      users = [Site.user] if users.length == 0
+        :order => "system_users.sort_no, system_users.code")
 
-    elsif !params[:cgid].blank?
+    elsif params[:cgid].present?
 
       cgid = params[:cgid]
       if /^\d+$/ !~ cgid

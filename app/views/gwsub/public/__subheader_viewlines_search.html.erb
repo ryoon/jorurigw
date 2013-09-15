@@ -1,0 +1,21 @@
+<!-- div class="gwsub" -->
+<table>
+<tr>
+<td>
+<%= render :partial => '/gwsub/public/viewlines' %>
+</td>
+
+<% if @divisions %>
+<td>
+<%= render :partial => '/gwsub/public/select_divisions' %>
+</td>
+<%end%>
+
+<td>
+<%= render :partial => '/gwsub/public/search' %>
+</td>
+</tr>
+</table>
+<% unless (params[:reset] || !params[:search] ) %>
+<div class="hit">検索結果<span class="count"><%= "#{@items.total_entries}" %></span>件</div>
+<% end %>

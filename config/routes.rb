@@ -318,6 +318,7 @@ ActionController::Routing::Routes.draw do |map|
   gw2 map, mod, :pref_directors # データ抽出ツール
   gwp2 map, mod, :pref_directors,:member=>{:state_change=>:get}
   gwp2 map, mod, :pref_director_admins,:member=>{:updown=>:get},:collection=>{:g_updown=>:get,:csvput =>:get,:csvup=>:post,:get_users =>:post,:sort_update=>:put}
+  gwp2 map, mod, :pref_configs, :member=>{:display_change=>:get}
   # 議員控え室　専用
   gwp2 map, mod, :pref_only_assembly,:member=>{:state_change=>:get}
   gwp2 map, mod, :pref_only_executives,:member=>{:state_change=>:get}
@@ -329,6 +330,115 @@ ActionController::Routing::Routes.draw do |map|
   gwp2 map, mod, :config_settings,:collection=>{:ind_settings=>:get}
   gwp2 map, mod, :countings,:collection=>{:memos=>:get, :mobiles=>:get}
   gwp2 map, mod, :mobile_settings,:collection=>{:access_edit=>:get,:access_updates=>:put,:password_edit=>:get,:password_updates=>:put}
+
+# 研修等申込・受付システム
+##############################################################################
+# Gwsub::GWSUB controllers list
+##############################################################################
+  def gwsuba2(_map, mod, resource, options={})
+    opt = options
+    opt[:mod_prefix] = 'gwsub'
+    gw2 _map, mod, resource, opt
+  end
+  def gwsubp2(_map, mod, resource, options={})
+    opt = options
+    opt[:mod_prefix] = 'gwsub'
+    gwp2 _map, mod, resource, opt
+  end
+  def hssp2(_map, mod, resource, options={})
+    opt = options
+    opt[:mod_prefix] = 'hss'
+    gwp2 _map, mod, resource, opt
+  end
+
+##############################################################################
+# Gwsub::Common
+##############################################################################
+  # admin
+  mod = "gwsub"
+  gw2 map, mod, :gwsubcontrollers
+  gw2 map, mod, :main
+  gw2 map, mod, :sectionlist
+  gw2 map, mod, :attaches, :path_prefix=>"/:parent_id"
+  gw2 map, mod, :receipts, :member => [:show_object,:download_object]
+  gw2 map, mod, :ajaxusers, :collection=>{ :getajax => :get ,:getajax_recognizer => :get }, :only=>[]
+  # import/export
+  gw2 map, mod, :test,:member=>{:export_select=>:get,:export_data=>:get,:export_csv=>:get,:export_ical=>:get,:import_select=>:get,:import_data=>:get,:import_csv=>:put,:import_ical=>:put}
+
+##############################################################################
+# Gwsub::Training
+##############################################################################
+  map.connect '_public/gwsub/sb01/sb01_trainings/:id/closed'   , :controller => 'gwsub/public/sb01/sb01_trainings' , :action => 'closed'
+  map.connect '_public/gwsub/sb01/sb01_training_plans/:id/closed'          , :controller => 'gwsub/public/sb01/sb01_training_plans'            , :action => 'closed'
+  map.connect '_public/gwsub/sb01/sb01_training_plans/:id/prepared'        , :controller => 'gwsub/public/sb01/sb01_training_plans'            , :action => 'prepared'
+  map.connect '_public/gwsub/sb01/sb01_training_plans/:id/expired'         , :controller => 'gwsub/public/sb01/sb01_training_plans'            , :action => 'expired'
+  map.connect '_public/gwsub/sb01/sb01_training_schedule_conditions/make_skd'  , :controller => 'gwsub/public/sb01/sb01_training_schedule_conditions'  , :action => 'make_skd'
+  map.connect '_public/gwsub/sb01/sb01_training_schedule_props/:id/closed'     , :controller => 'gwsub/public/sb01/sb01_training_schedule_props'       , :action => 'closed'
+  map.connect '_public/gwsub/sb01/sb01_training_schedule_props/:id/prepared'   , :controller => 'gwsub/public/sb01/sb01_training_schedule_props'       , :action => 'prepared'
+  map.connect '_public/gwsub/sb01/sb01_training_schedules/:id/closed'          , :controller => 'gwsub/public/sb01/sb01_training_schedules'            , :action => 'closed'
+  map.connect '_public/gwsub/sb01/sb01_training_schedules/:id/prepared'        , :controller => 'gwsub/public/sb01/sb01_training_schedules'            , :action => 'prepared'
+  mod = "sb01"
+  gwsubp2 map, mod, :sb01_trainings, :collection=>{:index_over =>:get}, :member=>{:closed=>:put}
+  gwsubp2 map, mod, :sb01_training_entries, :collection=>{:index_date =>:get}
+  gwsubp2 map, mod, :sb01_training_guides, :collection=>{:user =>:get,:manager=>:get}
+  gwsubp2 map, mod, :sb01_training_plans, :collection=>{:user_fields => :get}, :member=>{:closed=>:put,:prepared=>:put, :expired=>:put}
+  gwsubp2 map, mod, :sb01_training_schedule_conditions, :collection=>{:make_skd=>:post}
+  gwsubp2 map, mod, :sb01_training_schedule_props, :member=>{:closed=>:put,:prepared=>:put}
+  gwsubp2 map, mod, :sb01_training_schedule_members, :collection=>{:user_fields => :get}
+  gwsubp2 map, mod, :sb01_training_schedules, :collection=>{:csvput =>:get}, :member=>{:closed=>:put,:prepared=>:put}
+# 研修等申込・受付システム END
+
+##############################################################################
+# 
+##############################################################################
+  map.gwsub_stafflist_from_notesraw '_admin/gwsub/stafflist_from_notesraw', :controller=> "gwsub/admin/stafflist_from_notesraw" ,:action=>"index" ,:method=>:get
+  #map.gwsub_sb04_setup '_admin/gwsub/sb04_setup', :controller=> "gwsub/admin/sb04_setup" ,:action=>"index" ,:method=>:get
+  map.connect '_public/gwsub/sb04/sb04categories/csvup'       , :controller => 'gwsub/public/sb04/sb04categories'     , :action => 'csvup'
+  map.connect '_public/gwsub/sb04/sb04sections/csvup'         , :controller => 'gwsub/public/sb04/sb04sections'       , :action => 'csvup'
+  map.connect '_public/gwsub/sb04/sb04officialtitles/csvup'   , :controller => 'gwsub/public/sb04/sb04officialtitles' , :action => 'csvup'
+  map.connect '_public/gwsub/sb04/sb04assignedjobs/csvup'     , :controller => 'gwsub/public/sb04/sb04assignedjobs'   , :action => 'csvup'
+  map.connect '_public/gwsub/sb04/sb04stafflists/csvup'       , :controller => 'gwsub/public/sb04/sb04stafflists'     , :action => 'csvup'
+  map.connect '_public/gwsub/sb04/sb04categories/csvadd'      , :controller => 'gwsub/public/sb04/sb04categories'     , :action => 'csvadd'
+  map.connect '_public/gwsub/sb04/sb04sections/csvadd'        , :controller => 'gwsub/public/sb04/sb04sections'       , :action => 'csvadd'
+  map.connect '_public/gwsub/sb04/sb04officialtitles/csvadd'  , :controller => 'gwsub/public/sb04/sb04officialtitles' , :action => 'csvadd'
+  map.connect '_public/gwsub/sb04/sb04assignedjobs/csvadd'    , :controller => 'gwsub/public/sb04/sb04assignedjobs'   , :action => 'csvadd'
+  map.connect '_public/gwsub/sb04/sb04stafflists/csvadd'      , :controller => 'gwsub/public/sb04/sb04stafflists'     , :action => 'csvadd'
+  map.connect '_public/gwsub/sb04/sb04categories/csvadd_check'      , :controller => 'gwsub/public/sb04/sb04categories'     , :action => 'csvadd_check'
+  map.connect '_public/gwsub/sb04/sb04sections/csvadd_check'        , :controller => 'gwsub/public/sb04/sb04sections'       , :action => 'csvadd_check'
+  map.connect '_public/gwsub/sb04/sb04officialtitles/csvadd_check'  , :controller => 'gwsub/public/sb04/sb04officialtitles' , :action => 'csvadd_check'
+  map.connect '_public/gwsub/sb04/sb04assignedjobs/csvadd_check'    , :controller => 'gwsub/public/sb04/sb04assignedjobs'   , :action => 'csvadd_check'
+  map.connect '_public/gwsub/sb04/sb04stafflists/csvadd_check'      , :controller => 'gwsub/public/sb04/sb04stafflists'     , :action => 'csvadd_check'
+  map.connect '_public/gwsub/sb04/sb04stafflists/stafflists_create' , :controller => 'gwsub/public/sb04/sb04stafflists'     , :action => 'stafflists_create'
+  map.connect '_public/gwsub/sb04/sb04divideduties/assigned_job_update'      , :controller => 'gwsub/public/sb04/sb04divideduties'     , :action => 'assigned_job_update'
+  map.connect '_public/gwsub/sb04/sb04assignedjobs/year_copy'    , :controller => 'gwsub/public/sb04/sb04assignedjobs'   , :action => 'year_copy'
+  map.connect '_public/gwsub/sb04/sb04stafflists/year_copy'      , :controller => 'gwsub/public/sb04/sb04stafflists'     , :action => 'year_copy'
+  map.connect '_public/gwsub/sb04/sb04divideduties/add_update', :controller => 'gwsub/public/sb04/sb04divideduties'   , :action => 'add_update'
+  mod = "gwsub"
+  gw2 map, mod, :sb04_setup
+  mod = "sb04"
+  gwsubp2 map, mod, :sb0404menu
+  gwsubp2 map, mod, :sb04categories, :collection=>{:csvput =>:get,:csvup=>:post,:csvadd=>:post, :csvadd_check=>:post, :index_csv=>:get},
+    :member => [:show_csv]
+  gwsubp2 map, mod, :sb04sections,
+    :collection=>{:csvput =>:get,:csvup=>:post,:csvadd=>:post, :csvadd_check=>:post, :index_csv=>:get ,:index2=>:get ,:index3=>:get},
+    :member => [:show_csv]
+  gwsubp2 map, mod, :sb04officialtitles, :collection=>{:csvput =>:get,:csvup=>:post,:csvadd=>:post, :csvadd_check=>:post, :index_csv=>:get},
+    :member => [:show_csv]
+  gwsubp2 map, mod, :sb04assignedjobs, :collection=>{:section_fields=>:get,
+    :sb04_dev_section_fields=>:get,:csvput =>:get,:csvup=>:post,:csvadd=>:post, :csvadd_check=>:post, :index_csv=>:get, :year_copy=>:post},
+    :member => [:show_csv]
+  gwsubp2 map, mod, :sb04stafflists, :collection=>{:section_fields=>:get,
+    :sb04_dev_section_fields=>:get,:assignedjobs_fields=>:get,:officialtitles_fields=>:get,:categories_fields=>:get,
+    :master_sections_fields=>:get,:csvput =>:get,:csvup=>:post,:csvadd=>:post, :csvadd_check=>:post,
+    :stafflists_create=>:post, :index_csv=>:get }, :member => [:show_csv]
+  gwsubp2 map, mod, :sb04stafflistview, :collection=>{:csvview =>:get,:csvput =>:get,:section_fields=>:get}, :member => [:pdf_create, :show_csv]
+  gwsubp2 map, mod, :sb04stafflistview_masters, :collection=>{:section_fields_year_copy=>:get}
+  gwsubp2 map, mod, :sb04_limit_settings
+  gwsubp2 map, mod, :sb04divideduties,:collection=>{:add=>:get,:add_update=>:put},:member=>{:assigned_job_edit=>:get,:assigned_job_update=>:put}
+  gwsubp2 map, mod, :sb04helps
+  gwsubp2 map, mod, :sb04_seating_lists
+  gwsubp2 map, mod, :sb04_editable_dates
+# 職員録 END
 
 ########################################################################
 # アンケート回答

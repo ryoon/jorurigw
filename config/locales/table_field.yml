@@ -559,7 +559,7 @@ gw_prop_others:
     name: 名称
     type_id: r:種別:gw_prop_other_type_ids
     delete_state: r:削除状態:gw_prop_delete_state
-    reserved_state: r:予約:t1f0_kyoka_fuka
+    reserved_state: r:予約:gw_prop_other_reserved_states
     comment: 備考
     extra_flag: x
     extra_data: x
@@ -581,6 +581,9 @@ gw_prop_others:
     _cols: reserved_state:sort_no:name:type_id:comment:created_at:updated_at:_prop_owner_class:_admin:_editor:_reader
   show_in_schedule_show_one:
     _cols: sort_no:name:type_id:comment:_prop_stat:_prop_owner
+gw_prop_other_reserved_states:
+  1: 許可
+  0: 不可
 gw_prop_other_type_ids:
   100: 公用車
   200: 会議室

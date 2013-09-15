@@ -1,0 +1,61 @@
+<%
+@s_finised = nz(params[:s_finished],'1')
+send_cls = nz(params[:s_send_cls], 1).to_s
+sid  = params[:_jgw_session]
+%>
+<div class="piece memo index">
+<div class="pieceHeader">
+<%= render :partial => '/gw/public/memos/piece_header' %>
+</div>
+<div class="pieceBody">
+<div class="pieceBodyHeader">
+<%= render(:partial => 'search') %>
+<%= memos_tabbox_struct send_cls, @qsa %>
+<div id="contentTable">
+<div class="editingBox">
+<%=%Q(<span class="btEdit">#{link_to_edit(@item.id)}</span>) if @item.is_finished != 1 && @item.uid == Site.user.id%>
+<span class="btQuote"><%=link_to '引用作成', "/gw/memos/#{@item.id}/quote" %></span>
+<%= @item.is_finished != 1 ? %Q(<span class="btRead">#{link_to_id :finish, @item.id, '既読にする'}</span>) :
+  %Q(<span class="btUnread">#{link_to_id :finish, @item.id, '未読に戻す'}</span>) %>
+
+<span class="btDestroy"><%=link_to_destroy @item.id %></span>
+</div>
+<%= show_notice %>
+<table class="show">
+<tr><th>所属/担当/社名</th><td><%=(@item.blank? || @item.fr_group.blank?) ? '' : "#{convert_for_mobile_body(@item.fr_group,sid)}の"%></td><tr>
+<tr><th>担当者</th><td><%=(@item.blank? || @item.fr_user.blank?) ? '' : "#{convert_for_mobile_body(@item.fr_user,sid)}様から"%></td><tr>
+<tr><th>伝言</th><td><%= convert_for_mobile_body(@item.title,sid) %></td><tr>
+<tr><th>備考</th><td><%= convert_for_mobile_body(@item.body,sid)  unless @item.body.blank?%></td><tr>
+</table>
+<br />
+<table class="show">
+<tr><th colspan="2">送り先</th></tr>
+
+<%for memo_user in @item.memo_users
+      begin
+        case memo_user.class_id
+        when 0
+          class_str = 'すべて'
+          name_str = ''
+        when 1
+          class_str = 'ユーザ'
+          to_user = System::User.find(:first, :conditions => "id=#{memo_user.uid}")
+          name_str = to_user.display_name
+        when 2
+          class_str = 'グループ'
+          to_user = System::Group.find(:first, :conditions => "id=#{memo_user.uid}")
+          name_str = to_user.name
+        end
+      rescue
+      end%>
+<tr>
+<th><%=h class_str%></th><td><%=h name_str%></td>
+</tr>
+<%end%>
+</table>
+</div>
+</div>
+<div class="pieceBodyBody"></div>
+<div id="loadImg" style="display: none;">Now Loading...</div>
+</div>
+</div>

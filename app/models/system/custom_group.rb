@@ -385,7 +385,7 @@ class System::CustomGroup < ActiveRecord::Base
     users = Array.new
     unless user_ids.empty?
       user_ids_str = Gw.join(user_ids, ',')
-      users = System::User.find(:all, :conditions=>"id in (#{user_ids_str}) and ldap = 1 and state = 'enabled'", :order => 'sort_no, code')
+      users = System::User.find(:all, :conditions=>"id in (#{user_ids_str}) and state = 'enabled'", :order => 'sort_no, code')
     end
 
     users.each do |user|
@@ -420,5 +420,14 @@ class System::CustomGroup < ActiveRecord::Base
       end
     end
     return true
+  end
+  
+  def self.get_error_users(params)
+    users = []
+    _users = ::JsonParser.new.parse(params[:item]['schedule_users_json'])
+    _users.each_with_index {|_user, i|
+      users[i] = [nil, _user[1], _user[2], params["title_#{_user[1]}"], params["icon_#{_user[1]}"], params["sort_no_#{_user[1]}"]]
+    }
+    return users
   end
 end
