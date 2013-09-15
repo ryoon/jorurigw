@@ -113,11 +113,21 @@ module Gwbbs::Public::IndicesHelper
         ret += "</tr>"
       end
 
+      new_mark_str = ''
+      if @title.id == 1
+        if item.new_mark_flg
+          new_mark_str  = %Q(<span class="new">new</span>)
+        else
+          #new_mark_str  = %Q(<span></span>)
+        end
+      else
+      end
+
       i += 1
       tr = (i%2 != 0) ? '<tr class="article">' : '<tr class="article cycle">'
       ret += tr.to_s
       ret += '<td class="bbsImportant" style="text-align: center;">' + retstr_important_span(item.importance) + "</td>" if @title.importance.to_s == '1'
-      ret += '<td class="docTitle">' + link_to(hbr(item.title), item.show_path  + gwbbs_params_set) + "</td>"
+      ret += '<td class="docTitle">' + link_to(hbr(item.title), item.show_path  + gwbbs_params_set) + new_mark_str +  "</td>"
       ret += '<td class="bbsAttach" >' + retstr_attache_span(item.attachmentfile) + "</td>"
       ret += '<td class="bbsBalloon">' + retstr_balloon_span(item)  +  "</td>"
       ret += '<td class="group">' + link_to(item.section_name.to_s, "#{@title.docs_path}&state=GROUP&grp=#{item.section_code}") + "</td>"
@@ -161,11 +171,21 @@ module Gwbbs::Public::IndicesHelper
         ret += "</tr>"
       end
 
+      new_mark_str = ''
+      if @title.id == 1
+        if item.new_mark_flg
+          new_mark_str  = %Q(<span class="new">new</span>)
+        else
+          #new_mark_str  = %Q(<span></span>)
+        end
+      else
+      end
+
       i += 1
       tr = (i%2 != 0) ? '<tr class="article">' : '<tr class="article cycle">'
       ret += tr.to_s
       ret += '<td class="bbsImportant" style="text-align: center;">' + retstr_important_span(item.importance) + "</td>" if @title.importance.to_s == '1'
-      ret += '<td class="docTitle">' + link_to(hbr(item.title), item.show_path  + gwbbs_params_set) + "</td>"
+      ret += '<td class="docTitle">' + link_to(hbr(item.title), item.show_path  + gwbbs_params_set) + new_mark_str + "</td>"
       ret += '<td class="bbsAttach" >' + retstr_attache_span(item.attachmentfile) + "</td>"
       ret += '<td class="bbsBalloon">' + retstr_balloon_span(item)  +  "</td>"
       if mode.blank?
@@ -207,11 +227,21 @@ module Gwbbs::Public::IndicesHelper
         ret += "</tr>"
       end
 
+      new_mark_str = ''
+      if @title.id == 1
+        if item.new_mark_flg
+          new_mark_str  = %Q(<span class="new">new</span>)
+        else
+          #new_mark_str  = %Q(<span></span>)
+        end
+      else
+      end
+
       i += 1
       tr = (i%2 != 0) ? '<tr class="article">' : '<tr class="article cycle">'
       ret += tr.to_s
       ret += '<td  class="bbsImportant" style="text-align: center;">' + retstr_important_span(item.importance) + "</td>" if @title.importance.to_s == '1'
-      ret += '<td class="docTitle ">' + link_to(hbr(item.title), item.show_path  + gwbbs_params_set) + "</td>"
+      ret += '<td class="docTitle ">' + link_to(hbr(item.title), item.show_path  + gwbbs_params_set) + new_mark_str + "</td>"
       ret += '<td class="bbsAttach ">' + retstr_attache_span(item.attachmentfile) + "</td>"
       ret += '<td class="bbsBalloon">' + retstr_balloon_span(item)  + "</td>"
       ret += '<td class="group">' + link_to(item.section_name.to_s, "#{@title.docs_path}&state=GROUP&grp=#{item.section_code}") + "</td>"

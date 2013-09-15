@@ -1,5 +1,4 @@
-## JoruriGw v1.0.1 インストールマニュアル                   2011.05.24
-
+## JoruriGw v1.0.2 インストールマニュアル                   2011.06.29
 **********************************************************************
  1 想定環境
 **********************************************************************
@@ -35,15 +34,15 @@ rootユーザに変更します。
 ======================================================================
 
 SELinuxを無効にします。
-  
+
   # /usr/sbin/setenforce 0
 
 自動起動を無効にします。
 
-  # vi /etc/sysconfig/selinux 
-  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+  # vi /etc/sysconfig/selinux
+  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   SELINUX=disabled    #変更
-  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   ※セキュリティ設定は環境に応じて適切に設定してください。
 
@@ -65,7 +64,7 @@ iptablesを停止し、自動起動を無効にします。
 既にインストールされているかを確認します。
 
   # rpm -qa make gcc-c++ libxslt libxslt-devel libxml2-devel readline-devel curl-devel
-  
+
 なければインストールします。
 
   # yum install -y make gcc-c++ libxslt libxslt-devel libxml2-devel readline-devel curl-devel
@@ -90,7 +89,7 @@ Joruriユーザを作成します。
 JoruriGwソースコードを設置します。
 
   # mkdir /var/share
-  # tar xvzf jorurigw-1.0.1.tar.gz -C /var/share
+  # tar xvzf jorurigw-1.0.2.tar.gz -C /var/share
   # chown -R joruri:joruri /var/share/jorurigw
 
 **********************************************************************
@@ -104,9 +103,9 @@ Apacheをインストールします。
 設定ファイルを編集します。
 
   # vi /etc/httpd/conf/httpd.conf
-  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   ServerName 192.168.0.2    #変更
-  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 設定ファイルにエラーがないことを確認し、Apacheを起動します。
 
@@ -128,13 +127,13 @@ MySQLをインストールします。
 文字エンコーディングの標準を UTF-8 に設定します。
 
   # vi /etc/my.cnf
-  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   [mysqld]
   default-character-set=utf8    #追加
-  
+
   [client]                      #追加（末尾に追加）
   default-character-set=utf8    #追加
-  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 MySQLを起動します。
 
@@ -144,7 +143,7 @@ MySQLを起動します。
 自動起動に設定します。
 
   # /sbin/chkconfig mysqld on
-  
+
 rootユーザのパスワードを設定します。
   # /usr/bin/mysqladmin -u root password "pass"
 
@@ -165,7 +164,7 @@ ImageMagickをインストールします。
   # cd /usr/local/src/
   # tar xvzf ImageMagick-6.4.7-8.tar.gz
   # cd ImageMagick-6.4.7-8
-  # ./configure --enable-lzw
+  # ./configure
   # make && make install
 
 ライブラリをインストールします。
@@ -182,7 +181,7 @@ ImageMagickをインストールします。
 ======================================================================
  7.1 REE(Ruby Enterprise Edision) のインストール
 ======================================================================
-  
+
 REEをインストールします。
 
   # cd /usr/local/src
@@ -201,18 +200,18 @@ Phusion Passengerをインストールします。
   # gem uninstall passenger
   # gem install passenger -v 3.0.5
   # passenger-install-apache2-module
-  
+
   ( 画面の内容を確認して Enterキーを押してください。 )
 
 Phusion Passengerの動作環境を設定します。
 
   # vi /etc/httpd/conf/httpd.conf
-  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   #下記を追加
   LoadModule passenger_module /usr/local/lib/ruby/gems/1.8/gems/passenger-3.0.5/ext/apache2/mod_passenger.so
   PassengerRoot /usr/local/lib/ruby/gems/1.8/gems/passenger-3.0.5
   PassengerRuby /usr/local/bin/ruby
-  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 ======================================================================
  7.3 gemライブラリ のインストール
@@ -222,9 +221,13 @@ Rails
   # gem uninstall rails
   # gem install rails --include-dependencies -v 2.3.4
 
+rake
+  # gem install rake -v 0.8.7
+  # gem uninstall rake -v "> 0.8.7"
+
 Mysql/Ruby
   # gem uninstall mysql
-  # gem install mysql -v=2.7 -- --with-mysql-config=/usr/bin/mysql_config 
+  # gem install mysql -v=2.7 -- --with-mysql-config=/usr/bin/mysql_config
 
 LDAPアダプタ
   # cd /usr/local/src
@@ -342,7 +345,7 @@ libeventをインストールします。
   # yum install libevent libevent-devel
 
   ( 画面の内容を確認して yを入力してください。 )
- 
+
 memcachedをインストールします。
 
   # cd /usr/local/src/
@@ -351,15 +354,15 @@ memcachedをインストールします。
   # ./configure
   # make
   # make install
-  
+
 自動起動に設定します。
 
   # cp /usr/local/src/memcached-1.4.5/scripts/memcached.sysv /etc/rc.d/init.d/memcached
   # vi /etc/rc.d/init.d/memcached
-  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   #16行目に下記を追加
   PATH=$PATH:/usr/local/bin ; export PATH
-  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   # mkdir /var/run/memcached
   # /sbin/chkconfig --add memcached
   # chkconfig --level 35 memcached on
@@ -374,16 +377,16 @@ memcachedを起動します。
 
 Apacheに設定を追加します。
   # vi /etc/httpd/conf.d/vhosts.conf
-  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   NameVirtualHost *:80
-  
+
   <VirtualHost *:80>
       ServerName default
       DocumentRoot /var/share/jorurigw/public
       RailsEnv "development"
       PassengerHighPerformance on
   </VirtualHost>
-  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 Apache を再起動します。
   # /sbin/service httpd configtest
@@ -401,59 +404,59 @@ Apache を再起動します。
 
   # su - joruri
   $ crontab -e
-  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   00 3 * * * /usr/local/bin/ruby /var/share/jorurigw/script/runner \
     -e development 'Gw::Script::Schedule.delete'
-  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 完了済みで削除期間が過ぎたTODOを削除します。
 
   $ crontab -e
-  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   10 3 * * * /usr/local/bin/ruby /var/share/jorurigw/script/runner \
     -e development 'Gw::Script::Todo.delete'
-  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 既読で削除期間が過ぎた連絡メモを削除します。
 
   $ crontab -e
-  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   20 3 * * */usr/local/bin/ruby /var/share/jorurigw/script/runner \
     -e development 'Gw::Script::Memo.delete'
-  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 期限切れで削除期間が過ぎた掲示板を削除します。
 
   $ crontab -e
-  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   30 3 * * */usr/local/bin/ruby /var/share/jorurigw/script/runner \
     -e development 'Gwbbs::Script::Task.delete'
-  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 期限切れで削除期間が過ぎた回覧板を削除します。
 
   $ crontab -e
-  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   40 3 * * * /usr/local/bin/ruby /var/share/jorurigw/script/runner \
-    -e development 'Gwcircular::Script::Task.delete' 
-  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+    -e development 'Gwcircular::Script::Task.delete'
+  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 期限切れで削除期間が過ぎた照会回答を削除します。
 
   $ crontab -e
-  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   40 3 * * * /usr/local/bin/ruby /var/share/jorurigw/script/runner \
-    -e development 'Gwmonitor::Script::Task.delete' 
-  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+    -e development 'Gwmonitor::Script::Task.delete'
+  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 
 幹部・部課長の在席表示を全てoffにします。
 
   $ crontab -e
-  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   0 0 * * */usr/local/bin/ruby /var/share/jorurigw/script/runner \
-    -e development 'Gw::Script::PrefExective.state_all_off' 
-  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+    -e development 'Gw::Script::PrefExective.state_all_off'
+  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 **********************************************************************
 

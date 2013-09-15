@@ -633,7 +633,7 @@ ja:
         category_kind_1: ""
         category_kind_2: ""
       digitallibrary/control:
-        title: 掲示板タイトル
+        title: 図書名タイトル
         sort_no: 並び順
         category1_name: 見出しルート名
         separator_str1: 見出し区切り文字
@@ -659,6 +659,7 @@ ja:
         chg_parent_id: ""
         seq_no: ""
       doclibrary/control:
+        title: 書庫名
         adms_json: 管理者設定
         sueditors_json: 編集者設定
         sureaders_json: 閲覧者設定
@@ -740,7 +741,7 @@ ja:
         inpfld_024: ""
         inpfld_025: ""
       gwqa/control:
-        title: QA掲示板タイトル
+        title: QAタイトル
         adms_json: 管理者設定
         sueditors_json: 編集者設定
         sureaders_json: 閲覧者設定
@@ -752,7 +753,7 @@ ja:
         title: タイトル
         category1_id: 分類
       gwfaq/control:
-        title: FAQ掲示板タイトル
+        title: FAQタイトル
         adms_json: 管理者設定
         sueditors_json: 編集者設定
         sureaders_json: 閲覧者設定

@@ -198,6 +198,8 @@ class Gwfaq::Public::MakersController < ApplicationController
   end
 
   def create
+    admin_flags(params[:id])
+
     @item = Gwfaq::Control.new(params[:item])
     @item.left_index_use = '1'
     @item.createdate = Time.now.strftime("%Y-%m-%d %H:%M")
@@ -223,6 +225,8 @@ class Gwfaq::Public::MakersController < ApplicationController
   end
 
   def update
+    admin_flags(params[:id])
+
     @item = Gwfaq::Control.find(params[:id])
     @item.attributes = params[:item]
     @item.editdate = Time.now.strftime("%Y-%m-%d %H:%M")

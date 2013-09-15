@@ -26,19 +26,12 @@ var LinkDialog = {
 			f.insert.value = ed.getLang('update');
 			selectByValue(f, 'link_list', f.href.value);
 			selectByValue(f, 'target_list', ed.dom.getAttrib(e, 'target'));
-      //---edit 09/06/30
-      get_class = ed.dom.getAttrib(e, 'class').match(/\S+/g);
-      if (get_class.length > 1)
-  			selectByValue(f, 'class_list', get_class);
-      else
-        selectByValue(f, 'class_list', ed.dom.getAttrib(e, 'class'));
-      //----------------
-      //selectByValue(f, 'class_list', ed.dom.getAttrib(e, 'class'));
+			selectByValue(f, 'class_list', ed.dom.getAttrib(e, 'class'));
 		}
 	},
 
 	update : function() {
-		var f = document.forms[0], ed = tinyMCEPopup.editor, e, b;
+		var f = document.forms[0], ed = tinyMCEPopup.editor, e, b, href = f.href.value.replace(/ /g, '%20');
 
 		tinyMCEPopup.restoreSelection();
 		e = ed.dom.getParent(ed.selection.getNode(), 'A');
@@ -46,7 +39,6 @@ var LinkDialog = {
 		// Remove element if there is no href
 		if (!f.href.value) {
 			if (e) {
-				tinyMCEPopup.execCommand("mceBeginUndoLevel");
 				b = ed.selection.getBookmark();
 				ed.dom.remove(e, 1);
 				ed.selection.moveToBookmark(b);
@@ -56,55 +48,29 @@ var LinkDialog = {
 			}
 		}
 
-		tinyMCEPopup.execCommand("mceBeginUndoLevel");
-
 		// Create new anchor elements
 		if (e == null) {
 			ed.getDoc().execCommand("unlink", false, null);
-			tinyMCEPopup.execCommand("CreateLink", false, "#mce_temp_url#", {skip_undo : 1});
+			tinyMCEPopup.execCommand("mceInsertLink", false, "#mce_temp_url#", {skip_undo : 1});
 
 			tinymce.each(ed.dom.select("a"), function(n) {
 				if (ed.dom.getAttrib(n, 'href') == '#mce_temp_url#') {
 					e = n;
 
-          //---edit 09/06/30
-          if (f.class_list) {
-            var select_class = "";
-            for (var classi=0; classi<f.class_list.options.length; classi++) {
-              if (f.class_list.options[classi].selected == true) {
-                select_class += f.class_list.options[classi].value + " ";
-              }
-            }
-          }
-          //----------------
 					ed.dom.setAttribs(e, {
-						href : f.href.value,
+						href : href,
 						title : f.linktitle.value,
-						target : f.target_list ? f.target_list.options[f.target_list.selectedIndex].value : null,
-            //---edit 09/06/30
-            'class' : f.class_list ? select_class : null
-            //----------------
-//						'class' : f.class_list ? f.class_list.options[f.class_list.selectedIndex].value : null
+						target : f.target_list ? getSelectValue(f, "target_list") : null,
+						'class' : f.class_list ? getSelectValue(f, "class_list") : null
 					});
 				}
 			});
 		} else {
-      //---edit 09/06/30
-      if (f.class_list) {
-        var select_class = "";
-        for (var classi=0; classi<f.class_list.options.length; classi++) {
-          if (f.class_list.options[classi].selected == true) {
-            select_class += f.class_list.options[classi].value + " ";
-          }
-        }
-      }
-      //----------------
 			ed.dom.setAttribs(e, {
-				href : f.href.value,
+				href : href,
 				title : f.linktitle.value,
-				target : f.target_list ? f.target_list.options[f.target_list.selectedIndex].value : null,
-				'class' : f.class_list ? select_class : null
-//				'class' : f.class_list ? f.class_list.options[f.class_list.selectedIndex].value : null
+				target : f.target_list ? getSelectValue(f, "target_list") : null,
+				'class' : f.class_list ? getSelectValue(f, "class_list") : null
 			});
 		}
 

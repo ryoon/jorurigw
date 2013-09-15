@@ -7,7 +7,7 @@
   else
     raise Gw::SystemError
   end
-  caption = "JoruriGw ログイン(#{@mode})#{Gw.svn_str}"
+  caption = "v#{Gw.version}"
 %>
 <div id="login">
 &nbsp;
@@ -16,16 +16,13 @@
 <% form_tag uri do -%>
 <%= hidden_field_tag :url, h(params[:url]) %>
 <div class="box">
-<p><%= caption %></p>
 <h1>Joruri</h1>
 <%#= div_notice if flash[:notice] %>
 <%= div_notice %>
 <div class="show">
-ユーザID　　
-<%= text_field_tag 'account', '' %><br />
+ユーザID　　<%= text_field_tag 'account', '' %><br />
 <br style="line-height: 0.8;" />
-パスワード　
-<%= password_field_tag 'password', '' %><br />
+パスワード　<%= password_field_tag 'password', '' %><br />
 </div>
 <div class="submitters">
 <input class="login" type="image" src="/_common/images/blank.gif" alt="ログイン" value="" name="commit" />

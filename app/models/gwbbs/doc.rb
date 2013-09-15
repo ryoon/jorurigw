@@ -458,4 +458,24 @@ class Gwbbs::Doc < Gwboard::CommonDb
     return connection.execute(strsql)
   end
 
+  def new_mark_flg
+    flg = false
+    if self.createdate.blank?
+      #flg = false
+    else
+      begin
+        new_mark_start = Time.parse(self.createdate) + 86400
+        time_now = Time.now
+        if new_mark_start >= time_now
+          flg = true
+        else
+          #flg = false
+        end
+      rescue
+        #flg = false
+      end
+    end
+    return flg
+  end
+
 end

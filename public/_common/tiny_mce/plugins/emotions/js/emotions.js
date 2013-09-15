@@ -9,9 +9,9 @@ var EmotionsDialog = {
 		var ed = tinyMCEPopup.editor, dom = ed.dom;
 
 		tinyMCEPopup.execCommand('mceInsertContent', false, dom.createHTML('img', {
-      src : tinyMCEPopup.getWindowArg('plugin_url').replace(/^https?:\/\/[^\/]+/, "") + '/img/' + file,
-		/*	alt : ed.getLang(title),*/
-		/*	title : ed.getLang(title),*/
+			src : tinyMCEPopup.getWindowArg('plugin_url') + '/img/' + file,
+			alt : ed.getLang(title),
+			title : ed.getLang(title),
 			border : 0
 		}));
 

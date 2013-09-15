@@ -35,22 +35,23 @@ if @items.length > 0
         comment_str = %Q(<span>#{item.comment.count}</span>)
       end
     end
-    # 新着マーク判定
-    # 公開日から４日間
-    if item.editordivision.blank?
-      new_mark_today = Date.today.strftime('%Y-%m-%d')
-      if item.able_date.blank?
-        new_mark_str  = %Q(<span></span>)
-      else
-        new_mark_start = item.able_date.strftime('%Y-%m-%d')
-        new_mark_end   = (Date.new(item.able_date.year,item.able_date.month,item.able_date.day) + 3).strftime('%Y-%m-%d')
-        if new_mark_start <= new_mark_today and new_mark_today <= new_mark_end
-          new_mark_str  = %Q(<span class="new">new</span>)
-        else
-          new_mark_str  = %Q(<span></span>)
-        end
-      end
-    end
+
+          if item.createdate.blank?
+            new_mark_str  = %Q(<span></span>)
+          else
+            begin
+              new_mark_start = Time.parse(item.createdate) + 86400
+              time_now = Time.now
+              if new_mark_start >= time_now
+                new_mark_str  = %Q(<span class="new">new</span>)
+              else
+                new_mark_str  = %Q(<span></span>)
+              end
+            rescue
+              new_mark_str  = %Q(<span></span>)
+            end
+          end
+
     concat %Q(<tr>)
     concat %Q(<td class="bbsImportant">#{importance_str}</td>)
     concat %Q(<td class="title">#{link_to(hbr(item.title), item.portal_show_path + gwbbs_params_set)}#{new_mark_str}</td>)
