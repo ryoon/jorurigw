@@ -1,7 +1,12 @@
 # -*- encoding: utf-8 -*-
 class Gwmonitor::Script::Annual
 
-  def self.renew
+  def self.renew(start_date = nil)
+    if start_date.blank?
+      return false
+    else
+      @start_date = start_date
+    end
     p "照会・回答年次切替所属情報更新 開始:#{Time.now}."
     renew_controls_section_code
     renew_docs_section_code
@@ -14,7 +19,8 @@ class Gwmonitor::Script::Annual
     sql  = 'SELECT section_code FROM gwmonitor_controls GROUP BY section_code ORDER BY section_code'
     controls = Gwmonitor::Control.find_by_sql(sql)
     for control in controls
-      group = Gwboard::RenewalGroup.find_by_present_group_code(control.section_code)
+      #group = Gwboard::RenewalGroup.find_by_present_group_code(control.section_code,start_date)
+      group = Gwboard::RenewalGroup.find(:first, :conditions=>["present_group_code = ? and start_date = ?", control.section_code,@start_date])
       next if group.blank?
 
       update_fields="section_code='#{group.incoming_group_code}', section_name='#{group.incoming_group_code}#{group.incoming_group_name}'"
@@ -44,7 +50,7 @@ class Gwmonitor::Script::Annual
     for doc in docs
       next if doc.section_code.blank?
 
-      group = Gwboard::RenewalGroup.find_by_present_group_code(doc.section_code)
+      group = Gwboard::RenewalGroup.find(:first, :conditions=>["present_group_code = ? and start_date = ?", doc.section_code,@start_date])
       next if group.blank?
 
       update_fields = "section_code='#{group.incoming_group_code}', section_name='#{group.incoming_group_code}#{group.incoming_group_name}'"
