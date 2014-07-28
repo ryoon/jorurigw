@@ -17,13 +17,13 @@
             <th class="group">所属</th>
             <th class="item">制限数</th>
             <th class="item">合計</th>
-            <th class="item">公用車</th>
-            <th class="item">会議室</th>
-            <th class="item">一般備品</th>
+            <% @prop_types.each do |type| %>
+            <th class="item"><%= type.name %></th>
+            <% end %>
           </tr>
           <% @items.each do |item| %>
             <%
-            count = current_count_group_props_each(item.gid)
+            count = current_count_group_props_each(item.gid, @prop_types)
             g_count = System::Group.count(:all,:conditions=>"id=#{item.gid}")
             detail=0
             if g_count> 0
@@ -47,10 +47,10 @@
               <td><%= link_to_show item.id if detail==0 %></td>
               <td><%= raw(g_name) %></td>
               <td><%= item.limit %></td>
-              <td><%= count[3] %></td>
-              <td><%= count[0] %></td>
-              <td><%= count[1] %></td>
-              <td><%= count[2] %></td>
+              <td><%= count[@prop_types.size] %></td>
+              <% @prop_types.each_with_index do |type, i| %>
+              <td class="item"><%= count[i] %></td>
+              <% end %>
             </tr>
           <% end %>
         </table>

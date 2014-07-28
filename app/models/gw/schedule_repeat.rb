@@ -96,7 +96,8 @@ class Gw::ScheduleRepeat < Gw::Database
     if !is_gw_admin
       ot_ot_ids.each{|o_props_id|
         flg = Gw::PropOtherRole.is_edit?(o_props_id)
-        unless flg
+        prop = Gw::PropOther.find(o_props_id)
+        if !flg || (prop && prop.reserved_state == 0 || prop.delete_state == 1)
           other_rent_flg = false
         end
         other_admin_flg =  Gw::PropOtherRole.is_admin?(o_props_id, cg.id) if other_admin_flg

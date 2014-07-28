@@ -42,6 +42,9 @@ ja:
         type_id: 種別
       gw/prop_other_limit:
         limit: 制限数
+      gw/prop_type:
+        name: カテゴリ名
+        sort_no: 並び順
       gw/holiday:
         st_at: 年月日
         title: 休日名

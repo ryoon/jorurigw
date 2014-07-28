@@ -52,7 +52,7 @@ class Gw::Admin::SchedulePropsController < Gw::Admin::SchedulesController
     @ie = Gw.ie?(request)
     @hedder2lnk = 7
     
-    @prop_types = Gw::PropType.find(:all, :conditions => ["state = ?", "public"], :select => "id, name")
+    @prop_types = Gw::PropType.find(:all, :conditions => ["state = ?", "public"], :select => "id, name", :order => 'sort_no, id')
     if params[:type_id].present?
       @type_id = params[:type_id]
     else
@@ -153,11 +153,16 @@ class Gw::Admin::SchedulePropsController < Gw::Admin::SchedulesController
   def _props
     @props  =  Gw::Model::Schedule.get_props(params, @is_gw_admin, {:s_other_admin_gid=>@s_other_admin_gid, :type_id => @type_id})
     @prop_ids = @props.map{|x| x.id}
-    @prop_edit_ids = Gw::PropOtherRole.find(:all, :select => "id, prop_id",
-      :conditions=>["prop_id in (?) and gid in (#{Site.user_group.id}, #{Site.user_group.parent_id}) and auth = 'edit'", @prop_ids] ).map{|x| x.prop_id}
-    @prop_read_ids = Gw::PropOtherRole.find(:all, :select => "id, prop_id",
-      :conditions=>["prop_id in (?) and gid in (#{Site.user_group.id}, #{Site.user_group.parent_id}, 0) and auth = 'read'", @prop_ids] ).map{|x| x.prop_id}
-
+    
+    if @is_gw_admin
+      @prop_edit_ids = @prop_ids
+      @prop_read_ids = @prop_ids
+    else
+      @prop_edit_ids = Gw::PropOtherRole.find(:all, :select => "id, prop_id",
+        :conditions=>["prop_id in (?) and gid in (#{Site.user_group.id}, #{Site.user_group.parent_id}) and auth = 'edit'", @prop_ids] ).map{|x| x.prop_id}
+      @prop_read_ids = Gw::PropOtherRole.find(:all, :select => "id, prop_id",
+        :conditions=>["prop_id in (?) and gid in (#{Site.user_group.id}, #{Site.user_group.parent_id}, 0) and auth = 'read'", @prop_ids] ).map{|x| x.prop_id}
+    end
   end
 
   def getajax

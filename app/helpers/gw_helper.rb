@@ -138,7 +138,7 @@ module GwHelper
 
   def get_form_title_div(_params)
     class_a  = %w(formTitle)
-    class_a.push case _params[:action]
+    class_a.push case _params[:sender_action] ? _params[:sender_action] : _params[:action]
     when 'new', 'create'
       'new'
     when 'quote'

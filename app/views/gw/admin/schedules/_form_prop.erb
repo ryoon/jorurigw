@@ -75,7 +75,7 @@ defalut_props = _defalut_props.collect{|x| [x[2], x[1]]}
       <table border="0">
         <tr>
           <td>
-            <%= select_tag("item[schedule_props][prop_type_id]", options_from_collection_for_select(@prop_types, :id, :name, 100), :onchange=>'update_prop_cand();') %>
+            <%= select_tag("item[schedule_props][prop_type_id]", options_from_collection_for_select(@prop_types, :id, :name), :onchange=>'update_prop_cand();') %>
             <br />
             <%= select_tag("item[schedule_props][prop_id]", Gw.options_for_select(defalut_props, nil, :title=>genre), :size=>10, :style => 'width:280px;', :ondblclick => 'add_prop()', :multiple => true) if !genre.blank? %>
             <%= select_tag("item[schedule_props][prop_id]", Gw.options_for_select(defalut_props, nil, :title=>'other'), :size=>10, :style => 'width:280px;', :ondblclick => 'add_prop()', :multiple => true) if genre.blank? %>

@@ -69,14 +69,14 @@ show_day_header = render(:partial => '/gw/admin/schedules/show_day_header')
           group  = System::GroupHistory.find_by_id(admin_first_id)
           caption_main_s = "#{prop.name}(#{group.name if !group.blank?})"
 
-          if @is_gw_admin || (@prop_edit_ids.index(prop.id) && (prop.reserved_state == 1 || prop.delete_state == 0) ) # 権限があるかどうか確認
+          if @is_gw_admin || (@prop_edit_ids.index(prop.id) && prop.reserved_state == 1 && prop.delete_state == 0) # 権限があるかどうか確認
             is_prop_edit = true
           else
             is_prop_edit = false
           end
-          if prop.reserved_state == 0 || prop.delete_state == 1
-            is_prop_edit = false
-          end
+          #if prop.reserved_state == 0 || prop.delete_state == 1
+          #  is_prop_edit = false
+          #end
           %>
           <% if @header_each == 0 && p_id == 0 || @header_each != 0 && p_id % @header_each == 0 %>
           <%= show_day_header -%>

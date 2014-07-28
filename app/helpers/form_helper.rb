@@ -705,6 +705,7 @@ EOL
       :hidden => 1, :id=>tag_id, :time=> !%w(time datetime).index(mode).nil?, :minute_interval=>30,
       :onchange => "update_#{tag_id}_from_calendar();",
       :image=>'/_common/themes/gw/files/icon/ic_act_calendar.gif',
+      :clear_button => false
     }
     datetime_part = lambda{|idx, _select_options_a, selected|
       select_options_a = _select_options_a.is_a?(Array) ? _select_options_a : _select_options_a.to_a

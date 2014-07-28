@@ -26,15 +26,15 @@ class System::Admin::GroupsController < Gw::Controller::Admin::Base
   end
 
   def index
+    params[:state] = params[:state].presence || 'enabled'
+    
     item = System::Group.new
-    item.parent_id = @parent.id
+    item.and :parent_id, @parent.id
+    item.and :ldap, params[:ldap] if params[:ldap] && params[:ldap] != 'all'
+    item.and :state, params[:state] if params[:state] && params[:state] != 'all'
     item.page  params[:page], params[:limit]
     order = "state DESC,sort_no,code"
-
-    cond = {}
-    cond[:ldap]  = params[:ldap] if params[:ldap] && params[:ldap] != 'all'
-    cond[:state] = params[:state] if params[:state] && params[:state] != 'all'
-    @items = item.find(:all, :order=>order, :conditions => cond)
+    @items = item.find(:all, :order=>order)
     
     _index @items
   end

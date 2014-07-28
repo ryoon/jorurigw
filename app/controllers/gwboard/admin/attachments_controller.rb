@@ -39,13 +39,14 @@ class Gwboard::Admin::AttachmentsController < Gw::Controller::Admin::Base
     tmp = tmp.to_i
     used = sprintf('%g',tmp.to_f / 100)
     used = used.to_s + @title.upload_graphic_file_size_capacity_unit
-    @disk_full = true if capa_div < @title.upload_graphic_file_size_currently
-    if @disk_full
-      @capacity_message += '<span class="required">' + "画像ファイルの利用可能容量は#{capacity}です。現在約#{used}利用しています。利用率は約#{availability}%です。<br />"
-      @capacity_message +='制限を超過しています。不要なファイルを削除するか、管理者にご連絡ください。</span>'
+    disk_full = true if capa_div < @title.upload_graphic_file_size_currently
+    if disk_full
+      @capacity_message += '<div class="required">' + "画像ファイルの利用可能容量は#{capacity}です。現在約#{used}利用しています。利用率は約#{availability}%です。<br />"
+      @capacity_message +='制限を超過しています。不要なファイルを削除するか、管理者にご連絡ください。</div>'
     else
       @capacity_message += "画像ファイルの利用可能容量は#{capacity}です。現在約#{used}利用しています。<br />"
     end
+    @disk_full ||= disk_full
     @max_file_message += "<br />画像ファイルは、１ファイル#{@title.upload_graphic_file_size_max}MBまで登録可能です。 "
   end
 
@@ -68,13 +69,14 @@ class Gwboard::Admin::AttachmentsController < Gw::Controller::Admin::Base
     used = sprintf('%g',tmp.to_f / 100)
     used = used.to_s + @title.upload_document_file_size_capacity_unit
 
-    @disk_full = true if capa_div < @title.upload_document_file_size_currently
-    if @disk_full
-      @capacity_message += '<span class="required">' + "添付ファイルの利用可能容量は#{capacity}です。現在約#{used}利用しています。利用率は約#{availability}%です。<br />"
-      @capacity_message +='制限を超過しています。不要なファイルを削除するか、管理者にご連絡ください。</span>'
+    disk_full = true if capa_div < @title.upload_document_file_size_currently
+    if disk_full
+      @capacity_message += '<div class="required">' + "添付ファイルの利用可能容量は#{capacity}です。現在約#{used}利用しています。利用率は約#{availability}%です。<br />"
+      @capacity_message +='制限を超過しています。不要なファイルを削除するか、管理者にご連絡ください。</div>'
     else
       @capacity_message += "添付ファイルの利用可能容量は#{capacity}です。現在約#{used}利用しています。"
     end
+    @disk_full ||= disk_full
     @max_file_message += "添付ファイルは、１ファイル#{@title.upload_document_file_size_max}MBまで登録可能です。"
   end
 

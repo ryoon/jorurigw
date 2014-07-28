@@ -52,12 +52,15 @@ end
     </a>
   </div>
   <% else %>
-  <div title="<%= schedule.show_time(@st_date) -%> [非公開予定]" class="ind" id="<%= schedule_id -%>">
+  <div title="<%= @ie ? "#{schedule.show_time(@st_date)} [非公開予定]" : "<span>#{schedule.show_time(@st_date)} [非公開予定]</span>" -%>" class="ind" id="<%= schedule_id -%>">
     <%= schedule.show_time(@st_date) -%>[非公開予定]
   </div>
   <% end %>
 
 </td>
+<% if ed_at == ed_at.ceil %>
+<td colspan="1" class="scheduleData"></td>
+<% end %>
 <% (((@calendar_space_time.last) - ed_at).ceil).times { %>
 <td colspan="2" class="scheduleData">
 </td>
