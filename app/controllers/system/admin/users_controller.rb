@@ -11,17 +11,15 @@ class System::Admin::UsersController < Gw::Controller::Admin::Base
     init_params
     return authentication_error(403) unless @u_role
 
+    params[:state] = params[:state].presence || 'enabled'
+    
     item = System::User.new
     item.search params
-
-    item.page   params[:page], nz(params[:limit], 30)
-
+    item.and :ldap, params[:ldap] if params[:ldap] && params[:ldap] != 'all'
+    item.and :state, params[:state] if params[:state] && params[:state] != 'all'
+    item.page params[:page], nz(params[:limit], 30)
     item.order params[:sort], :code
-    
-    cond = {}
-    cond[:ldap]  = params[:ldap] if params[:ldap] && params[:ldap] != 'all'
-    cond[:state] = params[:state] if params[:state] && params[:state] != 'all'
-    @items = item.find(:all, :conditions => cond)
+    @items = item.find(:all)
     
     _index @items
   end

@@ -134,10 +134,23 @@ class Gw::Admin::ScheduleSettingsController  < Gw::Controller::Admin::Base
       end
       require 'ri_cal'
       categories = Gw::NameValue.get_cache('yaml', nil, "gw_schedules_title_categories")
-      cals = RiCal.parse_string( file_data )
+      begin
+        cals = RiCal.parse_string( file_data )
+      rescue Exception => e
+        flash.now[:notice] = "iCal形式の解析に失敗しました。（#{e.message}）"
+        return render :action => "import"
+      end
       cal = cals.first
+      unless cal
+        flash.now[:notice] = "カレンダーデータが見つかりませんでした。"
+        return render :action => "import"
+      end
       wary = ['SU','MO','TU','WE','TH','FR','SA']
       cal.events.map do |event|
+        if !event.dtstart || !event.dtend
+          error += 1
+          next
+        end
         if event.dtstart_property.tzid == 'UTC' && event.dtstart.class == Class::DateTime
           dtstart = event.dtstart.new_offset(Rational(+9,24))
           dtend = event.dtend.new_offset(Rational(+9,24))
@@ -175,6 +188,11 @@ class Gw::Admin::ScheduleSettingsController  < Gw::Controller::Admin::Base
           _params[:init][:repeat_mode] = "2"
           continue_flag = 0
           event.rrule_property.map{|rule|
+            if rule.until.blank?
+              continue_flag = 1
+              error_msg += '終了日指定のない繰り返し予定は登録できません。<br />'
+              next
+            end
             if rule.until.tzid == 'UTC'
               until_dt = DateTime.new(rule.until.year, rule.until.month, rule.until.day, rule.until.hour, rule.until.min, 0, Rational(0,24)).new_offset(Rational(+9,24))
             else
@@ -324,9 +342,9 @@ class Gw::Admin::ScheduleSettingsController  < Gw::Controller::Admin::Base
       end
     elsif par_item[:file_type] == 'csv'
       if error > 0
-        csv_result << '有効' + success.to_s + '件を登録し、無効' + error.to_s + '件は無視しました。'
+        csv_result << ['有効' + success.to_s + '件を登録し、無効' + error.to_s + '件は無視しました。']
         file = Gw::Script::Tool.ary_to_csv(csv_result)
-        send_download "result.csv", NKF::nkf('-s', file)
+        send_data NKF::nkf('-s', file), :filename => "result.csv"
       else
         if success > 0
           flash[:notice] = _error_msg

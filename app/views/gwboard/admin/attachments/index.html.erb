@@ -63,7 +63,7 @@
   <td style="text-align: center;"><%= item.eng_unit %><%=raw item.graphic_size %></td>
   <td style="text-align: center;">
     <% content = link_to "#{item.filename} (#{item.eng_unit})", item.file_uri(params[:system]), :class => item.icon_type %>
-    <%= link_to '添付', '#', :id => "link_attach#{item.id}", :onclick => "mceInsertContent('#{escape_javascript(content)}')" %>
+    <%= link_to '添付', '#', :id => "link_attach#{item.id}", :onclick => "mceInsertContent('#{escape_javascript(content)}'); return false;" %>
   </td>
   <td style="text-align: center;">
   <% if item.is_image %>

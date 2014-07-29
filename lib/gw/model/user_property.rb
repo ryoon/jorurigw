@@ -62,40 +62,42 @@ module Gw::Model::UserProperty
         end
       end
     when 'schedules'
-      trans.each do |x|
-        fld = x[1]
-        fld_disp = x[0]
-        errors.push [fld, "#{fld_disp}は必ず入力してください。"] if item[fld].blank?
-      end
-
-      %w(week_view_piecehead_format week_view_dayhead_format month_view_piecehead_format month_view_dayhead_format).each do |x|
-        fld = trans.rassoc(x)[0] rescue x
-        if !item[x].blank?
-          err = Gw.date_format(item[x], Time.now) rescue nil
-          errors.push [x, "#{fld}が異常です。"] if err.nil?
+      if options[:class_id] == 1
+        trans.each do |x|
+          fld = x[1]
+          fld_disp = x[0]
+          errors.push [fld, "#{fld_disp}は必ず入力してください。"] if item[fld].blank?
         end
-      end
-
-      %w(month_view_leftest_weekday).each do |fld|
-        fld_disp = trans.rassoc(fld)[0] rescue fld
-        x = item[fld]
-
-        if !x.nil?
-          if Gw.int?(x)
-            if !((0..6).include?(x.to_i))
-              errors.push [fld, "#{fld_disp}は 0～6 の整数でなければいけません。"]
-            end
-          else
-            errors.push [fld, "#{fld_disp}は 0～6 の整数でなければいけません。"]
+  
+        %w(week_view_piecehead_format week_view_dayhead_format month_view_piecehead_format month_view_dayhead_format).each do |x|
+          fld = trans.rassoc(x)[0] rescue x
+          if !item[x].blank?
+            err = Gw.date_format(item[x], Time.now) rescue nil
+            errors.push [x, "#{fld}が異常です。"] if err.nil?
           end
         end
-      end
-
-      %w(header_each).each do |fld|
-        fld_disp = trans.rassoc(fld)[0] rescue fld
-        x = item[fld]
-        if !x.blank? && (!Gw.int?(x) || x.to_i < 0 )
-          errors.push [fld, "#{fld_disp}は 0 以上の数値でなければいけません。"]
+  
+        %w(month_view_leftest_weekday).each do |fld|
+          fld_disp = trans.rassoc(fld)[0] rescue fld
+          x = item[fld]
+  
+          if !x.nil?
+            if Gw.int?(x)
+              if !((0..6).include?(x.to_i))
+                errors.push [fld, "#{fld_disp}は 0～6 の整数でなければいけません。"]
+              end
+            else
+              errors.push [fld, "#{fld_disp}は 0～6 の整数でなければいけません。"]
+            end
+          end
+        end
+  
+        %w(header_each).each do |fld|
+          fld_disp = trans.rassoc(fld)[0] rescue fld
+          x = item[fld]
+          if !x.blank? && (!Gw.int?(x) || x.to_i < 0 )
+            errors.push [fld, "#{fld_disp}は 0 以上の数値でなければいけません。"]
+          end
         end
       end
     when 'ssos'

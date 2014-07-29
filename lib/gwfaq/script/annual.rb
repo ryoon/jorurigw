@@ -1,7 +1,12 @@
 # -*- encoding: utf-8 -*-
 class Gwfaq::Script::Annual
 
-  def self.renew
+  def self.renew(start_date = nil)
+    if start_date.blank?
+      return false
+    else
+      @start_date = start_date
+    end
     p "質問管理(FAQ)年次切替所属情報更新 開始:#{Time.now}."
     renew_adms
     renew_admingrps_json
@@ -24,6 +29,7 @@ class Gwfaq::Script::Annual
       item = Gwboard::RenewalGroup.new
       item.and :present_group_id, adm.group_id
       item.and :present_group_code, adm.group_code
+      item.and :start_date, @start_date
       group = item.find(:first, :order=> 'present_group_id, present_group_code')
       next if group.blank?
 
@@ -48,11 +54,20 @@ class Gwfaq::Script::Annual
         renewal = Gwboard::RenewalGroup.new
         renewal.and :present_group_id, group[1]
         renewal.and :present_group_code, group[0]
+        renewal.and :start_date, @start_date
         if item = renewal.find(:first)
           group[0] = item.incoming_group_code
           group[1] = item.incoming_group_id.to_s
           group[2] = item.incoming_group_name
           is_update = true
+        else
+          renewal = Gwboard::RenewalGroup.new
+          renewal.and :present_group_id, group[1]
+          if item = renewal.find(:first)
+            group[1] = item.incoming_group_id.to_s
+            group[2] = item.incoming_group_name
+            is_update = true
+          end
         end
       end
       if is_update
@@ -80,6 +95,7 @@ class Gwfaq::Script::Annual
       item = Gwboard::RenewalGroup.new
       item.and :present_group_id, role.group_id
       item.and :present_group_code, role.group_code
+      item.and :start_date, @start_date
       group = item.find(:first, :order=> 'present_group_id, present_group_code')
       next if group.blank?
 
@@ -104,11 +120,20 @@ class Gwfaq::Script::Annual
         renewal = Gwboard::RenewalGroup.new
         renewal.and :present_group_id, group[1]
         renewal.and :present_group_code, group[0]
+        renewal.and :start_date, @start_date
         if item = renewal.find(:first)
           group[0] = item.incoming_group_code
           group[1] = item.incoming_group_id.to_s
           group[2] = item.incoming_group_name
           is_update = true
+        else
+          renewal = Gwboard::RenewalGroup.new
+          renewal.and :present_group_id, group[1]
+          if item = renewal.find(:first)
+            group[1] = item.incoming_group_id.to_s
+            group[2] = item.incoming_group_name
+            is_update = true
+          end
         end
       end
       if is_update
@@ -139,6 +164,14 @@ class Gwfaq::Script::Annual
           group[1] = item.incoming_group_id.to_s
           group[2] = item.incoming_group_name
           is_update = true
+        else
+          renewal = Gwboard::RenewalGroup.new
+          renewal.and :present_group_id, group[1]
+          if item = renewal.find(:first)
+            group[1] = item.incoming_group_id.to_s
+            group[2] = item.incoming_group_name
+            is_update = true
+          end
         end
       end
       if is_update

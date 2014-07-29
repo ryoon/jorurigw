@@ -42,6 +42,7 @@ class System::RoleNamePriv < ActiveRecord::Base
     return true
   end
   def deletable?
+    return false if System::Role.find(:first, :conditions => {:role_name_id => role_id, :priv_user_id => priv_id})
     return true
   end
 end

@@ -10,7 +10,7 @@
 <%if @is_admin%>
 <%unless @void_items.blank?%>
 <div class="editingBox">
-<span class="btDestroy"><%=link_to '一括削除', "#{destroy_void_documents_gwbbs_docs_path({:title_id=>@title.id})}#{gwbbs_params_set}", :confirm => '削除をすると元に戻せません。削除しますか', :method => :destroy_void_documents %></span>
+<span class="btDestroy"><%=link_to '一括削除', "#{destroy_void_documents_gwbbs_docs_path({:title_id=>@title.id})}#{gwbbs_params_set}", :confirm => '削除をすると元に戻せません。削除しますか' %></span>
 <%= "(#{@void_items.length}件の公開期限切れ記事があります)" -%>
 </div>
 <%end%>

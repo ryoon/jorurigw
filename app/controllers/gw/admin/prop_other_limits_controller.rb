@@ -7,6 +7,7 @@ class Gw::Admin::PropOtherLimitsController < Gw::Admin::PropGenreCommonControlle
     @css = %w(/_common/themes/gw/css/prop_extra/schedule.css)
     Page.title = "一般施設マスタ件数制限"
     @is_gw_admin = Gw.is_admin_admin?
+    @prop_types = Gw::PropType.find(:all, :conditions => ["state = ?", "public"], :select => "id, name", :order => "sort_no, id")
   end
 
   def index

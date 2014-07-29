@@ -12,12 +12,12 @@ class Gw::Admin::PrefConfigsController < Gw::Controller::Admin::Base
     @mode = nz(params[:mode],"pref_executives")
     if @mode == "pref_executives"
       @ret = "executive"
-      Page.title = @page_title = "#{Site.title}幹部在庁表示管理"
+      Page.title = @page_title = "全庁幹部在庁表示管理"
       @role_developer  = Gw::PrefExecutive.is_dev?
       @role_admin      = Gw::PrefExecutive.is_admin?
     else
       @ret = "director"
-      Page.title = @page_title = "所属幹部在庁表示管理"
+      Page.title = @page_title = "部課長在庁表示管理"
       @role_developer  = Gw::PrefDirector.is_dev?
       @role_admin      = Gw::PrefDirector.is_admin?
     end

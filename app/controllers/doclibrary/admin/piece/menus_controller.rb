@@ -116,7 +116,7 @@ class Doclibrary::Admin::Piece::MenusController < Gw::Controller::Admin::Base
 		cnn.remove_connection
 		
 		item = doclib_db_alias(Doclibrary::Doc)
-    item.find_by_sql(['SELECT section_code, COUNT(id) AS total_cnt FROM doclibrary_docs WHERE category1_id IN (?) GROUP BY section_code', folder_ids])
+    item.find_by_sql(['SELECT section_code, COUNT(id) AS total_cnt FROM doclibrary_docs WHERE state = "public" AND category1_id IN (?) GROUP BY section_code', folder_ids])
   end
 	
   Doclibrary::ViewAclDocCount.remove_connection

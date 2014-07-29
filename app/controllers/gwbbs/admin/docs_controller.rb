@@ -267,7 +267,7 @@ class Gwbbs::Admin::DocsController < Gw::Controller::Admin::Base
 
     update_creater_editor   #Gwboard::Controller::Common
 
-    if @item.able_date > Time.now
+    if @item.able_date && @item.able_date > Time.now
       @item.createdate = @item.able_date.strftime("%Y-%m-%d %H:%M")
       @item.creater_id = Core.user.code unless Core.user.code.blank?
       @item.creater = Core.user.name unless Core.user.name.blank?

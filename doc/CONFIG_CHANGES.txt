@@ -1,3 +1,9 @@
+2.2.0
+ 変更なし
+
+2.1.2
+ 変更なし
+
 2.1.1
  変更なし
 
@@ -7,7 +13,7 @@
 －－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－
 # 期限切れで削除期間が過ぎた稟議書を削除します。
   25 3 * * * /usr/local/bin/ruby /var/share/jorurigw/script/rails runner -e development 'GWworkflow::Script::Task.delete'
-  
+
 2.0.1
 －－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－
  * 定期実行設定の追加

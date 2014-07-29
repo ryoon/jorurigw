@@ -87,7 +87,7 @@ class Gw::Admin::PrefDirectorAdminsController < Gw::Controller::Admin::Base
     users = []
     director_users = Gw::PrefDirector.find(:all, :conditions=>["parent_g_order = ? and state != ? AND deleted_at IS NULL",@g_cat,"deleted"])
     director_users.each_with_index do |user, i|
-      users.push [i, user.uid, user.u_name, user.title, "icon", user.u_order, user.is_governor_view]
+      users.push ["1", user.uid, "#{user.u_name} (#{user.u_code})", user.title, "icon", user.u_order, user.is_governor_view]
     end
     users = users.sort{|a,b|
       a[5] <=> b[5]
@@ -103,6 +103,7 @@ class Gw::Admin::PrefDirectorAdminsController < Gw::Controller::Admin::Base
     @g_cat = @item.parent_g_order
     @parent_gid = @item.parent_gid
 		@current_gid = System::Group.find(:first,:conditions=>"parent_id=#{@parent_gid} AND state='enabled'",:order=>'code,sort_no').id
+    init_update
 
 		begin
 			b_ret = @item.save_with_rels params, :edit
@@ -114,13 +115,24 @@ class Gw::Admin::PrefDirectorAdminsController < Gw::Controller::Admin::Base
 		end
 	
 		if b_ret
-      location = "#{@public_uri}?g_cat=#{@item.parent_g_order}"
+      location = @users.size == 0 ? @public_uri : "#{@public_uri}?g_cat=#{@item.parent_g_order}"
       return redirect_to(location)
     else
-      init_edit
       render :action => :edit
       return
     end
+  end
+
+  def init_update
+    users = ::JsonParser.new.parse(params[:item]['schedule_users_json'])
+    users.each_with_index {|user, i|
+      num = 1
+      user[3] = params["title_#{user[1]}_#{num}"]
+      user[5] = params["sort_no_#{user[1]}_#{num}"]
+      user[6] = params["is_governor_view_#{user[1]}_#{num}"]
+    }
+    @users_json = users.to_json
+    @users = ::JsonParser.new.parse(@users_json)
   end
 
   def destroy
@@ -142,11 +154,7 @@ class Gw::Admin::PrefDirectorAdminsController < Gw::Controller::Admin::Base
     @item = Gw::PrefDirector.new
     unless params[:item].blank?
       params[:item].each{|key,value|
-        if /^[0-9]+$/ =~ value
-        else
-          @item.errors.add :"並び順"
-          break
-        end
+        params[:item][key] = value.to_i
       }
     end
 
@@ -159,10 +167,10 @@ class Gw::Admin::PrefDirectorAdminsController < Gw::Controller::Admin::Base
          item.save
        }
      end
-     flash_notice '並び順更新に', true
+     flash_notice '並び順更新', true
      redirect_to '/gw/pref_director_admins?g_cat='+params[:g_cat]
    else
-     flash_notice '並び順更新に失敗しました。', true
+     flash_notice '並び順更新', false
      redirect_to '/gw/pref_director_admins?g_cat='+params[:g_cat]
    end
   end
@@ -185,7 +193,7 @@ class Gw::Admin::PrefDirectorAdminsController < Gw::Controller::Admin::Base
     when 'csvup'
       @l2_current = '04'
     else
-      @l2_current = '01'
+      #@l2_current = '01'
     end
 
     @limits = nz(params[:limit],30)

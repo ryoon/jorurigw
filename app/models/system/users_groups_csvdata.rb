@@ -187,6 +187,9 @@ class System::UsersGroupsCsvdata < ActiveRecord::Base
                 if uniq_groups_code_data.index(row[:code]).present?
                   row[:error] << "「#{csv_header[:data_type]}」がgroupのデータは、「#{csv_header[:code]}」が重複してはなりません。"
                 end
+                if row[:code] == '1'
+                  row[:error] << "「#{csv_header[:code]}」に「1」は使用できません。"
+                end
               end
               if admin_user_check != true
                 row[:error] << "「#{csv_header[:data_type]}」がuserのデータは、「#{csv_header[:code]}」に、1つ以上、GW管理画面の管理者権限を持つユーザーが含まれてはなりません。"

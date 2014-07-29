@@ -1,4 +1,4 @@
-## Joruri Gw 2.1.1 インストールマニュアル                   2013.08.09
+## Joruri Gw 2.2.0 インストールマニュアル                   2013.08.09
 
 **********************************************************************
  1 想定環境
@@ -40,7 +40,7 @@ rootユーザに変更します。
 
 Joruri Gw の実行に必要なパッケージをインストールします。
 
-  # yum -y install wget make gcc-c++ httpd httpd-devel \ 
+  # yum -y install wget make gcc-c++ httpd httpd-devel \
     mysql-server mysql-devel libjpeg-devel libpng-devel \
     ImageMagick ImageMagick-devel curl-devel libevent libevent-devel
 
@@ -48,7 +48,7 @@ Joruri Gw の実行に必要なパッケージをインストールします。
 必要なパッケージをダウンロードします。
 
   # cd /usr/local/src/
-  # wget http://joruri.org/download/jorurigw/jorurigw-2.1.1.tar.gz
+  # wget http://joruri.org/download/jorurigw/jorurigw-2.2.0.tar.gz
   # wget ftp://ftp.ruby-lang.org/pub/ruby/1.9/ruby-1.9.3-p194.tar.gz
   # wget http://memcached.googlecode.com/files/memcached-1.4.13.tar.gz
   # wget http://pyyaml.org/download/libyaml/yaml-0.1.4.tar.gz
@@ -63,7 +63,7 @@ Joruriユーザを作成します。
 Joruri Gwソースコードを設置します。
 
   # mkdir /var/share
-  # tar xvzf jorurigw-2.1.1.tar.gz -C /var/share
+  # tar xvzf jorurigw-2.2.0.tar.gz -C /var/share
   # chown -R joruri:joruri /var/share/jorurigw
 
 **********************************************************************
@@ -99,12 +99,12 @@ MySQLの設定を行います。
   [mysqld]
   character-set-server=utf8
   default-table-type=myisam
-  
+
   [client]
   default-character-set = utf8
   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   ## [mysqld]に設定を追加、[client]と設定を追加。
-  
+
 MySQLを起動します。
 
   # /usr/bin/mysql_install_db --user=mysql
@@ -378,7 +378,7 @@ rails runner -e development 'Scriptname' → rails runner -e production 'Scriptn
   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   25 3 * * * /usr/local/bin/ruby /var/share/jorurigw/script/rails runner -e development 'GWworkflow::Script::Task.delete'
   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
+
 削除期間が過ぎたアンケートを削除します。
 
   $ crontab -e

@@ -436,10 +436,13 @@ class Doclibrary::Admin::DocsController < Gw::Controller::Admin::Base
     when 'DRAFT', 'PUBLISH'
       item.and 'doclibrary_view_acl_files.section_code', Site.parent_user_groups.map{|g| g.code} unless @is_admin
     when 'RECOGNIZE'
-      item.and {|d|
-        d.or "doclibrary_view_acl_files.section_code", Site.user_group.code unless @is_admin
-        d.or "doclibrary_recognizers.code", Site.user.code
-      }
+      unless @is_admin
+        item.and {|d|
+          d.or "doclibrary_view_acl_files.section_code", Site.user_group.code
+          d.or "doclibrary_recognizers.code", Site.user.code
+          d.or "doclibrary_docs.creater_id", Site.user.code
+        }
+      end
     end
 
     item.and {|d|
@@ -696,12 +699,38 @@ class Doclibrary::Admin::DocsController < Gw::Controller::Admin::Base
     item.and 'doclibrary_docs.title_id', @title.id
     item.and "doclibrary_docs.state", 'recognize'
     item.and item.get_keywords_condition(params[:kwd], :title, :body) unless params[:kwd].blank?
+    item.and 'doclibrary_view_acl_folders.state', "public"
     item.and {|d|
-      d.or "doclibrary_docs.section_code", Site.user_group.code unless @is_admin
-      d.or "doclibrary_recognizers.code", Site.user.code
-      d.and 'doclibrary_view_acl_folders.state', "public"
+      d.or {|d2|
+        d2.and 'doclibrary_view_acl_docs.acl_flag', 0
+        d2.and 'doclibrary_view_acl_folders.state', "public"
+      }
+      if @is_admin
+        d.or {|d2|
+          d2.and 'doclibrary_view_acl_docs.acl_flag', 9
+          d2.and 'doclibrary_view_acl_folders.state', "public"
+        }
+      else
+        d.or {|d2|
+          d2.and 'doclibrary_view_acl_docs.acl_flag', 1
+          d2.and 'doclibrary_view_acl_docs.acl_section_code', Site.parent_user_groups.map{|g| g.code}
+          d2.and 'doclibrary_view_acl_folders.state', "public"
+        }
+        d.or {|d2|
+          d2.and 'doclibrary_view_acl_docs.acl_flag', 2
+          d2.and 'doclibrary_view_acl_docs.acl_user_code', Site.user.code
+          d2.and 'doclibrary_view_acl_folders.state', "public"
+        }
+      end
     }
-    item.join "INNER JOIN doclibrary_recognizers ON doclibrary_docs.id = doclibrary_recognizers.parent_id AND doclibrary_docs.title_id = doclibrary_recognizers.title_id INNER JOIN doclibrary_view_acl_folders ON doclibrary_docs.category1_id = doclibrary_view_acl_folders.id"
+    unless @is_admin
+      item.and {|d|
+        d.or "doclibrary_docs.section_code", Site.user_group.code
+        d.or "doclibrary_recognizers.code", Site.user.code
+        d.or "doclibrary_docs.creater_id", Site.user.code
+      }
+    end
+    item.join "INNER JOIN doclibrary_recognizers ON doclibrary_docs.id = doclibrary_recognizers.parent_id AND doclibrary_docs.title_id = doclibrary_recognizers.title_id INNER JOIN doclibrary_view_acl_folders ON doclibrary_docs.category1_id = doclibrary_view_acl_folders.id INNER JOIN doclibrary_view_acl_docs ON doclibrary_docs.id = doclibrary_view_acl_docs.id "
     item.group_by 'doclibrary_docs.id'
     item.order 'latest_updated_at DESC'
     item.page params[:page], params[:limit]
@@ -808,9 +837,13 @@ class Doclibrary::Admin::DocsController < Gw::Controller::Admin::Base
           tree += "-" * (item.level_no - 2) if 0 < (item.level_no - 2)
           @group_levels << [tree + item.code + item.name, item.code] if mode == 'group'
           @category_levels << [tree + item.name, item.id] if 1 <= item.level_no unless mode == 'group'
-          if item.children.size > 0
-              set_folder_hash(mode, item.children)
+          case mode
+          when 'group'
+            children = item.children
+          when 'category'
+            children = item.readable_public_children(@is_admin)
           end
+          set_folder_hash(mode, children)
         end
       end
     end

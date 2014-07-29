@@ -1,7 +1,12 @@
 # -*- encoding: utf-8 -*-
 class Gwqa::Script::Annual
 
-  def self.renew
+  def self.renew(start_date = nil)
+    if start_date.blank?
+      return false
+    else
+      @start_date = start_date
+    end
     p "質問管理(Q&A)年次切替所属情報更新 開始:#{Time.now}."
     renew_adms
     renew_admingrps_json
@@ -24,6 +29,7 @@ class Gwqa::Script::Annual
       item = Gwboard::RenewalGroup.new
       item.and :present_group_id, adm.group_id
       item.and :present_group_code, adm.group_code
+      item.and :start_date, @start_date
       group = item.find(:first, :order=> 'present_group_id, present_group_code')
       next if group.blank?
 
@@ -48,6 +54,7 @@ class Gwqa::Script::Annual
         renewal = Gwboard::RenewalGroup.new
         renewal.and :present_group_id, group[1]
         renewal.and :present_group_code, group[0]
+        renewal.and :start_date, @start_date
         if item = renewal.find(:first)
           group[0] = item.incoming_group_code
           group[1] = item.incoming_group_id.to_s
@@ -80,6 +87,7 @@ class Gwqa::Script::Annual
       item = Gwboard::RenewalGroup.new
       item.and :present_group_id, role.group_id
       item.and :present_group_code, role.group_code
+      item.and :start_date, @start_date
       group = item.find(:first, :order=> 'present_group_id, present_group_code')
       next if group.blank?
 
@@ -104,6 +112,7 @@ class Gwqa::Script::Annual
         renewal = Gwboard::RenewalGroup.new
         renewal.and :present_group_id, group[1]
         renewal.and :present_group_code, group[0]
+        renewal.and :start_date, @start_date
         if item = renewal.find(:first)
           group[0] = item.incoming_group_code
           group[1] = item.incoming_group_id.to_s

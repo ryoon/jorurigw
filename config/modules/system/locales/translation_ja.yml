@@ -1,7 +1,7 @@
-ja: 
-  activerecord: 
+ja:
+  activerecord:
     attributes:
-      system/group: 
+      system/group:
         state: "状態"
         created_at: "作成日時"
         updated_at: "更新日時"
@@ -74,3 +74,11 @@ ja:
         name: "名称"
         name_en: "名称（英語）"
         sort_no: "並び順"
+      system/group_change_date:
+        start_at: 開始日
+        created_at: 作成日
+        created_user: 作成者
+        created_group: 作成者所属
+        updated_at: 更新日
+        updated_user: 更新者
+        updated_group: 更新者所属

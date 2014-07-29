@@ -9,7 +9,7 @@
   if @sp_mode == :schedule
     day_link = %Q(/gw/schedules/#{(week_add_day).strftime('%Y%m%d')}#{@link_params})
   else
-    day_link = %Q(/gw/schedule_props/#{(week_add_day).strftime('%Y%m%d')}?s_genre=#{@genre}&cls=#{@cls}&prop_id=#{params[:prop_id]}&type_id=#{params[:type_id]})
+    day_link = %Q(/gw/schedule_props/#{(week_add_day).strftime('%Y%m%d')}?s_genre=#{@genre}&cls=#{@cls}&prop_id=#{params[:prop_id]}&type_id=#{params[:type_id]}&s_other_admin_gid=#{params[:s_other_admin_gid]})
   end
   %>
   <th class="<%= class_str -%>"><span class="nobr">

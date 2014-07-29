@@ -30,10 +30,9 @@ module Doclibrary::Admin::DocsHelper
     else
       state = prms[:state]
     end
-    #raise "cat=#{prms[:cat]}, gcd= #{prms[:gcd]}"
-    ret = "#{doclibrary_docs_path}/#{item.id}/?title_id=#{item.title_id}&cat=#{prms[:cat]}&gcd=#{prms[:gcd]}" if state == 'GROUP'
-    ret = "#{doclibrary_docs_path}/#{item.id}/?title_id=#{item.title_id}&cat=#{prms[:cat]}&gcd=#{prms[:gcd]}" if state == 'DATE'
-    ret = "#{doclibrary_docs_path}/#{item.id}/?title_id=#{item.title_id}&gcd=#{prms[:gcd]}" unless state == 'GROUP' unless state == 'DATE'
+    ret = "#{doclibrary_docs_path}/#{item.id}/?title_id=#{item.title_id}" if state == 'GROUP'
+    ret = "#{doclibrary_docs_path}/#{item.id}/?title_id=#{item.title_id}" if state == 'DATE'
+    ret = "#{doclibrary_docs_path}/#{item.id}/?title_id=#{item.title_id}&cat=#{item.category1_id}" unless state == 'GROUP' unless state == 'DATE'
     return ret
   end
 

@@ -56,7 +56,7 @@ week_cnt = 0
             <td class="<%= class_str -%>">
             <% @schedules.each_with_index do |schedule, j| %> 
             <%
-            schedule_id = "sche#{schedule.id}_#{i + j + week_cnt}"
+            schedule_id = "sche#{schedule.id}_#{i}_#{j}_#{week_cnt}"
             if schedule.date_between(week_add_day)
             %>
 
@@ -102,7 +102,7 @@ week_cnt = 0
             <%
               end
             elsif @sp_mode == :prop
-              if @edit
+              if @is_gw_admin || (@edit && @prop.reserved_state != 0 && @prop.delete_state != 1)
             %>
               <%= show_schedule_edit_icon(week_add_day, :prop_id=>params[:prop_id], :s_genre=>params[:s_genre]) -%>
             <%

@@ -51,42 +51,35 @@ class Gw::PrefDirector < Gw::Database
   def save_with_rels(params, mode, options={})
     users = ::JsonParser.new.parse(params[:item]['schedule_users_json'])
 
-    if users.blank?
-      self.errors.add_to_base "ユーザーが一件も登録されていません。"
-    else
-      users = ::JsonParser.new.parse(params[:item]['schedule_users_json'])
-      users.each_with_index {|user, i|
-        if user[0].blank? || user[0] == "0"
-          num = "0"
-        else
-          num = user[0]
-        end
-        if params["sort_no_#{user[1]}_#{num}"].blank?
-          params["sort_no_#{user[1]}_#{num}"] = 0
-        elsif /^[0-9]+$/ =~ params["sort_no_#{user[1]}_#{num}"] && params["sort_no_#{user[1]}_#{num}"].to_i >= 0 && params["sort_no_#{user[1]}_#{num}"].to_i <= 9999
-        else
-          self.errors.add :"関連ユーザーの並び順", "を確認してください。"
-          break
-        end
-      }
-      users = ::JsonParser.new.parse(params[:item]['schedule_users_json'])
-      users.each_with_index {|user, i|
-        if user[0].blank? || user[0] == "0"
-          num = "0"
-        else
-          num = user[0]
-        end
-        if params["title_#{user[1]}_#{num}"].blank?
-          self.errors.add :"関連ユーザーの役職", "を入力してください。"
-          break
-        end
-      }
-    end
+    users.each_with_index {|user, i|
+      if user[0].blank? || user[0] == "0"
+        num = "0"
+      else
+        num = user[0]
+      end
+      if params["sort_no_#{user[1]}_#{num}"].blank?
+        params["sort_no_#{user[1]}_#{num}"] = 0
+      elsif /^[0-9]+$/ =~ params["sort_no_#{user[1]}_#{num}"] && params["sort_no_#{user[1]}_#{num}"].to_i >= 0 && params["sort_no_#{user[1]}_#{num}"].to_i <= 9999
+      else
+        self.errors.add :"関連ユーザーの並び順", "を確認してください。"
+        break
+      end
+    }
+    users.each_with_index {|user, i|
+      if user[0].blank? || user[0] == "0"
+        num = "0"
+      else
+        num = user[0]
+      end
+      if params["title_#{user[1]}_#{num}"].blank?
+        self.errors.add :"関連ユーザーの役職", "を入力してください。"
+        break
+      end
+    }
+    
     if self.errors.size > 0
       return false
     else
-
-      users = ::JsonParser.new.parse(params[:item]['schedule_users_json'])
       users.each_with_index {|user, i|
         if user[0].blank? || user[0] == "0"
           num = "0"

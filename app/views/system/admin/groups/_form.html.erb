@@ -43,7 +43,7 @@
   </tr>
   <tr>
     <th>親グループ</th>
-    <td><%= @item.parent.ou_name %></td>
+    <td><%= safe{@item.parent.ou_name} %></td>
   </tr>
 </table>
 <%= raw(gw_js_include_full) %>

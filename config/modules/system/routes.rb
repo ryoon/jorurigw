@@ -1,7 +1,7 @@
 JoruriGw::Application.routes.draw do
   mod = "system"
   scp = "admin"
-  
+
   namespace mod do
     scope :module => scp do
       ## admin
@@ -54,14 +54,16 @@ JoruriGw::Application.routes.draw do
       end
       resources :custom_groups do
         collection do
-          get :create_all_group, :synchro_all_group, :user_add_sort_no
+          get :create_all_group, :synchro_all_group, :user_add_sort_no, :all_groups_disabled_delete
           put :sort_update
           post :get_users
         end
       end
+      resources :group_change_dates
       resources :group_changes do
         collection do
-          get :prepare, :reflects, :pickup, :fixed, :csv, :deletes, :prepare_run, :reflects_run, :pickup_run, :fixed_run, :csv_run, :deletes_run
+          get :reflect, :set_incoming_group_id, :csvup
+          post :csvup
         end
       end
       resources :group_change_pickups
@@ -79,11 +81,11 @@ JoruriGw::Application.routes.draw do
       resources :users_group_history_temporaries
     end
   end
-  
+
   ##API
   match 'api/checker'         => 'system/admin/api#checker'
   match 'api/checker_login'   => 'system/admin/api#checker_login'
   match 'api/air_sso'         => 'system/admin/api#sso_login'
-  
+
   match ':controller(/:action(/:id))(.:format)'
 end

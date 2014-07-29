@@ -7,6 +7,13 @@ module System::Model::Base
     mod.before_save :after_validation
   end
 
+
+  def locale(name)
+    label = I18n.t name, :scope => [:activerecord, :attributes, self.class.to_s.underscore]
+    return label =~ /^translation missing:/ ? name.to_s.humanize : label
+  end
+
+
   def after_validation
     return errors.size == 0 ? true : false
   end
@@ -59,13 +66,13 @@ module System::Model::Base
       cb_extention[:order] = default
     end
   end
-  
+
   def group_by(columns)
     cb_extention[:group] = [] unless cb_extention[:group]
     cb_extention[:group] << columns
     cb_extention[:group] = cb_extention[:group].uniq
   end
-  
+
   def page(page, limit = 30)
     if limit.to_s == '0'
       cb_extention.delete :page

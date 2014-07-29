@@ -21,6 +21,8 @@ class System::PrivName < ActiveRecord::Base
     return true
   end
   def deletable?
+    return false if System::Role.find_by_priv_user_id(id)
+    return false if System::RoleNamePriv.find_by_priv_id(id)
     return true
   end
 

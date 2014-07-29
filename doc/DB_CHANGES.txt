@@ -1,3 +1,27 @@
+2.2.0
+USE `xxxxxxx_jgw_gw`;
+ALTER TABLE gwboard_renewal_groups ADD start_date datetime;
+
+USE `xxxxxxx_jgw_core`;
+CREATE TABLE IF NOT EXISTS `system_group_change_dates` (
+  id int(11) NOT NULL AUTO_INCREMENT,
+  created_at datetime,
+  created_user text,
+  created_group text,
+  updated_at datetime,
+  updated_user text,
+  updated_group text,
+  deleted_at datetime,
+  deleted_user text,
+  deleted_group text,
+  start_at datetime,
+  PRIMARY KEY (`id`)
+) DEFAULT CHARSET=utf8;
+
+2.1.2
+ 変更なし
+
+
 2.1.1
  変更なし
 
@@ -152,11 +176,11 @@ CREATE TABLE IF NOT EXISTS `gw_workflow_route_steps` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
-  
+
   `doc_id` int(11) DEFAULT NULL,
-  
+
   `number` int(11) DEFAULT NULL,
-  
+
   PRIMARY KEY (`id`)
 )   DEFAULT CHARSET=utf8;
 
@@ -164,16 +188,16 @@ CREATE TABLE IF NOT EXISTS `gw_workflow_route_users` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
-  
+
   `step_id` int(11) DEFAULT NULL,
   `decided_at` datetime DEFAULT NULL,
   `state` varchar(255) DEFAULT NULL,
   `comment` text,
-  
+
   `user_id` int(11) DEFAULT NULL,
   `user_name` text,
   `user_gname` text,
-  
+
   PRIMARY KEY (`id`)
 )   DEFAULT CHARSET=utf8;
 
@@ -195,11 +219,11 @@ CREATE TABLE IF NOT EXISTS `gw_workflow_custom_route_steps` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
-  
+
   `custom_route_id` int(11) DEFAULT NULL,
-  
+
   `number` int(11) DEFAULT NULL,
-  
+
   PRIMARY KEY (`id`)
 )   DEFAULT CHARSET=utf8;
 
@@ -207,13 +231,13 @@ CREATE TABLE IF NOT EXISTS `gw_workflow_custom_route_users` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
-  
+
   `step_id` int(11) DEFAULT NULL,
-  
+
   `user_id` int(11) DEFAULT NULL,
   `user_name` text,
   `user_gname` text,
-  
+
   PRIMARY KEY (`id`)
 )   DEFAULT CHARSET=utf8;
 

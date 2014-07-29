@@ -7,6 +7,7 @@ class Gwcircular::Doc < Gw::Database
   include Gwcircular::Model::Systemname
 
 #  belongs_to :status,    :foreign_key => :state,        :class_name => 'Sys::Base::Status'
+  has_many :files, :foreign_key => :parent_id, :class_name => 'Gwcircular::File', :dependent => :destroy
   belongs_to :control,   :foreign_key => :title_id,     :class_name => 'Gwcircular::Control'
 
   validates_presence_of :state, :able_date, :expiry_date

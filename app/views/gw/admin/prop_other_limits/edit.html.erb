@@ -12,7 +12,7 @@
     <%= render(:partial => 'titleline') %>
     <div class="pieceBodyBody">
 
-      <%= form_for :item, :url => "/gw/prop_other_limits", :html => {:method => :post} do |f| %>
+      <%= form_for :item, :url => {:action => :update}, :html => {:method => :put} do |f| %>
         <%= render :partial => 'form', :locals => {:f => f} %>
         <div class="preserve">
           <%= f.submit '保存' %>
