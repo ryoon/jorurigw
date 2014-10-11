@@ -262,7 +262,7 @@ class System::CustomGroup < ActiveRecord::Base
     end
     if options[:is_default] == 1
       cond+= " AND system_custom_groups.is_default = 1 " +
-              " AND system_custom_groups.name = '#{Site.user.groups[0].name}'"
+              " AND system_custom_groups.name = #{ActiveRecord::Base.send(:sanitize_sql_array, ["?", Site.user.groups[0].name])}"
     end
     unless options[:sort_prefix].blank?
       cond+= " AND system_custom_groups.sort_prefix = '#{options[:sort_prefix]}'"
@@ -271,6 +271,8 @@ class System::CustomGroup < ActiveRecord::Base
     if options[:first] == 1
       row_option = :first
     end
+    #cond_sql = ActiveRecord::Base.send(:sanitize_sql_array, cond)
+    dump cond
     select = "distinct id, parent_id, owner_uid, owner_gid, state, name, name_en, sort_no, sort_prefix, is_default"
     self.find( row_option,  :select => select,
       :order => 'system_custom_groups.sort_prefix, system_custom_groups.sort_no',

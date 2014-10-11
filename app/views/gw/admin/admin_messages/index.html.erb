@@ -1,10 +1,3 @@
-<%
-  options={:table_name=>"gw_admin_messages",:action=>"index",:link_to_show=>1}
-  options['field_td_criteria']={
-    'body'=>Proc.new{|item| item.body }
-  }
-%>
-
 <div class="piece AdminMessage">
 <%= render :partial => 'header_str' %>
 
@@ -12,7 +5,33 @@
 <%= render :partial => 'header' %>
 
 <div class="explain">表示対象となるメッセージは最大２行です。　並び順が同じときは、更新日時の降順で表示します。</div>
-<%= raw(table_to_index2 @items, options) %>
+
+<table class="index">
+  <colgroup class="action"></colgroup>
+  <colgroup class="mode"></colgroup>
+  <colgroup class="state"></colgroup>
+  <colgroup class="sort_no"></colgroup>
+  <colgroup class="body"></colgroup>
+  <colgroup class="updated_at"></colgroup>
+  <tr>
+    <th></th>
+    <th>表示モード</th>
+    <th>表示</th>
+    <th>表示順</th>
+    <th>メッセージ</th>
+    <th>更新日</th>
+  </tr>
+  <% @items.each do |item| %>
+  <tr class="<%= cycle('', 'cycle') %>">
+    <td><%= link_to '詳細', url_for(:action => :show, :id => item.id) %></td>
+    <td><%= item.mode_label %></td>
+    <td><%= item.state_label %></td>
+    <td><%= item.sort_no %></td>
+    <td><%=raw item.body %></td>
+    <td><%= item.updated_at.strftime('%Y-%m-%d %H:%M') if item.updated_at %></td>
+  </tr>
+  <% end %>
+</table>
 
 </div>
 </div><!--piece admin_messages-->

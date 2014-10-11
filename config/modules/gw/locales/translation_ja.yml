@@ -49,6 +49,7 @@ ja:
         st_at: 年月日
         title: 休日名
       gw/admin_message:
+        mode: 表示モード
         state: 表示
         sort_no: 表示順
         body: メッセージ
@@ -63,6 +64,7 @@ ja:
         tab_keys: タブキー
       gw/edit_link_piece:
         name: 表示名
+        mode: 表示モード
         field_account: アカウント項目名
         field_pass: パスワード項目名
         role_name_id: 対象機能

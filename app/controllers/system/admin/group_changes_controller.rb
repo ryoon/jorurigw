@@ -142,17 +142,20 @@ class System::Admin::GroupChangesController < Gw::Controller::Admin::Base
     item = Gwboard::RenewalGroup.new
     item.and :start_date, start_at
     items = item.find(:all)
+    return false if items.blank?
     items.each do |p_item|
-      dump p_item.incoming_group_id
       next unless p_item.incoming_group_id.blank?
       incoming_group = System::Group.new
       incoming_group.and "sql", "end_at IS NULL"
       incoming_group.and :state , "enabled"
       incoming_group.and :code, p_item.incoming_group_code
       i_group = incoming_group.find(:first)
-      next if i_group.blank?
-      p_item.incoming_group_id = i_group.id
-      p_item.save(:validate => false)
+      if i_group.blank?
+        return false
+      else
+        p_item.incoming_group_id = i_group.id
+        p_item.save(:validate => false)
+      end
     end
 
     Gwbbs::Script::Annual.renew(start_at)
@@ -168,8 +171,13 @@ class System::Admin::GroupChangesController < Gw::Controller::Admin::Base
   end
 
   def reflect
-    do_annual_change(@start_at)
-    flash[:notice]="作業を終了しました。"
+    msg = ""
+    if do_annual_change(@start_at)
+      msg = "作業を終了しました。"
+    else
+      msg = "組織変更情報が存在しないか、新所属の設定に誤りがあります。"
+    end
+    flash[:notice]=msg
     return redirect_to url_for({:action=>:index})
   end
 

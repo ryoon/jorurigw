@@ -1,0 +1,7 @@
+<%= required_head %>
+<table class="show">
+  <tr>
+    <th>表示モード<%= required('※') %></th>
+    <td><%= radio f, :options, @item.portal_mode_options, :class => 'state' %></td>
+  </tr>
+</table>

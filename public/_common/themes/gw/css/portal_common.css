@@ -135,4 +135,36 @@ table.index td.down_last {
 }
 
 
-
+/* 災害モード
+----------------------------------------------------*/
+#navi #naviBody .emergency div {
+  background-color: #f02b00;
+  color: #fff;
+  font-size: 120%;
+  margin: 15px auto;
+  padding: 5px;
+  text-align: center;
+  width: 97%;
+}
+#content #contentBody .emergency {
+  background-image: url("/_common/themes/gw/files/title/tl_board_emergency.gif");
+}
+#content #contentBody .emergency .pieceHeader {
+  background-image: url("/_common/themes/gw/files/title/tl_re_emergency.gif");
+}
+#content #contentBody .emergency .pieceBody {
+  border-bottom: 1px solid #f02b00;
+  border-left: 1px solid #f02b00;
+  border-right: 1px solid #f02b00;
+}
+#menuBody .headLine .emergency {
+  border-bottom: 1px solid #f02b00;
+  border-left: 1px solid #f02b00;
+  border-right: 1px solid #f02b00;
+}
+#menuBody .headLine .emergency h3.fq {
+  background-image: url("/_common/themes/gw/files/title/tl_link_emergency.gif");
+}
+#menuBody .headLine .emergency .repeat {
+  background-image: url("/_common/themes/gw/files/title/tl_re_emergency.gif");
+}

@@ -69,7 +69,8 @@ class Digitallibrary::Control < Gw::Database
     end
     save_adms
     unless self.dsp_admin_name == @dsp_admin_name
-      strsql = "UPDATE digitallibrary_controls SET dsp_admin_name = '#{@dsp_admin_name}' WHERE id ='#{self.id}'"
+      args = ["UPDATE digitallibrary_controls SET dsp_admin_name = ? WHERE id =?", @dsp_admin_name, self.id]
+      strsql = ActiveRecord::Base.send(:sanitize_sql_array, args)
       connection.execute(strsql)
     end
   end

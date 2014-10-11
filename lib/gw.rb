@@ -474,7 +474,9 @@ class Gw
     editor_rss          = System::Model::Role.get(1, uid ,'rss_reader', 'admin')
     editor_blogparts    = System::Model::Role.get(1, uid ,'blog_part', 'admin')
     editor_ind_portals  = System::Model::Role.get(1, uid ,'ind_portal', 'admin')
-    editor = editor_users || editor_tabs  || editor_rss || editor_blogparts || editor_ind_portals
+    admin_disaster      = Gw::AdminMode.is_disaster_admin?( uid )
+    editor_disaster     = Gw::AdminMode.is_disaster_editor?( uid )
+    editor = editor_users || editor_tabs  || editor_rss || editor_blogparts || editor_ind_portals || admin_disaster || editor_disaster
     return editor
   end
 

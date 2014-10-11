@@ -8,9 +8,9 @@ class Gw::Admin::Piece::AdminMessagesController < ApplicationController
   end
   
   def index
-    item    = Gw::AdminMessage.new
-    cond    = 'state = 1'
-    order   = 'state ASC , sort_no ASC , updated_at DESC'
-    @items  = item.find(:all, :conditions => cond, :order => order)
+    @portal_mode = Gw::AdminMode.portal_mode
+
+    @items = Gw::AdminMessage.where(:state => 1, :mode => @portal_mode.options == '3' ? [1,3] : [1,2])
+      .order('state ASC, sort_no ASC, updated_at DESC').all
   end
 end

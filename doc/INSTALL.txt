@@ -1,4 +1,4 @@
-## Joruri Gw 2.2.0 インストールマニュアル                   2013.08.09
+## Joruri Gw 2.3.0 インストールマニュアル                   2014.10.02
 
 **********************************************************************
  1 想定環境
@@ -48,8 +48,8 @@ Joruri Gw の実行に必要なパッケージをインストールします。
 必要なパッケージをダウンロードします。
 
   # cd /usr/local/src/
-  # wget http://joruri.org/download/jorurigw/jorurigw-2.2.0.tar.gz
-  # wget ftp://ftp.ruby-lang.org/pub/ruby/1.9/ruby-1.9.3-p194.tar.gz
+  # wget http://joruri.org/download/jorurigw/jorurigw-2.3.0.tar.gz
+  # wget ftp://ftp.ruby-lang.org/pub/ruby/1.9/ruby-1.9.3-p547.tar.gz
   # wget http://memcached.googlecode.com/files/memcached-1.4.13.tar.gz
   # wget http://pyyaml.org/download/libyaml/yaml-0.1.4.tar.gz
 
@@ -63,7 +63,7 @@ Joruriユーザを作成します。
 Joruri Gwソースコードを設置します。
 
   # mkdir /var/share
-  # tar xvzf jorurigw-2.2.0.tar.gz -C /var/share
+  # tar xvzf jorurigw-2.3.0.tar.gz -C /var/share
   # chown -R joruri:joruri /var/share/jorurigw
 
 **********************************************************************
@@ -146,15 +146,15 @@ ImageMagickのインストールは yum利用に移行しました。
 Rubyをインストールします。
 
   # cd /usr/local/src
-  # tar xvzf ruby-1.9.3-p194.tar.gz
-  # cd ruby-1.9.3-p194
+  # tar xvzf ruby-1.9.3-p547.tar.gz
+  # cd ruby-1.9.3-p547
   # ./configure -prefix=/usr/local
   # make
   # make install
 
 インストール結果を確認します。
   # /usr/local/bin/ruby -v
-   => ruby 1.9.3p194 (2012-04-20 revision 35410) [i686-linux]
+   => ruby 1.9.3p547 (2014-05-14 revision 45962) [i686-linux]
 
 ======================================================================
  7.2 Phusion Passenger のインストール

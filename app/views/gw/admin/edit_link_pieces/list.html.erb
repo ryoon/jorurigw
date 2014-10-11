@@ -20,6 +20,7 @@
   <th class="title">表示名</th>
   <th class="ext">接続先区分</th>
   <th class="sso">SSO利用</th>
+  <th class="mode">表示モード</th>
   </tr>
   <% @items.each do |item| %>
   <%# タブ表示 %>
@@ -78,6 +79,7 @@
       <td><span style="margin-left:2em;"><span <%= blk_name_color %> ><%=raw blk.name %></span></span></td>
       <td><%= Gw::EditLinkPiece.external_show(blk.class_external) %></td>
       <td><%= Gw::EditLinkPiece.sso_show(blk.class_sso) %></td>
+      <td><%= blk.mode_label %></td>
     </tr>
       <% blk.get_child.each do |lnk| %>
       <%# リンク表示 %>
@@ -107,6 +109,7 @@
         <td><span style="margin-left:4em;"><span <%= lnk_name_color %> ><%=raw lnk.name %></span></span></td>
         <td><%= Gw::EditLinkPiece.external_show(lnk.class_external) %></td>
         <td><%= Gw::EditLinkPiece.sso_show(lnk.class_sso) %></td>
+        <td><%= lnk.mode_label %></td>
       </tr>
       <% end %><%# do lnk %>
     <% end %><%# do blk %>

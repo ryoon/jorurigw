@@ -26,8 +26,10 @@ class Attaches::Admin::GwfaqController < Gw::Controller::Admin::Base
     get_readable_flag unless @is_readable
     return authentication_error(403) unless @is_readable
 
-    chk = request.headers['HTTP_USER_AGENT']
-    chk = chk.index("MSIE")
+    #IE判定
+    user_agent = request.headers['HTTP_USER_AGENT']
+    chk = user_agent.index("MSIE")
+    chk = user_agent.index("Trident") if chk.blank?
     if chk.blank?
       item_filename = item.filename
     else

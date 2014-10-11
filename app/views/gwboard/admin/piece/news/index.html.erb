@@ -1,8 +1,8 @@
 <% unless @title.blank? %>
-<div class="piece gadget bbs">
+<div class="piece gadget bbs <%= 'emergency' if @portal_mode.options == '3' && @portal_disaster_bbs && @title.id == @portal_disaster_bbs.options.to_i %>">
 <div class="pieceHeader"><h3><%= @title.title %>新着情報
  <% if @is_writable %>
-  <span class="btNew"><%= link_to '新規作成', '/gwbbs/docs/new?title_id=1' %></span>
+  <span class="btNew"><%= link_to '新規作成', "/gwbbs/docs/new?title_id=#{@title.id}" %></span>
  <% end %>
   </h3></div>
 <div class="pieceBody">
@@ -35,7 +35,7 @@ if @items.length > 0
         comment_str = %Q(<span>#{item.comment.count}</span>)
       end
     end
-    
+
     if item.createdate.blank?
       new_mark_str  = %Q(<span></span>)
     else
@@ -51,7 +51,7 @@ if @items.length > 0
         new_mark_str  = %Q(<span></span>)
       end
     end
-    
+
     concat raw %Q(<tr>)
     concat raw %Q(<td class="bbsImportant">#{importance_str}</td>) if @title.importance == 1
     concat raw %Q(<td class="title">#{link_to(hbr(item.title), item.portal_show_path + gwbbs_params_set)}#{new_mark_str}</td>)

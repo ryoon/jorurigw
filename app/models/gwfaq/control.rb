@@ -6,10 +6,10 @@ class Gwfaq::Control < Gw::Database
   include Gwboard::Model::AttachFile
   include Gwfaq::Model::Systemname
   include System::Model::Base::Status
-  
+
   has_many :adm, :foreign_key => :title_id, :class_name => 'Gwfaq::Adm', :dependent => :destroy
   has_many :role, :foreign_key => :title_id, :class_name => 'Gwfaq::Role', :dependent => :destroy
-  
+
   validates_presence_of :state, :title
   validates_presence_of :upload_graphic_file_size_capacity,:upload_document_file_size_capacity, :upload_graphic_file_size_max,:upload_document_file_size_max
   after_validation :validate_params
@@ -38,7 +38,8 @@ class Gwfaq::Control < Gw::Database
     end
     save_adms
     unless self.dsp_admin_name == @dsp_admin_name
-      strsql = "UPDATE gwfaq_controls SET dsp_admin_name = '#{@dsp_admin_name}' WHERE id ='#{self.id}'"
+      args = ["UPDATE gwfaq_controls SET dsp_admin_name = ? WHERE id =?", @dsp_admin_name, self.id]
+      strsql = ActiveRecord::Base.send(:sanitize_sql_array, args)
       connection.execute(strsql)
     end
   end

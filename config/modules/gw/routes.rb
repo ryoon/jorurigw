@@ -62,6 +62,7 @@ JoruriGw::Application.routes.draw do
       resources :year_fiscal_jps
       resources :year_mark_jps
       resources :admin_messages
+      resources :admin_modes
       resources :countings do
         collection do
           get :memos,:mobiles

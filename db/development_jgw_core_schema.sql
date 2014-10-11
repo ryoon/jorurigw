@@ -966,6 +966,26 @@ CREATE TABLE IF NOT EXISTS `system_user_temporaries` (
 -- --------------------------------------------------------
 
 --
+-- テーブルの構造 `system_group_change_dates`
+--
+
+CREATE TABLE IF NOT EXISTS `system_group_change_dates` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `created_at` datetime,
+  `created_user` text,
+  `created_group` text,
+  `updated_at` datetime,
+  `updated_user` text,
+  `updated_group` text,
+  `deleted_at` datetime,
+  `deleted_user` text,
+  `deleted_group` text,
+  `start_at` datetime,
+  PRIMARY KEY (`id`)
+) DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+--
 -- テーブルの構造 `system_authorizations`
 --
 DROP TABLE IF EXISTS `system_authorizations`;

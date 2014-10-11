@@ -1,5 +1,5 @@
 <% if @items.length > 0 %>
-<div id="message">
+<div id="message" class="<%= 'emergency' if @portal_mode.options == '3' %>">
   <% if  @items.length == 1 %>
     <div><%=raw @items[0].body %></div>
   <% else %>

@@ -1,10 +1,3 @@
-<%
-  options={:table_name=>"gw_admin_messages",:action=>"show"}
-  options['field_td_criteria']={
-    'body'=>Proc.new{|item| item.body }
-  }
-%>
-
 <div class="piece AdminMessage">
 <%= render :partial => 'header_str' %>
 
@@ -16,7 +9,28 @@
  <span class=""><%=  link_to '管理者設定へ >>', "/gw/admin_settings" %></span>
 </div>
 
-<%= raw(table_to_show2 @item, options) %>
+<table class="show">
+  <tr>
+    <th>表示モード</th>
+    <td><%= @item.mode_label %></td>
+  </tr>
+  <tr>
+    <th>表示</th>
+    <td><%= @item.state_label %></td>
+  </tr>
+  <tr>
+    <th>表示順</th>
+    <td><%= @item.sort_no %></td>
+  </tr>
+  <tr>
+    <th>メッセージ</th>
+    <td><%=raw @item.body %></td>
+  </tr>
+  <tr>
+    <th>更新日</th>
+    <td><%= @item.updated_at.strftime('%Y-%m-%d %H:%M') if @item.updated_at %></td>
+  </tr>
+</table>
 
 <!--戻るボタン-->
 <div class="btReturn">

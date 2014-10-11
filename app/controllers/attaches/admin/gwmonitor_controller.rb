@@ -23,8 +23,10 @@ class Attaches::Admin::GwmonitorController < ApplicationController
     return http_error(404) unless item
     return http_error(404) unless params[:name] == sprintf('%08d',Util::CheckDigit.check(item.parent_id))
 
-    chk = request.headers['HTTP_USER_AGENT']
-    chk = chk.index("MSIE")
+    #IE判定
+    user_agent = request.headers['HTTP_USER_AGENT']
+    chk = user_agent.index("MSIE")
+    chk = user_agent.index("Trident") if chk.blank?
     if chk.blank?
       item_filename = item.filename
     else

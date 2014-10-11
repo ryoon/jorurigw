@@ -34,7 +34,7 @@
 <!--ここからナビ2-->
 <div id="navi2">
 <div id="navi2Body">
-<%= render_component :controller => 'gw/admin/piece/schedules', :action => 'index', :params => {:s_date => params[:s_date]} %>
+<%= render_component :controller => 'gw/admin/piece/schedules', :action => 'index', :params => {:s_date => params[:s_date]} if @portal_mode.options == '2' %>
 </div>
 </div>
 <!--ここまでナビ2-->
@@ -47,8 +47,9 @@
 <div id="contentContainer">
 <div id="contentBody">
 <%= render_component :controller => 'gw/admin/piece/reminder', :action => 'index' %>
-<%= render_component :controller => 'gwboard/admin/piece/syntheses', :action => 'index' %>
+<%= render_component :controller => 'gwboard/admin/piece/syntheses', :action => 'index' if @portal_mode.options == '2' %>
 <%= render_component :controller => 'gwboard/admin/piece/news', :action => 'index', :piece_param => 'gwbbs_1_10' %>
+<%= render_component :controller => 'gwboard/admin/piece/news', :action => 'index', :piece_param => "gwbbs_#{@portal_disaster_bbs.options}_10" if @portal_mode.options == '3' %>
 </div>
 </div>
 </div>

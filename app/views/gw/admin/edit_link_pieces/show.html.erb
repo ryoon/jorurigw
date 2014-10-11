@@ -40,8 +40,13 @@
   </tr>
   <% end %>
 </table>
+
 <% if @parent.level_no >= 2 %>
 <table class="show">
+  <tr>
+    <th>表示モード</th>
+    <td><%= @item.mode_label %></td>
+  </tr>
   <tr>
     <th>CSS（アイコン）</th>
     <td><%= @item.icon.css_name if !@item.icon.blank? %></td>

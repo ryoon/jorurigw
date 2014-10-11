@@ -32,6 +32,12 @@ class System::Group < ActiveRecord::Base
     end
   end
 
+  validates_each :code do |record, attr, value|
+    if value.present? && System::User.valid_user_code_characters?(value) == false
+      record.errors.add attr, "は、半角英数字、および半角アンダーバーのみのデータとしてください。"
+    end
+  end
+
   validates_each :start_at do |record, attr, value|
     if value.present?
       record.errors.add attr, 'には、本日以前の日付を入力してください。'  if Time.local(value.year, value.month, value.day, 0, 0, 0) > Time.local(Time.now.year, Time.now.month, Time.now.day, 0, 0, 0)
@@ -77,7 +83,7 @@ class System::Group < ActiveRecord::Base
     end
     return false
   end
-  
+
   def self.level_show(level_no)
     if level_no == 1
       return "root"
@@ -255,7 +261,7 @@ class System::Group < ActiveRecord::Base
     selects += groups_select.map{|group| [ Gw.trim(group.ou_name), prefix+group.id.to_s]}
     return selects
   end
-  
+
   def csvget_data
     csv = Array.new
     csv << System::UsersGroup.state_show(self.state)

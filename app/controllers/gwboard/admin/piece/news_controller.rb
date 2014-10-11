@@ -20,6 +20,9 @@ class Gwboard::Admin::Piece::NewsController < ApplicationController
   end
 
   def index
+    @portal_mode = Gw::AdminMode.portal_mode
+    @portal_disaster_bbs = Gw::AdminMode.portal_disaster_bbs
+
     piece_parms = params[:piece_param].split(/_/)
     system = piece_parms[0]
     @system = system

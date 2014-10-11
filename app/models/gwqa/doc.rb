@@ -284,7 +284,8 @@ class Gwqa::Doc < Gwboard::CommonDb
 
   def set_title
     if self.doc_type == 0
-      strsql = "UPDATE gwqa_docs SET title = '#{self.title}' WHERE doc_type = 1 AND parent_id = #{self.id};"
+      args = ["UPDATE gwqa_docs SET title = ? WHERE doc_type = 1 AND parent_id = ?;", self.title, self.id]
+      strsql = ActiveRecord::Base.send(:sanitize_sql_array, args)
       connection.execute(strsql)
     else
       item = Gwqa::Doc.find_by_id(self.parent_id)

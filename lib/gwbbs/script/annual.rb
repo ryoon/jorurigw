@@ -145,6 +145,7 @@ class Gwbbs::Script::Annual
         renewal = Gwboard::RenewalGroup.new
         renewal.and :present_group_id, group[1]
         renewal.and :present_group_code, group[0]
+        renewal.and :start_date, @start_date
         if item = renewal.find(:first)
           group[0] = item.incoming_group_code
           group[1] = item.incoming_group_id.to_s
@@ -174,7 +175,10 @@ class Gwbbs::Script::Annual
         for doc in docs
           next if doc.section_code.blank?
 
-          group = Gwboard::RenewalGroup.find_by_present_group_code(doc.section_code)
+          group = Gwboard::RenewalGroup.new
+          group.and :present_group_code, doc.section_code
+          group.and :start_date, @start_date
+          group = group.find(:first)
           next if group.blank?
 
           update_fields = "section_code='#{group.incoming_group_code}', section_name='#{group.incoming_group_code}#{group.incoming_group_name}'"
@@ -194,7 +198,10 @@ class Gwbbs::Script::Annual
     item.and :create_section, 'is not', nil
     items = item.find(:all, :order=> 'id')
     for bbs in items
-      group = Gwboard::RenewalGroup.find_by_present_group_code(bbs.create_section)
+      group = Gwboard::RenewalGroup.new
+      group.and :present_group_code, bbs.create_section
+      group.and :start_date, @start_date
+      group = group.find(:first)
       next if group.blank?
 
         update_field = "title='#{group.incoming_group_name}掲示板'"
@@ -208,7 +215,10 @@ class Gwbbs::Script::Annual
     title = Gwbbs::Control.new
     titles = title.find(:all, :order=> 'id')
     for title in titles
-      group = Gwboard::RenewalGroup.find_by_present_group_name(title.dsp_admin_name)
+      group = Gwboard::RenewalGroup.new
+      group.and :present_group_name, title.dsp_admin_name
+      group.and :start_date, @start_date
+      group = group.find(:first)
       next if group.blank?
 
       update_field = "dsp_admin_name='#{group.incoming_group_name}'"
@@ -224,7 +234,10 @@ class Gwbbs::Script::Annual
     item.and :create_section, 'is not', nil
     items = item.find(:all, :order=> 'id')
     for bbs in items
-      group = Gwboard::RenewalGroup.find_by_present_group_code(bbs.create_section)
+      group = Gwboard::RenewalGroup.new
+      group.and :present_group_code, bbs.create_section
+      group.and :start_date, @start_date
+      group = group.find(:first)
       next if group.blank?
 
       update_field = "create_section='#{group.incoming_group_code}'"

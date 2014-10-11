@@ -29,6 +29,7 @@
 
   <% if @p_level_no >= 2 %>
   <table class="show">
+    <tr><th>表示モード</th><td><%= radio f, :mode, @item.modes %></td></tr>
     <tr><th>CSS（アイコン）</th><td><%= f.select(:block_icon_id, selectbox_cssicon, :selected=>@item.block_icon_id) %></td></tr>
     <tr><th>CSS</th><td><%= f.select(:block_css_id, selectbox_css, :selected=>@item.block_css_id) %></td></tr>
     <tr><th>権限判定関数</th><td><%= f.text_field :display_auth ,:size=>50 %></td></tr>

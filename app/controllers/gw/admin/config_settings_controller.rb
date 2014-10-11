@@ -25,9 +25,9 @@ class Gw::Admin::ConfigSettingsController < Gw::Controller::Admin::Base
     @role_soumu_msg = System::Model::Role.get(1, Core.user.id ,'pref_soumu_msg', 'editor')
     # ユーザー管理
     @role_users = System::Model::Role.get(1, Core.user.id ,'system_users','editor')
-#    # 災害モード管理
-#    @role_disaster_admin_users = Gw::AdminMode.is_disaster_admin?( Core.user.id )
-#    @role_disaster_editor_users = Gw::AdminMode.is_disaster_editor?( Core.user.id )
+    # 災害モード管理
+    @role_disaster_admin_users = Gw::AdminMode.is_disaster_admin?( Core.user.id )
+    @role_disaster_editor_users = Gw::AdminMode.is_disaster_editor?( Core.user.id )
 
     # ボード系管理者権限
     # 掲示板

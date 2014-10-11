@@ -2,6 +2,10 @@
 <%= required_head %>
 <table class="show">
   <tr>
+    <th>表示モード<%= required('※') %></th>
+    <td><%= radio f, :mode, @item.modes, :class => 'state' %></td>
+  </tr>
+  <tr>
     <th>表示<%= required('※') %></th>
     <td><%= radio f, :state, states, :class => 'state' %></td>
   </tr>

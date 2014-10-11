@@ -2,7 +2,8 @@
 module System::Model::Role
 
   def self.get(class_id, uid, table_name, priv_name)
-    ret = self.get_raw(class_id, uid, table_name, priv_name) || 0 == 1 ? true : nil
+    #ret = self.get_raw(class_id, uid, table_name, priv_name) || 0 == 1 ? true : nil
+    ret = (self.get_raw(class_id, uid, table_name, priv_name) || 0) == 1 ? true : nil
     return ret
   end
 

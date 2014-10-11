@@ -60,6 +60,15 @@ class Gwqa::Script::Annual
           group[1] = item.incoming_group_id.to_s
           group[2] = item.incoming_group_name
           is_update = true
+        else
+          renewal = Gwboard::RenewalGroup.new
+          renewal.and :present_group_id, group[1]
+          renewal.and :start_date, @start_date
+          if item = renewal.find(:first)
+            group[1] = item.incoming_group_id.to_s
+            group[2] = item.incoming_group_name
+            is_update = true
+          end
         end
       end
       if is_update
@@ -118,6 +127,15 @@ class Gwqa::Script::Annual
           group[1] = item.incoming_group_id.to_s
           group[2] = item.incoming_group_name
           is_update = true
+        else
+          renewal = Gwboard::RenewalGroup.new
+          renewal.and :present_group_id, group[1]
+           renewal.and :start_date, @start_date
+          if item = renewal.find(:first)
+            group[1] = item.incoming_group_id.to_s
+            group[2] = item.incoming_group_name
+            is_update = true
+          end
         end
       end
       if is_update
@@ -143,11 +161,21 @@ class Gwqa::Script::Annual
         renewal = Gwboard::RenewalGroup.new
         renewal.and :present_group_id, group[1]
         renewal.and :present_group_code, group[0]
+        renewal.and :start_date, @start_date
         if item = renewal.find(:first)
           group[0] = item.incoming_group_code
           group[1] = item.incoming_group_id.to_s
           group[2] = item.incoming_group_name
           is_update = true
+        else
+          renewal = Gwboard::RenewalGroup.new
+          renewal.and :present_group_id, group[1]
+          renewal.and :start_date, @start_date
+          if item = renewal.find(:first)
+            group[1] = item.incoming_group_id.to_s
+            group[2] = item.incoming_group_name
+            is_update = true
+          end
         end
       end
       if is_update
@@ -171,8 +199,10 @@ class Gwqa::Script::Annual
         docs = doc_item.find_by_sql(sql)
         for doc in docs
           next if doc.section_code.blank?
-
-          group = Gwboard::RenewalGroup.find_by_present_group_code(doc.section_code)
+          group = Gwboard::RenewalGroup.new
+          group.and :present_group_code, doc.section_code
+          group.and :start_date, @start_date
+          group = group.find(:first)
           next if group.blank?
 
           update_fields = "section_code='#{group.incoming_group_code}', section_name='#{group.incoming_group_code}#{group.incoming_group_name}'"
@@ -193,7 +223,10 @@ class Gwqa::Script::Annual
     title = Gwqa::Control.new
     titles = title.find(:all, :order=> 'id')
     for title in titles
-      group = Gwboard::RenewalGroup.find_by_present_group_name(title.dsp_admin_name)
+      group = Gwboard::RenewalGroup.new
+      group.and :present_group_name, title.dsp_admin_name
+      group.and :start_date, @start_date
+      group = group.find(:first)
       next if group.blank?
 
       update_field = "dsp_admin_name='#{group.incoming_group_name}'"

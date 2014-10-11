@@ -1,3 +1,10 @@
+2.3.0
+USE `xxxxxxx_jgw_gw`;
+ALTER TABLE gw_edit_link_pieces ADD mode integer AFTER state;
+UPDATE gw_edit_link_pieces SET mode = 1;
+ALTER TABLE gw_admin_messages ADD mode integer;
+UPDATE gw_admin_messages SET mode = 1;
+
 2.2.0
 USE `xxxxxxx_jgw_gw`;
 ALTER TABLE gwboard_renewal_groups ADD start_date datetime;

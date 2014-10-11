@@ -774,6 +774,7 @@ CREATE TABLE IF NOT EXISTS `gwboard_renewal_groups` (
   `incoming_group_id` int(11) DEFAULT NULL,
   `incoming_group_code` varchar(255) DEFAULT NULL,
   `incoming_group_name` text,
+  `start_date` datetime,
   PRIMARY KEY (`id`)
 )  DEFAULT CHARSET=utf8;
 
@@ -1832,6 +1833,7 @@ CREATE TABLE IF NOT EXISTS `gw_admin_messages` (
   `body` text,
   `sort_no` int(11) DEFAULT NULL,
   `state` int(11) DEFAULT NULL,
+  `mode` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
 )   DEFAULT CHARSET=utf8;
 
@@ -1904,6 +1906,7 @@ CREATE TABLE IF NOT EXISTS `gw_edit_link_pieces` (
   `class_created` int(11) DEFAULT '0',
   `published` varchar(255) DEFAULT NULL,
   `state` varchar(255) DEFAULT NULL,
+  `mode` int(11) DEFAULT NULL,
   `level_no` int(11) DEFAULT '0',
   `parent_id` int(11) DEFAULT '0',
   `name` varchar(255) DEFAULT NULL,

@@ -25,6 +25,7 @@
   <th class="url">リンク先URL</th>
   <th class="ext">接続先区分</th>
   <th class="sso">SSO利用</th>
+  <th class="mode">表示モード</th>
   <% end %>
   </tr>
   <% @items.each_with_index do |item,idx| %>
@@ -66,6 +67,7 @@
     <td><%= item.link_url %></td>
     <td><%= Gw::EditLinkPiece.external_show(item.class_external) %></td>
     <td><%= Gw::EditLinkPiece.sso_show(item.class_sso) %></td>
+    <td><%= item.mode_label %></td>
     <% end %>
   </tr>
   <% end %>

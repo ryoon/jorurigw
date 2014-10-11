@@ -36,7 +36,8 @@ class Gwcircular::Control < Gw::Database
     end
     save_adms
     unless self.dsp_admin_name == @dsp_admin_name
-      strsql = "UPDATE gwcircular_controls SET dsp_admin_name = '#{@dsp_admin_name}' WHERE id ='#{self.id}'"
+      args = ["UPDATE gwcircular_controls SET dsp_admin_name = ? WHERE id =?", @dsp_admin_name, self.id]
+      strsql = ActiveRecord::Base.send(:sanitize_sql_array, args)
       connection.execute(strsql)
     end
   end
@@ -210,7 +211,7 @@ class Gwcircular::Control < Gw::Database
   def item_home_path
     return "/gwcircular/"
   end
-  
+
   def menus_path
     return self.item_home_path
   end

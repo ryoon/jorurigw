@@ -252,7 +252,7 @@ class System::Admin::CustomGroupsController < Gw::Controller::Admin::Base
 
       parent_group = System::Group.find(:first, :conditions=>"state='enabled' and id = #{system_group.parent_id}")
 
-      customGroup = System::CustomGroup.find(:first, :conditions => "state='enabled' and name = '#{system_group.name}' and is_default = 1", :order => "sort_no")
+      customGroup = System::CustomGroup.find(:first, :conditions => ["state='enabled' and name = ? and is_default = 1",system_group.name], :order => "sort_no")
       if customGroup.blank? && (!parent_group.blank? && parent_group.code != '600') && system_group.state == 'enabled'
         System::CustomGroup.create_new_custom_group(System::CustomGroup.new, system_group, customGroup_sort_no, :create)
         customGroup_sort_no = customGroup_sort_no + 10
@@ -268,7 +268,7 @@ class System::Admin::CustomGroupsController < Gw::Controller::Admin::Base
     customGroups = System::CustomGroup.find(:all, :conditions => "state='enabled' and is_default = 1", :order => "sort_no")
 
     customGroups.each do |custom_group|
-      systemGroup = System::Group.find(:first, :conditions => "state='enabled' and name = '#{custom_group.name}'", :order => "sort_no")
+      systemGroup = System::Group.find(:first, :conditions => ["state='enabled' and name = ?", custom_group.name], :order => "sort_no")
       if systemGroup.blank?
         custom_group.state = 'disabled'
         custom_group.save(:validate=>false)

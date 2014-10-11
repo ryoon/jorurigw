@@ -12,7 +12,7 @@ class Gw::EditLinkPiece < Gw::Database
   belongs_to :css, :class_name => 'Gw::EditLinkPieceCss', :foreign_key => :block_css_id
   belongs_to :icon, :class_name => 'Gw::EditLinkPieceCss', :foreign_key => :block_icon_id
 
-  validates_presence_of :name, :sort_no
+  validates_presence_of :name, :sort_no, :mode
   validates_presence_of :link_url,
     :if => lambda{|item| item.level_no == 4}
   validates_presence_of :field_account,
@@ -27,6 +27,14 @@ class Gw::EditLinkPiece < Gw::Database
 
   before_create :set_creator
   before_update :set_updator
+
+  def modes
+    [['いつも',1], ['通常時',2], ['災害時',3]]
+  end
+
+  def mode_label
+    modes.rassoc(mode).try(:first)
+  end
 
   def self.is_dev?(uid = Site.user.id)
     System::Model::Role.get(1, uid ,'gwsub', 'developer')

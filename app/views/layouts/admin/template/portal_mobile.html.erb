@@ -29,7 +29,7 @@ if recent_mail == "0" or recent_mail.blank? or recent_mail == "-1"%>
 
 <%= render_component :controller => 'gw/admin/piece/reminder', :action => 'index' %>
 <hr class="borderDouble"/>
-<%=render_component :controller => 'gwboard/admin/piece/news', :action => 'index', :title_id=>params[:title_id], :piece_param=>"gwbbs_1_10"%>
+<%= render_component :controller => 'gwboard/admin/piece/portals', :action => 'index' %>
 
 <hr class="borderDouble"/>
 <%= render_component :controller => 'gw/admin/piece/mobile_portal_functions', :action => 'index' %>
