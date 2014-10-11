@@ -191,7 +191,7 @@ class System::Admin::CustomGroupsController < Gw::Controller::Admin::Base
 
   def sort_update
     init_params
-    
+
     @item = System::CustomGroup.new
     unless params[:item].blank?
       params[:item].each{|key,value|
@@ -222,6 +222,7 @@ class System::Admin::CustomGroupsController < Gw::Controller::Admin::Base
       end
    end
   end
+
 
 
   def destroy
@@ -274,7 +275,24 @@ class System::Admin::CustomGroupsController < Gw::Controller::Admin::Base
       end
     end
     flash_notice 'カスタムグループの同期', true
-    redirect_to '/system/custom_groups'
+    #redirect_to '/system/custom_groups'
+    redirect_to '/system/group_changes'
+  end
+
+  def all_groups_disabled_delete
+    @is_gw_admin = Gw.is_admin_admin? # GW全体の管理者
+    return authentication_error(403) unless @is_gw_admin == true
+
+    custom_group_names = []
+    disabled_custom_groups = System::CustomGroup.find(:all, :conditions => "state='disabled' and is_default = 1", :order => "sort_no")
+    disabled_custom_groups.each do |disabled_custom_group|
+      custom_group_names << "#{disabled_custom_group.name}（id：#{disabled_custom_group.id}）"
+      disabled_custom_group.destroy
+    end
+    flash_notice "無効となったデフォルトカスタムグループ「#{Gw.join(custom_group_names, "，")}」の削除", true
+    dump "無効となったデフォルトカスタムグループ「#{Gw.join(custom_group_names, "，")}」の削除成功"
+    #redirect_to '/system/custom_groups'
+    redirect_to '/system/group_changes'
   end
 
   def user_add_sort_no

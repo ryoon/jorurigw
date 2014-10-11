@@ -213,7 +213,7 @@ span.menuDeco a.menuDecoPref {
   margin-right: 10px;
   text-indent: -9999px;
 }
-.btNew a, 
+.btNew a,
 .btSectionNew a {
   display: inline-block;
   height: 0;
@@ -595,7 +595,7 @@ span.att a {
   padding-left: 0px;
   font-size: 12px;
 }
-.field_with_errors { 
+.field_with_errors {
   display: inline-block;
   padding: 1px;
   border: 1px solid #f00;
@@ -633,6 +633,7 @@ span.att a {
   margin-right: 0;
   padding-top: 0px;
 }
+
 .editingBox .btQuote a {
   background-image: url(/_common/themes/gw/files/ic_act_quote.gif);
 }
@@ -767,6 +768,29 @@ span.att a {
 }
 .btAttach a {
   background-image: url(/_common/themes/gw/files/ic_act_attach.gif);
+}
+
+.editingBox .btTitle a {
+    border: 1px solid #CCCCCC;
+    color: #000000;
+    display: inline-block;
+    line-height: 1.5;
+    text-align: center;
+    text-decoration: none;
+    height: 20px;
+    padding: 2px;
+}
+
+.editingBox .btDocLink a {
+    border: 1px solid #CCCCCC;
+    color: #000000;
+    display: inline-block;
+    line-height: 1.5;
+    text-align: center;
+    text-decoration: none;
+    width: 200px;
+    height: 20px;
+    padding: 2px;
 }
 
 /* 機能ボタン右サイドテキストリンク
@@ -1086,7 +1110,7 @@ table.show th.leftText {
   height: 1%;
 }
 .headerMenu li.grayout a, .headerMenu li.grayout a:hover, .headerMenu li.grayout a:visited,
-li.grayout a, li.grayout a:hover, li.grayout a:visited, 
+li.grayout a, li.grayout a:hover, li.grayout a:visited,
 li.grayout a.mock, li.grayout a.mock:hover, li.grayout a.mock:visited,
 a.grayout, a.grayout:hover, a.grayout:visited {
   color: #999999;
@@ -1214,8 +1238,8 @@ span.explanation {
 @media print {
   #header, #headerBody, #banner, #bannerBody, #navi,
   #naviBody, #menu, #menuContainer, #links, #linksContainer,
-  #footer, #footerContainer, #footerBody, #popup_select_group_2, 
-  form.search, 
+  #footer, #footerContainer, #footerBody, #popup_select_group_2,
+  form.search,
   .menu, .showMenu, .noprint {
     display: none;
     margin: 0;
