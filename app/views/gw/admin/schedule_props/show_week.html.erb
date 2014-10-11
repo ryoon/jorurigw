@@ -79,7 +79,7 @@ show_week_header = render(:partial => '/gw/admin/schedules/show_week_header')
             %>
             <% end %><!-- schedule End -->
 
-            <% if @is_gw_admin || @prop_edit_ids.index(prop.id) -%>
+            <% if @is_gw_admin || (@prop_edit_ids.index(prop.id) && prop.reserved_state != 0 && prop.delete_state != 1) -%>
             <%= show_schedule_edit_icon(week_add_day, :prop_id=>prop.id, :s_genre => "other") -%>
             <% end -%>
             </td>

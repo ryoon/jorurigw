@@ -76,7 +76,8 @@ end
 if @sp_mode == :prop
   prop_id_str = "&prop_id=#{params[:prop_id]}" if !params[:prop_id].blank?
   type_id_str = "&type_id=#{params[:type_id]}" if !params[:type_id].blank?
-  @schedule_move_url_directive.concat "#{prop_id_str}#{type_id_str}"
+  other_admin_gid_str = "&s_other_admin_gid=#{params[:s_other_admin_gid]}" if !params[:s_other_admin_gid].blank?
+  @schedule_move_url_directive.concat "#{prop_id_str}#{type_id_str}#{other_admin_gid_str}"
 end
 
 ### main

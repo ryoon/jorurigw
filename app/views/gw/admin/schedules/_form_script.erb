@@ -252,9 +252,7 @@ var form_kind_id_switch = function() {
   if (idx == 1) {
     Element.show($('prop_items_table'));
     owner_table_show_hide();
-    props_flg = props_item_selected();
     institution_flg = institution_item_selected();
-    props_min_selectbox_change(props_flg);
     props_item_change(institution_flg);
     update_prop_cand();
   } else {
@@ -318,10 +316,14 @@ var set_owner = function() {
   $('item_owner_udisplayname').value = fr[idxs[0]].innerHTML;
 }
 var add_prop = function() {
-  add_list('item_schedule_props_prop_id', 'item_schedule_props_add_buf')
+  add_list('item_schedule_props_prop_id', 'item_schedule_props_add_buf');
+  institution_flg = institution_item_selected();
+  props_item_change(institution_flg);
 }
 var del_prop = function() {
-  del_list('item_schedule_props_add_buf')
+  del_list('item_schedule_props_add_buf');
+  institution_flg = institution_item_selected();
+  props_item_change(institution_flg);
 }
 var add_list = function(fr_id, to_id) {
   var fr = $(fr_id);
@@ -330,10 +332,6 @@ var add_list = function(fr_id, to_id) {
   for (var i = 0; i < idxs.length; i++) {
     select_options_push(to, fr[idxs[i]].value, fr[idxs[i]].innerHTML, fr[idxs[i]].title);
   }
-  props_flg = props_item_selected();
-  institution_flg = institution_item_selected();
-  props_min_selectbox_change(props_flg);
-  props_item_change(institution_flg);
   is_public_click();
 };
 var del_list = function(fr_id) {
@@ -342,10 +340,6 @@ var del_list = function(fr_id) {
   for (var i = 0; i < vals.length; i++){
     select_options_delete(fr, vals[i]);
   }
-  props_flg = props_item_selected();
-  institution_flg = institution_item_selected();
-  props_min_selectbox_change(props_flg);
-  props_item_change(institution_flg);
   is_public_click();
 };
 
@@ -375,18 +369,21 @@ var update_public_group_cand = function () {
 var props_item_change = function(flg) {
   if (flg) {
     allday_check_true_false(true);
-    ed_at_123_true_false(true);
+    ed_at_123_true_false(flg);
     st_at_ed_at_equal();
     item_st_at_true_false(false);
     item_repeat_st_time_true_false(false);
   } else {
     allday_check_true_false(false);
+    ed_at_123_true_false(false);
     if ($('init_repeat_mode').value == '1') {
       allday_check( $('item_allday') );
     } else {
       allday_check( $('item_repeat_allday') );
     }
   }
+  props_flg = props_item_selected();
+  props_min_selectbox_change(props_flg);
   owner_table_show_hide();
 }
 
@@ -550,7 +547,7 @@ var update_prop_cand = function () {
   }
 
   type_id = $("item_schedule_props_prop_type_id").value;
-  params_a = ['s_genre=' + genre, 'st_at=' + st_at, 'ed_at=' + ed_at, 'type_id=' + type_id, time_serial()]
+  params_a = ['s_genre=' + genre, 'st_at=' + st_at, 'ed_at=' + ed_at, 'type_id=' + type_id, time_serial(), 'schedule_id=<%= @item.id %>']
   url = '/gw/schedule_props/getajax.json?' + params_a.join('&');
   if (st_at >= ed_at_to) {
     notice.update('終了日時は、開始日時より後の日時を入力してください。');

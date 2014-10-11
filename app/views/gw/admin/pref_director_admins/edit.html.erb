@@ -4,6 +4,8 @@
 <h2 class="pieceTitle">部課長在庁表示管理</h2>
 </div><!--pieceHeader-->
 <div class="pieceBody">
+<%= render :partial => 'header_new_botton' %>
+<%= render :partial => 'tree_str' %>
 
 <%= form_for :item, :url => "#{@public_uri}/#{@item.id}?g_cat=#{@g_cat}", :html => {:method => :put, :id => 'itemForm'} do |f| %>
 

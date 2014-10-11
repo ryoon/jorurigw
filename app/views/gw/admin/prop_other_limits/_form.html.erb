@@ -1,4 +1,4 @@
-<% count = current_count_group_props_each(@item.gid) %>
+<% count = current_count_group_props_each(@item.gid, @prop_types) %>
 
 <%= f.error_messages %>
 
@@ -12,15 +12,11 @@
   <th class="item">制限数<%= required %></th><td><%= f.text_field :limit, :class => 'IMEoff', :size => 10 %></td>
 </tr>
 <tr>
-  <th class="item">合計</th><td><%= count[3] %></td>
+  <th class="item">合計</th><td><%= count[@prop_types.size] %></td>
 </tr>
+<% @prop_types.each_with_index do |type, i| %>
 <tr>
-  <th class="item">公用車</th><td><%= count[0] %></td>
+  <th class="item"><%= type.name %></th><td><%= count[i] %></td>
 </tr>
-<tr>
-  <th class="item">会議室</th><td><%= count[1] %></td>
-</tr>
-<tr>
-  <th class="item">一般備品</th><td><%= count[2] %></td>
-</tr>
+<% end %>
 </table>

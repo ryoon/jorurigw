@@ -21,7 +21,7 @@
       <td><%= System::UsersGroup.state_show(group.state) -%></td>
       <td><%= group.name -%></td>
     </tr>
-      <% group.children.each do |c_group| %>
+      <% group.children.order(:code, :sort_no, :id).each do |c_group| %>
       <tr class="<%= cycle '', 'cycle' %>">
         <td>
           <%= link_to '詳細', "/system/#{c_group.parent_id}/groups/#{c_group.id}" %>

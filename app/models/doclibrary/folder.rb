@@ -163,4 +163,30 @@ class Doclibrary::Folder < Gwboard::CommonDb
     child_count =file_count + folder_count
     return child_count
   end
+  
+  def readable_public_children(is_admin = false)
+    item = Doclibrary::Folder.new
+    item.and 'doclibrary_folders.parent_id', id
+    item.and 'doclibrary_folders.title_id', title_id
+    item.and 'doclibrary_folders.state', 'public'
+    item.and do |c|
+      c.or do |c2|
+        c2.and 'doclibrary_folder_acls.acl_flag', 0
+      end
+      c.or do |c2|
+        c2.and 'doclibrary_folder_acls.acl_flag', 9
+      end if is_admin
+      c.or do |c2|
+        c2.and 'doclibrary_folder_acls.acl_flag', 1
+        c2.and 'doclibrary_folder_acls.acl_section_code', Site.parent_user_groups.map(&:code)
+      end
+      c.or do |c2|
+        c2.and 'doclibrary_folder_acls.acl_flag', 2
+        c2.and 'doclibrary_folder_acls.acl_user_code', Core.user.code
+      end
+    end
+    item.join 'INNER JOIN doclibrary_folder_acls on doclibrary_folders.id = doclibrary_folder_acls.folder_id'
+    item.order 'doclibrary_folders.sort_no'
+    item.find(:all, :select => 'DISTINCT doclibrary_folders.*')
+  end
 end

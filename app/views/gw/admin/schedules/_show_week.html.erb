@@ -63,7 +63,7 @@ show_week_header = render(:partial => '/gw/admin/schedules/show_week_header')
             <td class="<%= class_str -%>">
             <% @schedules.each_with_index do |schedule, j| %>
             <%
-            schedule_id = "sche#{schedule.id}_#{i + j + user_cnt}"
+            schedule_id = "sche#{schedule.id}_#{i}_#{j}_#{user_cnt}"
             if schedule.date_between(week_add_day)
               participant = false
               schedule.schedule_users.each do |schedule_user|

@@ -79,7 +79,7 @@ class Gw::ScheduleProp < Gw::Database
   end
 
   def self.get_genre_select(options={})
-    prop_types = Gw::PropType.find(:all, :conditions => ["state = ?", "public"], :select => "id, name")
+    prop_types = Gw::PropType.find(:all, :conditions => ["state = ?", "public"], :select => "id, name", :order => "sort_no, id")
     types = []
     prop_types.each do |prop_type|
       types << [prop_type.name, "prop_other_#{prop_type.id}" ]
@@ -192,6 +192,7 @@ class Gw::ScheduleProp < Gw::Database
         cond_props_within_terms = "SELECT distinct prop_id FROM gw_schedules"
         cond_props_within_terms.concat " left join gw_schedule_props on gw_schedules.id =  gw_schedule_props.schedule_id"
         cond_props_within_terms.concat " where"
+        cond_props_within_terms.concat " gw_schedules.id <> #{params[:schedule_id]} and " unless params[:schedule_id].blank?
         cond_props_within_terms.concat " gw_schedules.ed_at >= '#{Gw.datetime_str(st_at)}'"
         cond_props_within_terms.concat " and gw_schedules.st_at < '#{Gw.datetime_str(ed_at)}'"
         cond_props_within_terms.concat " order by prop_id"

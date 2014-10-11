@@ -78,7 +78,7 @@ class Gw::Admin::SchedulesController < Gw::Controller::Admin::Base
     @hedder2lnk = 1
     @link_format = "%Y%m%d"
 
-    @prop_types = Gw::PropType.find(:all, :conditions => ["state = ?", "public"], :select => "id, name")
+    @prop_types = Gw::PropType.find(:all, :conditions => ["state = ?", "public"], :select => "id, name", :order => 'sort_no, id')
   end
 
   def index

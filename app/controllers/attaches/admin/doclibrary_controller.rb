@@ -42,8 +42,8 @@ class Attaches::Admin::DoclibraryController < Gw::Controller::Admin::Base
       send_data(f.read, :filename => item_filename, :type => item.content_type)
     end
     f.close
-    rescue
-      dump "ダウンロードファイルなし:#{item_filename}"
+    rescue => e
+      dump e
       return http_error(404)
     end
 

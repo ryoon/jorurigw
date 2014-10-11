@@ -115,10 +115,10 @@ form_kind_radio_str = Gw.join(form_kind_radio, "")
 %>
 <%= raw(get_form_title_div params) %>
 
-<% if ["new", "create"].index(params[:action]).present? -%>
+<% if ["new", "create"].index(params[:action]).present? && params[:sender_action] != 'quote' -%>
   <%= raw(Gw::Schedule.schedule_tabbox_struct(tab_captions, selected_tab, form_kind_radio_str)) %>
 <% end -%>
-<% if ["quote", "edit", "update"].index(params[:action]).present? -%>
+<% if ["quote", "edit", "update"].index(params[:action]).present? || params[:sender_action] == 'quote' -%>
   <%= raw(form_kind_radio_str) -%>
 <% end -%>
 

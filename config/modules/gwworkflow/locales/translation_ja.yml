@@ -2,3 +2,4 @@ ja:
   attributes:
     title: タイトル
     name: 名前
+    expired_at: 期限日

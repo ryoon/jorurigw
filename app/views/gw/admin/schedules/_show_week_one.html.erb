@@ -13,7 +13,7 @@ public =  schedule.is_public_auth?(@is_gw_admin)
     </a>
   </div>
 <% else %>
-  <div title="<%= schedule.show_time(week_add_day) -%> [非公開予定]" id="<%= schedule_id -%>" class="ind">
+  <div title="<%= @ie ? "#{schedule.show_time(week_add_day)} [非公開予定]" : "<span>#{schedule.show_time(week_add_day)} [非公開予定]</span>" -%>" id="<%= schedule_id -%>" class="ind">
     <span><%= schedule.show_time(week_add_day) -%></span>
     <span class="title">[非公開予定]</span>
   </div>

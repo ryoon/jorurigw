@@ -37,8 +37,8 @@ class Attaches::Admin::Sb11Controller < ApplicationController
       send_data(f.read, :filename => item_filename, :type => item.content_type)
     end
     f.close
-    rescue
-      dump "ダウンロードファイルなし:#{item_filename}"
+    rescue => e
+      dump e
       return http_error(404)
     end
 

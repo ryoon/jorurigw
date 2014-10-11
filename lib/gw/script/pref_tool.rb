@@ -331,6 +331,7 @@ class Gw::Script::PrefTool
               old_user_group = System::Group.find_by_id(old_user_group_rel.group_id)
             end
             unless old_user_group.blank?
+              old_user.parent_gid       = old_user_group.parent.id
               old_user.parent_g_code    = old_user_group.parent.code
               old_user.parent_g_name    = old_user_group.parent.name
               old_user.parent_g_order   = old_user_group.parent.sort_no
@@ -381,6 +382,7 @@ class Gw::Script::PrefTool
           new_user_group = System::Group.find_by_id(new_user_group_rel.group_id)
         end
         unless new_user_group.blank?
+           new_user.parent_gid       = new_user_group.parent.id
            new_user.parent_g_code    = new_user_group.parent.code
            new_user.parent_g_name    = new_user_group.parent.name
            new_user.parent_g_order   = new_user_group.parent.sort_no

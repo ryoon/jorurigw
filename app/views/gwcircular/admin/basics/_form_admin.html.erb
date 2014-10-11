@@ -2,7 +2,7 @@
 <%= raw(required_head) %>
 <% bg_select = [["背景色を使用する", ""],["背景画像を使用する", "1"]] %>
 
-<table hidden class="show">
+<table style="display:none;" class="show">
 <%#*GW2.0では設定が反映されない項目%>
 <tr>
   <th>状態</th>
@@ -15,7 +15,7 @@
 </table>
 
 <table class="show">
-<tr hidden>
+<tr style="display:none;">
 <%#*GW2.0では設定が反映されない項目%>
   <th>承認機能</th>
   <td><%= radio f, :recognize, @item.recognize_states, :class => 'radio recognize' %></td>
@@ -44,7 +44,7 @@
   <td><%= f.select :limit_date, @item.delete_date_name, :class => 'limit_date' %></td>
 </tr>
 
-<tr hidden>
+<tr style="display:none;">
 <%#*GW2.0では設定が反映されない項目%>
   <th>画像 総容量制限<%= required('※') %></th>
   <td class="IMEoff">
@@ -53,7 +53,7 @@
   <%= @image_message%>
   </td>
 </tr>
-<tr hidden>
+<tr style="display:none;">
 <%#*GW2.0では設定が反映されない項目%>
   <th>添付 総容量制限<%= required('※') %></th>
   <td class="IMEoff">
@@ -74,7 +74,7 @@
 </tr>
 </table>
 
-<table hidden class="show">
+<table style="display:none;" class="show">
 <%#*GW2.0では設定が反映されない項目%>
 <tr>
   <th>並び順指定<%= required('※') %></th>
