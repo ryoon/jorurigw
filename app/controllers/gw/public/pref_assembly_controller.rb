@@ -93,7 +93,7 @@ class Gw::Public::PrefAssemblyController < ApplicationController
     @is_kauser = @kucode == @ucode ? true : false
 
     unless params[:cgid].blank?
-      @custom_group = System::CustomGroup.find(:first, :conditions=>"id=#{params[:cgid]}")
+      @custom_group = System::CustomGroup.find(:first, :conditions=>["id= ? ",params[:cgid] ])
       if !@custom_group.blank?
         Page.title = @custom_group.name
       end

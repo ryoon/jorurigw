@@ -31,7 +31,7 @@ class Gwsub::Public::Sb04::Sb04officialtitlesController < ApplicationController
     @l3_current = '03'
     @item = Gwsub::Sb04officialtitle.new(params[:item])
     location = Gw.chop_with("#{Site.current_node.public_uri}",'/').to_s+@param.to_s
-    
+
     if @item.officialtitle_data_save(params, :create)
       flash_notice '更新', true
       redirect_to location
@@ -62,7 +62,7 @@ class Gwsub::Public::Sb04::Sb04officialtitlesController < ApplicationController
         format.html { render :action => "edit" }
         format.xml  { render :xml => @item.errors, :status => :unprocessable_entity }
       end
-    end    
+    end
   end
 
   def destroy
@@ -240,7 +240,7 @@ class Gwsub::Public::Sb04::Sb04officialtitlesController < ApplicationController
             when 'sjis'
               '-s -W'
             end
-            fyear = Gw::YearFiscalJp.find(:first, :conditions=>"id = #{par_item[:fyed_id]}",:order=>"start_at DESC")
+            fyear = Gw::YearFiscalJp.find(:first, :conditions=>["id = ? ", par_item[:fyed_id]],:order=>"start_at DESC")
             send_download "#{fyear.markjp}_10職名_エラー箇所追記.csv", NKF::nkf(nkf_options, file)
           end
         end
@@ -269,7 +269,7 @@ class Gwsub::Public::Sb04::Sb04officialtitlesController < ApplicationController
     return http_error(404) if @item.blank?
     @l3_current = '08'
   end
-  
+
   def set_param
     @param = "?"
     @param += "pre_fyear=#{@fyed_id}&"    unless @fyed_id.blank?

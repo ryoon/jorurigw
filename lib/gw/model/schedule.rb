@@ -34,7 +34,7 @@ module Gw::Model::Schedule
     td1_s = td1.strftime("%Y%m%d")
 
     if options[:captions_hash].blank?
-    	captions_hash = Gw::NameValue.get_cache('yaml', nil, 'gw_schedules_settings_system_default')
+      captions_hash = Gw::NameValue.get_cache('yaml', nil, 'gw_schedules_settings_system_default')
     else
         captions_hash = options[:captions_hash]
     end
@@ -614,8 +614,8 @@ EOL
 
   def self.get_users_id_in_group(gid)
     return [] unless System::Group.find(:first, :conditions => "id=#{gid}")
-    return System::UsersGroup.find(:all, :conditions => "group_id=#{gid}", 
-      :joins => :user, 
+    return System::UsersGroup.find(:all, :conditions => "group_id=#{gid}",
+      :joins => :user,
       :order => "code").reject{|x| x.user.state != 'enabled'}.collect{|x| x.user_id }
   end
 
@@ -678,7 +678,7 @@ EOL
         :conditions => "system_users.state = 'enabled' AND system_users_custom_groups.custom_group_id = #{cgid}",
         :order => "system_users_custom_groups.sort_no" ,
         :joins => :user_custom_groups_temp,
-      	:include => :user_custom_groups_temp
+        :include => :user_custom_groups_temp
         )
 
     else
@@ -937,7 +937,7 @@ EOL
         }
       end
     else
-      _mdl.find(:all, :conditions=>"id = #{params[:prop_id]} and delete_state = 0" )
+      _mdl.find(:all, :conditions=>["id = ? and delete_state = 0",params[:prop_id] ])
     end
   end
 

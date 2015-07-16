@@ -40,7 +40,10 @@ class Gw::Public::SchedulePropsController < ApplicationController
     a_qs.push "s_genre=#{@genre}"
     @schedule_move_qs = a_qs.join('&amp;')
 
-    @prop_gid = Gw::Model::Schedule.get_prop_model(params).find(:first, :conditions => "id=#{params[:prop_id]}").gid if !params[:prop_id].blank?
+   if !params[:prop_id].blank?
+     prop_gid = Gw::Model::Schedule.get_prop_model(params).find(:first, :conditions =>  ["id= ? ", params[:prop_id]])
+     @prop_gid = prop_gid.blank? ? nil : prop_gid.gid
+   end
     @pgid_flg = false
     @pgid_flg = true if @prop_gid.to_i != @gid.to_i
     @up_schedules = nz(Gw::Model::UserProperty.get('schedules'.singularize), {})

@@ -279,7 +279,7 @@ class Gwsub::Public::Sb01::Sb01TrainingSchedulesController < ApplicationControll
     training = Gwsub::Sb01Training.find_by_id(params[:t_id])
     skd      = Gwsub::Sb01TrainingSchedule.find_by_id(params[:p_id])
 
-    
+
     #　環境依存しているので要対応
     #    m_order  = "dev_jgw_core.system_groups.sort_no , dev_jgw_core.system_users.code"
 #    m_join   = "left join dev_jgw_core.system_groups on dev_jgw_core.system_groups.id=dev_jgw_gw_pref.gwsub_sb01_training_schedule_members.training_group_id "
@@ -287,7 +287,7 @@ class Gwsub::Public::Sb01::Sb01TrainingSchedulesController < ApplicationControll
 #    members = Gwsub::Sb01TrainingScheduleMember.find(:all,:conditions=>"training_schedule_id=#{params[:p_id]}",:order=>m_order,:joins=>m_join)
 
 
-    members = Gwsub::Sb01TrainingScheduleMember.find(:all,:conditions=>"training_schedule_id=#{params[:p_id]}")
+    members = Gwsub::Sb01TrainingScheduleMember.find(:all,:conditions=>["training_schedule_id= ? ", params[:p_id]])
     rets = '"職員番号","役職","受講者名","受講者所属","受講者連絡先","メールアドレス","申込者","申込者所属","申込者連絡先"'
     rets += "\n"
     unless (members.blank? && training.blank? && skd.blank?)

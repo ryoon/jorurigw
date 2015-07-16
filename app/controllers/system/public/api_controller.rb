@@ -73,7 +73,7 @@ protected
     cond = Condition.new
     cond.and :code, account
     cond.and :air_token, 'IS NOT', nil
-    cond.and :air_token, "#{token}"
+    cond.and :air_token, "#{System::User.escape_like(token)}"
     user = System::User.find(:first, :conditions => cond.where)
 
     if user && new_login(account, user.password)
@@ -108,7 +108,7 @@ protected
     cond = Condition.new do |c|
       c.and :code, account
       c.and :air_login_id, 'IS NOT', nil
-      c.and :air_login_id, 'LIKE', "#{token}"
+      c.and :air_login_id, 'LIKE', "#{System::User.escape_like(token)}"
     end
     user = System::User.find(:first, :conditions => cond.where)
     return render(:text => "ログインに失敗しました。") unless user

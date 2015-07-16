@@ -119,7 +119,7 @@ module Doclibrary::Public::IndicesHelper
       ret += '<td ' + retstr_important(item.importance) + 'style="text-align: center;">' + "</td>\n" if @title.importance.to_s == '1'
       ret += '<td ' + retstr_attache(item.attachmentfile) + 'style="text-align: center;">' + "</td>\n"
       ret += '<td ' + retstr_balloon(item.one_line_note)  + 'style="text-align: center;">' + "</td>\n"
-      ret += '<td style="text-align: left;">' + link_to(hbr(item.title), item.show_path(params[:state]) + "&pp=#{l_line}&grp=#{params[:grp]}" + doclib_params_set) + "</td>\n"
+      ret += '<td style="text-align: left;">' + link_to(hbr(item.title), item.show_path(params[:state]) + "&pp=#{l_line}&grp=#{h params[:grp]}" + doclib_params_set) + "</td>\n"
       ret += '<td style="text-align: center;">' + item.latest_updated_at.strftime('%Y-%m-%d %H:%M').to_s + "</td>\n"
       ret += "</tr>\n"
       brk_key = item.createrdivision.to_s

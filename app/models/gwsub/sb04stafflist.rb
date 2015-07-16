@@ -56,10 +56,10 @@ class Gwsub::Sb04stafflist < Gwsub::GwsubPref
     user_groups.each do |item|
         gcodes << item.group.code
     end
-	return false if data.fyear_id.blank? || data.section_code.blank?
-	section_cond = "fyear_id = #{data.fyear_id} and code = '#{data.section_code}'"
-	section = Gwsub::Sb04section.find(:first,:conditions=>section_cond)
-	return false  if section.blank?
+  return false if data.fyear_id.blank? || data.section_code.blank?
+  section_cond = "fyear_id = #{data.fyear_id} and code = '#{data.section_code}'"
+  section = Gwsub::Sb04section.find(:first,:conditions=>section_cond)
+  return false  if section.blank?
     return false  if gcodes.index(section.ldap_code).blank?
     # (2) editable_dates:start_at <= today <= editable_dates:end_at
     today = Core.now
@@ -207,11 +207,11 @@ class Gwsub::Sb04stafflist < Gwsub::GwsubPref
       if !par_item[:multi_section_flg].blank? && par_item[:multi_section_flg].to_i == 1 # 本務の時、重複チェック
         if mode == :update
           item = self.find(:first,
-            :conditions=>"staff_no = '#{par_item[:staff_no]}' and fyear_id = #{par_item[:fyear_id]} and id != #{self.id} and multi_section_flg = 1")
+            :conditions=>["staff_no = ? and fyear_id = ? and id != ? and multi_section_flg = 1", par_item[:staff_no],par_item[:fyear_id],self.id])
           self.errors.add :staff_no, "は、既に登録されています。" unless item.blank?
         elsif mode == :create
           item = self.find(:first,
-            :conditions=>"staff_no = '#{par_item[:staff_no]}' and fyear_id = #{par_item[:fyear_id]} and multi_section_flg = 1")
+            :conditions=>["staff_no = ? and fyear_id = ? and multi_section_flg = 1", par_item[:staff_no],par_item[:fyear_id]])
           self.errors.add :staff_no, "は、既に登録されています。" unless item.blank?
         end
       end
@@ -230,7 +230,7 @@ class Gwsub::Sb04stafflist < Gwsub::GwsubPref
 
     return save_flg
   end
-  
+
   def self.multi_section_flg
     Gw.yaml_to_array_for_select 'gwsub_sb04stafflists_multi_sections_flg'
   end

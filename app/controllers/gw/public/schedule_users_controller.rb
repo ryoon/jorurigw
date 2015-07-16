@@ -41,9 +41,9 @@
       @item = System::User.find(:all, :conditions=>cond, :order=>'sort_no, code',
         :joins=>'left join system_users_groups on system_users.id = system_users_groups.user_id').collect{|x| [1, x.id, Gw.trim(x.display_name)]}
     when 'login'
-      @item = System::User.find(:all, :conditions=>"id=#{u.id}").collect{|x| [1, x.id, Gw.trim(x.display_name)]}
+      @item = System::User.find(:all, :conditions=>["id= ?", u.id]).collect{|x| [1, x.id, Gw.trim(x.display_name)]}
     when 'login_group'
-      @item = System::Group.find(:all, :conditions=>"id=#{g.id}").collect{|x| [2, x.id, Gw.trim(x.name)]}
+      @item = System::Group.find(:all, :conditions=>["id= ?", g.id]).collect{|x| [2, x.id, Gw.trim(x.name)]}
     when /^group_(\d+)$/
       cond = "state='enabled' and system_users_groups.group_id = #{$1}"
       @item = System::User.find(:all, :conditions=>cond, :order=>'sort_no, code',

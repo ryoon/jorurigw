@@ -20,7 +20,33 @@ class System::Group < ActiveRecord::Base
     record.errors.add attr, "は、#{Site.code_length(record.level_no)}桁で入力してください" if value.blank? ? false : (value.length != Site.code_length(record.level_no))
   end
 
+  after_save  :group_history_save
+
   require 'date'
+
+  def group_history_save
+    group_history = System::GroupHistory.find_by_id(self.id)
+    if group_history.blank?
+      group_history = System::GroupHistory.new
+      group_history.id           = self.id
+    end
+    group_history.parent_id    = self.parent_id
+    group_history.state        = self.state
+    group_history.created_at   = self.created_at
+    group_history.updated_at   = self.updated_at
+    group_history.level_no     = self.level_no
+    group_history.version_id   = self.version_id
+    group_history.code         = self.code
+    group_history.name         = self.name
+    group_history.name_en      = self.name_en
+    group_history.email        = self.email
+    group_history.start_at     = self.start_at
+    group_history.end_at       = self.end_at
+    group_history.sort_no      = self.sort_no
+    group_history.ldap_version = self.ldap_version
+    group_history.ldap         = self.ldap
+    group_history.save
+  end
 
   def ou_name
     code.to_s + name

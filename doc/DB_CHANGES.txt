@@ -215,17 +215,17 @@
  ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
  INSERT INTO `gw_admin_check_extensions` (`id`, `state`, `sort_no`, `extension`, `remark`, `deleted_at`, `deleted_uid`, `deleted_gid`, `updated_at`, `updated_uid`, `updated_gid`, `created_at`, `created_uid`, `created_gid`) VALUES
- (1, 'enabled', 10, 'jtd', 'ä¸€å¤ªéƒ', NULL, NULL, NULL, '2011-08-19 10:32:08', NULL, NULL, '2011-08-19 10:32:08', NULL, NULL),
+ (1, 'enabled', 10, 'jtd', 'ˆê‘¾˜Y', NULL, NULL, NULL, '2011-08-19 10:32:08', NULL, NULL, '2011-08-19 10:32:08', NULL, NULL),
  (2, 'enabled', 20, 'xls', 'Excel', NULL, NULL, NULL, '2011-08-19 10:32:17', NULL, NULL, '2011-08-19 10:32:17', NULL, NULL),
  (3, 'enabled', 30, 'xlsx', 'Excel 2007', NULL, NULL, NULL, '2011-08-19 10:32:26', NULL, NULL, '2011-08-19 10:32:26', NULL, NULL),
  (4, 'enabled', 40, 'doc', 'Word', NULL, NULL, NULL, '2011-08-19 10:32:33', NULL, NULL, '2011-08-19 10:32:33', NULL, NULL),
  (5, 'enabled', 50, 'docx', 'Word 2007', NULL, NULL, NULL, '2011-08-19 10:33:10', NULL, NULL, '2011-08-19 10:33:10', NULL, NULL),
  (6, 'enabled', 60, 'ppt', 'PowerPoint', NULL, NULL, NULL, '2011-08-19 10:33:19', NULL, NULL, '2011-08-19 10:33:19', NULL, NULL),
  (7, 'enabled', 70, 'pptx', 'PowerPoint 2007', NULL, NULL, NULL, '2011-08-19 10:33:28', NULL, NULL, '2011-08-19 10:33:28', NULL, NULL),
- (8, 'enabled', 80, 'jac', 'ä¸‰å››éƒ', NULL, NULL, NULL, '2011-08-19 10:33:36', NULL, NULL, '2011-08-19 10:33:36', NULL, NULL),
- (9, 'enabled', 90, 'jsd', 'ä¸‰å››éƒ', NULL, NULL, NULL, '2011-08-19 10:33:43', NULL, NULL, '2011-08-19 10:33:43', NULL, NULL),
- (10, 'deleted', NULL, 'odt', 'ã‚ªãƒ¼ãƒ—ãƒ³ã‚ªãƒ•ã‚£ã‚¹ æ–‡æ›¸', '2011-08-24 11:52:08', 8, 36, '2011-08-24 11:52:08', 8, 36, '2011-08-24 10:58:05', 8, 36),
- (11, 'deleted', NULL, 'odg', 'ã‚ªãƒ¼ãƒ—ãƒ³ã‚ªãƒ•ã‚£ã‚¹ å›³å½¢', '2011-08-24 11:19:57', 8, 36, '2011-08-24 11:19:57', NULL, NULL, '2011-08-24 11:19:20', 8, 36);
+ (8, 'enabled', 80, 'jac', 'Ol˜Y', NULL, NULL, NULL, '2011-08-19 10:33:36', NULL, NULL, '2011-08-19 10:33:36', NULL, NULL),
+ (9, 'enabled', 90, 'jsd', 'Ol˜Y', NULL, NULL, NULL, '2011-08-19 10:33:43', NULL, NULL, '2011-08-19 10:33:43', NULL, NULL),
+ (10, 'deleted', NULL, 'odt', 'ƒI[ƒvƒ“ƒIƒtƒBƒX •¶‘', '2011-08-24 11:52:08', 8, 36, '2011-08-24 11:52:08', 8, 36, '2011-08-24 10:58:05', 8, 36),
+ (11, 'deleted', NULL, 'odg', 'ƒI[ƒvƒ“ƒIƒtƒBƒX }Œ`', '2011-08-24 11:19:57', 8, 36, '2011-08-24 11:19:57', NULL, NULL, '2011-08-24 11:19:20', 8, 36);
 
 
  use xxxxxxx_jgw_gw;
@@ -233,21 +233,21 @@
  CREATE TABLE IF NOT EXISTS `gw_section_admin_masters` (
    `id` int(11) NOT NULL AUTO_INCREMENT,
    `func_name` text,
-   `state` varchar(255) DEFAULT NULL COMMENT 'çŠ¶æ…‹',
+   `state` varchar(255) DEFAULT NULL COMMENT 'ó‘Ô',
    `edit_auth` int(11) DEFAULT NULL,
-   `management_parent_gid` int(11) DEFAULT NULL COMMENT 'ä¸»ç®¡èª²',
-   `management_gid` int(11) DEFAULT NULL COMMENT 'ä¸»ç®¡èª²',
-   `management_uid` int(11) DEFAULT NULL COMMENT 'ä¸»ç®¡èª²',
-   `range_class_id` int(11) DEFAULT NULL COMMENT 'ç¯„å›²',
-   `division_parent_gid` int(11) DEFAULT NULL COMMENT 'åŸèª²ï¼ˆéƒ¨å±€ï¼‰',
-   `division_gid` int(11) DEFAULT NULL COMMENT 'åŸèª²ï¼ˆè«¸èª²ï¼‰',
-   `management_ucode` varchar(255) DEFAULT NULL COMMENT 'é›»å­è·å“¡éŒ²ç”¨',
-   `fyear_id_sb04` int(11) DEFAULT NULL COMMENT 'å¹´åº¦ï¼ˆé›»å­è·å“¡éŒ²ï¼‰',
-   `management_gcode` varchar(255) DEFAULT NULL COMMENT 'é›»å­è·å“¡éŒ²ç”¨',
-   `division_gcode` varchar(255) DEFAULT NULL COMMENT 'é›»å­è·å“¡éŒ²ç”¨',
-   `management_uid_sb04` int(11) DEFAULT NULL COMMENT 'é›»å­è·å“¡éŒ²ç”¨',
-   `management_gid_sb04` int(11) DEFAULT NULL COMMENT 'é›»å­è·å“¡éŒ²ç”¨',
-   `division_gid_sb04` int(11) DEFAULT NULL COMMENT 'é›»å­è·å“¡éŒ²ç”¨',
+   `management_parent_gid` int(11) DEFAULT NULL COMMENT 'åŠÇ‰Û',
+   `management_gid` int(11) DEFAULT NULL COMMENT 'åŠÇ‰Û',
+   `management_uid` int(11) DEFAULT NULL COMMENT 'åŠÇ‰Û',
+   `range_class_id` int(11) DEFAULT NULL COMMENT '”ÍˆÍ',
+   `division_parent_gid` int(11) DEFAULT NULL COMMENT 'Œ´‰Ûi•”‹Çj',
+   `division_gid` int(11) DEFAULT NULL COMMENT 'Œ´‰Ûi”‰Ûj',
+   `management_ucode` varchar(255) DEFAULT NULL COMMENT '“dqEˆõ˜^—p',
+   `fyear_id_sb04` int(11) DEFAULT NULL COMMENT '”N“xi“dqEˆõ˜^j',
+   `management_gcode` varchar(255) DEFAULT NULL COMMENT '“dqEˆõ˜^—p',
+   `division_gcode` varchar(255) DEFAULT NULL COMMENT '“dqEˆõ˜^—p',
+   `management_uid_sb04` int(11) DEFAULT NULL COMMENT '“dqEˆõ˜^—p',
+   `management_gid_sb04` int(11) DEFAULT NULL COMMENT '“dqEˆõ˜^—p',
+   `division_gid_sb04` int(11) DEFAULT NULL COMMENT '“dqEˆõ˜^—p',
    `creator_uid` int(11) DEFAULT NULL,
    `creator_gid` int(11) DEFAULT NULL,
    `updator_uid` int(11) DEFAULT NULL,
@@ -258,7 +258,7 @@
    `updated_at` datetime DEFAULT NULL,
    `deleted_at` datetime DEFAULT NULL,
    PRIMARY KEY (`id`)
- ) ENGINE=MyISAM  DEFAULT CHARSET=utf8
+ ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
  USE xxxxxxx_jgw_gw_pref;
 
@@ -529,8 +529,8 @@
  ) ENGINE=MyISAM DEFAULT CHARSET=utf8  ;
 
  INSERT INTO `gwsub_sb04_limit_settings` (`id`, `type_name`, `limit`, `created_at`, `updated_at`, `updated_user`, `updated_group`) VALUES
- (1, 'stafflistview_limit', 100, '2011-07-07 14:36:44', '2012-05-15 16:02:12', 'ã‚·ã‚¹ãƒ†ãƒ ç®¡ç†è€…', 'ç§˜æ›¸åºƒå ±èª²'),
- (2, 'divideduties_limit', 50, '2011-07-07 14:36:44', '2011-07-12 18:25:15', 'ã‚·ã‚¹ãƒ†ãƒ ç®¡ç†è€…', 'ç§˜æ›¸åºƒå ±èª²');
+ (1, 'stafflistview_limit', 100, '2011-07-07 14:36:44', '2012-05-15 16:02:12', 'ƒVƒXƒeƒ€ŠÇ—Ò', '”é‘L•ñ‰Û'),
+ (2, 'divideduties_limit', 50, '2011-07-07 14:36:44', '2011-07-12 18:25:15', 'ƒVƒXƒeƒ€ŠÇ—Ò', '”é‘L•ñ‰Û');
 
  CREATE TABLE IF NOT EXISTS `gwsub_sb04_year_copy_logs` (
    `id` int(11) NOT NULL AUTO_INCREMENT,

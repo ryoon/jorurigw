@@ -63,7 +63,8 @@ class Gw::Public::ScheduleListsController < ApplicationController
       @uid_equal = (params[:uid].to_i == @uid)
       @list_user = System::User.find_by_id(params[:uid])
       @list_group = @list_user.groups[0]
-      cond = "gw_schedule_users.uid = #{params[:uid]}"
+      uid = params[:uid].to_i
+      cond = "gw_schedule_users.uid = #{uid}"
     else
       cond = "gw_schedule_users.uid = #{@uid}"
       @uid_equal = true
@@ -219,7 +220,7 @@ class Gw::Public::ScheduleListsController < ApplicationController
 
     @ids = params[:ids].dup
     ids_str = Gw.join(params[:ids], ',')
-    @items = @model.new.find(:all, :conditions => "#{@db_name}.id in (#{ids_str})", :order => "#{@db_name}.st_at")
+    @items = @model.new.find(:all, :conditions => ["#{@db_name}.id in ( ? )", params[:ids]] , :order => "#{@db_name}.st_at")
 
     err_array = Array.new
 

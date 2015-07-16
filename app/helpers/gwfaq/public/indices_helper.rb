@@ -135,7 +135,7 @@ module Gwfaq::Public::IndicesHelper
       tr = (i%2 != 0) ? '<tr class="article">' : '<tr class="article cycle">'
       l_line = l_line + 1
       ret += tr.to_s
-      ret += '<td class="doctitle ">' + link_to(hbr(item.title), item.show_path + "&pp=#{l_line}&grp=#{params[:grp]}" + gwfaq_params_set) + "</td>"
+      ret += '<td class="doctitle ">' + link_to(hbr(item.title), item.show_path + "&pp=#{l_line}&grp=#{h params[:grp]}" + gwfaq_params_set) + "</td>"
       ret += '<td class="category">' + gwbd_category_name(@d_categories,item.category1_id) + "</td>"
       ret += '<td class="update">' + item.latest_updated_at.strftime('%Y-%m-%d %H:%M').to_s + "</td>"
       ret += "</tr>"

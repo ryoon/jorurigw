@@ -378,7 +378,7 @@ class Gwsub::Public::Sb04::Sb04stafflistsController < ApplicationController
             when 'sjis'
               '-s -W'
             end
-            fyear = Gw::YearFiscalJp.find(:first, :conditions=>"id = #{par_item[:fyed_id]}",:order=>"start_at DESC")
+            fyear = Gw::YearFiscalJp.find(:first, :conditions=>["id = ? ", par_item[:fyed_id]],:order=>"start_at DESC")
             send_download "#{fyear.markjp}_40職員_エラー箇所追記.csv", NKF::nkf(nkf_options, file)
           end
         end

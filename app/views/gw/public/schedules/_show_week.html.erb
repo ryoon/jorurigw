@@ -21,12 +21,14 @@ when :prop
   props = Gw::Model::Schedule.get_props(params, @is_gw_admin, {:s_other_admin_gid=>@s_other_admin_gid})
   show_flg = false if props.length == 0
   if params[:prop_id].present?
-    _mdl = Gw::Model::Schedule.get_prop_model(params)
-    prop = _mdl.find_by_id(params[:prop_id])
-    show_flg = prop.delete_state == 0 ? true : false
-    if show_flg && @genre == 'other' && !@is_gw_admin
-      if !Gw::PropOtherRole.is_edit?(params[:prop_id]) && !Gw::PropOtherRole.is_read?(params[:prop_id])
-        show_flg = false
+      _mdl = Gw::Model::Schedule.get_prop_model(params)
+      prop = _mdl.find(:first, :conditions =>  ["id= ? ", params[:prop_id]])
+      if prop
+      show_flg = prop.delete_state == 0 ? true : false
+      if show_flg && @genre == 'other' && !@is_gw_admin
+        if !Gw::PropOtherRole.is_edit?(params[:prop_id]) && !Gw::PropOtherRole.is_read?(params[:prop_id])
+          show_flg = false
+        end
       end
     end
   end
@@ -45,14 +47,14 @@ end
     <div class="pieceBodyBody">
       <table class="scheduleTable <%= @custom_group.name_en.gsub(" ", "_").camelize(:lower) if @custom_group && !@custom_group.name_en.blank? -%>"
              summary="スケジュール詳細">
-        
+
         <tbody>
           <% if show_flg %>
           <%= render :partial => '/gw/public/schedules/show_week_part', :locals=>{:d=>d, :mode=>'week'} -%>
           <% else -%>
           <%= Gw.div_notice('表示する項目はありません。') -%>
           <% end %>
-          
+
         </tbody>
       </table>
     </div>

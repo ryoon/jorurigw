@@ -56,7 +56,7 @@ reserved_state = Gw.yaml_to_array_for_select("gw_prop_other_reserved_states")
             </tr>
             <tr>
               <th>備考</th>
-              <td><%= br(@item.comment) -%></td>
+              <td><%= br(@item.comment) if @item.comment-%></td>
             </tr>
             <tr>
               <th>作成日</th>
