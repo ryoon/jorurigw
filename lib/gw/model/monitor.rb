@@ -31,7 +31,7 @@ module Gw::Model::Monitor
     user_code = usertbl.code
 
     item = Gw::MonitorReminder.new
-    remind_cond = "(state=1 AND g_code='#{g_code}') OR (state=1 AND u_code='#{user_code}')"
+    remind_cond = ["(state=1 AND g_code=?) OR (state=1 AND u_code=?)", g_code, user_code]
     items = item.find(:all, :conditions=>remind_cond ,  :order => 'ed_at')
     if items.blank?
       return xml_data

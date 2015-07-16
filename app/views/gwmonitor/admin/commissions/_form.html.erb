@@ -134,7 +134,7 @@
   var update_custom_group_cand = function () {
     var fr = $('item_custom_groups_gid');
     var genre = fr.options[fr.selectedIndex].value;
-    url = '/_admin/gwmonitor/ajaxgroups/getajax.json?s_genre=' + genre;
+    url = '/_admin/gwmonitor/1/ajaxgroups/getajax.json?s_genre=' + genre;
     var to = $('item_custom_groups_uid');
     ajax_request(url, function(r){
       to.options.length = 0;
@@ -165,7 +165,7 @@
   var update_custom_reader_cand = function () {
     var fr = $('item_custom_readers_gid');
     var genre = fr.options[fr.selectedIndex].value;
-    url = '/_admin/gwmonitor/ajaxusergroups/getajax.json?s_genre=' + genre;
+    url = '/_admin/gwmonitor/1/ajaxusergroups/getajax.json?s_genre=' + genre;
     var to = $('item_custom_readers_uid');
     ajax_request(url, function(r){
       to.options.length = 0;

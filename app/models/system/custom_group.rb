@@ -271,8 +271,6 @@ class System::CustomGroup < ActiveRecord::Base
     if options[:first] == 1
       row_option = :first
     end
-    #cond_sql = ActiveRecord::Base.send(:sanitize_sql_array, cond)
-    dump cond
     select = "distinct id, parent_id, owner_uid, owner_gid, state, name, name_en, sort_no, sort_prefix, is_default"
     self.find( row_option,  :select => select,
       :order => 'system_custom_groups.sort_prefix, system_custom_groups.sort_no',
@@ -361,13 +359,13 @@ class System::CustomGroup < ActiveRecord::Base
       unless parent_group.blank?
         bu_user_code = parent_group.code.to_s
         bu_user_code = bu_user_code.to_s + "_0"
-        bu_user = System::User.find(:first, :conditions=>"code = '#{bu_user_code}' and state = 'enabled'")
+        bu_user = System::User.find(:first, :conditions=>["code = ? and state = ?", bu_user_code,'enabled'] )
       end
     end
     custom_group_users << bu_user unless bu_user.blank?
 
     ka_user_code = group.code.to_s + "_0"
-    ka_user = System::User.find(:first, :conditions=>"code = '#{ka_user_code}' and state = 'enabled'")
+    ka_user = System::User.find(:first, :conditions=>["code = ? and state = ?", ka_user_code,'enabled'])
     custom_group_users << ka_user unless ka_user.blank?
 
     user_ids = Array.new

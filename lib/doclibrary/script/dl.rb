@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 class Doclibrary::Script::Dl
 
   def self.change

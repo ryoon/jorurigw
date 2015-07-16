@@ -23,6 +23,7 @@
       <tbody>
         <tr><th>状態</th><td><%= System::UsersGroup.state_show(@item.state) %></td></tr>
         <tr><th>グループID</th><td><%= @item.code %></td></tr>
+        <tr><th>LDAP同期</th><td><%=System::Group.ldap_show(@item.ldap)%></td></tr>
         <tr><th>グループ名</th><td><%= @item.name %></td></tr>
         <tr><th>グループ名(英)</th><td><%= @item.name_en %></td></tr>
         <tr><th>メールアドレス</th><td><%= @item.email %></td></tr>

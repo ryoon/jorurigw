@@ -29,9 +29,9 @@ class Gw::Admin::MobileSchedulesController < Gw::Admin::SchedulesController
     @line_box = 1
     if !params[:m].blank? && (params[:m] == "new" || params[:m] == "edit")
       item = Gw::Schedule.find(params[:id])
-      @items = Gw::Schedule.find(:all, :conditions=>"schedule_parent_id = #{item.schedule_parent_id}")
+      @items = Gw::Schedule.find(:all, :conditions=>["schedule_parent_id =  ? ", item.schedule_parent_id])
     else
-      @items = Gw::Schedule.find(:all, :conditions=>"id = #{params[:id]}")
+      @items = Gw::Schedule.find(:all, :conditions=>["id =  ? ", params[:id]])
     end
 
     @items.each do |item|

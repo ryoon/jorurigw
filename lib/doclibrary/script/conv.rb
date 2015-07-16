@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 class Doclibrary::Script::Conv
 
   def self.convert(title_id)

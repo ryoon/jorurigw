@@ -125,7 +125,7 @@ class Gwsub::Admin::Sb04::Sb04stafflistsController < Gw::Controller::Admin::Base
     @role_developer  = Gwsub::Sb04stafflist.is_dev?(Site.user.id)
     @role_admin      = Gwsub::Sb04stafflist.is_admin?(Site.user.id)
     @u_role = @role_developer || @role_admin
-    
+
     # 電子職員録 主管課権限設定
     @role_sb04_dev  = Gwsub::Sb04stafflistviewMaster.is_sb04_dev?
 
@@ -398,7 +398,7 @@ class Gwsub::Admin::Sb04::Sb04stafflistsController < Gw::Controller::Admin::Base
             when 'sjis'
               '-s -W'
             end
-            fyear = Gw::YearFiscalJp.find(:first, :conditions=>"id = #{par_item[:fyed_id]}",:order=>"start_at DESC")
+            fyear = Gw::YearFiscalJp.find(:first, :conditions=>["id = ? ", par_item[:fyed_id]],:order=>"start_at DESC")
             filename = "#{fyear.markjp}_40職員_エラー箇所追記.csv"
             filename = NKF::nkf('-s -W', filename) if @ie
             send_data( NKF::nkf(nkf_options, file) , :filename => filename )

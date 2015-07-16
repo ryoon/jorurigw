@@ -68,7 +68,7 @@ class Gwsub::Admin::Sb04::Sb04officialtitlesController < Gw::Controller::Admin::
         format.html { render :action => "edit" }
         format.xml  { render :xml => @item.errors, :status => :unprocessable_entity }
       end
-    end    
+    end
   end
 
   def destroy
@@ -211,7 +211,7 @@ class Gwsub::Admin::Sb04::Sb04officialtitlesController < Gw::Controller::Admin::
     init_params
     return authentication_error(403) unless @u_role == true
     location = "#{@csv_base_url}/csvadd_check?#{@qs}"
-    
+
     @l3_current = '06'
     if params[:item].blank?
       return redirect_to location
@@ -222,6 +222,7 @@ class Gwsub::Admin::Sb04::Sb04officialtitlesController < Gw::Controller::Admin::
     end
 
     par_item = params[:item]
+    dump par_item
     case par_item[:csv]
     when 'add'
       if par_item[:fyed_id].present?
@@ -240,7 +241,7 @@ class Gwsub::Admin::Sb04::Sb04officialtitlesController < Gw::Controller::Admin::
             when 'sjis'
               '-s -W'
             end
-            fyear = Gw::YearFiscalJp.find(:first, :conditions=>"id = #{par_item[:fyed_id]}",:order=>"start_at DESC")
+            fyear = Gw::YearFiscalJp.find(:first, :conditions=>["id = ? ", par_item[:fyed_id]],:order=>"start_at DESC")
             filename =  "#{fyear.markjp}_10職名_エラー箇所追記.csv"
             filename = NKF::nkf('-s -W', filename) if @ie
             send_data(NKF::nkf(nkf_options, file), :type => 'text/csv', :filename => filename)
@@ -274,7 +275,7 @@ class Gwsub::Admin::Sb04::Sb04officialtitlesController < Gw::Controller::Admin::
     return http_error(404) if @item.blank?
     @l3_current = '08'
   end
-  
+
   def set_param
 #    @param = "?"
 #    @param += "pre_fyear=#{@fyed_id}&"    unless @fyed_id.blank?

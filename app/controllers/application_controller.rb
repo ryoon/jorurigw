@@ -5,16 +5,19 @@ class ApplicationController < ActionController::Base
   helper  FormHelper
   helper  LinkHelper
   protect_from_forgery #:secret => '1f0d667235154ecf25eaf90055d99e99'
+  #before_filter :initialize_application
   before_filter :initialize_application
-  after_filter :inline_css_for_mobile, :mobile_access_view
+  after_filter :inline_css_for_mobile
   rescue_from Exception, :with => :rescue_exception
   trans_sid
+  #include System::Controller::SmartphoneView
 
   def initialize_application
 ###    mobile_view if Page.mobile? || request.mobile?
     return false if Core.dispatched?
     return Core.dispatched
   end
+
 
   def skip_layout
     self.class.layout 'base'

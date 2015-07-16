@@ -119,7 +119,7 @@ private
     item[:extra_flag] = nz(item['sub']['extra_flag'], 'other')
     if @genre == 'other'
       item[:gid] = nz(item['sub']['gid'])
-      item[:gname] = System::Group.find(:first, :conditions=>"id=#{item[:gid]}").name
+      item[:gname] = System::Group.find(:first, :conditions=>["id= ? ", item[:gid]]).name
       item = item.merge( :edit_state => 0 ) if item[:edit_state].blank?
     end
     item.delete 'sub'

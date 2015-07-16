@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 class Gwcircular::Script::Tool
   require 'fastercsv'
 

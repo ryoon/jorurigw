@@ -21,6 +21,7 @@ class Gw::Admin::MemosController < Gw::Controller::Admin::Base
     chk = request.headers['HTTP_USER_AGENT']
     firefox_chk = chk.index("Firefox")
     ie_chk = chk.index("MSIE")
+    ie_chk = chk.index("Trident") if ie_chk.blank?
     chrome_chk = chk.index("Chrome")
     if ie_chk.blank? && !firefox_chk.blank? && chrome_chk.blank?
       @firefox = true

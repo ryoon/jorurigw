@@ -78,8 +78,9 @@ protected
     cond = Condition.new
     cond.and :code, account
     cond.and :air_token, 'IS NOT', nil
-    cond.and :air_token, 'LIKE', "#{token}%"
+    cond.and :air_token, 'LIKE', "#{System::User.escape_like(token)} %"
     user = System::User.find(:first, :conditions => cond.where)
+
     token, enc_password = user.air_token.split(/ /)
     usr_pass = Util::Crypt.decrypt(Base64.decode64(enc_password))
 
@@ -116,7 +117,7 @@ protected
     cond = Condition.new do |c|
       c.and :code, account
       c.and :air_login_id, 'IS NOT', nil
-      c.and :air_login_id, 'LIKE', "#{token} %"
+      c.and :air_login_id, 'LIKE', "#{System::User.escape_like(token)} %"
     end
     @user = System::User.find(:first, :conditions => cond.where)
     return render(:text => "ログインに失敗しました。") unless @user

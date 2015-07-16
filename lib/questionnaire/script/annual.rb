@@ -26,12 +26,13 @@ class Questionnaire::Script::Annual
     r_groups = Gwboard::RenewalGroup.find(:all,:conditions=>["start_date = ?", @start_date], :order=> 'present_group_id, present_group_code')
 
     r_groups.each do |r_group|
-      incoming_group = System::Group.find(:first, :conditions =>"state = 'enabled' and code = '#{r_group.incoming_group_code}'")
+      incoming_group = System::Group.find(:first, :conditions =>["state = 'enabled' and code = ?",r_group.incoming_group_code])
 
       next if incoming_group.blank?
 
       ids = Array.new
       update_fields1  = "section_code='#{incoming_group.code}', section_name='#{incoming_group.ou_name}', section_sort=#{incoming_group.sort_no}"
+      update_set1 = ["section_code=?, section_name=?, section_sort=?",incoming_group.code,incoming_group.ou_name,incoming_group.sort_no]
       sql_where1      = "section_code='#{r_group.present_group_code}'"
       _ids = Questionnaire::Base.find(:all, :conditions => sql_where1, :select => "id")
       unless _ids.empty?
@@ -39,12 +40,13 @@ class Questionnaire::Script::Annual
           ids << _id.id
         end
         ids = ids.uniq
-        Questionnaire::Base.update_all(update_fields1, sql_where1)
+        Questionnaire::Base.update_all(update_set1, sql_where1)
         p "questionnaire_bases_1　対象ID：[#{Gw.join(ids, ',')}], 変更対象所属：#{sql_where1}, 更新SQL：#{update_fields1}, #{Time.now}."
       end
 
       ids = Array.new
       update_fields2 = "createrdivision='#{incoming_group.name}', createrdivision_id ='#{incoming_group.code}'"
+      update_set2 = ["createrdivision=?, createrdivision_id =?",incoming_group.name,incoming_group.code]
       sql_where2     = "createrdivision_id='#{r_group.present_group_code}'"
       _ids = Questionnaire::Base.find(:all, :conditions => sql_where2, :select => "id")
       unless _ids.empty?
@@ -52,7 +54,7 @@ class Questionnaire::Script::Annual
           ids << _id.id
         end
         ids = ids.uniq
-        Questionnaire::Base.update_all(update_fields2, sql_where2)
+        Questionnaire::Base.update_all(update_set2, sql_where2)
         p "questionnaire_bases_2　対象ID：[#{Gw.join(ids, ',')}], 変更対象所属：#{sql_where2}, 更新SQL：#{update_fields2}, #{Time.now}."
       end
     end
@@ -65,6 +67,7 @@ class Questionnaire::Script::Annual
 
       ids = Array.new
       update_fields1  = "section_code='#{incoming_group.code}', section_name='#{incoming_group.ou_name}', section_sort=#{incoming_group.sort_no}"
+      update_set1 = ["section_code=?, section_name=?, section_sort=?",incoming_group.code,incoming_group.ou_name,incoming_group.sort_no]
       sql_where1      = "section_code='#{r_group.present_group_code}'"
       _ids = Questionnaire::TemplateBase.find(:all, :conditions => sql_where1, :select => "id")
       unless _ids.empty?
@@ -72,12 +75,13 @@ class Questionnaire::Script::Annual
           ids << _id.id
         end
         ids = ids.uniq
-        Questionnaire::TemplateBase.update_all(update_fields1, sql_where1)
+        Questionnaire::TemplateBase.update_all(update_set1, sql_where1)
         p "questionnaire_template_bases_1　対象ID：[#{Gw.join(ids, ',')}], 変更対象所属：#{sql_where1}, 更新SQL：#{update_fields1}, #{Time.now}."
       end
 
       ids = Array.new
       update_fields2 = "createrdivision='#{incoming_group.name}', createrdivision_id ='#{incoming_group.code}'"
+      update_set2 = ["createrdivision=?, createrdivision_id =?",incoming_group.name,incoming_group.code]
       sql_where2     = "createrdivision_id='#{r_group.present_group_code}'"
       _ids = Questionnaire::TemplateBase.find(:all, :conditions => sql_where2, :select => "id")
       unless _ids.empty?
@@ -85,7 +89,7 @@ class Questionnaire::Script::Annual
           ids << _id.id
         end
         ids = ids.uniq
-        Questionnaire::TemplateBase.update_all(update_fields2, sql_where2)
+        Questionnaire::TemplateBase.update_all(update_set2, sql_where2)
         p "questionnaire_template_bases_2　対象ID：[#{Gw.join(ids, ',')}], 変更対象所属：#{sql_where2}, 更新SQL：#{update_fields2}, #{Time.now}."
       end
     end
@@ -98,6 +102,7 @@ class Questionnaire::Script::Annual
 
       ids = Array.new
       update_fields1  = "section_code='#{incoming_group.code}', section_name='#{incoming_group.ou_name}', section_sort=#{incoming_group.sort_no}"
+      update_set1 = ["section_code=?, section_name=?, section_sort=?",incoming_group.code,incoming_group.ou_name,incoming_group.sort_no]
       sql_where1      = "section_code='#{r_group.present_group_code}'"
       _ids = Enquete::Answer.find(:all, :conditions => sql_where1, :select => "id")
       unless _ids.empty?
@@ -105,12 +110,13 @@ class Questionnaire::Script::Annual
           ids << _id.id
         end
         ids = ids.uniq
-        Enquete::Answer.update_all(update_fields1, sql_where1)
+        Enquete::Answer.update_all(update_set1, sql_where1)
         p "enquete_answers_1　対象ID：[#{Gw.join(ids, ',')}], 変更対象所属：#{sql_where1}, 更新SQL：#{update_fields1}, #{Time.now}."
       end
 
       ids = Array.new
       update_fields2 = "createrdivision='#{incoming_group.name}', createrdivision_id ='#{incoming_group.code}'"
+      update_set2 = ["createrdivision=?, createrdivision_id =?",incoming_group.name,incoming_group.code]
       sql_where2     = "createrdivision_id='#{r_group.present_group_code}'"
       _ids = Enquete::Answer.find(:all, :conditions => sql_where2, :select => "id")
       unless _ids.empty?
@@ -118,7 +124,7 @@ class Questionnaire::Script::Annual
           ids << _id.id
         end
         ids = ids.uniq
-        Enquete::Answer.update_all(update_fields2, sql_where2)
+        Enquete::Answer.update_all(update_set2, sql_where2)
         p "enquete_answers_2　対象ID：[#{Gw.join(ids, ',')}], 変更対象所属：#{sql_where2}, 更新SQL：#{update_fields2}, #{Time.now}."
       end
     end
@@ -131,6 +137,7 @@ class Questionnaire::Script::Annual
 
       ids = Array.new
       update_fields1  = "section_code='#{incoming_group.code}', section_name='#{incoming_group.ou_name}', section_sort=#{incoming_group.sort_no}"
+      update_set1 = ["section_code=?, section_name=?, section_sort=?",incoming_group.code,incoming_group.ou_name,incoming_group.sort_no]
       sql_where1      = "section_code='#{r_group.present_group_code}'"
       _ids = Enquete::ViewQuestion.find(:all, :conditions => sql_where1, :select => "id")
       unless _ids.empty?
@@ -138,12 +145,13 @@ class Questionnaire::Script::Annual
           ids << _id.id
         end
         ids = ids.uniq
-        Enquete::ViewQuestion.update_all(update_fields1, sql_where1)
+        Enquete::ViewQuestion.update_all(update_set1, sql_where1)
         p "enquete_view_questions_1　対象ID：[#{Gw.join(ids, ',')}], 変更対象所属：#{sql_where1}, 更新SQL：#{update_fields1}, #{Time.now}."
       end
 
       ids = Array.new
       update_fields2 = "createrdivision='#{incoming_group.name}', createrdivision_id ='#{incoming_group.code}'"
+      update_set2 = ["createrdivision=?, createrdivision_id =?",incoming_group.name,incoming_group.code]
       sql_where2     = "createrdivision_id='#{r_group.present_group_code}'"
       _ids = Enquete::ViewQuestion.find(:all, :conditions => sql_where2, :select => "id")
       unless _ids.empty?
@@ -151,7 +159,7 @@ class Questionnaire::Script::Annual
           ids << _id.id
         end
         ids = ids.uniq
-        Enquete::ViewQuestion.update_all(update_fields2, sql_where2)
+        Enquete::ViewQuestion.update_all(update_set2, sql_where2)
         p "enquete_view_questions_2　対象ID：[#{Gw.join(ids, ',')}], 変更対象所属：#{sql_where2}, 更新SQL：#{update_fields2}, #{Time.now}."
       end
     end

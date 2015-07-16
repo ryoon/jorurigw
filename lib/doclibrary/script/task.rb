@@ -133,7 +133,6 @@ class Doclibrary::Script::Task
     dump "`書庫` : インデックス追加終了：#{Time.now.strftime('%Y-%m-%d %H:%M:%S')}"
   end
 
-  # /opt/ruby-enterprise-1.8.7-2010.02/bin/ruby /var/share/mie_gw_dev/script/runner -e development 'Doclibrary::Script::Task.folder_add_index_script'
   def self.folder_add_index_script
     # 必要なインデックスを追加する
     dump "`書庫` : folder_index_追加開始：#{Time.now.strftime('%Y-%m-%d %H:%M:%S')}"

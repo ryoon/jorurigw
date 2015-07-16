@@ -34,8 +34,9 @@ class Gwfaq::Script::Annual
       next if group.blank?
 
       update_fields="group_id=#{group.incoming_group_id}, group_code='#{group.incoming_group_code}',group_name='#{group.incoming_group_name}'"
+      update_set = ["group_id=?, group_code=?,group_name=?",group.incoming_group_id,group.incoming_group_code,group.incoming_group_name]
       sql_where = "group_id=#{adm.group_id} AND group_code='#{adm.group_code}'"
-      Gwfaq::Adm.update_all(update_fields, sql_where)
+      Gwfaq::Adm.update_all(update_set, sql_where)
       p "#{adm.group_id}, #{adm.group_code}, #{update_fields}, #{Time.now}."
     end
     p "renew_adms 終了:#{Time.now}."
@@ -74,7 +75,8 @@ class Gwfaq::Script::Annual
       if is_update
         groups.uniq!
         update_field = "admingrps_json='#{JsonBuilder.new.build(groups)}'"
-        Gwfaq::Control.update_all(update_field, "id=#{title.id}")
+        update_set = ["admingrps_json=?",JsonBuilder.new.build(groups)]
+        Gwfaq::Control.update_all(update_set, "id=#{title.id}")
         p "#{title.id}, #{update_field}, #{Time.now}."
       end
     end
@@ -101,8 +103,9 @@ class Gwfaq::Script::Annual
       next if group.blank?
 
       update_fields="group_id=#{group.incoming_group_id}, group_code='#{group.incoming_group_code}',group_name='#{group.incoming_group_name}'"
+      update_set = ["group_id=?, group_code=?,group_name=?",group.incoming_group_id,group.incoming_group_code,group.incoming_group_name]
       sql_where = "group_id=#{role.group_id} AND group_code='#{role.group_code}'"
-      Gwfaq::Role.update_all(update_fields, sql_where)
+      Gwfaq::Role.update_all(update_set, sql_where)
       p "#{role.group_id}, #{role.group_code}, #{update_fields}, #{Time.now}."
     end
     p "renew_roles 終了:#{Time.now}."
@@ -141,7 +144,8 @@ class Gwfaq::Script::Annual
       if is_update
         groups.uniq!
         update_field = "editors_json='#{JsonBuilder.new.build(groups)}'"
-        Gwfaq::Control.update_all(update_field, "id=#{title.id}")
+        update_set = ["editors_json=?",JsonBuilder.new.build(groups)]
+        Gwfaq::Control.update_all(update_set, "id=#{title.id}")
         p "#{title.id}, #{update_field}, #{Time.now}."
       end
     end
@@ -181,7 +185,8 @@ class Gwfaq::Script::Annual
       if is_update
         groups.uniq!
         update_field = "readers_json='#{JsonBuilder.new.build(groups)}'"
-        Gwfaq::Control.update_all(update_field, "id=#{title.id}")
+        update_set = ["readers_json=?",JsonBuilder.new.build(groups)]
+        Gwfaq::Control.update_all(update_set, "id=#{title.id}")
         p "#{title.id}, #{update_field}, #{Time.now}."
       end
     end
@@ -206,7 +211,8 @@ class Gwfaq::Script::Annual
           next if group.blank?
 
           update_fields = "section_code='#{group.incoming_group_code}', section_name='#{group.incoming_group_code}#{group.incoming_group_name}'"
-          doc_item.update_all(update_fields, "section_code='#{doc.section_code}'")
+          update_set = ["section_code=?, section_name=?",group.incoming_group_code,"#{group.incoming_group_code}#{group.incoming_group_name}"]
+          doc_item.update_all(update_set, "section_code='#{doc.section_code}'")
           p "#{@title.dbname}, #{doc.section_code}, #{update_fields}, #{Time.now}."
         end
       rescue => ex
@@ -230,7 +236,8 @@ class Gwfaq::Script::Annual
       next if group.blank?
 
       update_field = "dsp_admin_name='#{group.incoming_group_name}'"
-      Gwfaq::Control.update_all(update_field, "id='#{title.id}'")
+      update_set = ["dsp_admin_name=?",group.incoming_group_name]
+      Gwfaq::Control.update_all(update_set, "id='#{title.id}'")
       p "#{title.id}, #{title.create_section}, #{update_field}, #{Time.now}."
     end
 

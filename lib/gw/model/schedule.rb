@@ -257,7 +257,7 @@ module Gw::Model::Schedule
       }
       return _items
     else
-      _mdl.find(:all, :conditions=>"id = #{params[:prop_id]} and delete_state = 0" )
+      _mdl.find(:all, :conditions=>["id = ? and delete_state = 0",params[:prop_id]] )
     end
   end
 

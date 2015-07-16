@@ -36,8 +36,9 @@ class Gwbbs::Script::Annual
       next if group.blank?
 
       update_fields="group_id=#{group.incoming_group_id}, group_code='#{group.incoming_group_code}',group_name='#{group.incoming_group_name}'"
+      update_set = ["group_id=?, group_code=?,group_name=?",group.incoming_group_id,group.incoming_group_code,group.incoming_group_name]
       sql_where = "group_id=#{adm.group_id} AND group_code='#{adm.group_code}'"
-      Gwbbs::Adm.update_all(update_fields, sql_where)
+      Gwbbs::Adm.update_all(update_set, sql_where)
       p "#{adm.group_id}, #{adm.group_code}, #{update_fields}, #{Time.now}."
     end
     p "renew_adms 終了:#{Time.now}."
@@ -67,7 +68,8 @@ class Gwbbs::Script::Annual
       if is_update
         groups.uniq!
         update_field = "admingrps_json='#{JsonBuilder.new.build(groups)}'"
-        Gwbbs::Control.update_all(update_field, "id=#{title.id}")
+        update_set = ["admingrps_json=?",JsonBuilder.new.build(groups)]
+        Gwbbs::Control.update_all(update_set, "id=#{title.id}")
         p "#{title.id}, #{update_field}, #{Time.now}."
       end
     end
@@ -95,7 +97,8 @@ class Gwbbs::Script::Annual
 
       update_fields="group_id=#{group.incoming_group_id}, group_code='#{group.incoming_group_code}',group_name='#{group.incoming_group_name}'"
       sql_where = "group_id=#{role.group_id} AND group_code='#{role.group_code}'"
-      Gwbbs::Role.update_all(update_fields, sql_where)
+      update_set = ["group_id=?, group_code=?,group_name=?",group.incoming_group_id,group.incoming_group_code,group.incoming_group_name]
+      Gwbbs::Role.update_all(update_set, sql_where)
       p "#{role.group_id}, #{role.group_code}, #{update_fields}, #{Time.now}."
     end
     p "renew_roles 終了:#{Time.now}."
@@ -125,7 +128,8 @@ class Gwbbs::Script::Annual
       if is_update
         groups.uniq!
         update_field = "editors_json='#{JsonBuilder.new.build(groups)}'"
-        Gwbbs::Control.update_all(update_field, "id=#{title.id}")
+        update_set = ["editors_json=?",JsonBuilder.new.build(groups)]
+        Gwbbs::Control.update_all(update_set, "id=#{title.id}")
         p "#{title.id}, #{update_field}, #{Time.now}."
       end
     end
@@ -156,7 +160,8 @@ class Gwbbs::Script::Annual
       if is_update
         groups.uniq!
         update_field = "readers_json='#{JsonBuilder.new.build(groups)}'"
-        Gwbbs::Control.update_all(update_field, "id=#{title.id}")
+        update_set = ["readers_json=?",JsonBuilder.new.build(groups)]
+        Gwbbs::Control.update_all(update_set, "id=#{title.id}")
         p "#{title.id}, #{update_field}, #{Time.now}."
       end
     end
@@ -182,7 +187,8 @@ class Gwbbs::Script::Annual
           next if group.blank?
 
           update_fields = "section_code='#{group.incoming_group_code}', section_name='#{group.incoming_group_code}#{group.incoming_group_name}'"
-          doc_item.update_all(update_fields, "section_code='#{doc.section_code}'")
+          update_set = ["section_code=?, section_name=?",group.incoming_group_code,%Q(#{group.incoming_group_code}#{group.incoming_group_name})]
+          doc_item.update_all(update_set, "section_code='#{doc.section_code}'")
           p "#{@title.dbname}, #{doc.section_code}, #{update_fields}, #{Time.now}."
         end
       rescue => ex
@@ -205,7 +211,8 @@ class Gwbbs::Script::Annual
       next if group.blank?
 
         update_field = "title='#{group.incoming_group_name}掲示板'"
-        Gwbbs::Control.update_all(update_field, "id='#{bbs.id}'")
+        update_set = ["title=?" , "#{group.incoming_group_name}掲示板"]
+        Gwbbs::Control.update_all(update_set, "id='#{bbs.id}'")
       p "#{bbs.id}, #{bbs.create_section}, #{update_field}, #{Time.now}."
     end
 
@@ -222,7 +229,8 @@ class Gwbbs::Script::Annual
       next if group.blank?
 
       update_field = "dsp_admin_name='#{group.incoming_group_name}'"
-      Gwbbs::Control.update_all(update_field, "id='#{title.id}'")
+      update_set = ["dsp_admin_name=?",group.incoming_group_name]
+      Gwbbs::Control.update_all(update_set, "id='#{title.id}'")
       p "#{title.id}, #{title.create_section}, #{update_field}, #{Time.now}."
     end
   end
@@ -241,7 +249,8 @@ class Gwbbs::Script::Annual
       next if group.blank?
 
       update_field = "create_section='#{group.incoming_group_code}'"
-      Gwbbs::Control.update_all(update_field, "id='#{bbs.id}'")
+      update_set = ["create_section=?",group.incoming_group_code]
+      Gwbbs::Control.update_all(update_set, "id='#{bbs.id}'")
       p "#{bbs.id}, #{bbs.create_section}, #{update_field}, #{Time.now}."
     end
 

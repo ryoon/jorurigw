@@ -3,7 +3,7 @@ module System::Model::Base
 
   def self.included(mod)
     mod.table_name = mod.to_s.underscore.gsub('/', '_').downcase.pluralize
-
+    mod.extend(ClassMethods)
     mod.before_save :after_validation
   end
 
@@ -142,4 +142,12 @@ module System::Model::Base
 
     return true
   end
+
+
+  module ClassMethods
+    def escape_like(s)
+      s.gsub(/[\\%_]/) {|r| "\\#{r}"}
+    end
+  end
+
 end

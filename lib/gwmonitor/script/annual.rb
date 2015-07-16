@@ -24,8 +24,9 @@ class Gwmonitor::Script::Annual
       next if group.blank?
 
       update_fields="section_code='#{group.incoming_group_code}', section_name='#{group.incoming_group_code}#{group.incoming_group_name}'"
+      update_set = ["section_code=?, section_name=?",group.incoming_group_code,"#{group.incoming_group_code}#{group.incoming_group_name}"]
       sql_where = "section_code='#{control.section_code}'"
-      Gwmonitor::Control.update_all(update_fields, sql_where)
+      Gwmonitor::Control.update_all(update_set, sql_where)
       p %Q[#{control.id}, #{control.section_code}, "#{update_fields}", #{Time.now}.]
 
       item = System::Group.new
@@ -35,8 +36,9 @@ class Gwmonitor::Script::Annual
       next if system_group.blank?
 
       update_field="section_sort=#{system_group.sort_no}"
+      update_set = ["section_sort=?",system_group.sort_no]
       sql_where = "section_code='#{group.incoming_group_code}'"
-      Gwmonitor::Control.update_all(update_field, sql_where)
+      Gwmonitor::Control.update_all(update_set, sql_where)
     end
     p "renew_controls_section_code 終了:#{Time.now}."
   end
@@ -54,7 +56,8 @@ class Gwmonitor::Script::Annual
       next if group.blank?
 
       update_fields = "section_code='#{group.incoming_group_code}', section_name='#{group.incoming_group_code}#{group.incoming_group_name}'"
-      doc_item.update_all(update_fields, "section_code='#{doc.section_code}'")
+      update_set = ["section_code=?, section_name=?",group.incoming_group_code,"#{group.incoming_group_code}#{group.incoming_group_name}"]
+      doc_item.update_all(update_set, "section_code='#{doc.section_code}'")
       p %Q[#{doc.section_code}, "#{update_fields}", #{Time.now}.]
 
       item = System::Group.new
@@ -67,8 +70,9 @@ class Gwmonitor::Script::Annual
       l2_group_code = system_group.parent.code unless system_group.parent.blank?
 
       update_field="l2_section_code='#{l2_group_code}', section_sort=#{system_group.sort_no}"
+      update_set = ["l2_section_code=?, section_sort=?",l2_group_code,system_group.sort_no]
       sql_where = "section_code='#{group.incoming_group_code}'"
-      doc_item.update_all(update_field, sql_where)
+      doc_item.update_all(update_set, sql_where)
 
       p %Q[#{group.incoming_group_code}, "#{update_field}", #{Time.now}.]
     end

@@ -184,7 +184,7 @@ class Gw::ScheduleProp < Gw::Database
       ed_at = Gw.to_time(params[:ed_at]) rescue nil
 
       admin = Gw.is_admin_admin?
-      
+
       if st_at.blank? || ed_at.blank? || st_at >= ed_at
         item = {:errors=>'日付が異常です'}
       else
@@ -192,14 +192,14 @@ class Gw::ScheduleProp < Gw::Database
         cond_props_within_terms = "SELECT distinct prop_id FROM gw_schedules"
         cond_props_within_terms.concat " left join gw_schedule_props on gw_schedules.id =  gw_schedule_props.schedule_id"
         cond_props_within_terms.concat " where"
-        cond_props_within_terms.concat " gw_schedules.id <> #{params[:schedule_id]} and " unless params[:schedule_id].blank?
+        cond_props_within_terms.concat " gw_schedules.id <> #{params[:schedule_id].to_i} and " unless params[:schedule_id].blank?
         cond_props_within_terms.concat " gw_schedules.ed_at >= '#{Gw.datetime_str(st_at)}'"
         cond_props_within_terms.concat " and gw_schedules.st_at < '#{Gw.datetime_str(ed_at)}'"
         cond_props_within_terms.concat " order by prop_id"
         cond = "piwt.prop_id is null"
         cond.concat " and gw_prop_others.delete_state = 0 and gw_prop_others.reserved_state = 1"
-        if nz(params[:type_id], 0).to_i != 0 
-          cond.concat " and type_id = #{params[:type_id]}"
+        if nz(params[:type_id], 0).to_i != 0
+          cond.concat " and type_id = #{params[:type_id].to_i}"
         end
 
         joins = "left join (#{cond_props_within_terms}) piwt on gw_prop_others.id = piwt.prop_id"

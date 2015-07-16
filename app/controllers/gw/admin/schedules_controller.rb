@@ -54,7 +54,7 @@ class Gw::Admin::SchedulesController < Gw::Controller::Admin::Base
     @is_gw_admin = Gw.is_admin_admin?
 
     if params[:cgid].present?
-      @custom_group = System::CustomGroup.find(:first, :conditions=>"id=#{params[:cgid]}")
+      @custom_group = System::CustomGroup.find(:first, :conditions=>["id= ? ", params[:cgid]])
       if @custom_group.present?
         Page.title = "#{@custom_group.name} - スケジュール"
       end

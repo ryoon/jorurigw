@@ -25,6 +25,7 @@ class Gw::Script::Annual
     r_groups.each do |r_group|
       ids = Array.new
       update_fields1  = "gid = #{r_group.incoming_group_id}, gname = '#{r_group.incoming_group_name}'" # 更新SQL
+      update_set = [ "gid = ?, gname = ?",r_group.incoming_group_id,r_group.incoming_group_name]
       sql_where1      = "gid = #{r_group.present_group_id}" # 検索SQL
       _ids = Gw::PropOther.find(:all, :conditions => sql_where1, :select => "id")
       unless _ids.empty?
@@ -32,20 +33,21 @@ class Gw::Script::Annual
           ids << _id.id
         end
         ids = ids.uniq
-        Gw::PropOther.update_all(update_fields1, sql_where1)
+        Gw::PropOther.update_all(update_set, sql_where1)
         p "gw_prop_others　対象ID：[#{Gw.join(ids, ',')}], 変更対象所属：#{sql_where1}, 更新SQL：#{update_fields1}, #{Time.now}."
       end
 
       ids = Array.new
       update_fields1  = "gid = #{r_group.incoming_group_id}"
       sql_where1      = "gid = #{r_group.present_group_id}"
+      update_set = [ "gid = ?",r_group.incoming_group_id]
       _ids = Gw::PropOtherRole.find(:all, :conditions => sql_where1, :select => "id")
       unless _ids.empty?
         _ids.each do |_id|
           ids << _id.id
         end
         ids = ids.uniq
-        Gw::PropOtherRole.update_all(update_fields1, sql_where1)
+        Gw::PropOtherRole.update_all(update_set, sql_where1)
         p "gw_prop_other_roles　対象ID：[#{Gw.join(ids, ',')}], 変更対象所属：#{sql_where1}, 更新SQL：#{update_fields1}, #{Time.now}."
       end
     end

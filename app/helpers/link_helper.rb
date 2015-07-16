@@ -2,7 +2,7 @@
 module LinkHelper
   def action_menu(type, link = nil, options = {})
     action = params[:action]
-    
+
     if action =~ /index/
       return '' if [:index, :show, :edit, :destroy].index(type)
     elsif action =~ /(show|destroy)/
@@ -12,13 +12,13 @@ module LinkHelper
     elsif action =~ /(edit|update)/
       return '' unless [:index, :show].index(type)
     end
-    
+
     if type == :destroy
       options[:confirm] = '削除してよろしいですか？'
       options[:method]  = :delete
       #options[:remote]  = true
     end
-    
+
     if link.class == String
       return link_to(type, link, options)
     elsif link.class == Array
@@ -27,7 +27,7 @@ module LinkHelper
       return link_to(type, url_for(:action => type), options)
     end
   end
-  
+
   def link_to(*params)
     labels = {
       :up        => '上へ',
@@ -47,12 +47,12 @@ module LinkHelper
       :close     => '非公開'
     }
     params[0] = labels[params[0]] if labels.key?(params[0])
-    
+
     options = params[2]
 
     if options && options[:method] == :delete
       options[:method] = nil
-      
+
       onclick = "var f = document.createElement('form');" \
         "f.style.display = 'none';" \
         "this.parentNode.appendChild(f);" \
@@ -72,14 +72,15 @@ module LinkHelper
 
       if options[:confirm]
         onclick = "if (confirm('#{options[:confirm]}')) {#{onclick}};"
-        options[:confirm] = nil
+        #options[:confirm] = nil
+        options.delete(:confirm)
       end
       options[:onclick] = onclick + "return false;"
     end
 
     super(*params)
   end
-  
+
   ## E-mail to entity
   def email_to(addr, text = nil)
     return '' if addr.blank?
@@ -90,7 +91,7 @@ module LinkHelper
     text.gsub!(/a/, '&#97;')
     mail_to(text, addr)
   end
-  
+
   ## Tel
   def tel_to(tel, text = nil)
     text ||= tel

@@ -51,7 +51,7 @@ class Gw::Admin::SchedulePropsController < Gw::Admin::SchedulesController
 
     @ie = Gw.ie?(request)
     @hedder2lnk = 7
-    
+
     @prop_types = Gw::PropType.find(:all, :conditions => ["state = ?", "public"], :select => "id, name", :order => 'sort_no, id')
     if params[:type_id].present?
       @type_id = params[:type_id]
@@ -87,7 +87,7 @@ class Gw::Admin::SchedulePropsController < Gw::Admin::SchedulesController
     @calendar_end_day = @calendar_first_day + 6
     @view = "week"
 
-    @prop_gid = Gw::PropOther.find(:first, :conditions => "id=#{params[:prop_id]}").gid if !params[:prop_id].blank?
+    @prop_gid = Gw::PropOther.find(:first, :conditions => ["id= ? ", params[:prop_id]]).gid if !params[:prop_id].blank?
     _props
     if @prop_edit_ids.length > 0 || @prop_read_ids.length > 0
       @show_flg = true
@@ -140,7 +140,7 @@ class Gw::Admin::SchedulePropsController < Gw::Admin::SchedulesController
     end
     @show_flg = @read
 
-    cond = ("gw_schedule_props.prop_id = #{params[:prop_id]} and ") +
+    cond = ("gw_schedule_props.prop_id = #{params[:prop_id].to_i} and ") +
         " ('#{@calendar_first_day.strftime('%Y-%m-%d 0:0:0')}' <= gw_schedules.ed_at" +
           " and '#{@calendar_end_day.strftime('%Y-%m-%d 23:59:59')}' >= gw_schedules.st_at)"
 
@@ -153,7 +153,7 @@ class Gw::Admin::SchedulePropsController < Gw::Admin::SchedulesController
   def _props
     @props  =  Gw::Model::Schedule.get_props(params, @is_gw_admin, {:s_other_admin_gid=>@s_other_admin_gid, :type_id => @type_id})
     @prop_ids = @props.map{|x| x.id}
-    
+
     if @is_gw_admin
       @prop_edit_ids = @prop_ids
       @prop_read_ids = @prop_ids
